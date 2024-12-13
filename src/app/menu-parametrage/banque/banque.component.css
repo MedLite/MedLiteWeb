@@ -1,0 +1,9 @@
+:host ::ng-deep .ModalAdd {
+    height: 200px !important;
+}
+
+.invalid-input {
+    border-color: red !important;
+    /* Use !important to override other styles if needed */
+    /* Add other styles like background-color, etc. */
+}

@@ -1,0 +1,68 @@
+<app-alert></app-alert>
+<div class="col-md-12">
+    <div class="card card-container">
+        <img id="profile-img" src="../../../assets/images/avatar_2x.png" class="profile-img-card" />
+        <form *ngIf="!isLoggedIn" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+            <div class="form-group">
+                <div class="Langage">
+                    <!-- <p-dropdown [style]="{'width':'150px' ,    'border': '1px solid #198754', 'border-radius':' 6px'}"
+                        [options]="i18nService.langList" name="Lang" [(ngModel)]="selectedLanguage"
+                        (onChange)="i18nService.languageChange(selectedLanguage?.valeur) ;changeLanguage() "
+                        optionLabel="lang" [showClear]="false">
+                        <ng-template let-lang pTemplate="item">
+                            <img [src]="lang.flag" alt="{{ lang.valeur }} flag" class="flag-icon mr-1"
+                                style="width: 18px" /> <span>{{ lang.lang }}</span>
+                        </ng-template>
+                        <ng-template let-lang pTemplate="selectedItem">
+                            <img *ngIf="lang" [src]="lang.flag" alt="{{ lang?.valeur }} flag" class="flag-icon mr-1" />
+                            <span>{{ lang?.lang }}</span>
+                        </ng-template>
+                    </p-dropdown> -->
+
+                    <p-dropdown [options]="countries" name="lang" class="dropdown" [style]="{'width':'150px' ,    'border': '1px solid #198754', 'border-radius':' 6px'}" [(ngModel)]="selectedCountry" optionLabel="name" (onChange)="i18nService.languageChange(countries.value) ;changeLanguage() ">
+                        <!-- (onChange)="i18nService.languageChange(selectedCountry.code) ;changeLanguage() "> -->
+                        <ng-template pTemplate="selectedItem">
+                            <div class="flex align-items-center gap-2" *ngIf="selectedCountry">
+                                <img src="../../../assets/flags/flag_placeholder.png" [class]="'flag flag-' + selectedCountry.code.toLowerCase()" style="width: 18px" />
+                                <div>{{ selectedCountry.name }}</div>
+                            </div>
+                        </ng-template>
+                        <ng-template let-country pTemplate="item">
+                            <div class="flex align-items-center gap-2">
+                                <img src="../../../assets/flags/flag_placeholder.png" [class]="'flag flag-' + country.code.toLowerCase()" style="width: 18px" />
+                                <div>{{ country.name }}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="username" style="float: inline-start; font-size: 13px; font-family: auto;">
+                    {{'UserName' | i18n:i18nService.currentLanguage}}
+                </label>
+                <input type="text" id="username" class="form-control" name="username" [(ngModel)]="form.userName" required #userName="ngModel" />
+                <div class="alert alert-danger" role="alert" *ngIf="userName.errors && f.submitted">
+                    Username is required!
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" style="float: inline-start; font-size: 13px; font-family: auto; ">
+
+                    {{'Password' | i18n:i18nService.currentLanguage}}
+                </label>
+                <input type="password" class="form-control" name="password" [(ngModel)]="form.password" required #password="ngModel" />
+
+
+            </div>
+            <br>
+            <div class="form-group" style="justify-self: center;padding-right: 170px;">
+
+                <button class="btn btn-outline-success btn-block" style=" font-size: 13px; font-family: auto; width: 150px; height: 37px;">
+                    {{'Login' | i18n:i18nService.currentLanguage}}
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>

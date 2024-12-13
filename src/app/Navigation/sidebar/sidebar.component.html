@@ -1,0 +1,123 @@
+<div class="sidebar-wrapper" data-simplebar="true">
+    <div class="sidebar-header">
+        <div>
+            <img src="assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
+        </div>
+        <div>
+            <h4 class="logo-text">Rocker</h4>
+        </div>
+        <div class="toggle-icon ms-auto"><i class='bx bx-arrow-back'></i>
+        </div>
+    </div>
+    <!--navigation-->
+    <ul class="metismenu" id="menu">
+        <!-- <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class='bx bx-home-alt'></i>
+                </div>
+                <div class="menu-title">
+                    {{'Dashbord' | i18n:i18nService.currentLanguage}}
+                </div>
+            </a>
+            <ul>
+                <li> <a routerLink="/"><i class='bx bx-radio-circle'></i>Default</a>
+                </li>
+                <li> <a href="#"><i class='bx bx-radio-circle'></i>Alternate</a>
+                </li>
+                <li> <a href="#"><i class='bx bx-radio-circle'></i>Graphical</a>
+                </li>
+            </ul>
+        </li> -->
+
+        <li>
+            <a [routerLink]="['/home']">
+                <div class="parent-icon"><i class='bx bxs-dashboard'></i>
+                </div>
+                <div class="menu-title">{{'Dashbord' | i18n:i18nService.currentLanguage}}</div>
+            </a>
+        </li>
+
+
+
+
+
+
+
+
+
+        <!-- <li class="menu-label">Pages</li> -->
+        <li>
+            <a class="has-arrow">
+                <div class="parent-icon"><i class='bx bx-cog'></i>
+                </div>
+                <div class="menu-title">{{'Setting' | i18n:i18nService.currentLanguage}}</div>
+            </a>
+            <ul>
+                <li>
+                    <a [routerLink]="['/menu_parametarge/nationalite']">
+                        <i class='bx bx-map-pin'></i>{{'Nationalité' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li>
+                    <a [routerLink]="['/menu_parametarge/ville']">
+                        <i class='bx bx-map'></i>{{'Ville' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li> <a [routerLink]="['/menu_parametarge/cabinet']"><i class='bx bxs-door-open'></i>
+                    {{'Cabinet' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li> <a [routerLink]="['/menu_parametarge/responsable_remise']"><i class='bx bx-user'></i>
+                    {{'Responsable remise' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li> <a [routerLink]="['/menu_parametarge/societe']"><i class='bx bxs-arch'></i>
+                    {{'Societe' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li> <a [routerLink]="['/menu_parametarge/caisse']"><i class='bx bx-list-ul'></i>
+                    {{'Caisse' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li> <a [routerLink]="['/menu_parametarge/fournisseur']"><i class='bx bxs-user-badge'></i>
+                    {{'Fournisseur' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li> <a [routerLink]="['/menu_parametarge/prestation']"><i class='bx bx-first-aid'></i>
+                    {{'Prestation' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li> <a [routerLink]="['/menu_parametarge/operation']"><i class='bx bx-health'></i>
+                    {{'Opération' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li> <a [routerLink]="['/menu_parametarge/type_intervenant']"><i class='bx bx-menu-alt-left'></i>
+                    {{'Type intervenant' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li> <a [routerLink]="['/menu_parametarge/medecin']"><i class='bx bx-group'></i>
+                    {{'Medecin' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li> <a [routerLink]="['/menu_parametarge/banque']"><i class='bx bxs-bank'></i>
+                    {{'Banque' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+
+            </ul>
+        </li>
+
+        <li>
+            <a class="has-arrow">
+                <div class="parent-icon"><i class='bx bx-first-aid'></i>
+                </div>
+                <div class="menu-title">{{'Reception' | i18n:i18nService.currentLanguage}}</div>
+            </a>
+            <ul>
+                <li> <a [routerLink]="['/menu_reception/admission']"><i class='bx bx-user-plus'></i>
+                    {{'Admission' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li> <a [routerLink]="['/menu_reception/edition_admission']"><i class='bx bxs-report'></i>
+                    {{'Edition' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+
+            </ul>
+        </li>
+
+
+
+
+
+
+
+    </ul>
+    <!--end navigation-->
+</div>

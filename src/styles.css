@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "../node_modules/alertifyjs/build/css/alertify.css";
+@import "../node_modules/alertifyjs/build/css/themes/bootstrap.min.css";
+@import "../node_modules/alertifyjs/build/css/themes/default.min.css";
+@import "primeng/resources/primeng.css";
+@import "../src/assets/css/dark-theme.css";
+@import "../src/assets/css/semi-dark.css";
+@import "../src/assets/css/header-colors.css";
+@import "../src/assets/css/simplebar.css";
+@import "../src/assets/css/metisMenu.min.css";
+@import "../src/assets/css/primengStyle.css";
+@import "../src/assets/css/style.css";
+@import "../src/assets/fonts/fontsArabic.css";
+@import "../src/assets/css/fontawesome-free-6.4.0-web/css/all.min.css";
+@import "../src/assets/css/bootstrap-extended.css";
+@import "../src/assets/css/bootstrap.min.css";
+@import "../src/assets/css/app.css";
+@import "../src/assets/css/theme.css";
+@import "../src/assets/css/icons.css";

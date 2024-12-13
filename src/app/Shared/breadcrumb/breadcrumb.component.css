@@ -1,0 +1,59 @@
+.breadcrumb {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding: 0px 0px 10px 0px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    list-style: none;
+    background-color: #f7f7ff;
+    border-radius: 15px 0px 0px 0px;
+    font-family: auto;
+    font-size: 15px;
+    font-weight: bold;
+    position: fixed;
+    right: 222px;
+    z-index: 400;
+    top: 7px;
+}
+
+li.breadcrumb-item {
+    text-decoration: none;
+}
+
+.fas {
+    color: #616161;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.nomBreadCrumb {
+    color: #343434;
+}
+
+a:focus,
+a:hover {
+    color: #008cff;
+    text-decoration: none;
+    background-color: rgb(0 140 255 / 5%);
+}
+
+a:focus,
+a:hover {
+    color: #008cff;
+    text-decoration: none;
+    background-color: rgb(0 140 255 / 5%);
+}
+
+li.breadcrumb-item::after {
+    display: inline-block;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    color: #6c757d;
+    content: url('../../../assets/images/breadcrumb.png');
+    font-family: 'FontAwesome';
+    transform: rotate(180deg);
+    margin-top: -2px;
+    height: 40px;
+}
