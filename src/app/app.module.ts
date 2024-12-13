@@ -6,9 +6,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { I18nPipe } from './Shared/i18n/i18n.pipe';
 import * as enI18n from './Shared/i18n/en.i18n';
 import * as frI18n from './Shared/i18n/fr.i18n';
-import * as arI18n from './Shared/i18n/ar.i18n'; 
+import * as arI18n from './Shared/i18n/ar.i18n';
 import { I18nModule } from './Shared/i18n/i18n.module';
- 
+
 /////// fin I18N
 
 
@@ -17,7 +17,7 @@ import { I18nModule } from './Shared/i18n/i18n.module';
 
 import { DropdownModule } from 'primeng/dropdown';
 import { ChartModule } from 'primeng/chart';
-import { TabViewModule } from "primeng/tabview"; 
+import { TabViewModule } from "primeng/tabview";
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
@@ -27,7 +27,7 @@ import { RippleModule } from 'primeng/ripple';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { RatingModule } from 'primeng/rating';
-import { DialogModule } from 'primeng/dialog';  
+import { DialogModule } from 'primeng/dialog';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -51,7 +51,7 @@ import { FooterComponent } from './Navigation/footer/footer.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
-import {  HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AlertComponent } from './Authenfication/alert/alert.component';
@@ -63,68 +63,75 @@ import { FournisseurComponent } from './menu-parametrage/fournisseur/fournisseur
 import { MedecinComponent } from './menu-parametrage/medecin/medecin.component';
 import { NationaliterComponent } from './menu-parametrage/nationaliter/nationaliter.component';
 import { OperationComponent } from './menu-parametrage/operation/operation.component';
-import { PrestationComponent } from './menu-parametrage/prestation/prestation.component'; 
+import { PrestationComponent } from './menu-parametrage/prestation/prestation.component';
 import { SocieteComponent } from './menu-parametrage/societe/societe.component';
 import { TypeIntervenantComponent } from './menu-parametrage/type-intervenant/type-intervenant.component';
 import { VilleComponent } from './menu-parametrage/ville/ville.component';
 import { BreadcrumbComponent } from './Shared/breadcrumb/breadcrumb.component';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
- 
+
 import { NgxEchartsModule } from 'ngx-echarts';
 import * as echarts from 'echarts'; // Make sure you import echarts
 import { ResponsableRemiseComponent } from './menu-parametrage/responsable-remise/responsable-remise.component';
 import { AdmissionComponent } from './menu-reception/admission/admission.component';
 import { EditionAdmissionComponent } from './menu-reception/edition-admission/edition-admission.component';
 import { BanqueComponent } from './menu-parametrage/banque/banque.component';
+import { ModeReglementComponent } from './menu-parametrage/mode-reglement/mode-reglement.component';
+import { ChambreComponent } from './menu-reception/chambre/chambre.component';
+import { PlanningMedecinComponent } from './menu-reception/planning-medecin/planning-medecin.component';
+import { ClotureSessionComponent } from './menu-reception/cloture-session/cloture-session.component';
 
 
 
 const languages = [
-  { lang: 'عربي', flag: 'assets/images/county/ar.png', file: arI18n,valeur:'ar' },
-  { lang: 'English', flag: 'assets/images/county/eng.png', file: enI18n ,valeur:'en'},
-  { lang: 'Français', flag: 'assets/images/county/fr.png', file: frI18n ,valeur:'fr'}
+  { lang: 'عربي', flag: 'assets/images/county/ar.png', file: arI18n, valeur: 'ar' },
+  { lang: 'English', flag: 'assets/images/county/eng.png', file: enI18n, valeur: 'en' },
+  { lang: 'Français', flag: 'assets/images/county/fr.png', file: frI18n, valeur: 'fr' }
 
 ]
- 
+
 @NgModule({
   declarations: [
-    AppComponent, 
+    AppComponent,
     DashboardComponent,
-    UserCompoComponent,BreadcrumbComponent,
+    UserCompoComponent, BreadcrumbComponent,
     SidebarComponent,
-    TopBarComponent,LoadingComponent,
-    FooterComponent,     AlertComponent, LoginComponent,
+    TopBarComponent, LoadingComponent,
+    FooterComponent, AlertComponent, LoginComponent,
     ////// i18n //////////////// 
-    I18nPipe, 
+    I18nPipe,
     /////// fin i18n
 
     ///// Menu parametrage 
 
     NationaliterComponent,
     VilleComponent,
-    CabinetComponent, 
+    CabinetComponent,
     SocieteComponent,
     CaisseComponent,
     FournisseurComponent,
     PrestationComponent,
     OperationComponent,
     TypeIntervenantComponent,
-    MedecinComponent,ResponsableRemiseComponent,
-BanqueComponent,
+    MedecinComponent, ResponsableRemiseComponent,
+    BanqueComponent, ModeReglementComponent,
     ////////////// Menu REception
 
     AdmissionComponent,
     EditionAdmissionComponent,
+    ChambreComponent, PlanningMedecinComponent, CabinetComponent, ClotureSessionComponent,
+
+
   ],
   imports: [
-    BrowserModule,  NgxEchartsModule.forRoot({
+    BrowserModule, NgxEchartsModule.forRoot({
       echarts, // Provide the echarts object here
-    }), 
-    ChartModule, BrowserModule, 
-    ReactiveFormsModule,BrowserAnimationsModule,
-    AppRoutingModule,DropdownModule,FormsModule ,
+    }),
+    ChartModule, BrowserModule,
+    ReactiveFormsModule, BrowserAnimationsModule,
+    AppRoutingModule, DropdownModule, FormsModule,
     HttpClientModule,
-    I18nModule.forRoot(languages),   ReactiveFormsModule, TagModule, RippleModule, RatingModule, InputTextareaModule,
+    I18nModule.forRoot(languages), ReactiveFormsModule, TagModule, RippleModule, RatingModule, InputTextareaModule,
     CommonModule, ContextMenuModule, ToolbarModule, ConfirmDialogModule,
     BrowserModule, TableModule, InputTextModule, FileUploadModule,
     AppRoutingModule, DropdownModule, ButtonModule, InputNumberModule, NoopAnimationsModule,
@@ -132,8 +139,8 @@ BanqueComponent,
     CalendarModule, CheckboxModule, BrowserAnimationsModule, TabViewModule
 
   ],
-  providers: [DatePipe, LoginComponent,LoadingComponent,  HttpClient, MessageService,   
-  
+  providers: [DatePipe, LoginComponent, LoadingComponent, HttpClient, MessageService,
+
     provideAnimationsAsync(),
   ],
   bootstrap: [AppComponent]

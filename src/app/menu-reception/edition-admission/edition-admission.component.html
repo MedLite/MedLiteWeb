@@ -1,1 +1,184 @@
-<p>edition-admission works!</p>
+<body class="tt">
+    <header>
+
+        <label class="header_name"> سداد الموردين</label>
+
+    </header>
+    <nav>
+        <div class="Groupe-Bouton">
+
+
+            <ul class="tree">
+                <li>
+                    <input type="checkbox" checked="checked" id="c1" />
+                    <label class="tree_label lvl0" for="c1">البيانات</label>
+                    <ul>
+                        <li>
+                            <input type="checkbox" id="c4" />
+                            <label for="c4" class="tree_label lvl1">الموردين</label>
+                            <ul>
+                                <li (click)="openModalFactureFrsPaied(); toggleHighlight(10)">
+                                    <span [ngClass]="{'highlighted': highlightedIndex === 10}" class="tree_label lvl2">
+                                        أرصدة الموردين</span>
+                                </li>
+                                <li (click)="openModalFactureFrsNotPaied(); toggleHighlight(11)">
+                                    <span [ngClass]="{'highlighted': highlightedIndex === 11}" class="tree_label lvl2">كشف حساب تفصيلي</span>
+                                </li>
+                                <li (click)=" toggleHighlight(12)">
+                                    <span [ngClass]="{'highlighted': highlightedIndex === 12}" class="tree_label lvl2">دفعات على الحساب</span>
+                                </li>
+
+                                <li (click)=" toggleHighlight(13)">
+                                    <span [ngClass]="{'highlighted': highlightedIndex === 13}" class="tree_label lvl2">سدادات الموردين</span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="c2" />
+                            <label for="c2" class="tree_label lvl1">فواتير الموردين</label>
+                            <ul>
+                                <li (click)="openModalFactureFrsPaied(); toggleHighlight(20)">
+                                    <span [ngClass]="{'highlighted': highlightedIndex === 20}" class="tree_label lvl2">المسددة</span>
+                                </li>
+                                <li (click)="openModalFactureFrsNotPaied() ;toggleHighlight(21)">
+                                    <span [ngClass]="{'highlighted': highlightedIndex === 21}" class="tree_label lvl2 ">الغير مسددة</span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="c3" />
+                            <label for="c3" class="tree_label lvl1">مصروفات نثرية</label>
+                            <ul>
+                                <li><span class="tree_label lvl2">المسددة</span></li>
+                                <li><span class="tree_label lvl2">الغير مسددة</span></li>
+                            </ul>
+                        </li>
+                        <!-- <li>
+                            <input type="checkbox" id="c4" />
+                            <label for="c4" class="tree_label lvl1">الموردين</label>
+                            <ul>
+                                <li><span class="tree_label lvl2"> أرصدة الموردين</span></li>
+                                <li><span class="tree_label lvl2">كشف حساب تفصيلي</span></li>
+                            </ul>
+                        </li> -->
+                    </ul>
+
+                </li>
+
+
+
+            </ul>
+
+        </div>
+    </nav>
+    <section id="main-container">
+        <div *ngIf="showModalFactureFrsPaied" class="modal-overlay">
+            <div class="modalxx">
+                <fieldset class="flex-12">
+                    <div class="flex-row-start   FloatRight">
+                        <label class="control-label flex-20" style="font-weight: 700;"> قائمة الفواتير المسددة </label>
+
+
+                        <div class=" flex-row-start flex-80 DateDebut">
+                            <label class="control-label flex-25"> من :<i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-60">
+                                <p-calendar (onChange)="transformDateFormatDateDebut()" (onSelect)="transformDateFormatDateDebut()" [(ngModel)]="dateDebut" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" [ngStyle]="{'width':'100%' , 'margin-right': '3px'}" [showButtonBar]="true"
+                                    [readonlyInput]="false" appendTo="body" #calendar dateFormat="dd/mm/yy"></p-calendar>
+                            </div>
+                        </div>
+
+                        <div class="flex-row-start DateFin">
+                            <label class="control-label flex-25">إلى :<i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-60">
+                                <p-calendar (onChange)="transformDateFormatDateFin()" (onSelect)="transformDateFormatDateFin()" [(ngModel)]="dateFin" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" [ngStyle]="{'width':'100%' , 'margin-right': '3px' }" [showButtonBar]="true"
+                                    [readonlyInput]="false" appendTo="body" #calendar dateFormat="dd/mm/yy"></p-calendar>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex-row-start flex-8 FloatLeft">
+                        <!-- <button class="btn btn-default save-add-ModalSmallXXL"> 
+                            <i class="fa-solid fa-file-excel iconExcel"></i>
+                            إكسل
+                        </button> -->
+                        <button data-backdrop="false" type="button" class="Bouton-add-new1 btn  btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="GetFactureFrsPaied()">
+                            <div class="bouton_style-2">{{'Excel' | i18n:i18nService.currentLanguage}}</div>
+                            <i class="fa-solid fa-file-excel iconExcel"
+                                ></i>
+                        </button>
+
+
+                        <!-- <button class="btn btn-default cancel-add-ModalSmallXXL" :closable="true" data-dismiss="modal" (click)="GetFactureFrsPaied()"> 
+                            <i class="fa-solid fa-file-pdf iconPDF"></i> 
+                              طباعة
+                        </button> -->
+
+                        <button data-backdrop="false" type="button" class="Bouton-add-new1 btn  btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="GetFactureFrsPaied()">
+                            <div class="bouton_style-2"> {{'Print' | i18n:i18nService.currentLanguage}}</div>
+                            <i class="fa-solid fa-file-pdf iconPDF"
+                                 ></i>
+                        </button>
+
+
+                    </div>
+                </fieldset>
+
+                <div id="pdfContainer"></div>
+            </div>
+        </div>
+
+
+        <!-- FactureFrsNotPaied -->
+
+        <div *ngIf="showModalFactureFrsNotPaied" class="modal-overlay">
+            <div class="modalxx">
+                <fieldset class="flex-12">
+                    <div class="flex-row-start flex-8" style="float:right">
+                        <label class="control-label flex-30" style="font-weight: 700;"> قائمة الفواتير الغير المسددة </label>
+
+
+                        <div class=" flex-row-start  DateDebut">
+                            <label class="control-label flex-25"> من :<i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-10">
+                                <p-calendar (onChange)="transformDateFormatDateDebut()" (onSelect)="transformDateFormatDateDebut()" [(ngModel)]="dateDebut" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" [ngStyle]="{'width':'100%' , 'margin-right': '3px'}" [showButtonBar]="true"
+                                    [readonlyInput]="false" appendTo="body" #calendar dateFormat="dd/mm/yy"></p-calendar>
+                            </div>
+                        </div>
+
+                        <div class="flex-row-start DateFin">
+                            <label class="control-label flex-25">إلى :<i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-10">
+                                <p-calendar (onChange)="transformDateFormatDateFin()" (onSelect)="transformDateFormatDateFin()" [(ngModel)]="dateFin" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" [ngStyle]="{'width':'100%' , 'margin-right': '3px' }" [showButtonBar]="true"
+                                    [readonlyInput]="false" appendTo="body" #calendar dateFormat="dd/mm/yy"></p-calendar>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex-row-start flex-6" style="float:left">
+                        <button class="btn btn-default save-add-ModalSmallXXL"> 
+                            <i class="fa-solid fa-file-excel iconExcel"></i>
+                            إكسل
+                        </button>
+
+                        <button class="btn btn-default cancel-add-ModalSmallXXL" :closable="true" data-dismiss="modal" (click)="GetFactureFrsNonPaied()"> 
+                            <i class="fa-solid fa-file-pdf iconPDF"></i> 
+                              طباعة
+                        </button>
+
+                    </div>
+                </fieldset>
+
+
+                <div id="pdfContainer"></div>
+            </div>
+        </div>
+
+
+    </section>
+    <footer>
+    </footer>
+</body>

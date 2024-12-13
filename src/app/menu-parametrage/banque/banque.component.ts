@@ -199,6 +199,7 @@ export class BanqueComponent implements OnInit, AfterViewInit {
     this.ActifString  =  this.i18nService.getString('ActifString');
     this.visibleModal = false;
     this.visDelete = false; 
+    this.visibleModalPrint = false;
     const button = document.createElement('button');
     button.type = 'button';
     button.style.display = 'none';
@@ -245,7 +246,12 @@ export class BanqueComponent implements OnInit, AfterViewInit {
 
       if (this.code == undefined) {
         this.onRowUnselect;
-        alertifyjs.set('notifier', 'position', 'top-left');
+        if(sessionStorage.getItem("lang") == "ar"){
+          alertifyjs.set('notifier', 'position', 'top-left');
+        }else{
+          alertifyjs.set('notifier', 'position', 'top-right');
+        }
+       
         this. showChoseAnyRowNotification(); 
         this.visDelete == false && this.visibleModal == false
       } else {
@@ -261,12 +267,25 @@ export class BanqueComponent implements OnInit, AfterViewInit {
     }
 
     if (mode === 'Print') {
+      if (this.code == undefined) {
+        this.onRowUnselect;
+        if(sessionStorage.getItem("lang") == "ar"){
+          alertifyjs.set('notifier', 'position', 'top-left');
+        }else{
+          alertifyjs.set('notifier', 'position', 'top-right');
+        }
+       
+        this. showChoseAnyRowNotification(); 
+        this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
+      } else {
+        button.setAttribute('data-target', '#ModalPrint');
+        this.formHeader = "Imprimer Liste Banque"
+        this.visibleModalPrint = true;
+        // this.RemplirePrint();
 
+      }
 
-      button.setAttribute('data-target', '#ModalPrint');
-      this.formHeader = "Imprimer Liste Banque"
-      this.visibleModalPrint = true;
-      // this.RemplirePrint();
+     
 
 
     }
@@ -276,26 +295,26 @@ export class BanqueComponent implements OnInit, AfterViewInit {
 
   userCreate = "soufien";
   // datecreate !: Date;
-  currentDate = new Date();
+  // currentDate = new Date();
 
-  ajusterHourAndMinutes() {
-    let hour = new Date().getHours();
-    let hours;
-    if (hour < 10) {
-      hours = '0' + hour;
-    } else {
-      hours = hour;
-    }
-    let min = new Date().getMinutes();
-    let mins;
-    if (min < 10) {
-      mins = '0' + min;
-    } else {
-      mins = min;
-    }
-    return hours + ':' + mins
-  }
-  datform = new Date();
+  // ajusterHourAndMinutes() {
+  //   let hour = new Date().getHours();
+  //   let hours;
+  //   if (hour < 10) {
+  //     hours = '0' + hour;
+  //   } else {
+  //     hours = hour;
+  //   }
+  //   let min = new Date().getMinutes();
+  //   let mins;
+  //   if (min < 10) {
+  //     mins = '0' + min;
+  //   } else {
+  //     mins = min;
+  //   }
+  //   return hours + ':' + mins
+  // }
+  // datform = new Date();
 
   PostBanque() {
     if (this.modal && this.modal.el) { // Check for modal and its element
@@ -316,7 +335,12 @@ export class BanqueComponent implements OnInit, AfterViewInit {
 
 
       if (!this.designationAr || !this.designationLt || !this.codeSaisie) {
-        alertifyjs.set('notifier', 'position', 'top-left');
+        if(sessionStorage.getItem("lang") == "ar"){
+          alertifyjs.set('notifier', 'position', 'top-left');
+        }else{
+          alertifyjs.set('notifier', 'position', 'top-right');
+        }
+       
         this. showRequiredNotification(); 
       } else {
 
@@ -340,7 +364,12 @@ export class BanqueComponent implements OnInit, AfterViewInit {
           // this.param_service.UpdateBanque(body) .subscribe(
 
           //   (res: any) => {
-          //     alertifyjs.set('notifier', 'position', 'top-left');
+          //      if(sessionStorage.getItem("lang") == "ar"){
+        //   alertifyjs.set('notifier', 'position', 'top-left');
+        // }else{
+        //   alertifyjs.set('notifier', 'position', 'top-right');
+        // }
+       
           //                 alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/ok.png" alt="image" >' + "تم التحيين");
 
           //     this.visibleModal = false;

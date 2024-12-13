@@ -91,6 +91,9 @@
                 <li> <a [routerLink]="['/menu_parametarge/banque']"><i class='bx bxs-bank'></i>
                     {{'Banque' | i18n:i18nService.currentLanguage}}</a>
                 </li>
+                <li> <a [routerLink]="['/menu_parametarge/mode_reglement']"><i class='bx bx-credit-card'></i>
+                    {{'ModeReglement' | i18n:i18nService.currentLanguage}}</a>
+                </li>
 
             </ul>
         </li>
@@ -107,6 +110,15 @@
                 </li>
                 <li> <a [routerLink]="['/menu_reception/edition_admission']"><i class='bx bxs-report'></i>
                     {{'Edition' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li> <a [routerLink]="['/menu_reception/chambre']"><i class='bx bx-bed'></i>
+                    {{'Chambre' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li> <a [routerLink]="['/menu_reception/planning_medecin']"><i class='bx bxs-spreadsheet'></i>
+                    {{'PlanningMedcin' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li> <a [routerLink]="['/menu_reception/cloture_session']"><i class='bx bx-lock-alt'></i>
+                    {{'ClotureSession' | i18n:i18nService.currentLanguage}}</a>
                 </li>
 
             </ul>

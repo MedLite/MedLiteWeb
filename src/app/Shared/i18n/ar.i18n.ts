@@ -34,8 +34,12 @@ const arI18n = {
   'DesignationLt': 'البيان باللاتيني',
   'ActifString': 'متداول',
   'Close': 'خروج',
-  'Save': 'حفظ'
-
+  'Save': 'حفظ',
+  'ModeReglement':'طريقة الدفع',
+  'Chambre':'الغرف',
+  'PlanningMedcin':'جدول العيادات',
+  'ClotureSession':'إقفال الخزينة',
+'Excel':'إكسل'
 
 };
 

@@ -23,7 +23,7 @@ const frI18n = {
   'Banque': 'Banque',
   'Admission': 'Admission',
   'Edition': 'Edition',
-  'Add': 'Ajout',
+  'Add': 'Ajouter',
   'Modifier': 'Modifier',
   'Delete': 'Supprimer',
   'Print': 'Imprimer',
@@ -33,10 +33,15 @@ const frI18n = {
   'Designation': 'Designation',
   'DesignationAr': 'Designation Arabic',
   'DesignationLt': 'Designation Latin',
-  'CodeSaisie': 'Code Saisie',
+  'CodeSaisie': 'Code',
   'ActifString': 'Actif',
   'Close': 'Fermer',
-  'Save': 'Save'
+  'Save': 'Sauvegarder', 
+  'ModeReglement':'Mode Reglement',
+  'Chambre':'Chambre',
+  'PlanningMedcin':'Planning Medcin',
+  'ClotureSession':'Cloture Session',
+   'Excel':'Excel'
 };
 
 

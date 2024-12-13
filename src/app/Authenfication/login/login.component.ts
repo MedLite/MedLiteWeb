@@ -25,15 +25,8 @@ export class LoginComponent implements OnInit {
   }
   countries: any;
 
-  selectedCountry: any;
-  // selectedLanguage: any
-  ngOnInit(): void {
-    const storedLang = sessionStorage.getItem('lang');
-
-     
-
-    // this.selectedLanguage = this.i18nService.langList.find((item: any) => item.valeur === this.i18nService.currentLanguage);
-
+  selectedCountry: any; 
+  ngOnInit(): void { 
    
     this.countries = [
       { name: 'عربي', code: 'LY', value: 'ar' },
@@ -89,9 +82,9 @@ export class LoginComponent implements OnInit {
 
    
 
-  reloadCurrentRoute() {  
-      this.router.navigate(['/home'], { relativeTo: this.route });
+  reloadCurrentRoute() {   
       this.reloadPageCurrent();
+        this.router.navigate(['/home'] );
   }
 
   reloadPageCurrent() {

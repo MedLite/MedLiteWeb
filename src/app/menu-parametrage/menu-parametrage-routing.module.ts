@@ -14,6 +14,7 @@ import { PrestationComponent } from './prestation/prestation.component';
 import { OperationComponent } from './operation/operation.component';
 import { MedecinComponent } from './medecin/medecin.component';
 import { TypeIntervenantComponent } from './type-intervenant/type-intervenant.component';
+import { ModeReglementComponent } from './mode-reglement/mode-reglement.component';
  
  
 
@@ -82,7 +83,12 @@ const routes: Routes = [
     component: BanqueComponent ,
     data:{title:'Banque',icon:'bx bxs-bank'}
   }
-
+  ,
+  {
+    path: 'mode_reglement',
+    component: ModeReglementComponent ,
+    data:{title:'ModeReglement',icon:'bx bx-credit-card'}
+  }
 
   
 

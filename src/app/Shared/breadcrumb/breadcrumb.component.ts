@@ -27,7 +27,7 @@ export class BreadcrumbComponent  implements OnInit {
     this.  MethodeVisbileBreadCrumb();
     let breadcrumb: Breadcrumb = {
       label: this.i18nService.getString('Home'),
-      url: '',
+      url: '/home',
       icon: 'fas fa-home'  
 
     };

@@ -1,0 +1,501 @@
+body {
+    display: grid;
+    grid-template-areas: "head head" "nav main" "nav foot";
+    grid-template-rows: 45px 1fr 30px;
+    grid-template-columns: 215px 1fr 0px;
+}
+
+header {
+    background: #fdfdfd;
+    grid-area: head;
+    direction: rtl;
+    float: right;
+}
+
+nav {
+    background: #f6f6f6;
+    grid-area: nav;
+    border-left: 1px dashed #bababa;
+    /* direction: rtl; */
+    text-align: start !important;
+}
+
+section {
+    background: #fbfbfb;
+    grid-area: section;
+}
+
+aside {
+    background: #f5f5f5;
+    grid-area: aside;
+}
+
+ul,
+li {
+    list-style: none;
+    margin: 0;
+    padding: 0
+}
+
+label {
+    font-weight: normal
+}
+
+
+/* 
+  .trees {
+    margin-right: 10px;
+    direction: rtl;
+    font-family: auto;
+    font-size: 15px;
+  }
+ 
+  .trees li {
+    border-right: dotted 1px #bcbec0;
+    padding: 1px 18px 1px 25px;
+    position: relative;
+    float: right;
+  }
+ 
+  .trees li>label {
+    position: relative;
+    right: -11px;
+    float: right;
+    padding: 2px;
+    background-color: #f8efe8;
+    border-radius: 5px;
+    color: #090909;
+    border: 1px solid #e8cebd;
+    width: 100px;
+    text-align: right;
+ 
+  }
+ 
+  .trees li label:hover {
+    background-color: #5c7381;
+    color: white !important;
+    font-weight: bold;
+  }
+ 
+  .trees li:before {
+    content: "";
+    width: 13px;
+    height: 1px;
+    border-bottom: dotted 1px #bcbec0;
+    position: absolute;
+    top: 10px;
+    right: 0
+  }
+ 
+  .trees li:last-child:after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 13px;
+    background: #fff;
+    right: -1px;
+    bottom: 0px;
+  }
+ 
+  .trees li input {
+    margin-right: 5px;
+    margin-left: 5px
+  }
+ 
+  .trees li.has-child>ul {
+    display: none
+  }
+ 
+  .trees li.has-child>input {
+    opacity: 0;
+    position: absolute;
+    right: -14px;
+    z-index: 9999;
+    width: 22px;
+    height: 22px;
+    top: -5px
+  }
+ 
+  .trees li.has-child>input+.tree-control {
+    position: absolute;
+    right: -4px;
+    top: 6px;
+    width: 8px;
+    height: 8px;
+    line-height: 8px;
+    z-index: 2;
+    display: inline-block;
+    color: #fff;
+    border-radius: 3px;
+  }
+ 
+  .trees li.has-child>input+.tree-control:after {
+    font-family: 'FontAwesome';
+    content: "";
+    font-size: 15px;
+    color: #183955;
+    position: absolute;
+    right: -1px
+  }
+ 
+  .trees li.has-child>input:checked+.tree-control:after {
+    font-family: 'FontAwesome';
+    content: "";
+    font-size: 8px;
+    color: #183955;
+    position: absolute;
+    right: 1px;
+ 
+  }
+ 
+  .trees li.has-child>input:checked~ul {
+    display: block;
+  }
+ 
+ 
+ 
+  .tree-box label:has(.check:hover) {
+    cursor: pointer;
+  }
+ 
+ 
+ 
+   
+  .trees ul li.has-child:nth-last-child(2):after {
+    content: "";
+    width: 1px;
+    height: 5px;
+    border-left: dotted 1px #bcbec0;
+    position: absolute;
+    bottom: -5px;
+    right: -1px
+  }
+ 
+  .tree-alt li {
+    padding: 4px 0
+  }
+ 
+  .check {
+    display: none;
+  }
+ 
+  .checkParent {
+    display: none;
+  }
+ 
+  .checkHead {
+    display: none;
+    cursor: none;
+  }
+ 
+ 
+  .trees li.has-child>input+.tree-control:after {
+    content: '\f0da';
+  } */
+
+.modal-overlay {
+    position: absolute;
+    z-index: 1;
+    left: 5px;
+    top: 50px;
+    right: 440px;
+    bottom: 10px;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    transition: all 0.3s, background 0s ease;
+    align-items: center;
+}
+
+
+/* .modalxx {
+   background-color: #ff0909;
+   padding: 20px;
+   border: 1px solid #888;
+   max-width: 80%; 
+   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+   border-radius: 8px;
+ } */
+
+ :host ::ng-deep .modalxx {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid #dbdbdb;
+    overflow-x: hidden;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+ :host ::ng-deep .p-datepicker-group {
+    direction: rtl !important;
+    /* Use !important to override inline styles */
+}
+
+
+/* .nameGroupe {
+    color: #297383 !important;
+    font-weight: bold;
+    width: 120px !important;
+  }
+ 
+  .trees li label.paid:hover {
+    background-color: lightgreen; 
+    color: black !important;
+    font-weight: bold;
+  }
+ 
+  .trees li label.unpaid:hover {
+    background-color: lightcoral; 
+    font-weight: bold;
+  }
+ 
+  .trees li label.all:hover {
+   background-color: rgb(255 255 255);
+   font-weight: bold;
+   color: black !important;
+  } */
+
+#fontSizeWrapper {
+    font-size: 16px;
+    direction: rtl;
+}
+
+#fontSize {
+    width: 100px;
+    font-size: 1em;
+    direction: rtl;
+}
+
+
+/* ————————————————————–
+   Tree core styles
+ */
+
+.tree {
+    margin: 1em;
+}
+
+.tree input {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+}
+
+.tree input~ul {
+    display: none;
+}
+
+.tree input:checked~ul {
+    display: block;
+}
+
+
+/* ————————————————————–
+   Tree rows
+ */
+
+.tree li {
+    line-height: 29px;
+    position: relative;
+    padding: 0 12px 20px 0;
+}
+
+.tree ul li {
+    padding: 1em 1em 0 0;
+}
+
+.tree>li:last-child {
+    padding-bottom: 0;
+}
+
+
+/* ————————————————————–
+   Tree labels
+ */
+
+.tree_label {
+    position: relative;
+    display: inline-block;
+    background: #fff;
+}
+
+label.tree_label {
+    cursor: pointer;
+}
+
+label.tree_label:hover {
+    color: #666;
+}
+
+
+/* ————————————————————–
+   Tree expanded icon
+ */
+
+label.tree_label:before {
+    background: #000;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+    float: right;
+    margin: -4px -38px -3px 1em;
+    width: 1em;
+    height: 1em;
+    border-radius: 1em;
+    content: '+';
+    text-align: center;
+    line-height: 16px;
+    top: 10px;
+}
+
+ :checked~label.tree_label:before {
+    content: '–';
+}
+
+
+/* ————————————————————–
+   Tree branches
+ */
+
+.tree li:before {
+    position: absolute;
+    top: 5px;
+    bottom: -8px;
+    display: block;
+    width: 0;
+    content: "";
+    left: auto;
+    right: -8px;
+    border-left: none;
+    border-right: 1px solid #777;
+}
+
+.tree_label:after {
+    position: absolute;
+    top: 0px;
+    display: block;
+    height: 10px;
+    width: 1em;
+    border-bottom: 1px solid #777;
+    content: "";
+    left: auto;
+    right: -18px;
+    border-radius: 0px 0px 0px 7px;
+    border-left: 0;
+    border-right: 0;
+    transform: scaleX(-1);
+}
+
+label.tree_label:after {
+    border-bottom: 0;
+}
+
+ :checked~label.tree_label:after {
+    border-radius: 5px 0 0 0;
+    border-top: 1px solid #777;
+    border-right: none;
+    border-bottom: 0;
+    border-left: 1px solid #777;
+    bottom: 0;
+    top: 12px;
+    height: 30px;
+    transform: scaleX(1);
+    right: -22px;
+    position: absolute;
+}
+
+.tree li:last-child:before {
+    height: 18px;
+    bottom: auto;
+}
+
+.tree>li:last-child:before {
+    display: none;
+}
+
+.tree_custom {
+    display: block;
+    background: #eee;
+    padding: 1em;
+    border-radius: 0.3em;
+}
+
+.Groupe-Bouton {
+    margin-right: 20px;
+    margin-top: 20px;
+    height: 520px;
+}
+
+span.tree_label.lvl2 {
+    background-color: #f8efe8;
+    border-radius: 5px;
+    color: #090909;
+    border: 1px solid #e8cebd;
+    width: 135px;
+    text-align: right;
+    top: 0px;
+    align-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    padding-right: 10px;
+}
+
+label.tree_label.lvl1 {
+    background-color: #f8efe8;
+    border-radius: 5px;
+    color: #090909;
+    border: 1px solid #e8cebd;
+    width: 135px;
+    text-align: right;
+    align-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    padding-right: 10px;
+}
+
+label.tree_label.lvl0 {
+    background-color: #f8efe8;
+    border-radius: 5px;
+    color: #090909;
+    border: 1px solid #e8cebd;
+    width: 148px;
+    text-align: right;
+    align-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    padding-right: 10px;
+}
+
+.tree_label.lvl2::after {
+    width: 18px;
+    top: 5px;
+}
+
+span.tree_label.lvl2:hover {
+    cursor: pointer;
+    background-color: #5f9ea042;
+}
+
+.highlighted {
+    background-color: #00b300 !important;
+    color: white !important;
+}

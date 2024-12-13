@@ -15,7 +15,7 @@ const routes: Routes = [
 
   { path: 'home', component: DashboardComponent },
   { path: 'login', component: LoginComponent }, 
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
 
 
   {

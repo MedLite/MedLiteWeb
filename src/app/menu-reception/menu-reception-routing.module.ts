@@ -4,6 +4,9 @@ import { MenuReceptionComponent } from './menu-reception.component';
 import { I18nService } from '../Shared/i18n/i18n.service';
 import { AdmissionComponent } from './admission/admission.component';
 import { EditionAdmissionComponent } from './edition-admission/edition-admission.component';
+import { ChambreComponent } from './chambre/chambre.component';
+import { PlanningMedecinComponent } from './planning-medecin/planning-medecin.component';
+import { ClotureSessionComponent } from './cloture-session/cloture-session.component';
 
 const routes: Routes = [
   { path: '', component: MenuReceptionComponent }
@@ -15,6 +18,18 @@ const routes: Routes = [
     path: 'edition_admission',
     component: EditionAdmissionComponent ,
     data:{title:'Edition' , icon :'bx bxs-report'}
+  },{
+    path: 'chambre',
+    component: ChambreComponent ,
+    data:{title:'Chambre' , icon :'bx bx-bed'}
+  },{
+    path: 'planning_medecin',
+    component: PlanningMedecinComponent,
+    data:{title:'PlanningMedcin' , icon :'bx bxs-spreadsheet'}
+  }, {
+    path: 'cloture_session',
+    component: ClotureSessionComponent ,
+    data:{title:'ClotureSession' , icon :'bx bx-lock-alt'}
   },
 ];
 

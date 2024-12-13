@@ -177,6 +177,7 @@
      border-radius: 0.25rem;
      transition: all .3s ease-out;
      font-weight: bold;
+     cursor: pointer;
  }
  
  .sidebar-wrapper .metismenu a .parent-icon {
@@ -2779,8 +2780,8 @@
  }
  
  [dir="ltr"] .save-add-ModalSmall {
-     left: 575px !important;
-     right: 130px !important;
+     left: 525px !important;
+     right: 135px !important;
      direction: rtl !important;
  }
  
@@ -2799,4 +2800,8 @@
      padding-right: 0px !important;
      padding-left: 5px !important;
      float: left !important;
+ }
+ 
+ [dir="ltr"] .Bouton-add-new1 {
+     width: 105px !important;
  }

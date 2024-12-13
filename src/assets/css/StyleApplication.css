@@ -248,10 +248,11 @@ tr.mat-footer-row {
     margin-right: 5px;
     display: flex;
     height: 30px;
-    width: 105px;
+    width: 70px;
     padding: 3px 7px 0px 5px;
     margin-bottom: 3px;
     border: 1px solid #adadad;
+    align-items: center;
 }
 
 .dropbtn {
@@ -737,7 +738,7 @@ fieldset[disabled] .form-control-dev {
 :host ::ng-deep .control-label-titer {
     /* text-align: right !important; */
     padding-top: 10px;
-    font-size: 16px;
+    font-size: 15px;
     color: black;
     padding-right: 5px;
     padding-left: 0px;
@@ -830,6 +831,11 @@ textarea {
 .flex-60 {
     text-align: right;
     max-width: 60%;
+}
+
+.flex-80 {
+    text-align: right;
+    max-width: 80%;
 }
 
 .flex-20 {
@@ -1049,12 +1055,17 @@ button.btn.btn-danger.cancel-voir {
 }
 
 .save-add-ModalSmallXXL {
-    margin-left: 20px;
-    font-size: 13px;
     direction: ltr;
     height: 30px;
     border: 1px solid #adadad;
-    width: 70px;
+    width: 105px;
+    position: fixed;
+    right: 1140px;
+    float: inline-end;
+    font-size: 15px;
+    height: 30px;
+    font-weight: 500;
+    margin: 5px 8px 5px 10px;
     font-weight: bold;
 }
 
@@ -1065,7 +1076,7 @@ button.btn.btn-danger.cancel-voir {
     direction: ltr;
     font-weight: 500;
     border: 1px solid #adadad;
-    width: 90px;
+    width: 105px;
     font-weight: bold;
 }
 
@@ -1158,13 +1169,13 @@ button.btn.btn-danger.cancel-voir {
 .iconExcel {
     color: #00b100;
     font-size: 16px;
-    padding-right: 5px;
+    margin-right: 10px;
 }
 
 .iconPDF {
     font-size: 17px;
     color: #1b1a7f;
-    padding-right: 5px;
+    margin-right: 10px;
 }
 
 
@@ -2508,6 +2519,14 @@ input.p-column-filter {
     flex: 8;
     max-width: 66.67%;
     text-align: right;
+    margin-left: 10px;
+    margin-top: 2px;
+}
+
+.flex-64 {
+    flex: 8;
+    max-width: 64%;
+    text-align: right;
 }
 
 .flex-9 {
@@ -2548,8 +2567,10 @@ input.p-column-filter {
 
 .FloatRight {
     float: right;
+    margin-top: 2px;
 }
 
 .FloatLeft {
     float: left;
+    margin-top: 2px;
 }

@@ -33,10 +33,15 @@ const enI18n = {
   'Designation': 'Label',
   'DesignationAr': 'Designation Arabic',
   'DesignationLt': 'Designation Latin',
-  'CodeSaisie': 'Code Saisie',
+  'CodeSaisie': 'Code',
   'ActifString': 'Actif',
   'Close': 'Close',
-  'Save': 'Save'
+  'Save': 'Save',
+  'ModeReglement':'Payment Mode',
+  'Chambre':'Bed',
+  'PlanningMedcin':'Doctor Schedule',
+  'ClotureSession':'Closing Session',
+  'Excel':'Excel'
 };
 
 

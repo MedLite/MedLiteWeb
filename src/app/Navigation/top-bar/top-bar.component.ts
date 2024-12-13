@@ -67,7 +67,7 @@ export class TopBarComponent implements OnInit  {
   GetTokenFromStorage(){
     let token = sessionStorage.getItem("auth-token");
     if(token==""){
-      window.location.reload();
+      // window.location.reload();
       this.TokenOK = false; 
     }else{
       this.TokenOK = true; 
@@ -82,7 +82,7 @@ export class TopBarComponent implements OnInit  {
   
     sessionStorage.clear();
  
-    this.router.navigate(['/login'], { relativeTo: this.route });
+    // this.router.navigate(['/login']);
 
   }
 
