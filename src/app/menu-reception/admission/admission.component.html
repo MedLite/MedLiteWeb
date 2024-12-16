@@ -1,1 +1,724 @@
-<p>admission works!</p>
+<body class="card" [ngClass]="{ 'disabled': IsLoading }">
+    <app-loading [IsLoading]="IsLoading">
+    </app-loading>
+    <header>
+
+        <label class="header_name">{{'Reception' | i18n:i18nService.currentLanguage}} </label>
+        <button class="close-button btn btn-default" (click)="closeThisComponent()">X</button>
+    </header>
+    <aside>
+        <div class="Groupe-Bouton">
+            <div class="flex-row-around">
+                <button data-backdrop="false" type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="RecherPatient" data-toggle="modal" data-target="#ModalRercherPatient" (click)="onOpenModal('RercherPatient')">
+                    <span class="label-btn">
+                        <i class="fa-solid fa-file-invoice-dollar iconADD2"></i>
+                    </span>
+                    <div class="bouton_style-2"> {{'Add' | i18n:i18nService.currentLanguage}} </div>
+
+                </button>
+            </div>
+            <div class="flex-row-around">
+                <button *ngIf="VisModif" [disabled]="DisModif" type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('edit')">
+
+                    <!-- <i class="fa fa-pencil-square-o icon_modif" aria-hidden="true"></i> -->
+                    <i class='bx bx-edit-alt iconModif'></i>
+                    <div class="bouton_style-2">{{'Modifier' | i18n:i18nService.currentLanguage}} </div>
+                </button>
+
+
+
+
+            </div>
+            <div class="flex-row-around">
+                <button *ngIf="VisVoir" type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('voir')">
+ 
+                    <i class='bx bx-show-alt iconModif'></i>
+                    <div class="bouton_style-2"> {{'Voir' | i18n:i18nService.currentLanguage}} </div>
+                </button>
+
+            </div>
+
+
+
+            <div class="flex-row-around">
+                <button *ngIf="VisBtnDelete" type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('voir')">
+                    <i class='bx bxs-trash IconDel'></i>
+                    <div class="bouton_style-2">  {{'Delete' | i18n:i18nService.currentLanguage}}  </div>
+                </button>
+
+
+            </div>
+
+
+
+        </div>
+    </aside>
+    <section id="main-container">
+
+        <div class="material-table">
+            <div class="card">
+                <p-table #dt1 [columns]="cols" [value]="dataBanque" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedBanque" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
+                    dataKey="code" [tableStyle]="{'min-width': '50rem', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
+
+                    <ng-template pTemplate="caption" class="col-md-12">
+
+                        <div>
+                            <div class="flex-row-start FloatRight">
+
+                                <label class="control-label-titer flex-6">{{'Designation' |
+                                    i18n:i18nService.currentLanguage}} :</label>
+                                <span class="p-input-icon-left ml-auto flex-6">
+                                    <input pInputText class="recherche-value" [(ngModel)]="searchTerm"
+                                        name="zone-recherche" type="text"
+                                        (keyup.enter)="dt1.filterGlobal($any($event.target).value, 'contains')"
+                                        placeholder=" . . ." />
+                                </span>
+                                <button type="button" class="Bouton-rechercher btn  btn-default " data-original-title="Add" (click)="dt1.filterGlobal($any($event.target).value, 'contains')">
+                                    <div class="bouton_style-2">{{'Search' | i18n:i18nService.currentLanguage}}</div>
+                                    <i class="fa-solid fa-magnifying-glass search-icon"
+                                        style="font-size: 18px ;padding-top:2px ;"></i>
+                                </button>
+                                <button type="button" class="Bouton-rechercher btn  btn-default " data-original-title="Add" (click)="clear(dt1)" (click)="GelAllBanque()">
+                                    <div class="bouton_style-2">{{'Reinitialiser' | i18n:i18nService.currentLanguage}}
+                                    </div>
+                                    <i class="fa-solid fa-arrows-rotate search-icon"
+                                        style=" padding-top: 2px; font-size: 18px;"></i>
+                                </button>
+                            </div>
+
+                            <!-- <div class="flex-row-start flex-8 FloatLeft">
+                                <button data-backdrop="false" type="button" class="Bouton-add-new1 btn  btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('add')">
+                                    <div class="bouton_style-2"> {{'Add' | i18n:i18nService.currentLanguage}}</div>
+                                    <i class="fa-solid fa-plus add-icon"
+                                         ></i>
+                                </button>
+                                <button data-backdrop="false" type="button" class="Bouton-add-new1 btn  btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('edit')">
+                                    <div class="bouton_style-2">{{'Modifier' | i18n:i18nService.currentLanguage}}</div>
+                                    <i class="fa-solid fa-pen modif-icon"
+                                        ></i>
+                                </button>
+                                <button type="button" class="Bouton-add-new2 btn  btn-default " data-original-title="Delete" data-toggle="modal" data-target="#ModalDelete" (click)="onOpenModal('Delete')">
+                                    <div class="bouton_style-2">{{'Delete' | i18n:i18nService.currentLanguage}}</div>
+                                    <i class="fa-solid fa-trash-can delete-icon"></i>
+                                </button>
+                                <button data-backdrop="false" type="button" class="Bouton-add-new2 btn btn-default " data-original-title="Print" data-toggle="modal" data-target="#ModalPrint" (click)="onOpenModal('Print')">
+                                    <div class="bouton_style-2">{{'Print' | i18n:i18nService.currentLanguage}}</div>
+                                    <i class="fa-solid fa-print print-icon"></i>
+                                </button>
+
+                            </div> -->
+
+
+
+                        </div>
+
+
+
+
+                    </ng-template>
+
+
+
+                    <ng-template pTemplate="colgroup" let-col>
+                        <colgroup>
+                            <col *ngFor="let col of col" [style.width]="col.width">
+                        </colgroup>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-col>
+                        <tr>
+                            <th *ngFor="let col of col ; let i = index" pResizableColumn>
+                                <span>
+                                    {{col.header}}
+                                </span>
+                            </th>
+                        </tr>
+                        <tr style="padding: 0px !important; height: 10px !important;">
+                            <th style=" height: 10px !important;">
+                                <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="name" placeholder="&nbsp;" ariaLabel="Filter Name" />
+                            </th>
+                            <th style="padding: 0px !important;  height: 10px !important;">
+                                <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="name" placeholder="&nbsp;" ariaLabel="Filter Name" />
+                            </th>
+                            <th style=" height: 10px !important;">
+                                <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="name" placeholder="&nbsp;" ariaLabel="Filter Name" />
+                            </th>
+                            <th style="padding: 0px !important; height: 10px !important;">
+                                <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="codeSaisie" placeholder="&nbsp;" ariaLabel="Filter Country" />
+                            </th>
+
+
+
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-fl>
+                        <tr [pSelectableRow]="fl">
+                            <td style="font-size: 15px !important;">{{fl.codeSaisie}}</td>
+                            <td style="font-size: 15px !important;">{{fl.designationAr}}</td>
+                            <td style="font-size: 15px !important;">{{fl.designationLt}}</td>
+                            <td style="font-size: 15px !important;">{{fl.rib}}</td>
+
+                            <td class="act-col">
+
+                                <p-checkbox [readonly]="true" [(ngModel)]="fl.actif" [binary]="true" inputId="binary">{{fl.actif}}</p-checkbox>
+                            </td>
+                            <td class="act-col">
+
+                                <p-checkbox [readonly]="true" [(ngModel)]="fl.visible" [binary]="true" inputId="binary">{{fl.visible}}</p-checkbox>
+                            </td>
+
+
+
+
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="4">لا توجد بيانات</td>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+
+
+            </div>
+        </div>
+    </section>
+    <!-- <aside>aside</aside> -->
+    <!-- <footer>footer
+ 
+    </footer> -->
+</body>
+
+
+
+
+
+
+<!-- modal primeNG ADD -->
+
+<p-dialog id="ModalRercherPatient" header="Header" [scrollLeft]="true" #modalRecherchePatient [closeOnEscape]="true" [(visible)]="visibleModalRecherPatient" data-backdrop="false" [modal]="true" styleClass="ModalAddRercherPatient" [draggable]="false">
+    <ng-template pTemplate="header">
+        <h2 class="text-default headerForm"> {{formHeader}}</h2>
+        <button class="btn btn-default BtnCloseAdmissionPatient" :closable="true" data-dismiss="modal" (click)="CloseModalRecherPatient()">
+            <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
+            {{'Close' | i18n:i18nService.currentLanguage}}
+        </button>
+
+    </ng-template>
+
+    <div class="modal-body">
+        <div class="flex-row-start flex-12">
+            <fieldset class="flex-12">
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-4">
+                        <label class="control-label  flex-4" style="width: 25%; "> {{'NomFullAr' |
+                            i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-60">
+                            <input id="NomPatientFullAr" maxlength="10" name="NomPatientFullAr" type="text" class="onlyForCentral form-control-dev input-xs">
+
+                        </div>
+                    </section>
+                    <section class="flex-row-start flex-4 ">
+                        <label class="control-label flex-4"> {{'DateNaiss' |
+                            i18n:i18nService.currentLanguage}}  :<i
+                            class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="control-input flex-60" style="padding: 0px ; display: flex;">
+                            <p-calendar (onChange)="transformDateFormat()" (onSelect)="transformDateFormat()" [(ngModel)]="dateFactureFournisseur" [ngStyle]="{'width':'100%' , 'margin-right': '3px'}" [showButtonBar]="true" [readonlyInput]="true" appendTo="body" #calendar dateFormat="yy-mm-dd"></p-calendar>
+                        </div>
+                    </section>
+                    <section class="flex-row-start flex-4">
+                        <label class="control-label  flex-4" style="width: 25%; "> {{'CodeSaisie' |
+                            i18n:i18nService.currentLanguage}} 3 : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-60 ">
+                            <input id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class="onlyForCentral form-control-dev input-xs" required="true">
+
+                        </div>
+                    </section>
+
+                    <section class="flex-row-start flex-2">
+                        <button type="button" class="Bouton_new3Rechercher btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('voir')">
+                            <i class='bx bx-revision IconReinitialiser'></i>
+                            <div class="bouton_style-2"> {{'Reinitialiser' |
+                            i18n:i18nService.currentLanguage}} </div>
+                        </button>
+                    </section>
+                </div>
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-4">
+                        <label class="control-label  flex-4" style="width: 25%; "> {{'NomFullLt' |
+                            i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-60 ">
+                            <input id="NomPatientFullLt" maxlength="10" name="NomPatientFullLt" type="text" class="form-control-dev input-xs" required="true">
+                        </div>
+                    </section>
+                    <section class="flex-row-start flex-4 ">
+                        <label class="control-label  flex-4" style="width: 25%; "> {{'NumTel' |
+                            i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-60 ">
+                            <input id="NumTel" maxlength="10" name="NumTel" type="text" class="form-control-dev input-xs" required="true">
+
+                        </div>
+                    </section>
+                    <section class="flex-row-start flex-4 ">
+                        <label class="control-label  flex-4" style="width: 25%; "> {{'CodeSaisie' |
+                            i18n:i18nService.currentLanguage}}  6 : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-60 ">
+                            <input id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class="onlyForCentral form-control-dev input-xs" required="true">
+
+                        </div>
+                    </section>
+                    <section class="flex-row-start flex-2 ">
+
+
+                        <button type="button" class="Bouton_new3Rechercher btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('voir')">
+                            <i class='bx bx-search-alt-2 IconSearch'></i>
+                            <div class="bouton_style-2"> {{'Search' |
+                            i18n:i18nService.currentLanguage}} </div>
+                        </button>
+                    </section>
+                </div>
+            </fieldset>
+
+        </div>
+        <div class="flex-row-start flex-12">
+            <fieldset class="flex-12">
+
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start">
+                        <p-table #dt2 [columns]="columnTabsListPatient" [value]="ListPatientTried" selectionMode="single" class="fixed-header-table" [metaKeySelection]="false" (onRowUnselect)="onRowUnselectFromTabs($event)" [(selection)]="SelectedPatientFromList" (onRowSelect)="onRowSelectFromTabs($event)"
+                            dataKey="code" scrollHeight="300px" [tableStyle]="{'min-width': '1082px', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
+                            <ng-template pTemplate="header" let-col>
+                                <tr>
+                                    <th *ngFor="let col of col ; let i = index" pResizableColumn>
+                                        <span>
+                                            {{col.header}}
+                                        </span>
+                                    </th>
+                                </tr>
+
+                                <tr style="padding: 0px !important; height: 10px !important;">
+
+                                    <th style="padding: 0px !important;  height: 10px !important;">
+                                        <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="name" placeholder="&nbsp;" ariaLabel="Filter Name" />
+                                    </th>
+                                    <th style=" height: 10px !important;">
+                                        <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="name" placeholder="&nbsp;" ariaLabel="Filter Name" />
+                                    </th>
+                                    <th style="padding: 0px !important; height: 10px !important;">
+                                        <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="codeSaisie" placeholder="&nbsp;" ariaLabel="Filter Country" />
+                                    </th>
+                                    <th style="padding: 0px !important; height: 10px !important;">
+                                        <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="codeSaisie" placeholder="&nbsp;" ariaLabel="Filter Country" />
+                                    </th>
+                                    <th style="padding: 0px !important; height: 10px !important;">
+                                        <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="codeSaisie" placeholder="&nbsp;" ariaLabel="Filter Country" />
+                                    </th>
+
+
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-domaine>
+                                <tr [pSelectableRow]="domaine" [pSelectableRowDisabled]="AraiaDis">
+                                    <!-- <td style="width: 25px !important;">
+                                        <input type="checkbox" [disabled]="v2" class="disabled-checkbox DisCursore">
+                                    </td> -->
+                                    <td style="font-size: 16px !important;">
+                                        {{domaine.codePatient}}</td>
+
+                                    <td>{{domaine.NomFullAr}}</td>
+                                    <td>{{domaine.NomFullLt}}</td>
+                                    <td> {{domaine.TelPatient}}</td>
+                                    <td style="font-size: 16px !important;">
+                                        {{domaine.DateNais | date : "dd/MM/yyyy" }}</td>
+                                </tr>
+                            </ng-template>
+
+
+
+                        </p-table>
+                    </section>
+                </div>
+                <div class="flex-row-start flex-12 FloatLeft">
+
+                    <button type="button" class="Bouton_new3Rechercher btn btn-labeled btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="onOpenModalAdmission('add' , this.NomPatientFullAr,'soufien', 'soufien')">
+                        <i class="fa-solid fa-circle-check IconSave" ></i>
+                                <div class="bouton_style-2"> {{'Choisie' |
+                                i18n:i18nService.currentLanguage}} </div>
+                            </button>
+                </div>
+
+
+            </fieldset>
+
+
+        </div>
+
+
+
+
+    </div>
+
+</p-dialog>
+
+
+
+<!-- modal primeNG ADD -->
+<p-dialog id="Modal" header="Header" [scrollLeft]="true" [closeOnEscape]="true" [(visible)]="visibleModal" data-backdrop="false" [modal]="true" styleClass="ModalAddFacture" [draggable]="false">
+
+
+    <ng-template pTemplate="header">
+        <h2 class="text-default headerForm"> {{formHeader}}</h2>
+        <button class="btn btn-default cancel-add-ModalSmallXXL" :closable="true" data-dismiss="modal" (click)="clearForm()">
+            <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
+            {{'Close' | i18n:i18nService.currentLanguage}}
+        </button>
+        <button class="btn btn-default save-add-ModalSmallXXL" (click)="PostBanque()">
+            <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+            {{'Save' | i18n:i18nService.currentLanguage}}
+        </button>
+    </ng-template>
+
+    <div class="modal-body">
+        <div class="flex-row-start flex-12">
+            <fieldset class="flex-12">
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-12">
+                        <label class="control-label flex-2" style="max-width: 11%; ">رقم الدخول : <i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="control-input flex-5  " style="padding: 5px 0px 0px 0px  ; max-width: 20%;">
+                            <input disabled="" readonly style="max-width: 55%;" id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class="onlyForCentral form-control-dev input-xs" #codeInput required [(ngModel)]="codeSaisie">
+                        </div>
+
+
+                    </section>
+                </div>
+                <div class="flex-row-start flex-12">
+                    <section class="block-row flex-4">
+                        <label class="control-label flex-3">الاسم بالعربي : <i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="dop control-input flex-7 " style="padding: 0px 63px 0px 0px; display: flex;">
+
+
+                            <input disabled readonly id="NomPatientFullLt" maxlength="20" name="NomPatientFullAr" type="text" class=" form-control-dev input-xs" #nomArInput required [(ngModel)]="NomPatientFullAr">
+
+                        </div>
+                        <br>
+                        <label class="control-label flex-3">الاسم باللاتيني :<i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="dop control-input flex-7 " style="padding: 0px 63px 0px 0px; display: flex;">
+                            <input disabled readonly id="NomPatientFullLt" maxlength="20" name="NomPatientFullLt" type="text" class=" form-control-dev input-xs" #nomLtInput required [(ngModel)]="NomPatientFullLt">
+
+                        </div>
+                        <br>
+                        <label class="control-label flex-4">رقم الهاتف :<i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="dop control-input flex-9 " style="padding: 0px 80px 0px 0px; display: flex;">
+                            <input disabled readonly style="max-width: 67%;" id="TelPatient" maxlength="12" name="TelPatient" type="text" class=" form-control-dev input-xs" #TelPatientInput required [(ngModel)]="TelPatient">
+
+                        </div>
+                        <br>
+
+                        <fieldset class="flex-12" style="display: flex;">
+                            <label for="Encours" [class.bold-label]="selectedValue == 1" class="control-label flex-4">نقدي : </label>
+                            <div class="dop control-input flex-9 " style=" display: flex;">
+                                <p-radioButton name="selectedValue" value=1 [(ngModel)]="selectedValue" inputId="Encours"></p-radioButton>
+
+                            </div>
+
+                            <label for="Valider" [class.bold-label]="selectedValue == 2" class="control-label flex-4">جهة : </label>
+                            <div class="dop control-input flex-9 " style=" display: flex;">
+                                <p-radioButton name="selectedValue" value=2 [(ngModel)]="selectedValue" inputId="Valider"></p-radioButton>
+
+                            </div>
+
+
+                        </fieldset>
+
+
+
+
+
+
+                        <!-- <div class="control-input  flex-5" style="display: flex;">
+
+                            <label for="Encours" style="padding: 0px 10px 0px 10px;margin: 0px;font-size: 13px;font-weight: 500;">
+                                  نقدي </label>
+
+                        </div> -->
+                        <!-- <div class="control-input  flex-4" style="display: flex;">
+                            <label for="Valider" style="padding: 0px 10px 0px 10px;margin: 0px;font-size: 13px;font-weight: 500;">
+                                جهة </label>
+                            <p-radioButton name="groupname" value=2 [(ngModel)]="selectedValue" inputId="Valider"></p-radioButton>
+
+                        </div> -->
+
+                    </section>
+                    <section class="block-row flex-8">
+                        <div class="flex-12">
+                            <label class="control-label flex-6"> قائمة الأطباء :<i
+                                    class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                            <div class="dop control-input  ">
+                                <p-table #dt2 [columns]="columnTabsListMedecin" [value]="ListMedecinTried" selectionMode="single" [metaKeySelection]="false" (onRowUnselect)="onRowUnselectFromTabs($event)" [(selection)]="SelectedPatientFromList" (onRowSelect)="onRowSelectFromTabsMedecin($event)"
+                                    dataKey="code" scrollHeight="190px" [tableStyle]="{'min-width': '43rem', 'width': '100%' , 'padding': '1px'}">
+                                    <ng-template pTemplate="header" let-col>
+
+                                        <tr>
+                                            <th *ngFor="let col of col  " pResizableColumn>
+                                                <span>
+                                                        {{col.header}}
+                                                    </span>
+                                            </th>
+                                        </tr>
+                                        <tr class="filter-row">
+                                            <th *ngFor="let col of col">
+                                                <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder="&nbsp;" ariaLabel="Filter Country"></p-columnFilter>
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-domaine>
+                                        <tr [pSelectableRowDblClick]="domaine" [pSelectableRowDisabled]="AraiaDis">
+
+                                            <td>
+                                                {{domaine.codeMedecin}}</td>
+
+                                            <td>{{domaine.NomFullArMedecin}}</td>
+                                            <td>{{domaine.NomFullLtMedecin}}</td>
+                                            <td> {{domaine.specialite_medecin}}</td>
+                                            <td>
+                                                {{domaine.Cabinet}}</td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
+                        <br>
+                    </section>
+                </div>
+                <!-- <div class="flex-row-start flex-12">
+                    <fieldset class="flex-12" style="margin: 0px; border-radius: 0px;">
+                        <div class="flex-row-start flex-12">
+                            <section class="flex-row-start flex-4">
+                                <label class="control-label  flex-4" style="width: 25%; "> {{'NomMedecin' |
+                                    i18n:i18nService.currentLanguage}} : <i
+                                        class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                                <div class="control-input flex-60 ">
+                                    <input readonly disabled id="NomMedecin" maxlength="10" name="NomMedecin" type="text" class="form-control-dev input-xs" required [(ngModel)]="NomMedecin">
+                                </div>
+                            </section>
+                            <section class="flex-row-start flex-4 ">
+                                <label class="control-label  flex-4" style="width: 25%; "> {{'Cabinet' |
+                                    i18n:i18nService.currentLanguage}} : <i
+                                        class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                                <div class="control-input flex-60 ">
+                                    <input readonly disabled id="Cabinet" maxlength="10" name="Cabinet" type="text" class="form-control-dev input-xs" required [(ngModel)]="NomCabinet">
+
+                                </div>
+                            </section>
+                            <section class="flex-row-start flex-4 ">
+                                <label class="control-label  flex-4" style="width: 25%; "> {{'SpecialiteMedecin' |
+                                    i18n:i18nService.currentLanguage}}  6 : <i
+                                        class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                                <div class="control-input flex-60 ">
+                                    <input readonly disabled id="SpecialiteMedecin" maxlength="10" name="SpecialiteMedecin" type="text" class="onlyForCentral form-control-dev input-xs" #SpecialiteMedecinInput required [(ngModel)]="SpecialiteMedecin">
+
+                                </div>
+                            </section>
+                            <section class="flex-row-start flex-4 ">
+                                <label class="control-label  flex-4" style="width: 25%; "> {{'MontantTotal' |
+                                    i18n:i18nService.currentLanguage}} : <i
+                                        class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                                <div class="control-input flex-60 ">
+                                    <input readonly disabled id="MontantTotal" maxlength="10" name="MontantTotal" type="text" class="form-control-dev input-xs" required [(ngModel)]="MontantTotal">
+
+                                </div>
+                            </section>
+                        </div>
+                    </fieldset>
+                </div> -->
+
+
+
+                <div class="flex-row-start flex-12">
+
+                    <section class="block-row flex-3">
+
+                        <label class="control-label flex-2" style="max-width: 30%;">  قيمة النقدي : <i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="control-input " style="display: flex; max-width: 50%;">
+                            <input readonly disabled id="NomMedecin" maxlength="10" name="NomMedecin" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="NomMedecin">
+
+                        </div>
+
+
+
+                        <br>
+                        <label class="control-label flex-2" style="max-width: 30%;">قيمة الجهة :<i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="control-input " style=" display: flex; max-width: 50%;">
+                            <input readonly disabled id="NomMedecin" maxlength="10" name="NomMedecin" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="NomMedecin">
+
+                        </div>
+
+
+
+                    </section>
+                    <section class="block-row flex-3">
+                        <label class="control-label flex-20" style="  max-width: 38%;">المبلغ المطلوب: <i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="control-input " style="display: flex; max-width: 50%;">
+                            <input readonly disabled id="NomMedecin" style="font-weight: bold;color: red;" maxlength="10" name="NomMedecin" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="NomMedecin">
+
+                        </div>
+
+
+                        <br>
+                        <label class="control-label flex-2" style="max-width: 30%;">المبلغ المستلم:<i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="control-input " style="max-width: 50%; ; display: flex;">
+                            <input [disabled]="DisBanque" id="numPiece1" maxlength="10" name="numPiece" type="number" min="0" class="onlyForCentral form-control-dev input-xs" required [(ngModel)]="numPiece">
+                        </div>
+
+                    </section>
+
+                    <section class="block-row flex-3">
+
+                        <label class="control-label flex-2" style="max-width: 30%;"> طريفة الدفع : <i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="dop control-input " style="display: flex;">
+                            <p-dropdown name="modeRegement" [filter]="true" appendTo="body" (onChange)="GetBanqueIfNeed()" [options]="listModeReglementRslt" [(ngModel)]="selectedModeReglement" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true"
+                                [lazy]="true" #modeRegement="ngModel">
+                            </p-dropdown>
+                        </div>
+                        <br>
+                        <label class="control-label flex-2" style="max-width: 30%;">المصرف :<i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="dop control-input " style=" display: flex;">
+                            <p-dropdown [disabled]="DisBanque" name="banque" appendTo="body" class="dropdown" [options]="listBanqueRslt" [(ngModel)]="selectedBanque" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #banque="ngModel">
+                            </p-dropdown>
+                        </div>
+
+
+
+                    </section>
+                    <section class="block-row flex-3">
+                        <label class="control-label flex-20" style="  max-width: 22%;">الخزينة: <i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="dop control-input " style="padding: 0px 40px 0px 0px; display: flex;">
+                            <p-dropdown [disabled]="DisCaisse" name="caisse" appendTo="body" class="dropdown" [options]="listCaisseRslt" [(ngModel)]="selectedCaisse" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #caisse="ngModel">
+                            </p-dropdown>
+                        </div>
+
+
+                        <br>
+                        <label class="control-label flex-2" style="max-width: 30%;">رقم المستند:<i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="dop control-input " style="padding: 0px 25px 0px 0px ;max-width: 65%; ; display: flex;">
+                            <input [disabled]="DisBanque" id="numPiece1" maxlength="10" name="numPiece" type="text" class="onlyForCentral form-control-dev input-xs" required [(ngModel)]="numPiece">
+                        </div>
+
+                    </section>
+
+                </div>
+
+                <!-- <div class="flex-row-start flex-12">
+
+                    <section class="block-row flex-6">
+
+                    </section>
+                    <section class="block-row flex-6">
+                        <p-table #dt3 [value]="selectedTotal" [metaKeySelection]="false" dataKey="code" scrollHeight="200px" [tableStyle]="{'min-width': '35rem', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
+                            <ng-template pTemplate="header">
+                                <tr style="font-size: 16px !important;">
+
+                                    <th>الإجمالي</th>
+                                    <th> الدفعات</th>
+                                    <th>الإستقطاعات</th>
+                                    <th>الصافي</th>
+                                    <th>الصافي بالعملة المحلية</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-domaine let-editing="editing" let-ri="rowIndex">
+                                <tr style="width: 50px;">
+
+                                    <td style="font-size: 16px !important;">
+                                        {{domaine.valeurTotalFactureSelected}}</td>
+                                    <td style="font-size: 16px !important;">
+                                        {{domaine.valeurTotalAvanceSelected}}</td>
+                                    <td style="font-size: 16px !important;">
+                                        {{domaine.valeurTotalTaxeSelected}}</td>
+                                    <td style="width: 50px !important;">
+                                        {{domaine.valeurTotalNet}}
+                                    </td>
+                                    <td style="width: 125px !important;">
+                                        {{domaine.valeurTotalNetEnDevise}}
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+
+                    </section>
+                </div> -->
+
+
+            </fieldset>
+        </div>
+    </div>
+
+
+</p-dialog>
+
+<!-- modal primeNG  Delete-->
+<p-dialog class="modal-delete" id="ModalDelete" data-backdrop="false" header="Header" [(visible)]="visDelete" styleClass="ModalDelete" [modal]="true" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+        <h2 class="text-default headerForm"> {{formHeader}}</h2>
+    </ng-template>
+    <div class="modal-body">
+        <form action="" #addForms="ngForm">
+            <fieldset class="deleteForms">
+                <h4 class="text-delete ">هل أنت متأكد من الحذف ?
+
+                    <button class="btn btn-default save-add-ModalSmall" style="right: 430px;" (click)="DeleteBanque(code)"> <i class="fa-solid fa-circle-check"
+                            style="color: #065c00;font-size: 16px; padding-right: 10px;"></i>
+                        حذف
+                    </button>
+                    <button class="btn btn-default cancel-add-ModalSmall" style="right: 520px;" :closable="true" data-dismiss="modal"> <i class="fa-solid fa-circle-xmark"
+                            style="color: #9e0000;font-size: 16px; padding-right: 5px;"></i>خروج
+                    </button>
+
+
+
+                </h4>
+            </fieldset>
+            <br>
+        </form>
+    </div>
+</p-dialog>
+<!-- fin modal primeng  -->
+
+
+
+
+
+<!-- modal primeNG Print -->
+<p-dialog id="ModalPrint" header="Header" [scrollLeft]="true" [closeOnEscape]="true" [(visible)]="visibleModalPrint" data-backdrop="false" [modal]="true" styleClass="ModalPrint" [draggable]="false">
+
+
+    <ng-template pTemplate="header">
+        <h2 class="text-default headerForm"> {{formHeader}}</h2>
+        <button style="right: 995px;" class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearForm() ; CloseModalPrint()"> <i class="fa-solid fa-circle-xmark"
+                style="color: #9e0000;font-size: 16px; padding-right: 5px;"></i>خروج
+        </button>
+
+    </ng-template>
+    <div class="modal-body">
+        <div id="pdfContainer"></div>
+    </div>
+
+</p-dialog>

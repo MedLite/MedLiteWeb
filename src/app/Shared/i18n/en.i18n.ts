@@ -28,6 +28,7 @@ const enI18n = {
   'Modifier': 'Edit',
   'Delete': 'Delete',
   'Print': 'Print',
+  'Voir': 'See',
   'Reinitialiser': 'Refresh',
   'Search': 'Search',
   'Designation': 'Label',
@@ -37,11 +38,17 @@ const enI18n = {
   'ActifString': 'Actif',
   'Close': 'Close',
   'Save': 'Save',
-  'ModeReglement':'Payment Mode',
-  'Chambre':'Bed',
-  'PlanningMedcin':'Doctor Schedule',
-  'ClotureSession':'Closing Session',
-  'Excel':'Excel'
+  'ModeReglement': 'Payment Mode',
+  'Chambre': 'Bed',
+  'PlanningMedcin': 'Doctor Schedule',
+  'ClotureSession': 'Closing Session',
+  'Excel': 'Excel',
+  'DateNaiss': 'Date of birth',
+  'NumTel': 'Phone Number',
+  'NomPatientFullAr': 'Arabic Name ',
+  'NomPatientFullLt': 'Latin Name',
+   'CodePatient':'Medical Number',
+'Choisie':'Chosen',
 };
 
 

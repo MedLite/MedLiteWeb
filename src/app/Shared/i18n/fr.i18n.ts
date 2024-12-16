@@ -41,7 +41,8 @@ const frI18n = {
   'Chambre':'Chambre',
   'PlanningMedcin':'Planning Medcin',
   'ClotureSession':'Cloture Session',
-   'Excel':'Excel'
+   'Excel':'Excel',
+     'DateNaiss': 'Date de naissance'
 };
 
 

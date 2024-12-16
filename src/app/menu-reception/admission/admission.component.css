@@ -1,0 +1,24 @@
+:host ::ng-deep .ModalAddRercherPatient {
+    height: 600px !important;
+    width: 1130px !important;
+}
+
+:host ::ng-deep .filter-row th {
+    padding: 0 !important;
+    height: 10px !important;
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    /* Stick to the top */
+    z-index: 1;
+    /* Ensure it's above other content */
+    background-color: white;
+    /* Match your table header background */
+}
+
+.filter-row th {
+    padding: 0 !important;
+    height: 10px !important;
+}

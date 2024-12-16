@@ -23,6 +23,7 @@ const arI18n = {
   'Admission': 'إضافة مريض',
   'Edition': 'تقارير',
   'Add': 'إضافة',
+  'Voir': 'عرض',
   'Modifier': 'تعديل',
   'Delete': 'حذف',
   'Print': 'طباعة',
@@ -35,11 +36,25 @@ const arI18n = {
   'ActifString': 'متداول',
   'Close': 'خروج',
   'Save': 'حفظ',
-  'ModeReglement':'طريقة الدفع',
-  'Chambre':'الغرف',
-  'PlanningMedcin':'جدول العيادات',
-  'ClotureSession':'إقفال الخزينة',
-'Excel':'إكسل'
+  'ModeReglement': 'طريقة الدفع',
+  'Chambre': 'الغرف',
+  'PlanningMedcin': 'جدول العيادات',
+  'ClotureSession': 'إقفال الخزينة',
+  'Excel': 'إكسل',
+  'DateNaiss': 'تاريخ الميلاد',
+  'NomFullAr':'الأسم بالعربي',
+  'NomFullLt':'الأسم بالاتيني',
+  'NumTel':'رقم الهاتف',
+ 'Choisie':'إختيار',
+ 'CodePatient':'الرقم الطبي',
+ 'CodeMedecin':'الرمز',
+ 'SpecialiteMedecin':'التخصص',
+ 'CabinetDesgiantion':'العيادة',
+ 'MontantTotal':'القيمة',
+ 'NomMedecin':'الطبيب',
+ 
+
+
 
 };
 
