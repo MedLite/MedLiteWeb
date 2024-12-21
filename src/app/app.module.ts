@@ -34,7 +34,9 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { FileUploadModule } from 'primeng/fileupload';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CheckboxModule } from 'primeng/checkbox';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog'; 
+import { PanelModule } from 'primeng/panel'; 
+
 /////////////////////////////////////////////
 
 
@@ -80,6 +82,9 @@ import { ModeReglementComponent } from './menu-parametrage/mode-reglement/mode-r
 import { ChambreComponent } from './menu-reception/chambre/chambre.component';
 import { PlanningMedecinComponent } from './menu-reception/planning-medecin/planning-medecin.component';
 import { ClotureSessionComponent } from './menu-reception/cloture-session/cloture-session.component';
+import { FamilleFacturationComponent } from './menu-parametrage/famille-facturation/famille-facturation.component';
+import { FamilleOperationComponent } from './menu-parametrage/famille-operation/famille-operation.component';
+import { FamillePrestationComponent } from './menu-parametrage/famille-prestation/famille-prestation.component';
 
 
 
@@ -114,7 +119,8 @@ const languages = [
     OperationComponent,
     TypeIntervenantComponent,
     MedecinComponent, ResponsableRemiseComponent,
-    BanqueComponent, ModeReglementComponent,
+    BanqueComponent, ModeReglementComponent,FamilleFacturationComponent,
+    FamilleOperationComponent,FamillePrestationComponent,
     ////////////// Menu REception
 
     AdmissionComponent,
@@ -127,7 +133,7 @@ const languages = [
     BrowserModule, NgxEchartsModule.forRoot({
       echarts, // Provide the echarts object here
     }),
-    ChartModule, BrowserModule,
+    ChartModule, BrowserModule,PanelModule,
     ReactiveFormsModule, BrowserAnimationsModule,
     AppRoutingModule, DropdownModule, FormsModule,
     HttpClientModule,

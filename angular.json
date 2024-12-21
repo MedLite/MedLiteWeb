@@ -111,7 +111,7 @@
     "cli": {
 
         "cache": {
-            "enabled": false
+            "enabled": true
         },
         "analytics": false
     }

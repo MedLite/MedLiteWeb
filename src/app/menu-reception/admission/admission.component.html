@@ -9,7 +9,7 @@
     <aside>
         <div class="Groupe-Bouton">
             <div class="flex-row-around">
-                <button data-backdrop="false" type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="RecherPatient" data-toggle="modal" data-target="#ModalRercherPatient" (click)="onOpenModal('RercherPatient')">
+                <button data-backdrop="false" type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="RecherPatient" data-toggle="modal" data-target="#ModalRercherPatient" (click)="OpenModalRercherPatient('RercherPatient')">
                     <span class="label-btn">
                         <i class="fa-solid fa-file-invoice-dollar iconADD2"></i>
                     </span>
@@ -18,7 +18,7 @@
                 </button>
             </div>
             <div class="flex-row-around">
-                <button *ngIf="VisModif" [disabled]="DisModif" type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('edit')">
+                <button *ngIf="VisModif" [disabled]="DisModif" type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModalX('edit')">
 
                     <!-- <i class="fa fa-pencil-square-o icon_modif" aria-hidden="true"></i> -->
                     <i class='bx bx-edit-alt iconModif'></i>
@@ -30,8 +30,8 @@
 
             </div>
             <div class="flex-row-around">
-                <button *ngIf="VisVoir" type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('voir')">
- 
+                <button *ngIf="VisVoir" type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModalX('voir')">
+
                     <i class='bx bx-show-alt iconModif'></i>
                     <div class="bouton_style-2"> {{'Voir' | i18n:i18nService.currentLanguage}} </div>
                 </button>
@@ -41,9 +41,9 @@
 
 
             <div class="flex-row-around">
-                <button *ngIf="VisBtnDelete" type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('voir')">
+                <button *ngIf="VisBtnDelete" type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModalX('voir')">
                     <i class='bx bxs-trash IconDel'></i>
-                    <div class="bouton_style-2">  {{'Delete' | i18n:i18nService.currentLanguage}}  </div>
+                    <div class="bouton_style-2"> {{'Delete' | i18n:i18nService.currentLanguage}} </div>
                 </button>
 
 
@@ -215,17 +215,23 @@
                             i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                         <div class="control-input flex-60">
-                            <input id="NomPatientFullAr" maxlength="10" name="NomPatientFullAr" type="text" class="onlyForCentral form-control-dev input-xs">
+                            <input (keyup.enter)="dt2.filterGlobal($any($event.target).value, 'contains')" id="NomPatientFullAr" maxlength="10" name="NomPatientFullAr" [(ngModel)]="NomPatientFullArRecherche" type="text" class="onlyForCentral form-control-dev input-xs">
 
                         </div>
                     </section>
                     <section class="flex-row-start flex-4 ">
                         <label class="control-label flex-4"> {{'DateNaiss' |
-                            i18n:i18nService.currentLanguage}}  :<i
-                            class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                            i18n:i18nService.currentLanguage}} :<i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                         <div class="control-input flex-60" style="padding: 0px ; display: flex;">
-                            <p-calendar (onChange)="transformDateFormat()" (onSelect)="transformDateFormat()" [(ngModel)]="dateFactureFournisseur" [ngStyle]="{'width':'100%' , 'margin-right': '3px'}" [showButtonBar]="true" [readonlyInput]="true" appendTo="body" #calendar dateFormat="yy-mm-dd"></p-calendar>
+
+                            <p-calendar (keyup.enter)="dt2.filterGlobal($any($event.target).value, 'contains')" (onInput)="formatInput($event)" (onBlur)="transformDateFormat()" (onChange)="transformDateFormat()" (onSelect)="transformDateFormat()" [ngStyle]="{'width':'100%' , 'margin-right': '3px'}"
+                                [showButtonBar]="true" [(ngModel)]="dateFactureFournisseur" [iconDisplay]="'input'" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay" />
+
                         </div>
+
+
+
                     </section>
                     <section class="flex-row-start flex-4">
                         <label class="control-label  flex-4" style="width: 25%; "> {{'CodeSaisie' |
@@ -238,10 +244,10 @@
                     </section>
 
                     <section class="flex-row-start flex-2">
-                        <button type="button" class="Bouton_new3Rechercher btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('voir')">
+                        <button type="button" class="Bouton_new3Rechercher btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="ReinitialiserSearch()">
                             <i class='bx bx-revision IconReinitialiser'></i>
                             <div class="bouton_style-2"> {{'Reinitialiser' |
-                            i18n:i18nService.currentLanguage}} </div>
+                                i18n:i18nService.currentLanguage}} </div>
                         </button>
                     </section>
                 </div>
@@ -251,7 +257,7 @@
                             i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                         <div class="control-input flex-60 ">
-                            <input id="NomPatientFullLt" maxlength="10" name="NomPatientFullLt" type="text" class="form-control-dev input-xs" required="true">
+                            <input (keyup.enter)="dt2.filterGlobal($any($event.target).value, 'contains')" id="NomPatientFullLt" maxlength="10" name="NomPatientFullLt" [(ngModel)]="NomPatientFullLtRecherche" type="text" class="form-control-dev input-xs" required="true">
                         </div>
                     </section>
                     <section class="flex-row-start flex-4 ">
@@ -259,13 +265,13 @@
                             i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                         <div class="control-input flex-60 ">
-                            <input id="NumTel" maxlength="10" name="NumTel" type="text" class="form-control-dev input-xs" required="true">
+                            <input (keyup.enter)="dt2.filterGlobal($any($event.target).value, 'contains')" id="NumTel" [(ngModel)]="TelPatientRecherche" maxlength="10" name="NumTel" type="text" class="form-control-dev input-xs" required="true">
 
                         </div>
                     </section>
                     <section class="flex-row-start flex-4 ">
                         <label class="control-label  flex-4" style="width: 25%; "> {{'CodeSaisie' |
-                            i18n:i18nService.currentLanguage}}  6 : <i
+                            i18n:i18nService.currentLanguage}} 6 : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                         <div class="control-input flex-60 ">
                             <input id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class="onlyForCentral form-control-dev input-xs" required="true">
@@ -275,10 +281,10 @@
                     <section class="flex-row-start flex-2 ">
 
 
-                        <button type="button" class="Bouton_new3Rechercher btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('voir')">
+                        <button type="button" class="Bouton_new3Rechercher btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)=" dt2.filterGlobal($any($event.target).value, 'contains')">
                             <i class='bx bx-search-alt-2 IconSearch'></i>
                             <div class="bouton_style-2"> {{'Search' |
-                            i18n:i18nService.currentLanguage}} </div>
+                                i18n:i18nService.currentLanguage}} </div>
                         </button>
                     </section>
                 </div>
@@ -290,8 +296,8 @@
 
                 <div class="flex-row-start flex-12">
                     <section class="flex-row-start">
-                        <p-table #dt2 [columns]="columnTabsListPatient" [value]="ListPatientTried" selectionMode="single" class="fixed-header-table" [metaKeySelection]="false" (onRowUnselect)="onRowUnselectFromTabs($event)" [(selection)]="SelectedPatientFromList" (onRowSelect)="onRowSelectFromTabs($event)"
-                            dataKey="code" scrollHeight="300px" [tableStyle]="{'min-width': '1082px', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
+                        <p-table #dt2 [columns]="columnTabsListPatient" [value]="ListPatientTried" selectionMode="single" class="fixed-header-table" [metaKeySelection]="false" (onRowUnselect)="onRowUnselectFromTabsRecherPatient($event)" [(selection)]="SelectedPatientFromList"
+                            (onRowSelect)="onRowSelectFromTabsRecherchePatient($event)" dataKey="code" scrollHeight="300px" [tableStyle]="{'min-width': '1082px', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
                             <ng-template pTemplate="header" let-col>
                                 <tr>
                                     <th *ngFor="let col of col ; let i = index" pResizableColumn>
@@ -300,34 +306,17 @@
                                         </span>
                                     </th>
                                 </tr>
-
-                                <tr style="padding: 0px !important; height: 10px !important;">
-
-                                    <th style="padding: 0px !important;  height: 10px !important;">
-                                        <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="name" placeholder="&nbsp;" ariaLabel="Filter Name" />
+                                <tr style="padding: 0px !important; height: 10px !important;" class="filter-row">
+                                    <th *ngFor="let col of col">
+                                        <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter By"></p-columnFilter>
                                     </th>
-                                    <th style=" height: 10px !important;">
-                                        <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="name" placeholder="&nbsp;" ariaLabel="Filter Name" />
-                                    </th>
-                                    <th style="padding: 0px !important; height: 10px !important;">
-                                        <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="codeSaisie" placeholder="&nbsp;" ariaLabel="Filter Country" />
-                                    </th>
-                                    <th style="padding: 0px !important; height: 10px !important;">
-                                        <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="codeSaisie" placeholder="&nbsp;" ariaLabel="Filter Country" />
-                                    </th>
-                                    <th style="padding: 0px !important; height: 10px !important;">
-                                        <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="codeSaisie" placeholder="&nbsp;" ariaLabel="Filter Country" />
-                                    </th>
-
-
-
                                 </tr>
+
+
                             </ng-template>
                             <ng-template pTemplate="body" let-domaine>
                                 <tr [pSelectableRow]="domaine" [pSelectableRowDisabled]="AraiaDis">
-                                    <!-- <td style="width: 25px !important;">
-                                        <input type="checkbox" [disabled]="v2" class="disabled-checkbox DisCursore">
-                                    </td> -->
+
                                     <td style="font-size: 16px !important;">
                                         {{domaine.codePatient}}</td>
 
@@ -346,11 +335,11 @@
                 </div>
                 <div class="flex-row-start flex-12 FloatLeft">
 
-                    <button type="button" class="Bouton_new3Rechercher btn btn-labeled btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="onOpenModalAdmission('add' , this.NomPatientFullAr,'soufien', 'soufien')">
-                        <i class="fa-solid fa-circle-check IconSave" ></i>
-                                <div class="bouton_style-2"> {{'Choisie' |
-                                i18n:i18nService.currentLanguage}} </div>
-                            </button>
+                    <button type="button" class="Bouton_new3Rechercher btn btn-labeled btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="onOpenModalAdmission('add' )">
+                        <i class="fa-solid fa-circle-check IconSave"></i>
+                        <div class="bouton_style-2"> {{'Choisie' |
+                            i18n:i18nService.currentLanguage}} </div>
+                    </button>
                 </div>
 
 
@@ -399,7 +388,7 @@
                     </section>
                 </div>
                 <div class="flex-row-start flex-12">
-                    <section class="block-row flex-4">
+                    <section class="block-row flex-5">
                         <label class="control-label flex-3">الاسم بالعربي : <i
                                 class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                         <div class="dop control-input flex-7 " style="padding: 0px 63px 0px 0px; display: flex;">
@@ -424,79 +413,94 @@
                         </div>
                         <br>
 
-                        <fieldset class="flex-12" style="display: flex;">
-                            <label for="Encours" [class.bold-label]="selectedValue == 1" class="control-label flex-4">نقدي : </label>
+                        <!-- <fieldset class="flex-12" style="display: flex;">
+                            <label for="Encours" style="padding-bottom: 10px;" [class.bold-label]="selectedValue == 1" class="control-label flex-4">نقدي : </label>
                             <div class="dop control-input flex-9 " style=" display: flex;">
-                                <p-radioButton name="selectedValue" value=1 [(ngModel)]="selectedValue" inputId="Encours"></p-radioButton>
+                                <p-radioButton (onClick)="GetIfNeedSoc()" name="selectedValue" value=1 [(ngModel)]="selectedValue" inputId="Encours"></p-radioButton>
 
                             </div>
 
                             <label for="Valider" [class.bold-label]="selectedValue == 2" class="control-label flex-4">جهة : </label>
                             <div class="dop control-input flex-9 " style=" display: flex;">
-                                <p-radioButton name="selectedValue" value=2 [(ngModel)]="selectedValue" inputId="Valider"></p-radioButton>
+                                <p-radioButton (onClick)="GetIfNeedSoc()" name="selectedValue" value=2 [(ngModel)]="selectedValue" inputId="Valider"></p-radioButton>
 
                             </div>
+                        </fieldset> -->
 
+                        <fieldset class="flex-12">
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="Encours" name="selectedValue" [value]=1 [(ngModel)]="selectedValue" (change)="GetIfNeedSoc()">
+                                    <label for="Encours" [class.bold-label]="selectedValue == 1">نقدي</label>
+                                </div>
 
+                                <div class="radio-item">
+                                    <input type="radio" id="Valider" name="selectedValue" [value]=2 [(ngModel)]="selectedValue" (change)="GetIfNeedSoc()">
+                                    <label for="Valider" [class.bold-label]="selectedValue == 2">جهة</label>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset *ngIf="VisiblePEC" class="flex-12" style="display: flex;">
+                            <label class="control-label flex-2" style="max-width: 30%;">الجهة : <i
+                                    class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                            <div class="dop control-input " style="display: flex;">
+                                <p-dropdown name="Soceite" [filter]="true" appendTo="body" (onChange)="GetConventionByCodeSocieteSelected(this.selectedSociete.code)" [options]="ListSocieteRslt" [(ngModel)]="selectedSociete" [style]="{'width':'150px'}" [autoDisplayFirst]="true" placeholder="&nbsp;"
+                                    [required]="true" [lazy]="true" #Soceite="ngModel">
+                                </p-dropdown>
+                            </div>
+
+                            <label class="control-label flex-2" style="max-width: 30%;">الإتفاقية : <i
+                                    class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                            <div class="dop control-input " style="display: flex;">
+                                <p-dropdown name="Convention" [filter]="true" appendTo="body" (onChange)="GetDetailsConventionSelected()" [options]="ListConventionRslt" [(ngModel)]="selectedConvention" [style]="{'width':'150px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true"
+                                    [lazy]="true" #Convention="ngModel">
+                                </p-dropdown>
+                            </div>
                         </fieldset>
 
 
-
-
-
-
-                        <!-- <div class="control-input  flex-5" style="display: flex;">
-
-                            <label for="Encours" style="padding: 0px 10px 0px 10px;margin: 0px;font-size: 13px;font-weight: 500;">
-                                  نقدي </label>
-
-                        </div> -->
-                        <!-- <div class="control-input  flex-4" style="display: flex;">
-                            <label for="Valider" style="padding: 0px 10px 0px 10px;margin: 0px;font-size: 13px;font-weight: 500;">
-                                جهة </label>
-                            <p-radioButton name="groupname" value=2 [(ngModel)]="selectedValue" inputId="Valider"></p-radioButton>
-
-                        </div> -->
-
                     </section>
-                    <section class="block-row flex-8">
-                        <div class="flex-12">
-                            <label class="control-label flex-6"> قائمة الأطباء :<i
-                                    class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                            <div class="dop control-input  ">
-                                <p-table #dt2 [columns]="columnTabsListMedecin" [value]="ListMedecinTried" selectionMode="single" [metaKeySelection]="false" (onRowUnselect)="onRowUnselectFromTabs($event)" [(selection)]="SelectedPatientFromList" (onRowSelect)="onRowSelectFromTabsMedecin($event)"
-                                    dataKey="code" scrollHeight="190px" [tableStyle]="{'min-width': '43rem', 'width': '100%' , 'padding': '1px'}">
-                                    <ng-template pTemplate="header" let-col>
+                    <section class="flex-row-start flex-8">
+                        <fieldset class="flex-12">
+                            <div class="flex-row-start flex-12">
 
+                                <label class="control-label flex-6"> قائمة الأطباء :<i
+                                    class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                            </div>
+                            <div class="flex-row-start flex-12" style="overflow-y: auto; height: 220px">
+                                <p-table #dt2 [columns]="columnTabsListMedecin" [value]="ListMedecinTried" selectionMode="single" [metaKeySelection]="false" (onRowUnselect)="onRowUnselectFromTabsMedecin($event)" [(selection)]="SelectedMedecinFromList" (onRowSelect)="onRowSelectFromTabsMedecin($event)"
+                                    dataKey="code" [scrollable]="false" [tableStyle]="{'min-width': '43rem', 'width': '100%' , 'padding': '1px'}">
+
+                                    <ng-template pTemplate="header" let-col>
                                         <tr>
-                                            <th *ngFor="let col of col  " pResizableColumn>
-                                                <span>
-                                                        {{col.header}}
-                                                    </span>
+                                            <th *ngFor="let col of col" pResizableColumn>
+                                                <span>{{col.header}}</span>
                                             </th>
                                         </tr>
                                         <tr class="filter-row">
                                             <th *ngFor="let col of col">
-                                                <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder="&nbsp;" ariaLabel="Filter Country"></p-columnFilter>
+                                                <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
                                             </th>
                                         </tr>
                                     </ng-template>
                                     <ng-template pTemplate="body" let-domaine>
                                         <tr [pSelectableRowDblClick]="domaine" [pSelectableRowDisabled]="AraiaDis">
-
-                                            <td>
-                                                {{domaine.codeMedecin}}</td>
-
+                                            <td> {{domaine.codeMedecin}}</td>
                                             <td>{{domaine.NomFullArMedecin}}</td>
                                             <td>{{domaine.NomFullLtMedecin}}</td>
                                             <td> {{domaine.specialite_medecin}}</td>
-                                            <td>
-                                                {{domaine.Cabinet}}</td>
+                                            <td> {{domaine.Cabinet}}</td>
+                                            <td> {{domaine.montantConsultation}}</td>
                                         </tr>
                                     </ng-template>
                                 </p-table>
                             </div>
-                        </div>
+
+                        </fieldset>
+
+
+
                         <br>
                     </section>
                 </div>
@@ -548,10 +552,10 @@
 
                     <section class="block-row flex-3">
 
-                        <label class="control-label flex-2" style="max-width: 30%;">  قيمة النقدي : <i
+                        <label class="control-label flex-2" style="max-width: 30%;"> قيمة النقدي : <i
                                 class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                         <div class="control-input " style="display: flex; max-width: 50%;">
-                            <input readonly disabled id="NomMedecin" maxlength="10" name="NomMedecin" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="NomMedecin">
+                            <input readonly disabled id="MntCash" maxlength="10" name="MntCash" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="MntCash">
 
                         </div>
 
@@ -561,7 +565,7 @@
                         <label class="control-label flex-2" style="max-width: 30%;">قيمة الجهة :<i
                                 class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                         <div class="control-input " style=" display: flex; max-width: 50%;">
-                            <input readonly disabled id="NomMedecin" maxlength="10" name="NomMedecin" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="NomMedecin">
+                            <input readonly disabled id="MntPEC" maxlength="10" name="MntPEC" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="MntPEC">
 
                         </div>
 
@@ -572,7 +576,7 @@
                         <label class="control-label flex-20" style="  max-width: 38%;">المبلغ المطلوب: <i
                                 class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                         <div class="control-input " style="display: flex; max-width: 50%;">
-                            <input readonly disabled id="NomMedecin" style="font-weight: bold;color: red;" maxlength="10" name="NomMedecin" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="NomMedecin">
+                            <input readonly disabled id="MntReqPayed" style="font-weight: bold;color: red;" maxlength="10" name="MntReqPayed" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="MntReqPayed">
 
                         </div>
 
@@ -580,8 +584,8 @@
                         <br>
                         <label class="control-label flex-2" style="max-width: 30%;">المبلغ المستلم:<i
                                 class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                        <div class="control-input " style="max-width: 50%; ; display: flex;">
-                            <input [disabled]="DisBanque" id="numPiece1" maxlength="10" name="numPiece" type="number" min="0" class="onlyForCentral form-control-dev input-xs" required [(ngModel)]="numPiece">
+                        <div class="control-input mntPayed " style="max-width: 55%; ; display: flex;">
+                            <input id="MntPayed" maxlength="10" name="MntPayed" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="MntPayed">
                         </div>
 
                     </section>
@@ -591,15 +595,15 @@
                         <label class="control-label flex-2" style="max-width: 30%;"> طريفة الدفع : <i
                                 class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                         <div class="dop control-input " style="display: flex;">
-                            <p-dropdown name="modeRegement" [filter]="true" appendTo="body" (onChange)="GetBanqueIfNeed()" [options]="listModeReglementRslt" [(ngModel)]="selectedModeReglement" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true"
-                                [lazy]="true" #modeRegement="ngModel">
+                            <p-dropdown name="modeRegement" [filter]="true" appendTo="body" (onChange)="GetBanqueIfNeed()" [options]="listModeReglementRslt" [(ngModel)]="selectedModeReglement" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" #modeReglementInput
+                                required [lazy]="true">
                             </p-dropdown>
                         </div>
                         <br>
                         <label class="control-label flex-2" style="max-width: 30%;">المصرف :<i
                                 class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                        <div class="dop control-input " style=" display: flex;">
-                            <p-dropdown [disabled]="DisBanque" name="banque" appendTo="body" class="dropdown" [options]="listBanqueRslt" [(ngModel)]="selectedBanque" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #banque="ngModel">
+                        <div class="dop control-input " style=" display: flex; padding-right: 20px;">
+                            <p-dropdown [disabled]="DisBanque" required name="banque" appendTo="body" class="dropdown" [options]="listBanqueRslt" [(ngModel)]="selectedBanque" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true" #BanqueInput>
                             </p-dropdown>
                         </div>
 
@@ -607,19 +611,19 @@
 
                     </section>
                     <section class="block-row flex-3">
-                        <label class="control-label flex-20" style="  max-width: 22%;">الخزينة: <i
+                        <!-- <label class="control-label flex-20" style="  max-width: 22%;">الخزينة: <i
                                 class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                         <div class="dop control-input " style="padding: 0px 40px 0px 0px; display: flex;">
                             <p-dropdown [disabled]="DisCaisse" name="caisse" appendTo="body" class="dropdown" [options]="listCaisseRslt" [(ngModel)]="selectedCaisse" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #caisse="ngModel">
                             </p-dropdown>
-                        </div>
+                        </div> -->
 
 
-                        <br>
+                        <!-- <br> -->
                         <label class="control-label flex-2" style="max-width: 30%;">رقم المستند:<i
                                 class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                         <div class="dop control-input " style="padding: 0px 25px 0px 0px ;max-width: 65%; ; display: flex;">
-                            <input [disabled]="DisBanque" id="numPiece1" maxlength="10" name="numPiece" type="text" class="onlyForCentral form-control-dev input-xs" required [(ngModel)]="numPiece">
+                            <input [disabled]="DisBanque" #NumPieceInput id="numPiece" maxlength="10" name="numPiece" type="text" class="onlyForCentral form-control-dev input-xs" required [(ngModel)]="numPiece">
                         </div>
 
                     </section>

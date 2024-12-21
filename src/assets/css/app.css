@@ -2833,3 +2833,15 @@
      left: 1020px !important;
      right: 0px !important;
  }
+ 
+ [dir="ltr"] .p-input-icon-right>.p-icon-wrapper,
+ [dir="ltr"] .p-input-icon-right>i:last-of-type {
+     right: .75rem !important;
+     left: 0!important;
+     color: #495057
+ }
+ 
+ [dir="ltr"] .p-input-icon-right>.p-inputtext {
+     padding-left: 0 !important;
+     padding-right: 2.5rem!important;
+ }

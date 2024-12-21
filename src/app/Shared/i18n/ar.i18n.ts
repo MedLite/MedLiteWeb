@@ -52,9 +52,16 @@ const arI18n = {
  'CabinetDesgiantion':'العيادة',
  'MontantTotal':'القيمة',
  'NomMedecin':'الطبيب',
- 
-
-
+ 'montantConsultation':'القيمة',
+ 'selctedAnyConvention':'الرجاء إختيار إتفاقية',
+ 'FamillePrestation':'صنف الخدمات',
+ 'FamilleOperation':'صنف العمليات',
+ 'FamilleFacturation':'بند الفاتورة',
+'OutPatient':'عيادات خارجية',
+'InPatient':'إيواء',
+'HeaderTypeArrvier':'نوع الدخول',
+'PrixSelonTypeArriver':'التسعيرة حسب نوع الدخول',
+'NoItemExist':'لا توجد بيانات'
 
 };
 

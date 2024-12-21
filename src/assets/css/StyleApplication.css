@@ -743,7 +743,7 @@ fieldset[disabled] .form-control-dev {
 }
 
 :host ::ng-deep .dop {
-    padding: 7px 0px 0px 0px;
+    padding: 5px 0px 5px 5px;
 }
 
 :host ::ng-deep .p-dialog .p-dialog-content:last-of-type {
@@ -859,12 +859,13 @@ textarea {
     text-align: right;
 }
 
-.flex-6 {
+
+/* .flex-6 {
     flex: 6;
     max-width: 50%;
-    padding: 3px 4px 2px;
+    padding: 6px 5px 5px;
     text-align: right;
-}
+} */
 
 .flex-6-6 {
     flex: 6;
@@ -2295,7 +2296,6 @@ input.p-column-filter {
     font-weight: bold;
     padding: 0px 0px 0px 2px;
     font-size: 18px;
-    padding-top: 2px;
     margin: 0px 10px 0px 0px;
 }
 
@@ -2529,7 +2529,7 @@ input.p-column-filter {
 .flex-6 {
     flex: 6;
     max-width: 50%;
-    padding: 3px 4px 2px;
+    padding: 3px 4px 10px;
     text-align: right;
 }
 
@@ -2621,4 +2621,53 @@ margin-top: 2px; */
 
 .bold-label {
     font-weight: bold;
+}
+
+.mntPayed {
+    padding-right: 22px;
+}
+
+.dateInput {
+    width: 200px;
+    border: 1px solid #c3cbd9;
+    border-radius: 6px;
+    font-size: 15px;
+    margin: 5px;
+    padding-left: 8px;
+    text-align-last: center;
+}
+
+:host ::ng-deep input#icondisplay {
+    justify-items: center;
+}
+
+.radio-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    height: 30px;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+    /* Align label and radio button */
+    gap: 5px;
+    cursor: pointer;
+    /* Space between radio button and label */
+}
+
+.radio-item label {
+    margin-bottom: 0;
+    cursor: pointer;
+    /*added*/
+}
+
+label.bold-label {
+    font-weight: bold;
+}
+
+.flexLeft {
+    border-left: 1px solid #c3cbd9;
 }

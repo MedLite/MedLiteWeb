@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -9,25 +9,20 @@ import { Router } from '@angular/router';
 import { LoadingComponent } from '../../Shared/loading/loading.component';
 import { I18nService } from '../../Shared/i18n/i18n.service';
 import { InputValidationService } from '../../Shared/Control/ControlFieldInput';
-import { Dropdown } from 'primeng/dropdown';
+ 
 
 declare const PDFObject: any;
 @Component({
-  selector: 'app-prestation',
-  templateUrl: './prestation.component.html',
-  styleUrls: ['./prestation.component.css','.../../../src/assets/css/newStyle.css'
+  selector: 'app-famille-facturation',
+  templateUrl: './famille-facturation.component.html',
+  styleUrls: ['./famille-facturation.component.css','.../../../src/assets/css/newStyle.css'
     , '.../../../src/assets/css/StyleApplication.css'], providers: [ConfirmationService, MessageService]
 })
-export class PrestationComponent implements OnInit {
-  @ViewChild('codeError') codeErrorElement!: ElementRef;
-  @ViewChild('codeErrorDrop') codeErrorElementDrop!: Dropdown;
+export class FamilleFacturationComponent implements OnInit {
+  @ViewChild('codeError') codeErrorElement!: ElementRef; 
   @ViewChild('codeSaisieInput') codeSaisieInputElement!: ElementRef;
   @ViewChild('DesignationArInput') DesignationArInputElement!: ElementRef;
-  @ViewChild('DesignationLtInput') DesignationLtInputElement!: ElementRef;
-  @ViewChild('FamillePrestationInput') FamillePrestationInputElement!: Dropdown;
-  @ViewChild('FamilleFacturationInput') FamilleFacturationInputElement!: Dropdown;
-  @ViewChild('PrixSelonTypeArriverIPInput') PrixSelonTypeArriverIPInputElement!: ElementRef;
-  @ViewChild('PrixSelonTypeArriverOPDInput') PrixSelonTypeArriverOPDInputElement!: ElementRef;
+  @ViewChild('DesignationLtInput') DesignationLtInputElement!: ElementRef; 
 
 
   IsLoading = true;
@@ -41,13 +36,6 @@ export class PrestationComponent implements OnInit {
   validateCodeSaisieInput() {
     this.validationService.validateInput(this.codeSaisieInputElement, this.codeErrorElement, this.codeSaisie, 'codeSaisie');
   }
-  validatePrixOPDInput() {
-    this.validationService.validateInput(this.PrixSelonTypeArriverOPDInputElement, this.codeErrorElement, this.PrixSelonTypeArriverOPD, 'prixTypeArriverOPD');
-  }
-
-  validatePrixIPInput() {
-    this.validationService.validateInput(this.PrixSelonTypeArriverIPInputElement, this.codeErrorElement, this.PrixSelonTypeArriverIP, 'prixTypeArriverIP');
-  }
   validateDesignationArInput() {
     this.validationService.validateInput(this.DesignationArInputElement, this.codeErrorElement, this.designationAr, 'DesignationAr');
   }
@@ -55,22 +43,7 @@ export class PrestationComponent implements OnInit {
   validateDesignationLtInput() {
     this.validationService.validateInput(this.DesignationArInputElement, this.codeErrorElement, this.designationAr, 'DesignationAr');
   }
-
-  validateFamillePrestationInput() { 
-    this.validationService.validateDropDownInput(this.FamillePrestationInputElement, this.codeErrorElementDrop, this.selectedFamillePrestation, 'FamillePrestation');
-    if (this.FamillePrestationInputElement && this.FamillePrestationInputElement.containerViewChild) {
-      this.FamillePrestationInputElement.containerViewChild.nativeElement.classList.remove('InvalidData');
-    }
-
-  }
-  validateFamilleFacturationInput() { 
-    this.validationService.validateDropDownInput(this.FamilleFacturationInputElement, this.codeErrorElementDrop, this.selectedFamilleFacturation, 'FamilleFacturation');
-    if (this.FamilleFacturationInputElement && this.FamilleFacturationInputElement.containerViewChild) {
-      this.FamilleFacturationInputElement.containerViewChild.nativeElement.classList.remove('InvalidData');
-    }
-
-  }
-
+ 
 
   @ViewChild('modal') modal!: any;
 
@@ -93,10 +66,6 @@ export class PrestationComponent implements OnInit {
   actif!: boolean;
   visible!: boolean;
   ActifString!: string;
-  OutPatient!: string;
-  InPatient!: string;
-  HeaderTypeArrvier !: string;
-  PrixSelonTypeArriver !: string;
   userCreate = "soufien";
   dataBanque = new Array<any>();
   compteur: number = 0;
@@ -106,13 +75,10 @@ export class PrestationComponent implements OnInit {
   selectedFamilleFacturation: any = '';
   ListFamillePrestation = new Array<any>();
   selectedFamillePrestation: any = '';
-  OutPatientBoolean: boolean = false;
-  InPatientBoolean: boolean = false;
-  PrixSelonTypeArriverIP : string = "NULL";
-  PrixSelonTypeArriverOPD : string = "NULL";
 
-  DisPrixOPD:boolean = true;
-  DisPrixIP:boolean = true;
+
+
+
 
   ngOnInit(): void {
     this.GetColumns();
@@ -142,8 +108,6 @@ export class PrestationComponent implements OnInit {
 
     ];
   }
-
-  
   @Output() closed: EventEmitter<string> = new EventEmitter();
   closeThisComponent() {
     const parentUrl = this.router.url.split('/').slice(0, -1).join('/');
@@ -176,11 +140,10 @@ export class PrestationComponent implements OnInit {
     this.actif = false;
     this.visibleModal = false;
     this.codeSaisie = '';
-    this.OutPatientBoolean=false;
-    this.InPatientBoolean = false;
-    this.selectedFamilleFacturation = '';
-    this.selectedFamillePrestation = '';
-    this.onRowUnselect(event); 
+    this.onRowUnselect(event);
+
+
+
 
   }
   onRowSelect(event: any) {
@@ -243,11 +206,6 @@ export class PrestationComponent implements OnInit {
   public onOpenModal(mode: string) {
 
     this.ActifString = this.i18nService.getString('ActifString');
-    this.OutPatient = this.i18nService.getString('OutPatient');
-    this.InPatient = this.i18nService.getString('InPatient');
-    this.HeaderTypeArrvier= this.i18nService.getString('HeaderTypeArrvier');
-    this.PrixSelonTypeArriver= this.i18nService.getString('PrixSelonTypeArriver');
-    
     this.visibleModal = false;
     this.visDelete = false;
     this.visibleModalPrint = false;
@@ -371,13 +329,11 @@ export class PrestationComponent implements OnInit {
 
     this.validateCodeSaisieInput();
     this.validateDesignationArInput();
-    this.validateDesignationLtInput();
-    this.validateFamillePrestationInput();
-    this.validateFamilleFacturationInput();
+    this.validateDesignationLtInput(); 
 
 
 
-    if (!this.designationAr || !this.designationLt || !this.codeSaisie || !this.selectedFamillePrestation|| !this.selectedFamilleFacturation) {
+    if (!this.designationAr || !this.designationLt || !this.codeSaisie  ) {
       if (sessionStorage.getItem("lang") == "ar") {
         alertifyjs.set('notifier', 'position', 'top-left');
       } else {
@@ -397,8 +353,7 @@ export class PrestationComponent implements OnInit {
 
         dateCreate: new Date().toISOString(), //
         code: this.code,
-        actif: this.actif,
-        visible: this.visible,
+        actif: this.actif, 
 
       }
       if (this.code != null) {
@@ -485,30 +440,10 @@ export class PrestationComponent implements OnInit {
     // }) 
   }
 
-  GetPrixOPD(){
-    if(this.OutPatientBoolean == true){
-      this.DisPrixOPD = false;
-      this.PrixSelonTypeArriverOPD = "0";
-    }else{
-      this.DisPrixOPD = true;
-      this.PrixSelonTypeArriverOPD = "";
-    }
-  }
-
-  GetPrixIP(){
-    if(this.InPatientBoolean == true){
-      this.DisPrixIP = false;
-         this.PrixSelonTypeArriverIP = "0";
-    }else{
-      this.DisPrixIP = true;
-      this.PrixSelonTypeArriverIP = "";
-
-    }
-  }
-
 
 
 
 }
+
 
 

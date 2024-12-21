@@ -11,7 +11,7 @@ export class CalanderTransService {
     constructor(public primengConfig: PrimeNGConfig) {
         // this.setLangAR();
     }
-    selectedLang: any;
+    // selectedLang: any;
     setLangAR() {
         let LangOfSession = sessionStorage.getItem("lang");
         if (LangOfSession == "ar") {

@@ -229,3 +229,55 @@ function setFlag(flagSrc) {
     const dropdownToggle = document.querySelector('.dropdown-laungauge .dropdown-toggle img');
     dropdownToggle.src = flagSrc;
 }
+
+
+function toggleDarkMode() {
+    const body = document.body;
+    const isDarkMode = body.classList.contains('dark-theme'); // Check current state
+
+    body.classList.toggle('dark-theme', !isDarkMode); // Toggle the class
+
+    // Store the preference in localStorage
+    localStorage.setItem('dark-theme', !isDarkMode ? 'enabled' : 'disabled');
+
+    // Get all elements you want to style dynamically (or use *)
+    const elementsToStyle = document.querySelectorAll('*'); // Or a more specific selector
+
+
+    elementsToStyle.forEach(element => {
+        if (!isDarkMode) { // Apply dark mode styles if not already enabled
+            // Store original styles
+            element.dataset.originalBackgroundColor = element.style.backgroundColor;
+            element.dataset.originalColor = element.style.color;
+
+            element.style.backgroundColor = getComputedStyle(element).getPropertyValue('--dark-bg-color') || 'black';
+            element.style.color = getComputedStyle(element).getPropertyValue('--dark-text-color') || 'white';
+
+        } else { // Restore original styles if dark mode was enabled
+            element.style.backgroundColor = element.dataset.originalBackgroundColor || '';
+            element.style.color = element.dataset.originalColor || '';
+
+        }
+    });
+
+
+}
+
+// Add the click event listener to your button (make sure it has an ID)
+const darkModeToggleButton = document.getElementById('dark-mode-toggle'); // Replace with your button's ID
+
+if (darkModeToggleButton) {
+    darkModeToggleButton.addEventListener('click', toggleDarkMode);
+}
+
+
+// On page load, check local storage for preference (and system preference fallback)
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('dark-theme');
+    if (savedTheme === 'enabled') {
+        toggleDarkMode(); // enable dark mode
+    } else if (savedTheme === null && window.matchMedia && window.matchMedia('(Automatic dark mode)').matches) {
+        toggleDarkMode(); //Use prefers-color-scheme if no local storage preference.
+    }
+
+});

@@ -1276,7 +1276,7 @@ p-inputswitch.ng-dirty.ng-invalid>.p-inputswitch {
 
 .p-inputtext {
     font-family: auto;
-    font-size: 13px;
+    font-size: 14px !important;
     color: #495057;
     background: #fff;
     padding: 5px;
@@ -1337,12 +1337,12 @@ p-inputswitch.ng-dirty.ng-invalid>.p-inputswitch {
 
 .p-input-icon-right>.p-icon-wrapper,
 .p-input-icon-right>i:last-of-type {
-    right: .75rem;
+    left: .75rem;
     color: #495057
 }
 
 .p-input-icon-right>.p-inputtext {
-    padding-right: 2.5rem
+    padding-left: 2.5rem
 }
 
 ::-webkit-input-placeholder {
@@ -3612,7 +3612,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 
 .p-column-filter-row .p-column-filter-menu-button,
 .p-column-filter-row .p-column-filter-clear-button {
-    margin-left: .5rem
+    margin-left: 0px
 }
 
 .p-column-filter-menu-button {
@@ -3650,8 +3650,8 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-column-filter-clear-button {
-    width: 2rem;
-    height: 2rem;
+    width: 20px;
+    height: 28px;
     color: #6c757d;
     border: 0 none;
     background: transparent;
@@ -5112,7 +5112,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 
 .p-panel .p-panel-header {
     border: 1px solid #dee2e6;
-    padding: 1rem 1.25rem;
+    padding: 5px 10px;
     background: #efefef;
     color: #212529;
     border-top-right-radius: 4px;
@@ -5150,7 +5150,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-panel .p-panel-content {
-    padding: 1.25rem;
+    /* padding: 1.25rem; */
     border: 1px solid #dee2e6;
     background: #fff;
     color: #212529;
@@ -7650,4 +7650,10 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 
 .fc.fc-theme-standard .fc-highlight {
     background: #cce5ff
+}
+
+.InvalidData {
+    border: 1px solid #ff0000;
+    transition: background-color .15s, border-color .15s, box-shadow .15s;
+    border-radius: 4px;
 }

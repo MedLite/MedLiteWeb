@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -8,9 +8,12 @@ import * as alertifyjs from 'alertifyjs'
 import { Router } from '@angular/router';
 import { LoadingComponent } from '../../Shared/loading/loading.component';
 import { I18nService } from '../../Shared/i18n/i18n.service';
-import { InputValidationService } from '../../Shared/ControlField/ControlFieldInput';
+import { InputValidationService } from '../../Shared/Control/ControlFieldInput';
 import { DatePipe } from '@angular/common';
 import { CalanderTransService } from '../../Shared/CalanderService/CalanderTransService';
+import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
+import { Dropdown } from 'primeng/dropdown';
+
 
 declare const PDFObject: any;
 @Component({
@@ -18,22 +21,60 @@ declare const PDFObject: any;
   templateUrl: './admission.component.html',
   styleUrls: ['./admission.component.css', '.../../../src/assets/css/StyleGroupBtnAndTable.css',
     '.../../../src/assets/css/newStyle.css', '.../../../src/assets/css/StyleApplication.css'],
-  providers: [ConfirmationService, MessageService, InputValidationService, CalanderTransService]
+  providers: [ConfirmationService, MessageService, InputValidationService, CalanderTransService, ControlServiceAlertify]
 })
 export class AdmissionComponent implements OnInit {
 
   @ViewChild('codeInput') codeInputElement!: ElementRef;
   @ViewChild('codeError') codeErrorElement!: ElementRef;
+  @ViewChild('codeErrorDrop') codeErrorElementDrop!: Dropdown;
   @ViewChild('nomArInput') nomArInputElement!: ElementRef;
   @ViewChild('nomError') nomErrorElement!: ElementRef;
   @ViewChild('nomLtInput') nomLtInputElement!: ElementRef;
   @ViewChild('TelPatientInput') TelPatientInputElement!: ElementRef;
   @ViewChild('SpecialiteMedecinInput') SpecialiteMedecinInputElement!: ElementRef;
 
+  @ViewChild('modeReglementInput') modeReglementInputElement!: Dropdown;
+  @ViewChild('BanqueInput') BanqueInputElement!: Dropdown;
+  @ViewChild('NumPieceInput') NumPieceInputElement!: ElementRef;
 
 
   validateCodeInput() {
     this.validationService.validateInput(this.codeInputElement, this.codeErrorElement, this.codeSaisie, 'codeSaisie');
+  }
+
+  validateModeReglementInput() {
+    if (this.modeReglementInputElement && this.modeReglementInputElement.containerViewChild) { // Check if containerViewChild exists
+      if (this.selectedModeReglement == undefined || this.selectedModeReglement == null || this.selectedModeReglement == '') {
+        this.modeReglementInputElement.overlayVisible = true;
+        this.cdr.detectChanges();
+        this.modeReglementInputElement.containerViewChild.nativeElement.classList.add('InvalidData');
+      } else {
+        this.modeReglementInputElement.containerViewChild.nativeElement.classList.remove('InvalidData');
+      }
+    } else {
+      console.warn("Dropdown not yet initialized for validation.");
+    }
+  }
+
+  validateBanqueInput(){
+    if(this.selectedModeReglement =="2" && this.selectedBanque ==""){ 
+      this.validationService.validateDropDownInput(this.BanqueInputElement, this.codeErrorElementDrop, this.selectedBanque, 'Banque');
+    }else{
+      if (this.BanqueInputElement && this.BanqueInputElement.containerViewChild) {
+        this.BanqueInputElement.containerViewChild.nativeElement.classList.remove('InvalidData');
+      }
+    } 
+  }
+
+ 
+  validateNumPieceInput() {
+    if(this.selectedModeReglement =="2" && this.numPiece==""){
+      this.validationService.validateInput(this.NumPieceInputElement, this.nomErrorElement, this.numPiece, 'NumPiece');
+
+    }else{ 
+        this.NumPieceInputElement.nativeElement.classList.remove('invalid-input'); 
+    }
   }
 
   validateNomArInput() {
@@ -67,6 +108,7 @@ export class AdmissionComponent implements OnInit {
   SelectedTypeCaisse!: any;
   listDetailsTypeDepense = new Array<any>();
   SelectedPatientFromList: any;
+  SelectedMedecinFromList: any;
   listselectedTypeDepenseRslt = new Array<any>();
   selectedTypeDepense: any;
   observation: string = 'NULL';
@@ -78,10 +120,16 @@ export class AdmissionComponent implements OnInit {
   visibleModalPrint: boolean = false;
   visDelete: boolean = false;
   code!: number | null;
-  codeSaisie: string = '';
-  NomPatientFullLt: string = '';
-  NomPatientFullAr: string = '';
-  TelPatient: string = '';
+  codeSaisie: string = 'NULL';
+  NomPatientFullLt: string = 'NULL';
+  NomPatientFullLtRecherche: string = 'NULL';
+  NomPatientFullAr: string = 'NULL';
+  NomPatientFullArRecherche : string = 'NULL';
+  TelPatient: string = 'NULL';
+  TelPatientRecherche: string = 'NULL';
+  codeConvention: string = 'NULL';
+  codeSociete: string = 'NULL';
+  codePriceList: number = 0;
   codecostCenter: any;
   NumFactFrs: any;
   MntFactFrs: any;
@@ -89,6 +137,7 @@ export class AdmissionComponent implements OnInit {
   TauxChange: number = 0;
   listDeviseRslt = new Array<any>();
   dateFactureFournisseur: any;
+  DateTemp: any;
   selectedDevise: any;
   selectedFournisseur: any;
   selectedTotal = new Array<any>;
@@ -98,12 +147,16 @@ export class AdmissionComponent implements OnInit {
   ListPatientTried = new Array<any>();
   ListMedecinTried = new Array<any>();
   MontantEnDeviseFacture: any;
-  numPiece: any;
+  numPiece: any = "";
   listCaisseRslt = new Array<any>();
-  selectedCaisse: any;
+  // selectedCaisse: any;
   listBanqueRslt = new Array<any>();
   selectedModeReglement: any;
+  selectedSociete: any = 'NULL';
+  selectedConvention: any = 'NULL';
   listModeReglementRslt = new Array<any>();
+  ListSocieteRslt = new Array<any>();
+  ListConventionRslt = new Array<any>();
   AraiaDis: boolean = false;
   TotalAvance: number = 0;
   TotalAvanceEnDevisePrincipal: number = 0;
@@ -123,47 +176,100 @@ export class AdmissionComponent implements OnInit {
   NomMedecin: any;
   NomCabinet: any;
   MontantTotal: any;
-  selectedValue: any = 1;
-  constructor(private calandTrans: CalanderTransService, private datePipe: DatePipe, private validationService: InputValidationService, public i18nService: I18nService, private router: Router, private loadingComponent: LoadingComponent, private confirmationService: ConfirmationService, private messageService: MessageService, private http: HttpClient, private fb: FormBuilder, private cdr: ChangeDetectorRef) {
+  selectedValue: any = 0;
+  MntCash: any = 0;
+  MntPEC: any = 0;
+  MntReqPayed: any = 0;
+  MntPayed: any = 0;
+
+
+
+
+  constructor(private CtrlAlertify: ControlServiceAlertify, private calandTrans: CalanderTransService, private datePipe: DatePipe, private validationService: InputValidationService, public i18nService: I18nService, private router: Router, private loadingComponent: LoadingComponent, private confirmationService: ConfirmationService, private messageService: MessageService, private http: HttpClient, private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.calandTrans.setLangAR();
 
   }
 
-  onRowSelectFromTabs(event: any) {
-    const SelectedPatients = event.data;
-    this.SelectedPatients = SelectedPatients;
+  onRowSelectFromTabsRecherchePatient(event: any) {
+    // const SelectedPatients = event.data;
+    // this.SelectedPatients = SelectedPatients;
     this.SelectedPatientFromList = event.data.code;
-
     this.NomPatientFullAr = event.data.NomFullAr;
     this.NomPatientFullLt = event.data.NomFullLt;
     this.TelPatient = event.data.TelPatient;
+    this.selectedConvention = event.data.codeConvention;
+    this.selectedSociete = event.data.codeSociete;
+    this.codePriceList = event.data.codePriceList;
+
+    if (event.data.codeSociete == 'NULL' && event.data.codeConvention == 'NULL') {
+      this.selectedValue = 1;
+      this.VisiblePEC = false;
+      console.log("Patietn Cash");
+    } else {
+      this.selectedValue = 2;
+      this.VisiblePEC = true;
+      console.log("Patietn PEC");
+    }
+
 
   }
 
 
   onRowSelectFromTabsMedecin(event: any) {
-    this.NomMedecin = event.data.NomFullArMedecin;
-    this.NomCabinet = event.data.Cabinet;
-    this.SpecialiteMedecin = event.data.specialite_medecin;
-    this.MontantTotal = event.data.montantConsultation;
+
+    if (this.selectedValue == 2 && this.selectedConvention == 'NULL') {
+      const fieldRequiredMessage = this.i18nService.getString('selctedAnyConvention');
+      if (sessionStorage.getItem("lang") == "ar") {
+        alertifyjs.notify(
+          `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" 
+          src="/assets/images/images/required.gif" alt="image" > `  + fieldRequiredMessage
+        );
+        alertifyjs.set('notifier', 'position', 'top-left');
+      } else {
+        alertifyjs.set('notifier', 'position', 'top-right');
+        alertifyjs.notify(`<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" 
+          src="/assets/images/images/required.gif" alt="image"  >` + fieldRequiredMessage
+        );
+      }
+    } else {
+
+      if (this.selectedValue == 1) {
+        this.MntCash = event.data.montantConsultation;
+        this.MntPEC = 0;
+        this.MntReqPayed = event.data.montantConsultation;
+        this.MntPayed = event.data.montantConsultation;
+      } else {
+
+        // GetDataFromConventionEtListCouverture
 
 
-    console.log("Ok medecin", event.data);
+      }
+
+
+
+
+
+
+      console.log("Ok medecin", event.data);
+    }
+
+
 
 
   }
 
 
-  onRowUnselectFromTabs(event: any) {
-    this.SelectedPatients = null;
-    const car = event.data;
+  onRowUnselectFromTabsRecherPatient(event: any) {
     this.selectedTotal = new Array<any>();
-    console.log("uncheck from selecetd row")
-    this.listDetailsTypeDepense = new Array<any>();
     this.Total = 0
-    this.SelectedPatient = this.SelectedPatient.filter((c: any) => c !== car);
-    this.selectedModeReglement = null;
-    this.selectedCaisse = null
+  }
+
+
+  onRowUnselectFromTabsMedecin(event: any) {
+    this.SelectedPatients = null;
+    this.Total = 0;
+
+
   }
 
 
@@ -181,12 +287,12 @@ export class AdmissionComponent implements OnInit {
     ];
 
     this.ListPatientTried = [
-      { code: '1', codePatient: 'U2400001', NomFullAr: 'سفيان 0', NomFullLt: 'soufien 0', TelPatient: '543283360', DateNais: '01/01/2021' },
-      { code: '2', codePatient: 'U2400002', NomFullAr: 'سفيان 1', NomFullLt: 'soufien 1', TelPatient: '543283361', DateNais: '01/01/2022' },
-      { code: '3', codePatient: 'U2400002', NomFullAr: 'سفيان 2', NomFullLt: 'soufien 2', TelPatient: '543283362', DateNais: '01/01/2023' },
-      { code: '4', codePatient: 'U2400003', NomFullAr: 'سفيان 3', NomFullLt: 'soufien 3', TelPatient: '543283363', DateNais: '01/01/2024' },
-      { code: '5', codePatient: 'U2400004', NomFullAr: 'سفيان 4', NomFullLt: 'soufien 4', TelPatient: '543283364', DateNais: '01/01/2025' },
-      { code: '6', codePatient: 'U2400005', NomFullAr: 'سفيان 5', NomFullLt: 'soufien 5', TelPatient: '543283365', DateNais: '01/01/2026' },
+      { code: '1', codePatient: 'U2400001', NomFullAr: 'سفيان 0', NomFullLt: 'soufien 0', TelPatient: '543283360', DateNais: '01/01/2021', codeConvention: '123', codeSociete: '1', codePriceList: 21 },
+      { code: '2', codePatient: 'U2400002', NomFullAr: 'سفيان 1', NomFullLt: 'soufien 1', TelPatient: '543283361', DateNais: '01/01/2022', codeConvention: '145', codeSociete: '15', codePriceList: 23 },
+      { code: '3', codePatient: 'U2400002', NomFullAr: 'سفيان 2', NomFullLt: 'soufien 2', TelPatient: '543283362', DateNais: '01/01/2023', codeConvention: '156', codeSociete: '9', codePriceList: 25 },
+      { code: '4', codePatient: 'U2400003', NomFullAr: 'سفيان 3', NomFullLt: 'soufien 3', TelPatient: '543283363', DateNais: '01/01/2024', codeConvention: '453', codeSociete: '3', codePriceList: 27 },
+      { code: '5', codePatient: 'U2400004', NomFullAr: 'سفيان 4', NomFullLt: 'soufien 4', TelPatient: '543283364', DateNais: '01/01/2025', codeConvention: '225', codeSociete: '5', codePriceList: 29 },
+      { code: '6', codePatient: 'U2400005', NomFullAr: 'سفيان 5', NomFullLt: 'soufien 5', TelPatient: '543283365', DateNais: '01/01/2026', codeConvention: 'NULL', codeSociete: 'NULL', codePriceList: 200 },
     ]
   }
 
@@ -200,7 +306,8 @@ export class AdmissionComponent implements OnInit {
       { field: 'NomFullArMedecin', header: this.i18nService.getString('NomFullAr') },
       { field: 'NomFullLtMedecin', header: this.i18nService.getString('NomFullLt') },
       { field: 'specialite_medecin', header: this.i18nService.getString('SpecialiteMedecin') },
-      { field: 'Cabinet', header: this.i18nService.getString('CabinetDesgiantion') }
+      { field: 'Cabinet', header: this.i18nService.getString('CabinetDesgiantion') },
+      { field: 'montantConsultation', header: this.i18nService.getString('montantConsultation') }
 
     ];
 
@@ -232,29 +339,42 @@ export class AdmissionComponent implements OnInit {
     ]
 
     this.listModeReglementRslt = [
-      { label: 'test', value: 'v1' },
-      { label: 'test2', value: 'v2' },
+      { label: 'cash', value: '1' },
+      { label: 'Cheque', value: '2' },
+    ]
+    this.listBanqueRslt = [
+      { label: 'banque1', value: 1 },
+      { label: 'banque2', value: 2 },
+    ]
+    this.ListConventionRslt = [
+      { label: 'conv1', value: '123', },
+      { label: 'conv2', value: '145', },
+      { label: 'conv3', value: '156' },
+      { label: 'conv4', value: '225', },
+      { label: 'conv5', value: '453', },
+      { label: 'conv6', value: '70', },
+    ]
+    this.ListSocieteRslt = [
+      { label: 'SOC1', value: '1', },
+      { label: 'SOC2', value: '15', },
+      { label: 'SOC3', value: '9' },
+      { label: 'SOC4', value: '3', },
+      { label: 'SOC5', value: '5', },
+    ]
+
+    this.ListSocieteRslt = [
+      { label: 'SOC1', value: '1', },
+      { label: 'SOC2', value: '15', },
+      { label: 'SOC3', value: '9' },
+      { label: 'SOC4', value: '3', },
+      { label: 'SOC5', value: '5', },
     ]
 
   }
-  // ngAfterViewInit() {
-  //   this.cdr.detectChanges();
 
-  //   setTimeout(() => {
-  //     // This will now work correctly because the view is initialized.
-  //     if (this.modal && this.modal.el) { // Check if modal and its el are defined.
-  //       const inputs = this.modal.el.nativeElement.querySelectorAll('input[required="true"]');
-  //       inputs.forEach((input: HTMLInputElement) => {
-  //         input.addEventListener('blur', () => {
-  //           this.validateInput(input);
-  //         });
-  //       });
-  //     } else {
-  //       console.error("Modal element  xxx not found!"); // Handle the case where the modal is not found.
-  //     }
-  //   }, 0);
 
-  // }
+
+
   // validateInput(input: HTMLInputElement) {
   //   if (input.required && input.value === '') {
   //     input.style.borderColor = 'red'; // Or any color you prefer
@@ -311,6 +431,20 @@ export class AdmissionComponent implements OnInit {
     this.actif = false;
     this.visibleModal = false;
     this.codeSaisie = '';
+    this.SelectedMedecinFromList = '';
+    this.SelectedPatientFromList = '';
+    this.codeConvention = 'NULL';
+    this.codeSociete = 'NULL';
+    this.NomPatientFullAr = 'NULL';
+    this.NomPatientFullArRecherche = 'NULL';
+    this.NomPatientFullLt = 'NULL';
+    this.NomPatientFullLtRecherche = 'NULL';
+    this.TelPatientRecherche = 'NULL';
+    this.codePriceList == 0;
+    this.selectedBanque="";
+    this.numPiece="";
+    this.selectedModeReglement=''
+
     this.onRowUnselect(event);
     // } 
   }
@@ -325,7 +459,7 @@ export class AdmissionComponent implements OnInit {
   actif!: boolean;
   visible!: boolean;
 
-  selectedBanque!: any;
+  selectedBanque: any = "";
 
 
   onRowSelect(event: any) {
@@ -370,23 +504,23 @@ export class AdmissionComponent implements OnInit {
   }
 
 
-  showRequiredNotification() {
-    const fieldRequiredMessage = this.i18nService.getString('fieldRequired');  // Default to English if not found
-    alertifyjs.notify(
-      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
-      fieldRequiredMessage
-    );
-  }
-  showChoseAnyRowNotification() {
-    const fieldRequiredMessage = this.i18nService.getString('SelctAnyRow');  // Default to English if not found
-    alertifyjs.notify(
-      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
-      fieldRequiredMessage
-    );
-  }
+  // showRequiredNotification() {
+  //   const fieldRequiredMessage = this.i18nService.getString('fieldRequired');  // Default to English if not found
+  //   alertifyjs.notify(
+  //     `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
+  //     fieldRequiredMessage
+  //   );
+  // }
+  // showChoseAnyRowNotification() {
+  //   const fieldRequiredMessage = this.i18nService.getString('SelctAnyRow');  // Default to English if not found
+  //   alertifyjs.notify(
+  //     `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
+  //     fieldRequiredMessage
+  //   );
+  // }
 
   ActifString!: string;
-  public onOpenModal(mode: string) {
+  public onOpenModalX(mode: string) {
 
     this.ActifString = this.i18nService.getString('ActifString');
     this.visibleModal = false;
@@ -417,13 +551,20 @@ export class AdmissionComponent implements OnInit {
         if (this.code == undefined) {
           this.clearForm();
           this.onRowUnselect(event);
-          if (sessionStorage.getItem("lang") == "ar") {
-            alertifyjs.set('notifier', 'position', 'top-left');
-          } else {
-            alertifyjs.set('notifier', 'position', 'top-right');
-          }
+          // if (sessionStorage.getItem("lang") == "ar") {
+          //   alertifyjs.notify(
+          //     `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >`
 
-          this.showChoseAnyRowNotification();
+          //   );
+          //   alertifyjs.set('notifier', 'position', 'top-left');
+          // } else {
+          //   alertifyjs.set('notifier', 'position', 'top-right');
+          //   alertifyjs.notify(
+          //     `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >`
+          //   );
+          // }
+          this.CtrlAlertify.showLabel();
+          this.CtrlAlertify.showChoseAnyRowNotification();
           this.visDelete == false && this.visibleModal == false
         } else {
 
@@ -441,13 +582,8 @@ export class AdmissionComponent implements OnInit {
 
           if (this.code == undefined) {
             this.onRowUnselect;
-            if (sessionStorage.getItem("lang") == "ar") {
-              alertifyjs.set('notifier', 'position', 'top-left');
-            } else {
-              alertifyjs.set('notifier', 'position', 'top-right');
-            }
-
-            this.showChoseAnyRowNotification();
+            this.CtrlAlertify.showLabel();
+            this.CtrlAlertify.showChoseAnyRowNotification();
             this.visDelete == false && this.visibleModal == false
           } else {
 
@@ -464,13 +600,8 @@ export class AdmissionComponent implements OnInit {
           if (mode === 'Print') {
             if (this.code == undefined) {
               this.onRowUnselect;
-              if (sessionStorage.getItem("lang") == "ar") {
-                alertifyjs.set('notifier', 'position', 'top-left');
-              } else {
-                alertifyjs.set('notifier', 'position', 'top-right');
-              }
-
-              this.showChoseAnyRowNotification();
+              this.CtrlAlertify.showLabel();
+              this.CtrlAlertify.showChoseAnyRowNotification();
               this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
             } else {
               button.setAttribute('data-target', '#ModalPrint');
@@ -499,34 +630,96 @@ export class AdmissionComponent implements OnInit {
   }
 
 
-  onOpenModalAdmission(mode: string, MedicalNmberPatient: string, NomPatientFullAr: string, NomPatientFullLt: string) {
-
-    this.visibleModal = false;
-    this.visDelete = false;
-    this.visibleModalPrint = false;
+  OpenModalRercherPatient(mode: string) {
     const button = document.createElement('button');
     button.type = 'button';
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
-    if (mode === 'add') {
-      button.setAttribute('data-target', '#Modal');
+    this.columnsListPatient();
+    this.columnsListMedecin();
+    if (mode === 'RercherPatient') {
+      button.setAttribute('data-target', '#ModalRercherPatient');
       this.formHeader = this.i18nService.getString('Add');
       this.onRowUnselect(event);
       this.clearSelected();
       this.actif = false;
       this.visible = false;
-      this.visibleModalRecherPatient = false;
-      this.visibleModal = true;
+      this.visibleModal = false;
+      this.visibleModalRecherPatient = true;
       this.code == undefined;
-
+      this.dateFactureFournisseur ='';
+      this.NomPatientFullLtRecherche ='';
+      this.NomPatientFullArRecherche='';
+      this.TelPatientRecherche =''
 
     }
   }
 
-  transformDateFormat() {
-    this.dateFactureFournisseur = this.datePipe.transform(this.dateFactureFournisseur, "yyyy-MM-dd")
 
-    console.log("  transformDateFormat  this.dateLivraison", this.dateFactureFournisseur)
+  onOpenModalAdmission(mode: string) {
+    this.visibleModal = false;
+    this.visDelete = false;
+    this.visibleModalPrint = false;
+    if (this.NomPatientFullAr == 'NULL' && this.codePriceList == 0) {
+      this.CtrlAlertify.showLabel();
+      this.CtrlAlertify.showChoseAnyRowNotification();
+      this.visibleModal = false;
+    } else {
+
+
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.style.display = 'none';
+      button.setAttribute('data-toggle', 'modal');
+      if (mode === 'add') {
+        button.setAttribute('data-target', '#Modal');
+        this.formHeader = this.i18nService.getString('Add');
+        this.onRowUnselect(event);
+        this.clearSelected();
+
+        if (this.codeConvention == 'NULL' && this.codeSociete == 'NULL') {
+          this.selectedValue == 1;
+          this.codePriceList = 200;
+          this.codeConvention = "NULL";
+          this.codeSociete = "NULL";
+        } else {
+          this.codePriceList = this.codePriceList;
+          this.selectedConvention = this.codeConvention;
+          this.selectedSociete = this.codeSociete;
+          this.selectedValue == 2;
+        }
+        this.visibleModalRecherPatient = false;
+        this.visibleModal = true;
+        this.code == undefined;
+      }
+    }
+  }
+  formatInput(event: any) {  // Use any because of p-calendar event type
+    let inputValue = event.target.value.replace(/\D/g, ''); // Remove non-digits
+    if (inputValue.length > 0) {
+      inputValue = inputValue.replace(/(\d{2})(\d{2})(\d{4})/, '$1/$2/$3');
+    }
+    event.target.value = inputValue;
+    this.DateTemp = inputValue;
+    this.tryParseAndSetDate(inputValue);
+  }
+  tryParseAndSetDate(inputValue: string) {
+    let parts = inputValue.split('/');
+    if (parts.length === 3) {
+      let day = parseInt(parts[0], 10);
+      let month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+      let year = parseInt(parts[2], 10);
+
+      if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+        this.dateFactureFournisseur = new Date(year, month, day);
+      }
+    }
+  }
+  transformDateFormat() {
+    if (this.dateFactureFournisseur) {
+      this.DateTemp = this.datePipe.transform(this.dateFactureFournisseur, 'dd/MM/yyyy')!;
+      console.log("transformDateFormat: ", this.dateFactureFournisseur);
+    }
   };
   userCreate = "soufien";
   // datecreate !: Date;
@@ -558,24 +751,22 @@ export class AdmissionComponent implements OnInit {
 
   PostBanque() {
 
+    // if (this.numPiece == "" && this.selectedModeReglement == "2") {
+    //   // this.validateNumPieceInput();
+
+    // } else {
+
+    // }
 
 
-
-
-
+    this.validateModeReglementInput();
+    this.validateBanqueInput(); 
+    this.validateNumPieceInput(); 
     this.validateCodeInput(); // Validate the input before posting
     this.validateNomArInput();
     this.validateNomLtInput();
     this.validateTelPatientInput()
     this.validateSpecialiteMedecinInput();
-
-
-
-
-
-    // if (!this.designationAr || !this.designationLt || !this.codeSaisie) {
-
-    // } else {
 
 
     let body = {
@@ -688,9 +879,27 @@ export class AdmissionComponent implements OnInit {
 
   CloseModalRecherPatient() {
     this.visibleModalRecherPatient = false;
+    this.codeConvention == "NULL";
+    this.codeSociete == "NULL";
+    this.NomPatientFullAr == "NULL";
+    this.NomPatientFullLt == "NULL";
+    this.SelectedPatientFromList = '';
+    this.SelectedMedecinFromList = '';
+    this.codePriceList == 0;
   }
 
   GetBanqueIfNeed() {
+
+    if (this.selectedModeReglement == '1') {
+      this.DisBanque = true;
+      this.selectedBanque = null;
+      this.numPiece = '';
+
+    } else {
+      this.DisBanque = false;
+      this.DisCaisse = true
+      // this.selectedCaisse = null;
+    }
 
     // this.paramService.GetModeReglementByCode(this.selectedModeReglement).subscribe((data: any) => {
     //   if (data.reqBanque == true) {
@@ -708,6 +917,37 @@ export class AdmissionComponent implements OnInit {
     // })
 
 
+  }
+  VisiblePEC: boolean = false;
+  GetIfNeedSoc() {
+    if (this.selectedValue == 1) {
+      this.VisiblePEC = false;
+      this.SelectedMedecinFromList = '';
+
+    } else {
+      this.SelectedMedecinFromList = '';
+      this.MntCash = 0;
+      this.MntPEC = 0;
+      this.MntPayed = 0;
+      this.MntReqPayed = 0;
+      this.VisiblePEC = true;
+    }
+  }
+
+  GetDetailsConventionSelected() {
+
+  }
+
+  GetConventionByCodeSocieteSelected(selectedSocieteCode: number) {
+    this.selectedConvention = '';
+
+  }
+
+  ReinitialiserSearch(){
+    this.dateFactureFournisseur ='';
+    this.NomPatientFullLt ='';
+    this.NomPatientFullAr='';
+    this.TelPatient =''
   }
 
 

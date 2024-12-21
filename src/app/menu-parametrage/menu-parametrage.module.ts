@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { MenuParametrageRoutingModule } from './menu-parametrage-routing.module';
 import { MenuParametrageComponent } from './menu-parametrage.component'; 
-import { TagModule } from 'primeng/tag'; 
-
+import { TagModule } from 'primeng/tag';
+ 
 
 @NgModule({
   declarations: [

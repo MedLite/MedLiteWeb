@@ -15,6 +15,9 @@ import { OperationComponent } from './operation/operation.component';
 import { MedecinComponent } from './medecin/medecin.component';
 import { TypeIntervenantComponent } from './type-intervenant/type-intervenant.component';
 import { ModeReglementComponent } from './mode-reglement/mode-reglement.component';
+import { FamillePrestationComponent } from './famille-prestation/famille-prestation.component';
+import { FamilleOperationComponent } from './famille-operation/famille-operation.component';
+import { FamilleFacturationComponent } from './famille-facturation/famille-facturation.component';
  
  
 
@@ -89,7 +92,25 @@ const routes: Routes = [
     component: ModeReglementComponent ,
     data:{title:'ModeReglement',icon:'bx bx-credit-card'}
   }
-
+  ,
+  {
+    path: 'famille_prestation',
+    component: FamillePrestationComponent ,
+    data:{title:'FamillePrestation',icon:'bx bx-food-menu'}
+  }
+  ,
+  {
+    path: 'famille_operation',
+    component: FamilleOperationComponent ,
+    data:{title:'FamilleOperation',icon:'bx bx-link'}
+  }
+  ,
+  {
+    path: 'famille_facturation',
+    component: FamilleFacturationComponent ,
+    data:{title:'FamilleFacturation',icon:'bx bx-detail'}
+  }
+  
   
 
 ];

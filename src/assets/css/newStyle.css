@@ -211,16 +211,6 @@ tr.mat-footer-row {
 
 /* /// button ajout et modif et suppri  */
 
-.Bouton-add-new1 {
-    margin-right: 5px;
-    display: flex;
-    height: 30px;
-    width: 75px;
-    padding: 3px 7px 0px 5px;
-    margin-bottom: 3px;
-    border: 1px solid #adadad;
-}
-
 .dropbtn {
     margin-right: 5px;
     display: flex;
@@ -279,12 +269,6 @@ tr.mat-footer-row {
     bottom: 15px !important;
     display: flex;
     float: right;
-}
-
-.add-icon {
-    color: green;
-    font-weight: bold;
-    padding: 0px 0px 0px 2px;
 }
 
 .modif-icon {
@@ -818,13 +802,6 @@ textarea {
     text-align: right;
 }
 
-.flex-6 {
-    flex: 6;
-    max-width: 50%;
-    padding: 3px 4px 2px;
-    text-align: right;
-}
-
 .flex-6-6 {
     flex: 6;
     max-width: 50%;
@@ -929,57 +906,6 @@ button.btn.btn-danger.cancel-voir {
 .deleteForm {
     border: 1px solid #d9d1d1;
     margin-top: 30px;
-}
-
-.cancel-add-ModalLarge {
-    position: fixed;
-    right: 1045px;
-    float: inline-end;
-    font-size: 15px;
-    direction: ltr;
-    font-weight: 500;
-    height: 30px;
-    margin: 5px 8px 5px 10px;
-    border: 1px solid #adadad;
-    width: 70px;
-    font-weight: bold;
-}
-
-.save-add-ModalLarge {
-    position: fixed;
-    right: 1140px;
-    float: inline-end;
-    font-size: 15px;
-    direction: ltr;
-    height: 30px;
-    font-weight: 500;
-    margin: 5px 8px 5px 10px;
-    border: 1px solid #adadad;
-    width: 70px;
-    font-weight: bold;
-}
-
-.cancel-add-ModalSmall {
-    position: fixed;
-    height: 30px;
-    right: 700px;
-    font-size: 15px;
-    direction: ltr;
-    font-weight: 500;
-    border: 1px solid #adadad;
-    width: 70px;
-    font-weight: bold;
-}
-
-.save-add-ModalSmall {
-    position: fixed;
-    right: 620px;
-    font-size: 13px;
-    direction: ltr;
-    height: 30px;
-    border: 1px solid #adadad;
-    width: 70px;
-    font-weight: bold;
 }
 
 
@@ -1573,15 +1499,6 @@ label:hover input[type=checkbox].checkbox:checked+span:before {
 
 
 /* ///// drop down  */
-
- :host ::ng-deep .p-dropdown {
-    display: inline-flex;
-    cursor: pointer;
-    position: relative;
-    -webkit-user-select: none;
-    user-select: none;
-    /* height: 23px; */
-}
 
  :host ::ng-deep .p-dropdown-clear-icon {
     position: absolute;
