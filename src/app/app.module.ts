@@ -85,6 +85,9 @@ import { ClotureSessionComponent } from './menu-reception/cloture-session/clotur
 import { FamilleFacturationComponent } from './menu-parametrage/famille-facturation/famille-facturation.component';
 import { FamilleOperationComponent } from './menu-parametrage/famille-operation/famille-operation.component';
 import { FamillePrestationComponent } from './menu-parametrage/famille-prestation/famille-prestation.component';
+import { ConventionComponent } from './menu-parametrage/convention/convention.component';
+import { CouvertureComponent } from './menu-parametrage/couverture/couverture.component';
+import { PriceListComponent } from './menu-parametrage/price-list/price-list.component';
 
 
 
@@ -104,28 +107,19 @@ const languages = [
     TopBarComponent, LoadingComponent,
     FooterComponent, AlertComponent, LoginComponent,
     ////// i18n //////////////// 
-    I18nPipe,
-    /////// fin i18n
-
+    I18nPipe, 
     ///// Menu parametrage 
 
-    NationaliterComponent,
-    VilleComponent,
-    CabinetComponent,
-    SocieteComponent,
-    CaisseComponent,
-    FournisseurComponent,
-    PrestationComponent,
-    OperationComponent,
-    TypeIntervenantComponent,
-    MedecinComponent, ResponsableRemiseComponent,
-    BanqueComponent, ModeReglementComponent,FamilleFacturationComponent,
-    FamilleOperationComponent,FamillePrestationComponent,
+    NationaliterComponent, VilleComponent,CabinetComponent,SocieteComponent, 
+    PriceListComponent,CouvertureComponent,ConventionComponent,CaisseComponent, 
+    FournisseurComponent, PrestationComponent,OperationComponent, TypeIntervenantComponent, 
+    MedecinComponent, ResponsableRemiseComponent,ModeReglementComponent,FamilleFacturationComponent,
+    BanqueComponent, FamilleOperationComponent,FamillePrestationComponent,
+    
     ////////////// Menu REception
 
-    AdmissionComponent,
-    EditionAdmissionComponent,
-    ChambreComponent, PlanningMedecinComponent, CabinetComponent, ClotureSessionComponent,
+    AdmissionComponent,EditionAdmissionComponent, CabinetComponent, ClotureSessionComponent,
+    ChambreComponent, PlanningMedecinComponent, 
 
 
   ],

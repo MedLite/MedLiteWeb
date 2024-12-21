@@ -18,6 +18,9 @@ import { ModeReglementComponent } from './mode-reglement/mode-reglement.componen
 import { FamillePrestationComponent } from './famille-prestation/famille-prestation.component';
 import { FamilleOperationComponent } from './famille-operation/famille-operation.component';
 import { FamilleFacturationComponent } from './famille-facturation/famille-facturation.component';
+import { ConventionComponent } from './convention/convention.component';
+import { PriceListComponent } from './price-list/price-list.component';
+import { CouvertureComponent } from './couverture/couverture.component';
  
  
 
@@ -110,7 +113,23 @@ const routes: Routes = [
     component: FamilleFacturationComponent ,
     data:{title:'FamilleFacturation',icon:'bx bx-detail'}
   }
-  
+  ,
+  {
+    path: 'convention',
+    component: ConventionComponent ,
+    data:{title:'Convention',icon:'bx bxl-algolia'}
+  }
+  ,
+  {
+    path: 'price_list',
+    component: PriceListComponent ,
+    data:{title:'PriceList',icon:'bx bx-file'}
+  } ,
+  {
+    path: 'list_couverture',
+    component: CouvertureComponent ,
+    data:{title:'ListCouverture',icon:'bx bx-shield-quarter'}
+  }
   
 
 ];

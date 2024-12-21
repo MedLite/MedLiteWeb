@@ -48,7 +48,7 @@
         <!-- <li class="menu-label">Pages</li> -->
         <li>
             <a class="has-arrow">
-                <div class="parent-icon"><i class='bx bx-cog'></i>
+                <div class="parent-icon"><i class='bx bx-cog '></i>
                 </div>
                 <div class="menu-title">{{'Setting' | i18n:i18nService.currentLanguage}}</div>
             </a>
@@ -103,6 +103,16 @@
                 </li>
                 <li> <a [routerLink]="['/menu_parametarge/mode_reglement']"><i class='bx bx-credit-card'></i>
                     {{'ModeReglement' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+
+                <li> <a [routerLink]="['/menu_parametarge/price_list']"><i class='bx bx-file'></i>
+                    {{'PriceList' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li> <a [routerLink]="['/menu_parametarge/list_couverture']"><i class='bx bx-shield-quarter'></i>
+                    {{'ListCouverture' | i18n:i18nService.currentLanguage}}</a>
+                </li>
+                <li> <a [routerLink]="['/menu_parametarge/convention']"><i class='bx bxl-algolia'></i> 
+                        {{'Convention' | i18n:i18nService.currentLanguage}}</a>
                 </li>
 
             </ul>

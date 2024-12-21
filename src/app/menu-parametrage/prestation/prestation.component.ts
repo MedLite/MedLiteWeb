@@ -92,7 +92,7 @@ export class PrestationComponent implements OnInit {
   rib!: string;
   actif!: boolean;
   visible!: boolean;
-  ActifString!: string;
+  LabelActif!: string;
   OutPatient!: string;
   InPatient!: string;
   HeaderTypeArrvier !: string;
@@ -138,7 +138,7 @@ export class PrestationComponent implements OnInit {
       { field: 'TypeOP', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '5%', filter: "true" },
       { field: 'SourceDepenese', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '5%', filter: "true" },
       { field: 'codeEtatApprouver', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '5%', filter: "false" },
-      { field: 'dateCreate', header: this.i18nService.getString('ActifString') || 'Actif', width: '5%', filter: "true" },
+      { field: 'dateCreate', header: this.i18nService.getString('LabelActif') || 'Actif', width: '5%', filter: "true" },
 
     ];
   }
@@ -242,7 +242,7 @@ export class PrestationComponent implements OnInit {
 
   public onOpenModal(mode: string) {
 
-    this.ActifString = this.i18nService.getString('ActifString');
+    this.LabelActif = this.i18nService.getString('LabelActif');
     this.OutPatient = this.i18nService.getString('OutPatient');
     this.InPatient = this.i18nService.getString('InPatient');
     this.HeaderTypeArrvier= this.i18nService.getString('HeaderTypeArrvier');

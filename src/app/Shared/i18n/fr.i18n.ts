@@ -34,7 +34,7 @@ const frI18n = {
   'DesignationAr': 'Designation Arabic',
   'DesignationLt': 'Designation Latin',
   'CodeSaisie': 'Code',
-  'ActifString': 'Actif',
+  'LabelActif': 'Actif',
   'Close': 'Fermer',
   'Save': 'Sauvegarder', 
   'ModeReglement':'Mode Reglement',

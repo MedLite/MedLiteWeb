@@ -35,7 +35,7 @@ const enI18n = {
   'DesignationAr': 'Designation Arabic',
   'DesignationLt': 'Designation Latin',
   'CodeSaisie': 'Code',
-  'ActifString': 'Actif',
+  'LabelActif': 'Actif',
   'Close': 'Close',
   'Save': 'Save',
   'ModeReglement': 'Payment Mode',
