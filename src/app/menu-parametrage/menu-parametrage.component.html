@@ -11,11 +11,15 @@
                     </div>
                     <div class="block1">
                         <i class="fa-solid fa-receipt"></i>
+                        <mat-icon class="more" mat-button [matMenuTriggerFor]="menu2">more_vert</mat-icon>
+                        <mat-menu #menu2="matMenu" class="div-panel2">
+                            <button mat-menu-item [routerLink]="['/commercial_list']"> <mat-icon>person</mat-icon> المندوبين</button>
+                            <button mat-menu-item [routerLink]="['/affectation_commercial']"> <mat-icon> person_pin_circle</mat-icon> تعيين</button>
+                        </mat-menu>
                     </div>
 
-                    <div class="block3">
-                        <p-tag title="warningMessageFactFrs" icon="pi pi-exclamation-triangle" severity="warning" value="Warning" />
-                    </div>
+
+
 
                 </div>
             </div>

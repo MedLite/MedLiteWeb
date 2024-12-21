@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./menu-parametrage.component.css', '.../../../src/assets/css/StyleMenu.css']
 })
 export class MenuParametrageComponent {
-
+  showSubmenu: boolean = false;
 }
