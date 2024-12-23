@@ -126,6 +126,20 @@ export class InputValidationService {
 
   showRequiredNotification() {
     const fieldRequiredMessage = this.i18nService.getString('fieldRequired');  // Default to English if not found
+<<<<<<< HEAD
+    
+    const currentTime = Date.now();
+    if (currentTime - this.lastNotificationTime > 2000) { // Only notify every 2 seconds
+      this.lastNotificationTime = currentTime;
+
+        alertifyjs.notify(
+      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
+      fieldRequiredMessage
+    );
+    }
+
+  
+=======
     if (sessionStorage.getItem("lang") == "ar") {
       alertifyjs.set('notifier', 'position', 'top-left');
     } else {
@@ -155,5 +169,6 @@ export class InputValidationService {
       fieldRequiredMessage
     );
   }  
+>>>>>>> f612864be09530092b034adcf3fddc2c33fc4396
   }
 }
