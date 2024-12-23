@@ -47,8 +47,9 @@ const enI18n = {
   'NumTel': 'Phone Number',
   'NomPatientFullAr': 'Arabic Name ',
   'NomPatientFullLt': 'Latin Name',
-   'CodePatient':'Medical Number',
-'Choisie':'Chosen',
+  'CodePatient': 'Medical Number',
+  'Choisie': 'Chosen',
+  'SourceDeFinancement': 'Source of Funding'
 };
 
 

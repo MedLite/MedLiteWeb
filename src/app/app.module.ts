@@ -90,6 +90,7 @@ import { FamillePrestationComponent } from './menu-parametrage/famille-prestatio
 import { ConventionComponent } from './menu-parametrage/convention/convention.component';
 import { CouvertureComponent } from './menu-parametrage/couverture/couverture.component';
 import { PriceListComponent } from './menu-parametrage/price-list/price-list.component';
+import { CaisseReceptionComponent } from './menu-reception/caisse-reception/caisse-reception.component';
 
 
 
@@ -121,7 +122,7 @@ const languages = [
     ////////////// Menu REception
 
     AdmissionComponent,EditionAdmissionComponent, CabinetComponent, ClotureSessionComponent,
-    ChambreComponent, PlanningMedecinComponent, 
+    ChambreComponent, PlanningMedecinComponent, CaisseReceptionComponent,
 
 
   ],

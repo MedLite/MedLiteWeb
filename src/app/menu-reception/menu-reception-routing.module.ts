@@ -7,6 +7,7 @@ import { EditionAdmissionComponent } from './edition-admission/edition-admission
 import { ChambreComponent } from './chambre/chambre.component';
 import { PlanningMedecinComponent } from './planning-medecin/planning-medecin.component';
 import { ClotureSessionComponent } from './cloture-session/cloture-session.component';
+import { CaisseReceptionComponent } from './caisse-reception/caisse-reception.component';
 
 const routes: Routes = [
   { path: '', component: MenuReceptionComponent }
@@ -30,6 +31,11 @@ const routes: Routes = [
     path: 'cloture_session',
     component: ClotureSessionComponent ,
     data:{title:'ClotureSession' , icon :'bx bx-lock-alt'}
+  },
+  {
+    path: 'caisse_reception',
+    component: CaisseReceptionComponent ,
+    data:{title:'CaisseReception' , icon :'bx bx-wallet'}
   },
 ];
 
