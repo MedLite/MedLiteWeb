@@ -2646,7 +2646,7 @@ margin-top: 2px; */
     align-items: center;
     justify-content: center;
     gap: 20px;
-    height: 30px;
+    height: 45px;
 }
 
 .radio-item {
@@ -2670,4 +2670,12 @@ label.bold-label {
 
 .flexLeft {
     border-left: 1px solid #c3cbd9;
+}
+
+input#Cash {
+    cursor: pointer;
+}
+
+input#PEC {
+    cursor: pointer;
 }

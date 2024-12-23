@@ -38,4 +38,12 @@ export class ControlServiceAlertify {
       fieldRequiredMessage
     );
   }
+
+  showChoseAnyPatientNotification() {
+    const fieldRequiredMessage = this.i18nService.getString('SelectAnyPatient');  // Default to English if not found
+    alertifyjs.notify(
+      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
+      fieldRequiredMessage
+    );
+  }
 }

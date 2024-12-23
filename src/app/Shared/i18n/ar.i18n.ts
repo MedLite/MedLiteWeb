@@ -20,9 +20,10 @@ const arI18n = {
   'Type intervenant': 'انواع العناصر الطبية ',
   'Medecin': 'الأطباء',
   'Banque': 'المصارف',
-  'Admission': 'إضافة مريض',
+  'Admission': 'إستقبال مريض',
   'Edition': 'تقارير',
   'Add': 'إضافة',
+  'AddNewPatient': 'إضافة مريض',
   'Voir': 'عرض',
   'Modifier': 'تعديل',
   'Delete': 'حذف',
@@ -66,6 +67,13 @@ const arI18n = {
   'PriceList': 'قائمة الأسعار',
   'ListCouverture': 'التغطية',
   'Convention': 'الإتفاقية',
+  'CaisseReception':'خزينة الإستقبال',
+  'HeaderRecherchePatient':'بحث مريض',
+  'HeaderListPatient':'قائمة المرضى',
+  'SelectAnyPatient':'الرجاء إختيار مريض',
+  'SourceDeFinancement':'مصدر التمويل',
+  
+ 
 };
 
 

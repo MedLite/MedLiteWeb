@@ -36,13 +36,14 @@ const frI18n = {
   'CodeSaisie': 'Code',
   'LabelActif': 'Actif',
   'Close': 'Fermer',
-  'Save': 'Sauvegarder', 
-  'ModeReglement':'Mode Reglement',
-  'Chambre':'Chambre',
-  'PlanningMedcin':'Planning Medcin',
-  'ClotureSession':'Cloture Session',
-   'Excel':'Excel',
-     'DateNaiss': 'Date de naissance'
+  'Save': 'Sauvegarder',
+  'ModeReglement': 'Mode Reglement',
+  'Chambre': 'Chambre',
+  'PlanningMedcin': 'Planning Medcin',
+  'ClotureSession': 'Cloture Session',
+  'Excel': 'Excel',
+  'DateNaiss': 'Date de naissance',
+  'SourceDeFinancement': 'Source De Financement',
 };
 
 

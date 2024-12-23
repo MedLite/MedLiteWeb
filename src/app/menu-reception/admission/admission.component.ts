@@ -15,6 +15,12 @@ import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
 import { Dropdown } from 'primeng/dropdown';
 
 
+interface YourDataType {
+  // Define the structure of your data (matches the SQL table columns)
+  id: number;
+  name: string;
+  // ... other properties
+}
 declare const PDFObject: any;
 @Component({
   selector: 'app-admission',
@@ -37,8 +43,66 @@ export class AdmissionComponent implements OnInit {
   @ViewChild('modeReglementInput') modeReglementInputElement!: Dropdown;
   @ViewChild('BanqueInput') BanqueInputElement!: Dropdown;
   @ViewChild('NumPieceInput') NumPieceInputElement!: ElementRef;
+  @ViewChild('codePatientInput') codePatientInputElement!: ElementRef;
 
 
+
+  @ViewChild('codePatientNewInput') codePatientNewInputElement!: ElementRef;
+  @ViewChild('NomFullArNewInput') NomFullArNewInputElement!: ElementRef;
+  @ViewChild('NomFullLtNewInput') NomFullLtNewInputElement!: ElementRef;
+  @ViewChild('TelPatientNewInput') TelPatientNewInputElement!: ElementRef;
+  validatecodePatientNewInput(): boolean {
+    this.validationService.validateInput2(this.codePatientNewInputElement, this.codeErrorElement, this.codePatientNew, 'codeSaisie');
+    if (this.codePatientNew !== null && this.codePatientNew !== undefined && this.codePatientNew.trim() !== '') {
+      this.codePatientNewInputElement.nativeElement.classList.remove('invalid-input'); // Remove error class
+      return true;
+
+    } else {
+      this.codePatientNewInputElement.nativeElement.classList.add('invalid-input'); // Add error class
+      this.validationService.showRequiredNotification();
+      return false;
+    }
+  }
+  validateNomFullArNewInput(): boolean {
+    this.validationService.validateInput2(this.NomFullArNewInputElement, this.codeErrorElement, this.NomFullArNew, 'NomAr');
+    if (this.NomFullArNew !== null && this.NomFullArNew !== undefined && this.NomFullArNew.trim() !== '') {
+      this.NomFullArNewInputElement.nativeElement.classList.remove('invalid-input'); // Remove error class
+      return true;
+
+    } else {
+      this.NomFullArNewInputElement.nativeElement.classList.add('invalid-input'); // Add error class
+      this.validationService.showRequiredNotification();
+      return false;
+    }
+  }
+  validateNomFullLtNewInput(): boolean {
+    this.validationService.validateInput2(this.NomFullLtNewInputElement, this.codeErrorElement, this.NomFullLtNew, 'NomLt');
+
+    if (this.NomFullLtNew !== null && this.NomFullLtNew !== undefined && this.NomFullLtNew.trim() !== '') {
+      this.NomFullLtNewInputElement.nativeElement.classList.remove('invalid-input'); // Remove error class
+      return true;
+
+    } else {
+      this.NomFullLtNewInputElement.nativeElement.classList.add('invalid-input'); // Add error class
+      this.validationService.showRequiredNotification();
+      return false;
+    }
+  }
+  validateTelPatientNewInput(): boolean {
+    this.validationService.validateInput2(this.TelPatientNewInputElement, this.codeErrorElement, this.TelPatientNew, 'Tel.');
+    if (this.TelPatientNew !== null && this.TelPatientNew !== undefined && this.TelPatientNew != '') {
+      this.TelPatientNewInputElement.nativeElement.classList.remove('invalid-input'); // Remove error class
+      return true;
+
+    } else {
+      this.TelPatientNewInputElement.nativeElement.classList.add('invalid-input'); // Add error class
+      this.validationService.showRequiredNotification();
+      return false;
+    }
+  }
+
+
+  data: YourDataType[] = [];
   validateCodeInput() {
     this.validationService.validateInput(this.codeInputElement, this.codeErrorElement, this.codeSaisie, 'codeSaisie');
   }
@@ -57,28 +121,33 @@ export class AdmissionComponent implements OnInit {
     }
   }
 
-  validateBanqueInput(){
-    if(this.selectedModeReglement =="2" && this.selectedBanque ==""){ 
+  validateBanqueInput() {
+    if (this.selectedModeReglement == "2" && this.selectedBanque == "") {
       this.validationService.validateDropDownInput(this.BanqueInputElement, this.codeErrorElementDrop, this.selectedBanque, 'Banque');
-    }else{
+    } else {
       if (this.BanqueInputElement && this.BanqueInputElement.containerViewChild) {
         this.BanqueInputElement.containerViewChild.nativeElement.classList.remove('InvalidData');
       }
-    } 
+    }
   }
 
- 
+
   validateNumPieceInput() {
-    if(this.selectedModeReglement =="2" && this.numPiece==""){
+    if (this.selectedModeReglement == "2" && this.numPiece == "") {
       this.validationService.validateInput(this.NumPieceInputElement, this.nomErrorElement, this.numPiece, 'NumPiece');
 
-    }else{ 
-        this.NumPieceInputElement.nativeElement.classList.remove('invalid-input'); 
+    } else {
+      this.NumPieceInputElement.nativeElement.classList.remove('invalid-input');
     }
   }
 
   validateNomArInput() {
     this.validationService.validateInput(this.nomArInputElement, this.nomErrorElement, this.NomPatientFullAr, 'NomPatientFullAr');
+  }
+
+
+  validateCodePatientInput() {
+    this.validationService.validateInput(this.codePatientInputElement, this.nomErrorElement, this.codePatient, 'CodePatient');
   }
 
   validateNomLtInput() {
@@ -116,6 +185,7 @@ export class AdmissionComponent implements OnInit {
   listCostCentreRslt = new Array<any>();
   MontantEnDevise: any = 0
   visibleModal: boolean = false;
+  visibleModalAddPatient: boolean = false;
   visibleModalRecherPatient: boolean = false;
   visibleModalPrint: boolean = false;
   visDelete: boolean = false;
@@ -124,7 +194,7 @@ export class AdmissionComponent implements OnInit {
   NomPatientFullLt: string = 'NULL';
   NomPatientFullLtRecherche: string = 'NULL';
   NomPatientFullAr: string = 'NULL';
-  NomPatientFullArRecherche : string = 'NULL';
+  NomPatientFullArRecherche: string = 'NULL';
   TelPatient: string = 'NULL';
   TelPatientRecherche: string = 'NULL';
   codeConvention: string = 'NULL';
@@ -153,7 +223,9 @@ export class AdmissionComponent implements OnInit {
   listBanqueRslt = new Array<any>();
   selectedModeReglement: any;
   selectedSociete: any = 'NULL';
+  selectedSocieteNew: any = 'NULL';
   selectedConvention: any = 'NULL';
+  selectedConventionNew: any = 'NULL';
   listModeReglementRslt = new Array<any>();
   ListSocieteRslt = new Array<any>();
   ListConventionRslt = new Array<any>();
@@ -177,10 +249,23 @@ export class AdmissionComponent implements OnInit {
   NomCabinet: any;
   MontantTotal: any;
   selectedValue: any = 0;
+  selectedValueNew: any = 0;
   MntCash: any = 0;
   MntPEC: any = 0;
   MntReqPayed: any = 0;
   MntPayed: any = 0;
+  HeaderRecherchePatient = '';
+  HeaderListPatient = '';
+  NomFullArNew = '';
+  NomFullLtNew = '';
+  TelPatientNew = '';
+  NomFullArAdm = '';
+  NomFullLtAdm = '';
+  TelPatientAdm = '';
+  dateNaissanceNew: string | Date = '';
+  dateNaissanceAdm: string | Date = '';
+  dateNaissanceRecherche: string | Date = '';
+
 
 
 
@@ -194,9 +279,9 @@ export class AdmissionComponent implements OnInit {
     // const SelectedPatients = event.data;
     // this.SelectedPatients = SelectedPatients;
     this.SelectedPatientFromList = event.data.code;
-    this.NomPatientFullAr = event.data.NomFullAr;
-    this.NomPatientFullLt = event.data.NomFullLt;
-    this.TelPatient = event.data.TelPatient;
+    this.NomFullArAdm = event.data.NomFullAr;
+    this.NomFullLtAdm = event.data.NomFullLt;
+    this.TelPatientAdm = event.data.TelPatient;
     this.selectedConvention = event.data.codeConvention;
     this.selectedSociete = event.data.codeSociete;
     this.codePriceList = event.data.codePriceList;
@@ -262,6 +347,15 @@ export class AdmissionComponent implements OnInit {
   onRowUnselectFromTabsRecherPatient(event: any) {
     this.selectedTotal = new Array<any>();
     this.Total = 0
+    this.NomPatientFullAr = 'NULL',
+      this.codePriceList = 0;
+    this.NomPatientFullLt = 'NULL'
+    this.TelPatient = '';
+    this.selectedSociete = '';
+    this.selectedConvention = '';
+    this.selectedValue = 1;
+    this.VisiblePEC = false;
+    this.dateNaissance = new Date();;
   }
 
 
@@ -330,6 +424,10 @@ export class AdmissionComponent implements OnInit {
   cols!: any[];
 
   ngOnInit(): void {
+
+
+
+
     this.GetColumns();
     this.GelAllBanque();
 
@@ -417,14 +515,7 @@ export class AdmissionComponent implements OnInit {
     this.searchTerm = '';
   }
 
-  clearForm() {
-    // if (this.modal && this.modal.el) {
-    //   // Reset form values and border colors
-    //   const inputs = this.modal.el.nativeElement.querySelectorAll('input');
-    //   inputs.forEach((input: HTMLInputElement) => {
-    //     input.value = '';
-    //     this.validateInput(input);
-    //   });
+  clearForm() { 
     this.code == undefined;
     this.designationAr = '';
     this.designationLt = '';
@@ -435,18 +526,32 @@ export class AdmissionComponent implements OnInit {
     this.SelectedPatientFromList = '';
     this.codeConvention = 'NULL';
     this.codeSociete = 'NULL';
-    this.NomPatientFullAr = 'NULL';
+    this.NomFullArAdm = '';
     this.NomPatientFullArRecherche = 'NULL';
-    this.NomPatientFullLt = 'NULL';
+    this.NomFullLtAdm = '';
     this.NomPatientFullLtRecherche = 'NULL';
-    this.TelPatientRecherche = 'NULL';
+    this.TelPatientAdm = '';
+    this.TelPatientRecherche = '';
     this.codePriceList == 0;
-    this.selectedBanque="";
-    this.numPiece="";
-    this.selectedModeReglement=''
+    this.selectedBanque = "";
+    this.numPiece = "";
+    this.selectedModeReglement = '';
+    this.MntCash = '';
+    this.MntPEC = '';
+    this.MntPayed = '';
+    this.MntReqPayed = '';
+    this.dateNaissanceAdm = "";
+    this.dateNaissanceNew = "";
+    this.dateNaissanceRecherche =  "";
+    this.NomFullArNew='';
+    this.NomFullLtNew='';
+    this.TelPatientNew='';
+    this.selectedValueNew=0;
+    this.IDPatient='';
+    this.codePatientNew ='';
 
     this.onRowUnselect(event);
-    // } 
+ 
   }
   check_actif = false;
   check_inactif = false;
@@ -455,10 +560,14 @@ export class AdmissionComponent implements OnInit {
   searchTerm = '';
   designationAr: string = 'NULL';
   designationLt: string = "NULL";
+
+  codePatient = 'NULL';
+  codePatientNew = '';
+  IDPatient = 'NULL';
   rib!: string;
   actif!: boolean;
   visible!: boolean;
-
+  dateNaissance!: Date;
   selectedBanque: any = "";
 
 
@@ -526,6 +635,7 @@ export class AdmissionComponent implements OnInit {
     this.visibleModal = false;
     this.visDelete = false;
     this.visibleModalPrint = false;
+    this.visibleModalAddPatient = false;
     const button = document.createElement('button');
     button.type = 'button';
     button.style.display = 'none';
@@ -636,6 +746,8 @@ export class AdmissionComponent implements OnInit {
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
     this.columnsListPatient();
+    this.HeaderRecherchePatient = this.i18nService.getString('HeaderRecherchePatient');
+    this.HeaderListPatient = this.i18nService.getString('HeaderListPatient');
     this.columnsListMedecin();
     if (mode === 'RercherPatient') {
       button.setAttribute('data-target', '#ModalRercherPatient');
@@ -645,12 +757,13 @@ export class AdmissionComponent implements OnInit {
       this.actif = false;
       this.visible = false;
       this.visibleModal = false;
+      this.visibleModalAddPatient = false;
       this.visibleModalRecherPatient = true;
       this.code == undefined;
-      this.dateFactureFournisseur ='';
-      this.NomPatientFullLtRecherche ='';
-      this.NomPatientFullArRecherche='';
-      this.TelPatientRecherche =''
+      this.dateFactureFournisseur = '';
+      this.NomPatientFullLtRecherche = '';
+      this.NomPatientFullArRecherche = '';
+      this.TelPatientRecherche = ''
 
     }
   }
@@ -660,18 +773,18 @@ export class AdmissionComponent implements OnInit {
     this.visibleModal = false;
     this.visDelete = false;
     this.visibleModalPrint = false;
-    if (this.NomPatientFullAr == 'NULL' && this.codePriceList == 0) {
-      this.CtrlAlertify.showLabel();
-      this.CtrlAlertify.showChoseAnyRowNotification();
-      this.visibleModal = false;
-    } else {
+    this.visibleModalAddPatient = false;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    if (mode === 'choisir') {
 
-
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.style.display = 'none';
-      button.setAttribute('data-toggle', 'modal');
-      if (mode === 'add') {
+      if (this.NomFullArAdm === '' || this.codePriceList == 0) {
+        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.showChoseAnyPatientNotification();
+        this.visibleModal = false;
+      } else {
         button.setAttribute('data-target', '#Modal');
         this.formHeader = this.i18nService.getString('Add');
         this.onRowUnselect(event);
@@ -691,8 +804,29 @@ export class AdmissionComponent implements OnInit {
         this.visibleModalRecherPatient = false;
         this.visibleModal = true;
         this.code == undefined;
+
       }
+
+    } else if (mode === 'addNewPatient') {
+      button.setAttribute('data-target', '#ModalAddPatient');
+      this.formHeader = this.i18nService.getString('AddNewPatient');
+      this.onRowUnselect(event);
+      this.clearSelected();
+      this.visibleModalRecherPatient = false;
+      this.visibleModal = false;
+      this.visibleModalAddPatient = true;
+      this.codePatient = '';
+      this.NomPatientFullAr = '';
+      this.NomPatientFullLt = '';
+      this.selectedConvention = '';
+      this.selectedSociete = '';
+      this.selectedValue = 1;
+      this.TelPatient = '';
+      this.VisiblePEC = false;
+      this.code == undefined;
+
     }
+
   }
   formatInput(event: any) {  // Use any because of p-calendar event type
     let inputValue = event.target.value.replace(/\D/g, ''); // Remove non-digits
@@ -760,8 +894,8 @@ export class AdmissionComponent implements OnInit {
 
 
     this.validateModeReglementInput();
-    this.validateBanqueInput(); 
-    this.validateNumPieceInput(); 
+    this.validateBanqueInput();
+    this.validateNumPieceInput();
     this.validateCodeInput(); // Validate the input before posting
     this.validateNomArInput();
     this.validateNomLtInput();
@@ -885,6 +1019,9 @@ export class AdmissionComponent implements OnInit {
     this.NomPatientFullLt == "NULL";
     this.SelectedPatientFromList = '';
     this.SelectedMedecinFromList = '';
+    this.dateNaissanceAdm = new Date();
+    this.dateNaissanceNew = new Date();
+    this.dateNaissanceRecherche = new Date();
     this.codePriceList == 0;
   }
 
@@ -934,6 +1071,21 @@ export class AdmissionComponent implements OnInit {
     }
   }
 
+  GetIfNeedSocNew() {
+    if (this.selectedValueNew == 1) {
+      this.VisiblePEC = false;
+      this.SelectedMedecinFromList = '';
+
+    } else {
+      this.SelectedMedecinFromList = '';
+      this.MntCash = 0;
+      this.MntPEC = 0;
+      this.MntPayed = 0;
+      this.MntReqPayed = 0;
+      this.VisiblePEC = true;
+    }
+  }
+
   GetDetailsConventionSelected() {
 
   }
@@ -943,13 +1095,162 @@ export class AdmissionComponent implements OnInit {
 
   }
 
-  ReinitialiserSearch(){
-    this.dateFactureFournisseur ='';
-    this.NomPatientFullLt ='';
-    this.NomPatientFullAr='';
-    this.TelPatient =''
+  ReinitialiserSearch() {
+    this.dateFactureFournisseur = '';
+    this.NomPatientFullLt = '';
+    this.NomPatientFullAr = '';
+    this.TelPatient = ''
   }
 
+
+  CloseAddModalRecherche() {
+    this.visibleModalAddPatient = false;
+    this.IDPatient='';
+    this.codeSaisie = '';
+    this.SelectedMedecinFromList = '';
+    this.SelectedPatientFromList = '';
+    this.codeConvention = 'NULL';
+    this.codeSociete = 'NULL';
+    this.NomFullArAdm = '';
+    this.NomPatientFullArRecherche = 'NULL';
+    this.NomFullLtAdm = '';
+    this.NomPatientFullLtRecherche = 'NULL';
+    this.TelPatientAdm = '';
+    this.TelPatientRecherche = '';
+    this.codePriceList == 0;
+    this.selectedBanque = "";
+    this.numPiece = "";
+    this.selectedModeReglement = '';
+    this.MntCash = '';
+    this.MntPEC = '';
+    this.MntPayed = '';
+    this.MntReqPayed = '';
+    this.dateNaissanceAdm = "";
+    this.dateNaissanceNew = "";
+    this.dateNaissanceRecherche =  "";
+    this.NomFullArNew='';
+    this.NomFullLtNew='';
+    this.TelPatientNew='';
+    this.selectedValueNew=0;
+    this.codePatientNew ='';
+  }
+
+
+  private validateAllInputs(): boolean { // Returns true if all valid, false otherwise
+    const codeValid = this.validatecodePatientNewInput();
+    const nomArValid = this.validateNomFullArNewInput();
+    const nomLtValid = this.validateNomFullLtNewInput();
+    const telValid = this.validateTelPatientNewInput();
+
+    return codeValid && nomArValid && nomLtValid && telValid;
+  }
+
+  SourceDeFinancement='SourceDeFinancement';
+  DateNaiss='DateNaiss';
+  PostNewPatient() {
+    const isValid = this.validateAllInputs();
+
+    if(this.dateNaissanceNew==""){
+      this.validationService.showRequiredNotificationWithParam(this.DateNaiss);
+    }
+
+    if (this.selectedValueNew == 0 ) {
+      this.validationService.showRequiredNotificationWithParam(this.SourceDeFinancement);
+    } else {
+       // Perform all validations and get a single result
+
+      if (isValid) {  // Open modal only if ALL validations pass
+        this.IDPatient = this.codePatientNew;
+        this.NomFullArAdm = this.NomFullArNew;
+        this.NomFullLtAdm = this.NomFullLtNew;
+        this.TelPatientAdm = this.TelPatientNew;
+        this.selectedConvention = this.selectedConventionNew;
+        this.selectedSociete = this.selectedSocieteNew;
+        this.selectedValue = this.selectedValueNew;
+        this.LabelActif = this.i18nService.getString('LabelActif');
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.style.display = 'none';
+        button.setAttribute('data-toggle', 'modal');
+        this.columnsListPatient();
+        this.columnsListMedecin();
+        button.setAttribute('data-target', '#Modal');
+        this.formHeader = this.i18nService.getString('Add');
+        this.onRowUnselect(event);
+        this.clearSelected();
+        this.actif = false;
+        this.visible = false;
+        this.visibleModalRecherPatient = false;
+        this.visibleModalAddPatient = false;
+        this.visibleModal = true;
+        this.selectedValue = this.selectedValueNew;
+        this.code == undefined; // What is this for? Consider removing if unnecessary
+
+      }
+    }
+
+
+
+
+
+
+
+  }
+
+  DateTempNew: any;
+  formatInputNew(event: any) {  // Use any because of p-calendar event type
+    let inputValue = event.target.value.replace(/\D/g, ''); // Remove non-digits
+    if (inputValue.length > 0) {
+      inputValue = inputValue.replace(/(\d{2})(\d{2})(\d{4})/, '$1/$2/$3');
+    }
+    event.target.value = inputValue;
+    this.DateTempNew = inputValue;
+    this.tryParseAndSetDateNew(inputValue);
+  }
+  tryParseAndSetDateNew(inputValue: string) {
+    let parts = inputValue.split('/');
+    if (parts.length === 3) {
+      let day = parseInt(parts[0], 10);
+      let month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+      let year = parseInt(parts[2], 10);
+
+      if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+        this.dateNaissanceNew = new Date(year, month, day);
+      }
+    }
+  }
+  transformDateFormatNew() {
+    if (this.dateNaissanceNew) {
+      this.DateTempNew = this.datePipe.transform(this.dateNaissanceNew, 'dd/MM/yyyy')!;
+    }
+  };
+
+  DateTempRecherche: any;
+  formatInputRecherche(event: any) {  // Use any because of p-calendar event type
+    let inputValue = event.target.value.replace(/\D/g, ''); // Remove non-digits
+    if (inputValue.length > 0) {
+      inputValue = inputValue.replace(/(\d{2})(\d{2})(\d{4})/, '$1/$2/$3');
+    }
+    event.target.value = inputValue;
+    this.DateTempRecherche = inputValue;
+    this.tryParseAndSetDateRecherche(inputValue);
+  }
+  tryParseAndSetDateRecherche(inputValue: string) {
+    let parts = inputValue.split('/');
+    if (parts.length === 3) {
+      let day = parseInt(parts[0], 10);
+      let month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+      let year = parseInt(parts[2], 10);
+      if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+        this.dateNaissanceRecherche = new Date(year, month, day);
+      }
+    }
+  }
+  transformDateFormatRecherche() {
+    if (this.dateNaissanceRecherche) {
+      this.DateTempRecherche = this.datePipe.transform(this.dateNaissanceRecherche, 'dd/MM/yyyy')!;
+    }
+  };
 
 }
 
