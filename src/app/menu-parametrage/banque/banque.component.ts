@@ -355,6 +355,10 @@ export class BanqueComponent implements OnInit {
 
 
 
+  CloseModal(){
+    this.visDelete = false;
+  }
+
 
 }
 

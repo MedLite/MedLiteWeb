@@ -989,8 +989,8 @@ button.btn.btn-danger.cancel-voir {
 } */
 
 .cancel-add-ModalSmall {
-    position: fixed;
-    right: 700px;
+    /* position: fixed;
+    right: 700px; */
     font-size: 13px;
     direction: ltr;
     /* height: 30px; */
@@ -1005,14 +1005,11 @@ button.btn.btn-danger.cancel-voir {
 }
 
 .save-add-ModalSmall {
-    position: fixed;
-    right: 600px;
     font-size: 13px;
     direction: ltr;
-    /* height: 30px; */
     border: 1px solid #adadad;
-    /* width: 90px; */
     font-weight: bold;
+    margin-left: 5px;
 }
 
 .save-add-ModalSmall:hover {
@@ -2611,6 +2608,9 @@ margin-top: 2px; */
 .FloatLeft {
     float: left !important;
     margin-top: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 2px;
 }
 
 .invalid-input {
