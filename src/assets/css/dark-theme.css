@@ -1,5 +1,5 @@
 html.dark-theme .switcher-wrapper {
-    background: #12181a;
+    background: #121212;
 }
 
 html.dark-theme body {
@@ -34,7 +34,7 @@ html.dark-theme .col-md-12 {
 }
 
 html.dark-theme .text-option {
-    color: #ffffff!important
+    color: #ffffff !important
 }
 
 html.dark-theme .h1,
@@ -57,8 +57,29 @@ html.dark-theme p {
 }
 
 html.dark-theme .card {
-    background-color: #12181a !important;
-    box-shadow: 0 0.1rem 0.7rem #ffffff !important;
+    background-color: #121212 !important;
+    box-shadow: 0 0.1rem 0.7rem #707070 !important;
+}
+
+html.dark-theme thead.p-datatable-thead {
+    background-color: #121212 !important;
+}
+
+html.dark-theme .p-datatable .p-datatable-tbody>tr {
+    background-color: #242424 !important;
+    color: #fff;
+}
+
+html.dark-theme .p-datatable-thead th {
+    background-image: linear-gradient(to bottom, #121212 0, #121212 100%) !important;
+    color: #fff !important;
+    border: 1px solid #3a3a3a !important;
+}
+
+html.dark-theme .p-inputtext {
+    border: 1px solid #2e2e2e !important;
+    background: #121212 !important;
+    color: #e7e7e7 !important;
 }
 
 html.dark-theme .control-label-titer {
@@ -66,20 +87,64 @@ html.dark-theme .control-label-titer {
 }
 
 html.dark-theme .p-datatable .p-datatable-header {
-    background-color: #12181a !important;
-    box-shadow: 0 0.1rem 0.7rem #12181a !important;
+    background-color: #121212 !important;
+    box-shadow: 0 0.1rem 0.7rem #121212 !important;
+}
+
+html.dark-theme .p-datatable-tbody td {
+    border: 1px solid #575757 !important;
+}
+
+html.dark-theme .p-datatable .p-datatable-header {
+    border: 1px solid #575757 !important;
+}
+
+html.dark-theme .Bouton_new3:focus,
+html.dark-theme .Bouton_new3:hover {
+    background-color: #cbcbcb;
+    color: black;
+}
+
+html.dark-theme .Bouton-rechercher:focus,
+html.dark-theme .Bouton-rechercher:hover {
+    background-color: #cbcbcb;
+    color: black;
+}
+
+html.dark-theme .Bouton-rechercher {
+    border: 1px solid #4b4b4b !important;
+}
+
+html.dark-theme .Bouton-add-new1 {
+    border: 1px solid #4b4b4b !important;
+}
+
+html.dark-theme .Bouton-add-new2 {
+    border: 1px solid #4b4b4b !important;
+}
+
+html.dark-theme .p-dialog .p-dialog-heade {
+    background: #1f2021 !important;
+    border-bottom: 1px solid #3b3b3b !important;
+    color: #ffffff !important;
+}
+
+html.dark-theme .headerForm {
+    color: #ffffff !important;
 }
 
 html.dark-theme h2 {
-    color: #12181a !important;
+    color: #121212 !important;
 }
 
 html.dark-theme .save-add-ModalSmall {
-    color: #12181a !important;
+    color: #ffffff !important;
+    border: 1px solid #595959 !important;
 }
 
 html.dark-theme .cancel-add-ModalSmall {
-    color: #12181a !important;
+    color: #ffffff !important;
+    border: 1px solid #595959 !important;
 }
 
 html.dark-theme .chat-list .list-group-item.active {
@@ -105,11 +170,11 @@ html.dark-theme .card-footer {
 }
 
 html.dark-theme .text-secondary {
-    color: #a8adb0!important
+    color: #a8adb0 !important
 }
 
 html.dark-theme .topbar {
-    background-color: #12181a !important;
+    background-color: #121212 !important;
     border-bottom: 1px solid rgb(237 237 237 / 12%);
     box-shadow: 0 0.1rem 0.7rem rgb(0 0 0 / 20%)
 }
@@ -152,7 +217,7 @@ html.dark-theme .recent-product-img {
 }
 
 html.dark-theme .page-footer {
-    background-color: #12181a;
+    background-color: #121212;
     border-top: 1px solid rgb(237 237 237 / 12%)
 }
 
@@ -216,18 +281,18 @@ html.dark-theme .search-bar a.btn:focus {
 }
 
 html.dark-theme .search-bar input::placeholder {
-    color: #e4e5e6!important;
-    opacity: .5!important
+    color: #e4e5e6 !important;
+    opacity: .5 !important
 }
 
 html.dark-theme::placeholder {
-    color: #e4e5e6!important;
-    opacity: .5!important
+    color: #e4e5e6 !important;
+    opacity: .5 !important
 }
 
 html.dark-theme .dropdown-menu {
     color: #e4e5e6;
-    background-color: #12181a;
+    background-color: #121212;
     box-shadow: 0 .5rem 1rem rgb(0 0 0 / .3)
 }
 
@@ -279,7 +344,7 @@ html.dark-theme .dropdown-large .msg-footer {
 
 html.dark-theme .btn-white {
     color: #e4e5e6;
-    background-color: #12181a;
+    background-color: #121212;
     border-color: rgb(206 212 218 / 45%);
     border-top: 1px solid #63686f;
     border-left: 1px solid #63686f
@@ -313,7 +378,7 @@ html.dark-theme .alert {
 
 html.dark-theme .accordion-item {
     color: #e4e5e6;
-    background-color: #12181a;
+    background-color: #121212;
     border: var(--bs-accordion-border-width) solid #3f3f3f;
 }
 
@@ -322,7 +387,7 @@ html.dark-theme .accordion-button::after {
 }
 
 html.dark-theme .accordion-button {
-    background-color: #12181a;
+    background-color: #121212;
 }
 
 html.dark-theme .accordion-button {
@@ -341,7 +406,7 @@ html.dark-theme .nav-tabs .nav-link {
 html.dark-theme .nav-tabs .nav-item.show .nav-link,
 html.dark-theme .nav-tabs .nav-link.active {
     color: #ffffff;
-    background-color: #12181a;
+    background-color: #121212;
 }
 
 html.dark-theme .nav-tabs {
@@ -369,7 +434,7 @@ html.dark-theme .nav-pills .nav-link {
 }
 
 html.dark-theme .theme-icons {
-    background-color: #12181a
+    background-color: #121212
 }
 
 html.dark-theme .pricing-table .card ul li.list-group-item {
@@ -407,26 +472,26 @@ html.dark-theme .table thead th {
 }
 
 html.dark-theme .border {
-    border: 1px solid rgb(255 255 255 / 12%)!important
+    border: 1px solid rgb(255 255 255 / 12%) !important
 }
 
 html.dark-theme .border-end {
-    border-right: 1px solid rgb(255 255 255 / 12%)!important
+    border-right: 1px solid rgb(255 255 255 / 12%) !important
 }
 
 html.dark-theme .border-3 {
-    border-width: 3px!important
+    border-width: 3px !important
 }
 
 html.dark-theme .topbar .navbar .dropdown-menu::after {
-    background: #12181a;
+    background: #121212;
     border-top: 1px solid rgb(241 241 241 / 15%);
     ;
     border-left: 1px solid rgb(241 241 241 / 15%);
 }
 
 html.dark-theme .topbar .navbar .dropdown-large .dropdown-menu::after {
-    background: #12181a;
+    background: #121212;
     border-top: 1px solid rgb(241 241 241 / 15%);
     ;
     border-left: 1px solid rgb(241 241 241 / 15%);
@@ -437,7 +502,7 @@ html.dark-theme .highcharts-background {
 }
 
 html.dark-theme .highcharts-title {
-    fill: #e4e5e6!important;
+    fill: #e4e5e6 !important;
     font-size: 1.5em
 }
 
@@ -451,13 +516,13 @@ html.dark-theme .highcharts-grid-line {
 }
 
 html.dark-theme .sidebar-wrapper {
-    background: #12181a;
+    background: #121212;
     border-right: 1px solid rgb(255 255 255 / 12%);
     box-shadow: 0 0.1rem 0.7rem rgb(0 0 0 / 20%) !important;
 }
 
 html.dark-theme .sidebar-wrapper .sidebar-header {
-    background: #12181a;
+    background: #121212;
     border-right: 1px solid rgb(255 255 255 / 12%);
     border-bottom: 1px solid rgb(255 255 255 / 12%)
 }
@@ -502,7 +567,7 @@ html.dark-theme .simplebar-scrollbar:before {
 }
 
 html.dark-theme .footer {
-    background: #12181a;
+    background: #121212;
     border-top: 1px solid rgb(255 255 255 / 12%)
 }
 
@@ -515,7 +580,7 @@ html.dark-theme .btn-light-dark {
 }
 
 html.dark-theme .modal-content {
-    background-color: #12181a
+    background-color: #121212
 }
 
 html.dark-theme .modal-header {
@@ -527,17 +592,17 @@ html.dark-theme .modal-footer {
 }
 
 html.dark-theme .email-wrapper {
-    background: #12181a;
+    background: #121212;
     box-shadow: 0 .1rem .7rem rgb(0 0 0 / 24%)
 }
 
 html.dark-theme .email-sidebar {
-    background: #12181a;
+    background: #121212;
     border-right: 1px solid rgb(255 255 255 / .12)
 }
 
 html.dark-theme .email-sidebar-header {
-    background: #12181a;
+    background: #121212;
     border-bottom: 1px solid rgb(255 255 255 / .12);
     border-right: 0 solid rgb(255 255 255 / 12%)
 }
@@ -548,7 +613,7 @@ html.dark-theme .email-navigation {
 
 html.dark-theme .email-navigation a.list-group-item {
     color: #e4e5e6;
-    background-color: #12181a;
+    background-color: #121212;
     border-bottom: 1px solid rgb(0 0 0 / 0%)
 }
 
@@ -558,7 +623,7 @@ html.dark-theme .email-navigation a.list-group-item:hover {
 
 html.dark-theme .email-meeting a.list-group-item {
     color: #e4e5e6;
-    background-color: #12181a;
+    background-color: #121212;
     border-bottom: 1px solid rgb(0 0 0 / 0%)
 }
 
@@ -567,7 +632,7 @@ html.dark-theme .email-meeting a.list-group-item:hover {
 }
 
 html.dark-theme .list-group-item {
-    background-color: #12181a;
+    background-color: #121212;
     color: #fbfcfd;
     border: 1px solid rgb(255 255 255 / 13%)
 }
@@ -594,20 +659,20 @@ html.dark-theme .list-group-flush>.list-group-item {
 }
 
 html.dark-theme .border-top {
-    border-top: 1px solid rgb(255 255 255 / 13%)!important
+    border-top: 1px solid rgb(255 255 255 / 13%) !important
 }
 
 html.dark-theme .email-header {
-    background: #12181a;
+    background: #121212;
     border-bottom: 1px solid rgb(255 255 255 / 13%)
 }
 
 html.dark-theme .email-content {
-    background: #12181a
+    background: #121212
 }
 
 html.dark-theme .email-list div.email-message {
-    background: #12181a;
+    background: #121212;
     border-bottom: 1px solid rgb(255 255 255 / 12%);
     color: #e4e5e6
 }
@@ -618,7 +683,7 @@ html.dark-theme .email-list div.email-message:hover {
 }
 
 html.dark-theme .bg-body {
-    background-color: #12181a!important
+    background-color: #121212 !important
 }
 
 html.dark-theme .email-time {
@@ -632,31 +697,31 @@ html.dark-theme .chat-time {
 }
 
 html.dark-theme .widgets-icons {
-    color: #12181a
+    color: #121212
 }
 
 html.dark-theme .invoice {
-    background-color: #12181a
+    background-color: #121212
 }
 
 html.dark-theme .chat-wrapper {
-    background: #12181a;
+    background: #121212;
     box-shadow: 0 .1rem .7rem rgb(0 0 0 / 22%)
 }
 
 html.dark-theme .chat-sidebar {
-    background: #12181a;
+    background: #121212;
     border-right: 1px solid rgb(255 255 255 / 13%)
 }
 
 html.dark-theme .chat-sidebar-header {
-    background: #12181a;
+    background: #121212;
     border-bottom: 1px solid rgb(255 255 255 / 13%);
     border-right: 0 solid rgb(255 255 255 / 13%)
 }
 
 html.dark-theme .chat-header {
-    background: #12181a;
+    background: #121212;
     border-bottom: 1px solid rgb(255 255 255 / 13%)
 }
 
@@ -665,7 +730,7 @@ html.dark-theme .chat-tab-menu li a.nav-link {
 }
 
 html.dark-theme .product-img-2 {
-    background-color: #12181a;
+    background-color: #121212;
     border: 1px solid rgb(255 255 255 / 14%);
 }
 
@@ -680,12 +745,12 @@ html.dark-theme .chat-msg {
 
 html.dark-theme .chat-top-header-menu a {
     color: #c3c5c8;
-    background-color: #12181a;
+    background-color: #121212;
     border: 1px solid rgb(255 255 255 / 15%)
 }
 
 html.dark-theme .chat-content-leftside .chat-left-msg {
-    background-color: #12181a
+    background-color: #121212
 }
 
 html.dark-theme .chat-content-rightside .chat-right-msg {
@@ -693,13 +758,13 @@ html.dark-theme .chat-content-rightside .chat-right-msg {
 }
 
 html.dark-theme .chat-footer {
-    background: #12181a;
+    background: #121212;
     border-top: 1px solid rgb(255 255 255 / 13%)
 }
 
 html.dark-theme .chat-footer-menu a {
     color: #c3c5c8;
-    background-color: #12181a;
+    background-color: #121212;
     border: 1px solid rgb(255 255 255 / 15%)
 }
 
@@ -708,12 +773,12 @@ html.dark-theme .fm-menu .list-group a {
 }
 
 html.dark-theme .fm-icon-box {
-    background: #12181a;
+    background: #121212;
     color: #fff
 }
 
 html.dark-theme .contacts-social a {
-    background: #12181a;
+    background: #121212;
     color: #fff
 }
 
@@ -729,7 +794,7 @@ html.dark-theme .invoice table .no {
 }
 
 html.dark-theme .invoice main .notices {
-    background: #12181a
+    background: #121212
 }
 
 html.dark-theme .invoice footer {
@@ -802,7 +867,7 @@ html.dark-theme .btn-outline-dark {
 
 html.dark-theme .page-link {
     color: #b2b6ba;
-    background-color: #12181a;
+    background-color: #121212;
     border: 1px solid rgb(255 255 255 / .12)
 }
 
@@ -818,17 +883,17 @@ html.dark-theme .progress {
 
 html.dark-theme .chip {
     color: rgb(198 200 203);
-    background-color: #12181a;
+    background-color: #121212;
     border: 1px solid rgb(255 255 255 / 15%)
 }
 
 html.dark-theme .bg-light {
-    background-color: rgb(255 255 255 / 15%)!important
+    background-color: rgb(255 255 255 / 15%) !important
 }
 
 html.dark-theme ul.icons li {
     box-shadow: 0 1px 5px #13171a;
-    background: #12181a
+    background: #121212
 }
 
 html.dark-theme ul.icons li i {
@@ -836,7 +901,7 @@ html.dark-theme ul.icons li i {
 }
 
 html.dark-theme .icon-box {
-    background: #12181a;
+    background: #121212;
     box-shadow: 0 1px 5px #161a1e
 }
 
@@ -849,7 +914,7 @@ html.dark-theme .pByfF i {
 
 html.dark-theme .select2-container--bootstrap-5 .select2-selection {
     color: #c0c8d1;
-    background-color: #12181a;
+    background-color: #121212;
     border: 1px solid rgb(255 255 255 / 31%);
 }
 
@@ -874,13 +939,13 @@ html.dark-theme .select2-container--bootstrap-5 .select2-dropdown {
 
 html.dark-theme .form-control {
     color: #c0c8d1;
-    background-color: #12181a;
+    background-color: #121212;
     border: 1px solid rgb(255 255 255 / 34%)
 }
 
 html.dark-theme .form-select {
     color: #c0c8d1;
-    background-color: #12181a;
+    background-color: #121212;
     border: 1px solid rgb(255 255 255 / 34%)
 }
 
@@ -898,13 +963,13 @@ html.dark-theme .form-control[readonly] {
 }
 
 html.dark-theme .form-control::placeholder {
-    color: #e4e5e6!important;
-    opacity: .5!important
+    color: #e4e5e6 !important;
+    opacity: .5 !important
 }
 
 html.dark-theme .picker__input {
-    background-color: #12181a!important;
-    border: 1px solid rgb(255 255 255 / 34%)!important
+    background-color: #121212 !important;
+    border: 1px solid rgb(255 255 255 / 34%) !important
 }
 
 html.dark-theme .select2-container--bootstrap4 .select2-selection {
@@ -913,7 +978,7 @@ html.dark-theme .select2-container--bootstrap4 .select2-selection {
 }
 
 html.dark-theme .select2-dropdown {
-    background-color: #12181a;
+    background-color: #121212;
     border: 1px solid rgb(255 255 255 / 38%)
 }
 
@@ -926,7 +991,7 @@ html.dark-theme .select2-search--dropdown .select2-search__field {
 html.dark-theme .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__choice {
     color: #dee1e5;
     border: 1px solid rgb(255 255 255 / 55%);
-    background: #12181a
+    background: #121212
 }
 
 html.dark-theme .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__rendered .select2-search__field {
@@ -949,7 +1014,7 @@ html.dark-theme .imageuploadify {
 }
 
 html.dark-theme .bootstrap-tagsinput {
-    background-color: #12181a;
+    background-color: #121212;
     border: 1px solid rgb(255 255 255 / 35%);
     box-shadow: inset 0 1px 1px rgb(0 0 0 / 37%);
     color: #e5e0e0
@@ -980,11 +1045,11 @@ html.dark-theme .table-bordered {
 }
 
 html.dark-theme .login-card {
-    border-right: 1px solid rgb(255 255 255 / 12%)!important
+    border-right: 1px solid rgb(255 255 255 / 12%) !important
 }
 
 html.dark-theme .border-bottom {
-    border-bottom: 1px solid rgb(255 255 255 / 14%)!important
+    border-bottom: 1px solid rgb(255 255 255 / 14%) !important
 }
 
 html.dark-theme .navbar-light .navbar-nav .nav-link {
@@ -999,43 +1064,43 @@ html.dark-theme .navbar-light .navbar-nav .show>.nav-link {
 }
 
 html.dark-theme .bg-light-purple {
-    background-color: rgb(130 128 255 / 32%)!important
+    background-color: rgb(130 128 255 / 32%) !important
 }
 
 html.dark-theme .bg-light-primary {
-    background-color: rgb(103 58 183 / 33%)!important
+    background-color: rgb(103 58 183 / 33%) !important
 }
 
 html.dark-theme .bg-light-danger {
-    background-color: rgb(220 53 69 / 33%)!important
+    background-color: rgb(220 53 69 / 33%) !important
 }
 
 html.dark-theme .bg-light-shineblue {
-    background-color: rgb(1 215 255 / 33%)!important
+    background-color: rgb(1 215 255 / 33%) !important
 }
 
 html.dark-theme .bg-light-cyne {
-    background-color: rgb(0 139 139 / 32%)!important
+    background-color: rgb(0 139 139 / 32%) !important
 }
 
 html.dark-theme .bg-light-warning {
-    background-color: rgb(255 193 7 / 32%)!important
+    background-color: rgb(255 193 7 / 32%) !important
 }
 
 html.dark-theme .bg-light-success {
-    background-color: rgb(40 167 69 / 33%)!important
+    background-color: rgb(40 167 69 / 33%) !important
 }
 
 html.dark-theme .bg-light-info {
-    background-color: rgb(25 143 237 / 22%)!important
+    background-color: rgb(25 143 237 / 22%) !important
 }
 
 html.dark-theme .bg-light-sinata {
-    background-color: rgb(165 43 187 / 33%)!important
+    background-color: rgb(165 43 187 / 33%) !important
 }
 
 html.dark-theme .bg-light-mehandi {
-    background: rgb(131 152 56 / 32%)!important
+    background: rgb(131 152 56 / 32%) !important
 }
 
 html.dark-theme .logo-white {
@@ -1089,4 +1154,100 @@ html.dark-theme .product-discount {
     html.dark-theme .topbar .navbar-nav .nav-link {
         border-left: 0 solid #ededed
     }
+}
+
+html.dark-theme header {
+    border: 1px solid #ffffff00 !important;
+    background: #222222 !important;
+}
+
+html.dark-theme .p-panel .p-panel-content {
+    background: #121212 !important;
+    border: 1px solid #424242 !important;
+}
+
+html.dark-theme .p-panel .p-panel-header {
+    background: #272727 !important;
+    color: #dfdfdf !important;
+    border: 1px solid #3b3c3e !important;
+}
+
+html.dark-theme .p-datatable .p-datatable-tbody>tr.p-highlight {
+    background: #003e58 !important;
+    color: #fff !important;
+}
+
+html.dark-theme .p-dialog .p-dialog-content {
+    background: #1f2021 !important;
+}
+
+html.dark-theme label.p-checkbox-label {
+    color: #ffffff!important;
+}
+
+html.dark-theme .control-label {
+    color: #ffffff!important;
+}
+
+html.dark-theme .form-control-dev {
+    background-color: #121212 !important;
+    color: #ffffff;
+}
+
+html.dark-theme fieldset {
+    border: 1px solid #312f2f !important;
+}
+
+html.dark-theme .p-checkbox .p-checkbox-box.p-highlight {
+    background: #000000 !important;
+}
+
+html.dark-theme .p-checkbox .p-checkbox-box {
+    background: #181818 !important;
+    border: 1px solid #5e5e5e !important;
+}
+
+html.dark-theme .p-dialog .p-dialog-header {
+    background: #1c1c1c !important;
+    border-bottom: 1px solid #3d3c3c !important
+}
+
+html.dark-theme .p-datatable.p-datatable-hoverable-rows .p-datatable-tbody>tr:not(.p-highlight):hover {
+    color: #dbdbdb !important;
+    background-color: #354b54 !important;
+}
+
+html.dark-theme .p-dropdown .p-dropdown-trigger {
+    color: #ffffff !important;
+}
+
+html.dark-theme .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+    background: #181818;
+    color: #ffffff;
+}
+
+html.dark-theme .p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
+    color: #ffffff;
+    background: #354b54
+}
+
+html.dark-theme .p-dropdown-items-wrapper {
+    background: #181818;
+}
+
+html.dark-theme .p-dropdown-panel .p-dropdown-header {
+    background: #272727 !important;
+}
+
+html.dark-theme .p-dropdown-panel .p-dropdown-header .p-dropdown-filter-icon {
+    color: rgb(255 255 255);
+}
+
+html.dark-theme .p-dropdown-panel {
+    border: 1px solid rgb(24 24 24);
+    background: #272727;
+}
+
+html.dark-theme .radio-item label {
+    color: #ffffff;
 }

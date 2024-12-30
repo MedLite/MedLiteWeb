@@ -2845,3 +2845,13 @@
      padding-left: 0 !important;
      padding-right: 2.5rem!important;
  }
+ 
+ [dir="ltr"] .form-control-dev {
+     padding-left: 5px;
+     padding-right: 0px;
+ }
+ 
+ [dir="ltr"] .save-add-ModalSmallXXL {
+     margin-left: 0px !important;
+     margin-right: 10px;
+ }

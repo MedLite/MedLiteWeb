@@ -2,7 +2,7 @@
     <app-loading [IsLoading]="IsLoading">
     </app-loading>
     <header>
-        <label class="header_name">{{'Banque' | i18n:i18nService.currentLanguage}} </label>
+        <label class="header_name">{{'Banques' | i18n:i18nService.currentLanguage}} </label>
         <button class="close-button btn btn-default" (click)="closeThisComponent()">X</button>
     </header>
     <section id="main-container">
@@ -66,18 +66,9 @@
                                 </span>
                             </th>
                         </tr>
-                        <tr style="padding: 0px !important; height: 10px !important;">
-                            <th style=" height: 10px !important;">
-                                <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="name" placeholder="&nbsp;" ariaLabel="Filter Name" />
-                            </th>
-                            <th style="padding: 0px !important;  height: 10px !important;">
-                                <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="name" placeholder="&nbsp;" ariaLabel="Filter Name" />
-                            </th>
-                            <th style=" height: 10px !important;">
-                                <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="name" placeholder="&nbsp;" ariaLabel="Filter Name" />
-                            </th>
-                            <th style="padding: 0px !important; height: 10px !important;">
-                                <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field="codeSaisie" placeholder="&nbsp;" ariaLabel="Filter Country" />
+                        <tr class="filter-row">
+                            <th *ngFor="let col of col">
+                                <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
                             </th>
                         </tr>
                     </ng-template>
@@ -89,13 +80,9 @@
                             <td style="font-size: 15px !important;">{{fl.rib}}</td>
 
                             <td class="act-col">
-
                                 <p-checkbox [readonly]="true" [(ngModel)]="fl.actif" [binary]="true" inputId="binary">{{fl.actif}}</p-checkbox>
                             </td>
-                            <td class="act-col">
 
-                                <p-checkbox [readonly]="true" [(ngModel)]="fl.visible" [binary]="true" inputId="binary">{{fl.visible}}</p-checkbox>
-                            </td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage">
@@ -142,12 +129,12 @@
                         <label class="control-label  flex-4" style="width: 25%; "> {{'CodeSaisie' | i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                         <div class="control-input flex-5-45 ">
-                            <input id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class="onlyForCentral form-control-dev input-xs" required="true">
+                            <input readonly disabled id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class="form-control-dev input-xs" #codeSaisieInput required [(ngModel)]="codeSaisie">
 
                         </div>
                     </section>
                     <section class="flex-row-start flex-6 ">
-                        <p-checkbox [binary]="true" name="actif" value="val3" [label]="LabelActif"></p-checkbox>
+                        <p-checkbox [binary]="true" name="actif" [(ngModel)]="actif" value="val3" [label]="LabelActif"></p-checkbox>
                     </section>
                 </div>
                 <div class="flex-row-start flex-12">
@@ -155,14 +142,14 @@
                         <label class="control-label flex-4 ">{{'DesignationAr' | i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                         <div class="control-input flex-5-45">
-                            <input type="text" id="designation_ar" maxlength="200" name="designation_ar" class="onlyForCentral form-control-dev input-xs" required="true">
+                            <input type="text" id="designation_ar" maxlength="200" name="designation_ar" class="form-control-dev input-xs" #desginationArInput required [(ngModel)]="designationAr">
                         </div>
                     </section>
                     <section class="flex-row-start flex-6">
                         <label class="control-label  flex-4  "> {{'DesignationLt' | i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                         <div class="control-input flex-5-45 ">
-                            <input type="text" id="designation_ar" maxlength="200" name="designation_ar" class="onlyForCentral form-control-dev input-xs" required="true">
+                            <input type="text" id="designation_ar" maxlength="200" name="designation_ar" class="form-control-dev input-xs" #desginationLtInput required [(ngModel)]="designationLt">
 
 
                         </div>
@@ -174,7 +161,7 @@
                         <label class="control-label  flex-4"> رقم الحساب : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                         <div class="control-input  flex-5-45">
-                            <input type="text" id="rib" maxlength="200" name="rib" class="onlyForCentral form-control-dev input-xs">
+                            <input type="text" id="rib" maxlength="200" name="rib" class="form-control-dev input-xs" #ribInput required [(ngModel)]="rib">
                         </div>
                     </section>
                     <section class="flex-row-start flex-6">

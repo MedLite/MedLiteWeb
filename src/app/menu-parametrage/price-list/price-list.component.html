@@ -3,7 +3,7 @@
     </app-loading>
     <header>
 
-        <label class="header_name">{{'price-list' | i18n:i18nService.currentLanguage}} </label>
+        <label class="header_name">{{'PriceList' | i18n:i18nService.currentLanguage}} </label>
         <button class="close-button btn btn-default" (click)="closeThisComponent()">X</button>
     </header>
     <!-- <aside>
@@ -18,7 +18,8 @@
                     <ng-template pTemplate="caption" class="col-md-12">
                         <div>
                             <div class="flex-row-start FloatRight">
-                                <label class="control-label-titer flex-6">{{'Designation' | i18n:i18nService.currentLanguage}} :</label>
+                                <label class="control-label-titer flex-6">{{'Designation' |
+                                    i18n:i18nService.currentLanguage}} :</label>
                                 <span class="p-input-icon-left ml-auto flex-6">
                                     <input pInputText class="recherche-value" [(ngModel)]="searchTerm"
                                         name="zone-recherche" type="text"
@@ -26,12 +27,13 @@
                                         placeholder=" . . ." />
                                 </span>
                                 <button type="button" class="Bouton-rechercher btn  btn-default " data-original-title="Add" (click)="dt1.filterGlobal($any($event.target).value, 'contains')">
-                                    <div class="bouton_style-2" >{{'Search' | i18n:i18nService.currentLanguage}}</div>
+                                    <div class="bouton_style-2">{{'Search' | i18n:i18nService.currentLanguage}}</div>
                                     <i class="fa-solid fa-magnifying-glass search-icon"
                                         style="font-size: 18px ;padding-top:2px ;"></i>
                                 </button>
                                 <button type="button" class="Bouton-rechercher btn  btn-default " data-original-title="Add" (click)="clear(dt1)" (click)="GelAllBanque()">
-                                    <div class="bouton_style-2">{{'Reinitialiser' | i18n:i18nService.currentLanguage}}</div>
+                                    <div class="bouton_style-2">{{'Reinitialiser' | i18n:i18nService.currentLanguage}}
+                                    </div>
                                     <i class="fa-solid fa-arrows-rotate search-icon"
                                         style=" padding-top: 2px; font-size: 18px;"></i>
                                 </button>
@@ -39,13 +41,11 @@
                             <div class="flex-row-start flex-8 FloatLeft">
                                 <button data-backdrop="false" type="button" class="Bouton-add-new1 btn  btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('add')">
                                     <div class="bouton_style-2"> {{'Add' | i18n:i18nService.currentLanguage}}</div>
-                                    <i class="fa-solid fa-plus add-icon"
-                                         ></i>
+                                    <i class="fa-solid fa-plus add-icon"></i>
                                 </button>
                                 <button data-backdrop="false" type="button" class="Bouton-add-new1 btn  btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('edit')">
                                     <div class="bouton_style-2">{{'Modifier' | i18n:i18nService.currentLanguage}}</div>
-                                    <i class="fa-solid fa-pen modif-icon"
-                                        ></i>
+                                    <i class="fa-solid fa-pen modif-icon"></i>
                                 </button>
                                 <button type="button" class="Bouton-add-new2 btn  btn-default " data-original-title="Delete" data-toggle="modal" data-target="#ModalDelete" (click)="onOpenModal('Delete')">
                                     <div class="bouton_style-2">{{'Delete' | i18n:i18nService.currentLanguage}}</div>
@@ -110,16 +110,14 @@
 
 
 <!-- modal primeNG ADD -->
-<p-dialog id="Modal" header="Header" [scrollLeft]="true" #modal [closeOnEscape]="true" [(visible)]="visibleModal" data-backdrop="false" [modal]="true" styleClass="ModalAdd" [draggable]="false">
-
-
+<p-dialog id="Modal" header="Header" [scrollLeft]="true" #modal [closeOnEscape]="true" [(visible)]="visibleModal" data-backdrop="false" [modal]="true" styleClass="ModalAddLarge" [draggable]="false">
     <ng-template pTemplate="header">
         <h2 class="text-default headerForm"> {{formHeader}}</h2>
-        <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearForm()"> 
-            <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i> 
+        <button class="btn btn-default cancel-add-ModalLarge" :closable="true" data-dismiss="modal" (click)="clearForm()">
+            <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
             {{'Close' | i18n:i18nService.currentLanguage}}
         </button>
-        <button class="btn btn-default save-add-ModalSmall" (click)="PostBanque()"> 
+        <button class="btn btn-default save-add-ModalLarge" (click)="PostBanque()">
             <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
             {{'Save' | i18n:i18nService.currentLanguage}}
         </button>
@@ -132,7 +130,8 @@
             <fieldset class="flex-12">
                 <div class="flex-row-start flex-12">
                     <section class="flex-row-start flex-6">
-                        <label class="control-label  flex-4" style="width: 25%; "> {{'CodeSaisie' | i18n:i18nService.currentLanguage}} : <i
+                        <label class="control-label  flex-4" style="width: 25%; "> {{'CodeSaisie' |
+                            i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                         <div class="control-input flex-5-45 ">
                             <input id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class=" form-control-dev input-xs" #codeSaisieInput required [(ngModel)]="codeSaisie">
@@ -140,7 +139,17 @@
                         </div>
                     </section>
                     <section class="flex-row-start flex-6 ">
-                        <p-checkbox [binary]="true" name="actif" value="val3" [label]="LabelActif"></p-checkbox>
+                        <div class="flex-6">
+                            <label class="control-label flex-4">{{'Societe' | i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                            <div class="dop control-input " style="display: flex; place-content: space-evenly;">
+                                <p-dropdown name="Societe" [filter]="true" appendTo="body" [options]="ListSocieteRslt" [(ngModel)]="selectedSociete" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #Societe="ngModel">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                        <div class="flex-6 PaddingRight" style="align-self: center;">
+                            <p-checkbox [binary]="true" name="actif" value="val3" [label]="LabelActif"></p-checkbox>
+                        </div>
                     </section>
                 </div>
                 <div class="flex-row-start flex-12">
@@ -152,20 +161,20 @@
                         </div>
                     </section>
                     <section class="flex-row-start flex-6">
-                        <label class="control-label  flex-4  "> {{'DesignationLt' | i18n:i18nService.currentLanguage}} : <i
-                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <label class="control-label  flex-4  "> {{'DesignationLt' | i18n:i18nService.currentLanguage}} :
+                            <i class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                         <div class="control-input flex-5-45 ">
                             <input type="text" id="designation_lt" maxlength="200" name="designation_lt" class=" form-control-dev input-xs" #DesignationLtInput required [(ngModel)]="designationLt">
-
-
                         </div>
                     </section>
+                </div>
+            </fieldset>
+        </div>
+        <div class="flex-row-start flex-12">
+            <fieldset class="flex-12">
+                <div class="flex-row-start flex-12">
 
                 </div>
-
-
-
-
             </fieldset>
 
         </div>
@@ -187,10 +196,12 @@
             <fieldset class="deleteForms">
                 <h4 class="text-delete ">هل أنت متأكد من الحذف ?
 
-                    <button class="btn btn-default save-add-ModalSmall" style="right: 430px;" (click)="DeleteBanque(code)"> <i class="fa-solid fa-circle-check" style="color: #065c00;font-size: 16px; padding-right: 10px;"></i>
+                    <button class="btn btn-default save-add-ModalSmall" style="right: 430px;" (click)="DeleteBanque(code)"> <i class="fa-solid fa-circle-check"
+                            style="color: #065c00;font-size: 16px; padding-right: 10px;"></i>
                         حذف
                     </button>
-                    <button class="btn btn-default cancel-add-ModalSmall" style="right: 520px;" :closable="true" data-dismiss="modal"> <i class="fa-solid fa-circle-xmark" style="color: #9e0000;font-size: 16px; padding-right: 5px;"></i>خروج
+                    <button class="btn btn-default cancel-add-ModalSmall" style="right: 520px;" :closable="true" data-dismiss="modal"> <i class="fa-solid fa-circle-xmark"
+                            style="color: #9e0000;font-size: 16px; padding-right: 5px;"></i>خروج
                     </button>
 
 
@@ -213,8 +224,8 @@
 
     <ng-template pTemplate="header">
         <h2 class="text-default headerForm"> {{formHeader}}</h2>
-        <button style="right: 995px;" class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearForm() ; CloseModalPrint()"> <i
-                class="fa-solid fa-circle-xmark" style="color: #9e0000;font-size: 16px; padding-right: 5px;"></i>خروج
+        <button style="right: 995px;" class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearForm() ; CloseModalPrint()"> <i class="fa-solid fa-circle-xmark"
+                style="color: #9e0000;font-size: 16px; padding-right: 5px;"></i>خروج
         </button>
 
     </ng-template>

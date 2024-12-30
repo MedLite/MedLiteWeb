@@ -18,9 +18,9 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 
 
-  {
-    path: 'userprofile', title: 'Dashboard Page', component: UserCompoComponent,
-  },
+  // {
+  //   path: 'userprofile', title: 'Dashboard Page', component: UserCompoComponent,
+  // },
   { path: 'menu_parametarge', loadChildren: () => import('./menu-parametrage/menu-parametrage.module').then(m => m.MenuParametrageModule), data:{title:'Setting',icon:'bx bx-cog'} },
   { path: 'menu_reception', loadChildren: () => import('./menu-reception/menu-reception.module').then(m => m.MenuReceptionModule) , data:{title:'Reception',icon:'bx bx-first-aid'} },
 

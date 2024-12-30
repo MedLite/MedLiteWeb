@@ -1,0 +1,31 @@
+<div class="modal-wrapper" >
+  <section class="modal " #modal>
+    <ng-content style="width: 90%;"></ng-content>
+  </section>
+
+  <div class="modal-overlay" #overlay (click)="onClose()"></div>
+</div>
+
+ 
+<!-- <p-dialog  class="modal-delete" id="ModalDelete" data-backdrop="false" header="Header" [(visible)]="visDelete"
+    styleClass="ModalDelete" [modal]="true" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+        <h2 class="text-default headerForm"> {{formHeader}}</h2>
+    </ng-template>
+    <div class="modal-body">
+        <form action="" #addForms="ngForm">
+            <fieldset class="deleteForms">
+                <h4 class="text-delete ">هل أنت متأكد من الحذف ?
+                    <button class="btn btn-default save-add-ModalSmall" style="right: 430px;"
+                        (click)="DeleteTransfertCaisse()"> <i class="fa-lg fa-fw fa fa-check icon-save"></i>
+                        حذف
+                    </button>
+                    <button class="btn btn-default cancel-add-ModalSmall" style="right: 520px;" :closable="true"
+                        data-dismiss="modal"> <i class="fa-lg fa-fw fa fa-times  icon-fermer "></i>خروج
+                    </button>
+                </h4>
+            </fieldset>
+            <br>
+        </form>
+    </div>
+</p-dialog>  -->

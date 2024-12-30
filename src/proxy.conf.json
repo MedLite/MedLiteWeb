@@ -1,0 +1,24 @@
+{
+    "/auth": {
+        "target": "http://localhost:9099/api",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "timeout": 360000
+    },
+    "/parametrage": {
+        "target": "http://localhost:9099/api",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "timeout": 360000
+    },
+    "/recette": {
+        "target": "http://localhost:9099/api",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "timeout": 360000
+    }
+
+}

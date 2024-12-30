@@ -73,12 +73,18 @@
                 },
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "buildTarget": "MedLiteWeb:build",
+                        "port": 4020
+                    },
                     "configurations": {
                         "production": {
-                            "buildTarget": "MedLiteWeb:build:production"
+                            "buildTarget": "MedLiteWeb:build:production",
+                            "proxyConfig": "src/proxy.conf.json"
                         },
                         "development": {
-                            "buildTarget": "MedLiteWeb:build:development"
+                            "buildTarget": "MedLiteWeb:build:development",
+                            "proxyConfig": "src/proxy.conf.json"
                         }
                     },
                     "defaultConfiguration": "development"
