@@ -5,8 +5,7 @@
     /* Position relative to parent */
     top: 100%;
     /* Position below the main item */
-    left: 0;
-    /* Align left (adjust if needed) */
+    left: 0; 
     background-color: #f9f9f9;
     /* Example background color */
     border: 1px solid #ccc;
