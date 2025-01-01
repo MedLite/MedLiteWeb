@@ -221,7 +221,7 @@
                 <div class="flex-6">
                     <p-panel [header]="HeaderTypeArrvier">
                         <div class="flex-row-start flex-12">
-                            <section class="flex-row-start flex-12" style="justify-content: space-evenly; padding-bottom: 10px;">
+                            <section class="flex-row-start flex-12" style="justify-content: space-evenly; padding-bottom: 10px; padding-top: 10px;">
                                 <p-checkbox [binary]="true" [ngSwitch]="GetPrixOPD()" name="OutPatient" [(ngModel)]="OutPatientBoolean" value="opd" [label]="OutPatient"></p-checkbox>
                                 <p-checkbox [binary]="true" [ngSwitch]="GetPrixIP()" name="InPatient" [(ngModel)]="InPatientBoolean" value="inpatient" [label]="InPatient"></p-checkbox>
                             </section>

@@ -71,13 +71,13 @@ const routes: Routes = [
   {
     path: 'operation',
     component: OperationComponent ,
-    data:{title:'Opération',icon:'bx bx-health'}
+    data:{title:'Operation',icon:'bx bx-health'}
   }
   ,
   {
     path: 'type_intervenant',
     component: TypeIntervenantComponent ,
-    data:{title:'Type intervenant',icon:'bx bx-menu-alt-left'}
+    data:{title:'TypeIntervenant',icon:'bx bx-menu-alt-left'}
   },
   {
     path: 'medecin',

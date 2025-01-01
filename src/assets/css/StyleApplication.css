@@ -371,18 +371,6 @@ tr.mat-footer-row {
     border-bottom: 1px solid #e3e3e3;
 }
 
-:host ::ng-deep .ModalAdd {
-    border-radius: 6px;
-    width: 800px;
-    font-family: auto;
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: 450px;
-    /* position: fixed;
-top: 50px !important;
-bottom: 100px !important; */
-}
-
 :host ::ng-deep .ModalAddSmall {
     border-radius: 6px;
     width: 700px;
@@ -680,7 +668,7 @@ object {
     width: calc(100% - 2px);
     height: 24px;
     padding-left: 0;
-    padding-right: 0;
+    padding-right: 5px;
     font-size: 15px;
     line-height: 1.42857143;
     color: #000000;
@@ -802,17 +790,14 @@ textarea {
     border-radius: 6px;
 }
 
-.flex-1 {
+
+/* .flex-1 {
     flex: 1;
     width: 8.33%;
     text-align: right;
 }
 
-.flex-2 {
-    flex: 2;
-    text-align: right;
-    max-width: 16.67%;
-}
+
 
 .flex-60 {
     text-align: right;
@@ -867,7 +852,8 @@ textarea {
     text-align: right;
 } */
 
-.flex-6-6 {
+
+/* .flex-6-6 {
     flex: 6;
     max-width: 50%;
     padding: 3px 4px 2px;
@@ -890,11 +876,7 @@ textarea {
 }
 
 
-/* .flex-8 {
-flex: 8;
-max-width: 66.67%;
-text-align: right;
-} */
+ 
 
 .flex-9 {
     flex: 9;
@@ -918,7 +900,7 @@ text-align: right;
     flex: 12;
     max-width: 100%;
     text-align: right;
-}
+}  */
 
 .flex-row-start {
     display: flex;
@@ -974,6 +956,8 @@ button.btn.btn-danger.cancel-voir {
     margin-top: 30px;
 }
 
+
+/* 
 .cancel-add-ModalLarge {
     position: fixed;
     right: 1045px;
@@ -986,8 +970,10 @@ button.btn.btn-danger.cancel-voir {
     border: 1px solid #adadad;
     width: 70px;
     font-weight: bold;
-}
+} */
 
+
+/* 
 .save-add-ModalLarge {
     position: fixed;
     right: 1140px;
@@ -1000,11 +986,11 @@ button.btn.btn-danger.cancel-voir {
     border: 1px solid #adadad;
     width: 90px;
     font-weight: bold;
-}
+} */
 
 .cancel-add-ModalSmall {
-    position: fixed;
-    right: 700px;
+    /* position: fixed;
+    right: 700px; */
     font-size: 13px;
     direction: ltr;
     /* height: 30px; */
@@ -1019,14 +1005,11 @@ button.btn.btn-danger.cancel-voir {
 }
 
 .save-add-ModalSmall {
-    position: fixed;
-    right: 600px;
     font-size: 13px;
     direction: ltr;
-    /* height: 30px; */
     border: 1px solid #adadad;
-    /* width: 90px; */
     font-weight: bold;
+    margin-left: 5px;
 }
 
 .save-add-ModalSmall:hover {
@@ -1046,8 +1029,8 @@ button.btn.btn-danger.cancel-voir {
 /* ///modall XXL  */
 
 .cancel-add-ModalSmallXXL {
-    position: fixed;
-    right: 1150px;
+    /* position: fixed;
+    right: 1150px; */
     font-size: 13px;
     direction: ltr;
     border: 1px solid #adadad;
@@ -1060,8 +1043,7 @@ button.btn.btn-danger.cancel-voir {
 }
 
 .save-add-ModalSmallXXL {
-    position: fixed;
-    right: 1060px;
+    margin-left: 10px;
     font-size: 13px;
     direction: ltr;
     border: 1px solid #adadad;
@@ -2457,6 +2439,13 @@ input.p-column-filter {
     margin-right: 10px;
 }
 
+:host ::ng-deep i.fa-lg.fa-fw.fa.fa-times.icon-required {
+    color: red;
+    font-size: 7px;
+    bottom: 3px !important;
+    position: relative;
+}
+
 .flex-1 {
     flex: 1;
     width: 8.33%;
@@ -2605,6 +2594,12 @@ margin-top: 2px; */
     background-position: 0 -15px;
 }
 
+.Bouton_new3:focus,
+.Bouton_new3:hover {
+    background-color: #e0e0e0;
+    background-position: 0 -15px;
+}
+
 .FloatRight {
     float: right;
     margin-top: 2px;
@@ -2613,6 +2608,9 @@ margin-top: 2px; */
 .FloatLeft {
     float: left !important;
     margin-top: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 2px;
 }
 
 .invalid-input {
@@ -2678,4 +2676,75 @@ input#Cash {
 
 input#PEC {
     cursor: pointer;
+}
+
+:host ::ng-deep .ModalAdd {
+    border-radius: 6px;
+    width: 800px;
+    font-family: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 450px;
+}
+
+:host ::ng-deep .ModalAdd {
+    border-radius: 6px;
+    width: 800px;
+    font-family: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 450px;
+}
+
+:host ::ng-deep .ModalAddLarge {
+    border-radius: 6px;
+    width: 1220px;
+    font-family: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 450px;
+}
+
+.cancel-add-ModalLarge {
+    position: fixed;
+    right: 1110px;
+    font-size: 13px;
+    direction: ltr;
+    /* height: 30px; */
+    border: 1px solid #adadad;
+    /* width: 90px; */
+    font-weight: bold;
+}
+
+.cancel-add-ModalLarge:hover {
+    background-color: #A90327 !important;
+    color: white !important;
+}
+
+.cancel-add-ModalLarge:hover .IconBtnModal {
+    color: white !important;
+}
+
+.save-add-ModalLarge {
+    position: fixed;
+    right: 1020px;
+    font-size: 13px;
+    direction: ltr;
+    /* height: 30px; */
+    border: 1px solid #adadad;
+    /* width: 90px; */
+    font-weight: bold;
+}
+
+.save-add-ModalLarge:hover {
+    background-color: darkgreen !important;
+    color: white !important;
+}
+
+.save-add-ModalLarge:hover .IconBtnModal {
+    color: white !important;
+}
+
+.PaddingRight {
+    padding-right: 100px;
 }

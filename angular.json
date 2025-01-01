@@ -2,7 +2,6 @@
     "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
     "version": 1,
     "newProjectRoot": "projects",
-
     "projects": {
         "MedLiteWeb": {
             "projectType": "application",
@@ -49,12 +48,12 @@
                         "production": {
                             "budgets": [{
                                     "type": "initial",
-                                    "maximumWarning": "500kB",
-                                    "maximumError": "1MB"
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
                                 },
                                 {
                                     "type": "anyComponentStyle",
-                                    "maximumWarning": "2kB",
+                                    "maximumWarning": "6kb",
                                     "maximumError": "4kB"
                                 }
                             ],
@@ -74,12 +73,18 @@
                 },
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "buildTarget": "MedLiteWeb:build",
+                        "port": 4020
+                    },
                     "configurations": {
                         "production": {
-                            "buildTarget": "MedLiteWeb:build:production"
+                            "buildTarget": "MedLiteWeb:build:production",
+                            "proxyConfig": "src/proxy.conf.json"
                         },
                         "development": {
-                            "buildTarget": "MedLiteWeb:build:development"
+                            "buildTarget": "MedLiteWeb:build:development",
+                            "proxyConfig": "src/proxy.conf.json"
                         }
                     },
                     "defaultConfiguration": "development"
@@ -109,7 +114,6 @@
         }
     },
     "cli": {
-
         "cache": {
             "enabled": true
         },

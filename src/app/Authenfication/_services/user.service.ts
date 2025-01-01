@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment.development';
+import { Observable } from 'rxjs'; 
+import { environment } from '../../../environments/environment.development';
 
 const API_URL = 'http://localhost:8080/api/test/';
 

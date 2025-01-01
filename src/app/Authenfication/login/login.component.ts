@@ -49,13 +49,12 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     const { userName, password } = this.form;
 
-    // this.authService.login(userName, password).subscribe(
-    //   data => { 
-    //     this.tokenStorage.saveToken(data.token);
-    //     this.tokenStorage.saveUser(data); 
+    this.authService.login(userName, password).subscribe(
+      data => { 
+        this.tokenStorage.saveToken(data.token);
+        this.tokenStorage.saveUser(data); 
 
-    sessionStorage.setItem("userName", userName);
-    sessionStorage.setItem("auth-token", "xxxxx");
+    sessionStorage.setItem("userName", userName); 
 
     sessionStorage.setItem("lang", this.selectedCountry.value);
 
@@ -65,19 +64,19 @@ export class LoginComponent implements OnInit {
 
     this.reloadCurrentRoute();
 
-    // },
-    // err => {
-    //   if ([500].includes(err.status)) {
-    //     alertifyjs.set('notifier', 'position', 'top-left');
-    //     alertifyjs.error('<i class="error fa fa-exclamation-circle" aria-hidden="true" style="margin: 5px 5px 5px;font-size: 15px !important;;""></i>' + ` Service Core Not Available 503`);
-    //     this.playSoundError();
-    //   }
+    },
+    err => {
+      if ([500].includes(err.status)) {
+        alertifyjs.set('notifier', 'position', 'top-left');
+        alertifyjs.error('<i class="error fa fa-exclamation-circle" aria-hidden="true" style="margin: 5px 5px 5px;font-size: 15px !important;;""></i>' + ` Service Core Not Available 503`);
+        this.playSoundError();
+      }
 
 
-    //   this.isLoginFailed = true;
+      this.isLoginFailed = true;
 
-    // }
-    // );
+    }
+    );
   }
 
    

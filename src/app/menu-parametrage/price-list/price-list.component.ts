@@ -79,23 +79,26 @@ export class PriceListComponent {
   selectedFamillePrestation: any = '';
 
 
+  /////// neww Declaration 
 
+  ListSocieteRslt = new Array<any>();
+  selectedSociete:any;
 
 
   ngOnInit(): void {
     this.GetColumns();
     this.GelAllBanque();
-    this.ListFamilleFacturation = [
-      { label: 'Famill Fact 1', value: '1' },
-      { label: 'Famille Fact 2', value: '2' },
-      { label: 'Famille Fact 3', value: '3' },
-    ];
+    // this.ListFamilleFacturation = [
+    //   { label: 'Famill Fact 1', value: '1' },
+    //   { label: 'Famille Fact 2', value: '2' },
+    //   { label: 'Famille Fact 3', value: '3' },
+    // ];
 
-    this.ListFamillePrestation = [
-      { label: 'Famill Pres 1', value: '1' },
-      { label: 'Famille Pres 2', value: '2' },
-      { label: 'Famille Pres 3', value: '3' },
-    ]
+    // this.ListFamillePrestation = [
+    //   { label: 'Famill Pres 1', value: '1' },
+    //   { label: 'Famille Pres 2', value: '2' },
+    //   { label: 'Famille Pres 3', value: '3' },
+    // ]
 
   }
 
@@ -220,6 +223,7 @@ export class PriceListComponent {
       this.formHeader = this.i18nService.getString('Add');
       this.onRowUnselect(event);
       this.clearSelected();
+      this.GetAllSociete();
       this.actif = false;
       this.visible = false;
       this.visibleModal = true;
@@ -443,6 +447,15 @@ export class PriceListComponent {
   }
 
 
+
+  GetAllSociete(){
+    this.ListSocieteRslt=[
+      {label:'Societe1' ,value:1},
+      {label:'Societe2' ,value:2},
+      {label:'Societe3' ,value:3},
+      
+    ]
+  }
 
 
 }

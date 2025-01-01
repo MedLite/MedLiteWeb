@@ -55,7 +55,7 @@ import { FooterComponent } from './Navigation/footer/footer.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AlertComponent } from './Authenfication/alert/alert.component';
@@ -92,7 +92,8 @@ import { CouvertureComponent } from './menu-parametrage/couverture/couverture.co
 import { PriceListComponent } from './menu-parametrage/price-list/price-list.component';
 import { CaisseReceptionComponent } from './menu-reception/caisse-reception/caisse-reception.component';
 
-
+import { authInterceptorProviders, AuthInterceptor } from './Authenfication/_helpers/auth.interceptor';
+import { ModalContentComponent } from './Shared/modal-content/modal-content.component';
 
 const languages = [
   { lang: 'عربي', flag: 'assets/images/county/ar.png', file: arI18n, valeur: 'ar' },
@@ -108,7 +109,7 @@ const languages = [
     UserCompoComponent, BreadcrumbComponent,
     SidebarComponent,
     TopBarComponent, LoadingComponent,
-    FooterComponent, AlertComponent, LoginComponent,
+    FooterComponent, AlertComponent, LoginComponent,ModalContentComponent,
     ////// i18n //////////////// 
     I18nPipe, 
     ///// Menu parametrage 
@@ -125,6 +126,8 @@ const languages = [
     ChambreComponent, PlanningMedecinComponent, CaisseReceptionComponent,
 
 
+
+    
   ],
   imports: [
     BrowserModule, NgxEchartsModule.forRoot({
@@ -142,8 +145,8 @@ const languages = [
     CalendarModule, CheckboxModule, BrowserAnimationsModule, TabViewModule
 
   ],
-  providers: [DatePipe, LoginComponent, LoadingComponent, HttpClient, MessageService,
-
+  providers: [  authInterceptorProviders,DatePipe, LoginComponent, LoadingComponent, HttpClient, MessageService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true ,  }, 
     provideAnimationsAsync(),
   ],
   bootstrap: [AppComponent]
