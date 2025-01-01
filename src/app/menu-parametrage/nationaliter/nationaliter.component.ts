@@ -67,7 +67,7 @@ export class NationaliterComponent  implements OnInit {
   visible!: boolean;
   LabelActif!: string;
   userCreate = "soufien";
-  dataBanque = new Array<any>();
+  DataNationalite = new Array<any>();
   compteur: number = 0;
   listDesig = new Array<any>();
   selectedBanque!: any;
@@ -82,18 +82,13 @@ export class NationaliterComponent  implements OnInit {
 
   ngOnInit(): void {
     this.GetColumns();
-    this.GelAllBanque();
-    this.ListFamilleFacturation = [
-      { label: 'Famill Fact 1', value: '1' },
-      { label: 'Famille Fact 2', value: '2' },
-      { label: 'Famille Fact 3', value: '3' },
-    ];
-
-    this.ListFamillePrestation = [
-      { label: 'Famill Pres 1', value: '1' },
-      { label: 'Famille Pres 2', value: '2' },
-      { label: 'Famille Pres 3', value: '3' },
-    ]
+    //this.GelAllBanque();
+     this.DataNationalite =[
+      {code:1 ,codeSaisie:'P001',designationAr:'test 1',designationLt:'test 2',actif:true},
+      {code:2 ,codeSaisie:'P002',designationAr:'test 2',designationLt:'test 2',actif:false},
+     ]
+     this.loadingComponent.IsLoading = false;
+     this.IsLoading = false;
 
   }
 

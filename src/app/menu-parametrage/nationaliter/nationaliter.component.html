@@ -13,7 +13,7 @@
     <section id="main-container">
         <div class="material-table">
             <div class="card">
-                <p-table #dt1 [columns]="cols" [value]="dataBanque" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedBanque" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
+                <p-table #dt1 [columns]="cols" [value]="DataNationalite" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedBanque" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
                     dataKey="code" [tableStyle]="{'min-width': '50rem', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
                     <ng-template pTemplate="caption" class="col-md-12">
                         <div>
@@ -77,13 +77,13 @@
                             </th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-fl>
-                        <tr [pSelectableRow]="fl">
-                            <td style="font-size: 15px !important;">{{fl.codeSaisie}}</td>
-                            <td style="font-size: 15px !important;">{{fl.designationAr}}</td>
-                            <td style="font-size: 15px !important;">{{fl.designationLt}}</td>
+                    <ng-template pTemplate="body" let-domaine>
+                        <tr [pSelectableRow]="domaine">
+                            <td style="font-size: 15px !important;">{{domaine.codeSaisie}}</td>
+                            <td style="font-size: 15px !important;">{{domaine.designationAr}}</td>
+                            <td style="font-size: 15px !important;">{{domaine.designationLt}}</td>
                             <td class="act-col">
-                                <p-checkbox [readonly]="true" [(ngModel)]="fl.actif" [binary]="true" inputId="binary">{{fl.actif}}</p-checkbox>
+                                <p-checkbox [readonly]="true" [(ngModel)]="domaine.actif" [binary]="true" inputId="binary">{{domaine.actif}}</p-checkbox>
                             </td>
                         </tr>
                     </ng-template>
