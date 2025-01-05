@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 ////// trans I18N
 
-import { I18nPipe } from './Shared/i18n/i18n.pipe';
+ 
 import * as enI18n from './Shared/i18n/en.i18n';
 import * as frI18n from './Shared/i18n/fr.i18n';
 import * as arI18n from './Shared/i18n/ar.i18n';
@@ -94,6 +94,10 @@ import { CaisseReceptionComponent } from './menu-reception/caisse-reception/cais
 
 import { authInterceptorProviders, AuthInterceptor } from './Authenfication/_helpers/auth.interceptor';
 import { ModalContentComponent } from './Shared/modal-content/modal-content.component';
+import { SpecialiteCabinetComponent } from './menu-parametrage/specialite-cabinet/specialite-cabinet.component';
+import { SpecialiteMedecinComponent } from './menu-parametrage/specialite-medecin/specialite-medecin.component';
+import { MenuParametrageComponent } from './menu-parametrage/menu-parametrage.component';
+import { I18nPipe } from './Shared/i18n/i18n.pipe';
 
 const languages = [
   { lang: 'عربي', flag: 'assets/images/county/ar.png', file: arI18n, valeur: 'ar' },
@@ -111,14 +115,13 @@ const languages = [
     TopBarComponent, LoadingComponent,
     FooterComponent, AlertComponent, LoginComponent,ModalContentComponent,
     ////// i18n //////////////// 
-    I18nPipe, 
+    I18nPipe,
     ///// Menu parametrage 
-
     NationaliterComponent, VilleComponent,CabinetComponent,SocieteComponent, 
     PriceListComponent,CouvertureComponent,ConventionComponent,CaisseComponent, 
     FournisseurComponent, PrestationComponent,OperationComponent, TypeIntervenantComponent, 
     MedecinComponent, ResponsableRemiseComponent,ModeReglementComponent,FamilleFacturationComponent,
-    BanqueComponent, FamilleOperationComponent,FamillePrestationComponent,
+    BanqueComponent, FamilleOperationComponent,FamillePrestationComponent,SpecialiteCabinetComponent,SpecialiteMedecinComponent,
     
     ////////////// Menu REception
 

@@ -66,7 +66,7 @@ export class NationaliterComponent  implements OnInit {
   actif!: boolean;
   visible!: boolean;
   LabelActif!: string;
-  userCreate = "soufien";
+    userCreate = sessionStorage.getItem("userName");
   DataNationalite = new Array<any>();
   compteur: number = 0;
   listDesig = new Array<any>();
@@ -429,7 +429,7 @@ export class NationaliterComponent  implements OnInit {
     this.loadingComponent.IsLoading = false;
     this.IsLoading = false;
 
-    //   this.dataBanque = data;
+    //   this.DataNationalite = data;
     //   this.onRowUnselect(event);
 
     // }) 

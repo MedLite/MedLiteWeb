@@ -97,7 +97,7 @@ export class PrestationComponent implements OnInit {
   InPatient!: string;
   HeaderTypeArrvier !: string;
   PrixSelonTypeArriver !: string;
-  userCreate = "soufien";
+    userCreate = sessionStorage.getItem("userName");
   dataBanque = new Array<any>();
   compteur: number = 0;
   listDesig = new Array<any>();

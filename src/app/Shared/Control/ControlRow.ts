@@ -50,23 +50,23 @@ export class ControlServiceAlertify {
   ShowSavedOK(){
     const fieldSavedMessage = this.i18nService.getString('SuccessSaved');  // Default to English if not found
     alertifyjs.notify(
-      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/ok.png" alt="image" >` +
+      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/OkSaved.gif" alt="image" >` +
       fieldSavedMessage
     ); 
   }
   ShowUpdatedOK(){
     const fieldUpdatedMessage = this.i18nService.getString('UpdatedOK');  // Default to English if not found
     alertifyjs.notify(
-      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/ok.png" alt="image" >` +
+      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/OkSaved.gif" alt="image" >` +
       fieldUpdatedMessage
     ); 
   }
 
 
   ShowDeletedOK(){
-    const fieldUpdatedMessage = this.i18nService.getString('DeletedOK');  // Default to English if not found
+    const fieldUpdatedMessage = this.i18nService.getString('DeletedOK');  
     alertifyjs.notify(
-      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/ok.png" alt="image" >` +
+      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/OkSaved.gif" alt="image" >` +
       fieldUpdatedMessage
     ); 
   }

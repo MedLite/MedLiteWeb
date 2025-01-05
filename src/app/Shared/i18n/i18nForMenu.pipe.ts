@@ -2,9 +2,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { I18nService } from './i18n.service';
 
 @Pipe({
-  name: 'i18n'
+  name: 'i18nForMenu'
 })
-export class I18nPipe implements PipeTransform {
+ 
+
+export class I18nPipeForMenu implements PipeTransform {
   constructor(private i18nService: I18nService) { }
   transform(value: any, ...args: any[]): any {
     if (value) {
@@ -14,5 +16,3 @@ export class I18nPipe implements PipeTransform {
   }
 
 }
-
- 

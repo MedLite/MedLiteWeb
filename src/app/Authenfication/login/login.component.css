@@ -49,11 +49,11 @@ label {
 }
 
 .Langage {
-    position: absolute;
-    left: 210px;
-    height: 40px;
-    top: 301px;
-    /* background: #ffffff; */
+    /* position: absolute; */
+    /* left: 210px; */
+    /* height: 40px; */
+    /* top: 301px; */
+    justify-self: center;
 }
 
 :host ::ng-deep .p-dropdown-trigger {

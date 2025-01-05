@@ -1,8 +1,5 @@
-import { Injectable, Inject } from '@angular/core';
-// import frI18n from '../../assets/i18n/fr.i18n';
-// import enI18n from '../../assets/i18n/en.i18n';
+import { Injectable, Inject } from '@angular/core'; 
 import { i18nConfigService } from './i18n-config.service';
-import { HttpClient } from '@angular/common/http';
 @Injectable(
   // {providedIn: 'root'}
  
@@ -16,8 +13,7 @@ export class I18nService {
   }
 
   initLang() {
-    if (sessionStorage.getItem('lang')) {
-      // console.log('getting old lang')
+    if (sessionStorage.getItem('lang')) { 
       this.currentLanguage = sessionStorage.getItem('lang');
     } else {
       sessionStorage.setItem('lang', 'ar');

@@ -11,12 +11,12 @@ import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
 
 declare const PDFObject: any;
 @Component({
-  selector: 'app-banque',
-  templateUrl: './banque.component.html',
-  styleUrls: ['./banque.component.css', '.../../../src/assets/css/StyleApplication.css'],
+  selector: 'app-specialite-medecin',
+  templateUrl: './specialite-medecin.component.html',
+  styleUrls: ['./specialite-medecin.component.css', '.../../../src/assets/css/StyleApplication.css'],
   providers: [ConfirmationService, MessageService, InputValidationService, ControlServiceAlertify]
 })
-export class BanqueComponent implements OnInit {
+export class SpecialiteMedecinComponent implements OnInit {
 
   @ViewChild('codeSaisieInput') codeSaisieInputElement!: ElementRef;
   @ViewChild('desginationArInput') desginationArInputElement!: ElementRef;
@@ -38,13 +38,12 @@ export class BanqueComponent implements OnInit {
   codeSaisie: any;
   designationAr: string = 'NULL';
   designationLt: string = "NULL";
-  rib!: string;
   actif!: boolean;
-  selectedBanque!: any;
+  selectedSpecialiteMedecin!: any;
   LabelActif!: string;
 
   userCreate = sessionStorage.getItem("userName");
-  dataBanque = new Array<any>(); 
+  dataSpecialiteMedecin = new Array<any>(); 
 
   constructor(public param_service: ParametargeService, public i18nService: I18nService,
     private router: Router, private loadingComponent: LoadingComponent,
@@ -56,7 +55,7 @@ export class BanqueComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetColumns();
-    this.GelAllBanque();
+    this.GelAllSpecialiteMedecin();
   }
 
   GetColumns() {
@@ -64,7 +63,6 @@ export class BanqueComponent implements OnInit {
       { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '20%', filter: "true" },
       { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '20%', filter: "true" },
       { field: 'designationLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '20%', filter: "false" },
-      { field: 'rib', header: this.i18nService.getString('Rib') || 'Rib', width: '20%', filter: "false" },
       { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '20%', filter: "true" },
     ];
   }
@@ -81,7 +79,7 @@ export class BanqueComponent implements OnInit {
 
 
   GetCodeSaisie() {
-    this.param_service.GetCompteur("CodeSaisieBQ").
+    this.param_service.GetCompteur("CodeSaisieSpMdecin").
       subscribe((data: any) => {
         this.codeSaisie = data.prefixe + data.suffixe;
       })
@@ -104,7 +102,6 @@ export class BanqueComponent implements OnInit {
     this.actif = false;
     this.visibleModal = false;
     this.codeSaisie = '';
-    this.rib = '';
     this.onRowUnselect(event);
   }
 
@@ -114,19 +111,18 @@ export class BanqueComponent implements OnInit {
     this.codeSaisie = event.data.codeSaisie;
     this.designationAr = event.data.designationAr;
     this.designationLt = event.data.designationLt;
-    this.rib = event.data.rib;
     console.log('vtData : ', event);
   }
   onRowUnselect(event: any) {
     console.log('row unselect : ', event);
-    this.selectedBanque = '';
+    this.selectedSpecialiteMedecin = '';
     this.code = event.data = null;
   }
 
 
 
-  DeleteBanque(code: any) {
-    this.param_service.DeleteBanque(code).subscribe(
+  DeleteSpecialiteMedecin(code: any) {
+    this.param_service.DeleteSpecialiteMedecin(code).subscribe(
       (res: any) => {
         this.CtrlAlertify.showLabel();
         this.CtrlAlertify.ShowDeletedOK();
@@ -202,7 +198,7 @@ export class BanqueComponent implements OnInit {
         this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
       } else {
         button.setAttribute('data-target', '#ModalPrint');
-        this.formHeader = "Imprimer Liste Banque"
+        this.formHeader = "Imprimer Liste SpecialiteMedecin"
         this.visibleModalPrint = true;
         // this.RemplirePrint();
       }
@@ -215,13 +211,12 @@ export class BanqueComponent implements OnInit {
     const codeSaisie = this.validationService.validateInputCommun(this.codeSaisieInputElement, this.codeSaisie);
     const designationAr = this.validationService.validateInputCommun(this.desginationArInputElement, this.designationAr);
     const designationLt = this.validationService.validateInputCommun(this.desginationLtInputElement, this.designationLt);
-    const rib = this.validationService.validateInputCommun(this.ribInputInputElement, this.rib);
-    return codeSaisie && designationAr && designationLt && rib;
+    return codeSaisie && designationAr && designationLt ;
   }
 
 
 
-  PostBanque() {
+  PostSpecialiteMedecin() {
     const isValid = this.validateAllInputs();
     if (isValid) {
       let body = {
@@ -229,14 +224,13 @@ export class BanqueComponent implements OnInit {
         designationAr: this.designationAr,
         designationLt: this.designationLt,
         userCreate: this.userCreate,
-        rib: this.rib,
         dateCreate: new Date().toISOString(),
         code: this.code,
         actif: this.actif,
       }
       if (this.code != null) {
         body['code'] = this.code;
-        this.param_service.UpdateBanque(body).subscribe(
+        this.param_service.UpdateSpecialiteMedecin(body).subscribe(
           (res: any) => {
             this.CtrlAlertify.showLabel();
             this.CtrlAlertify.ShowUpdatedOK();
@@ -249,7 +243,7 @@ export class BanqueComponent implements OnInit {
         );
       }
       else {
-        this.param_service.PostBanque(body).subscribe(
+        this.param_service.PostSpecialiteMedecin(body).subscribe(
           (res: any) => {
             this.CtrlAlertify.showLabel();
             this.CtrlAlertify.ShowSavedOK();
@@ -268,11 +262,11 @@ export class BanqueComponent implements OnInit {
   }
 
 
-  GelAllBanque() {
-    this.param_service.GetBanque().subscribe((data: any) => {
+  GelAllSpecialiteMedecin() {
+    this.param_service.GetSpecialiteMedecin().subscribe((data: any) => {
       this.loadingComponent.IsLoading = false;
       this.IsLoading = false;
-      this.dataBanque = data;
+      this.dataSpecialiteMedecin = data;
       this.onRowUnselect(event);
     })
   }

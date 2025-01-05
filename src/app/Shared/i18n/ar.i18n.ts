@@ -14,10 +14,13 @@ const arI18n = {
   'Responsable remise': 'مسؤول التخفيض',
   'Societes': 'الجهات',
   'Societe': 'الجهة',
+  'Forfait': 'الصفقة',
   'Caisse': 'الخزائن',
   'Fournisseur': 'الموردين',
   'Prestation': 'الخدمات',
   'Operation': 'العمليات',
+  'TypeOperation': 'نوع العملية', 
+  'BlocOperation': 'جناح العملية', 
   'TypeIntervenant': 'انواع العناصر الطبية ',
   'Medecin': 'الأطباء',
   'Banques': 'المصارف',
@@ -52,7 +55,7 @@ const arI18n = {
   'Choisie': 'إختيار',
   'CodePatient': 'الرقم الطبي',
   'CodeMedecin': 'الرمز',
-  'SpecialiteMedecin': 'التخصص',
+  'SpecialiteMedecin': 'تخصص الأطباء',
   'CabinetDesgiantion': 'العيادة',
   'MontantTotal': 'القيمة',
   'NomMedecin': 'الطبيب',
@@ -84,7 +87,13 @@ const arI18n = {
   'NumPiece':'رقم المستند',
   'SuccessSaved':'تم الحفظ بنجاح',
   'UpdatedOK':'تم التحيين بنجاح',
-  'DeletedOK':'تم الحذف بنجاح'
+  'DeletedOK':'تم الحذف بنجاح',
+  'SpecialiteCabinet':'تخصص العيادة', 
+  'Parametrage_General':'الإعدادات العامة',
+  'Responsable_remise':'مسوؤل التخفيض',
+  'Tresorerie':'الإيرادات و المصروفات',
+  'SettingGeneral':'إعدادات عامة'
+ 
  
 };
 

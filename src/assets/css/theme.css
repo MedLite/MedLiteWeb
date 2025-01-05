@@ -1276,10 +1276,10 @@ p-inputswitch.ng-dirty.ng-invalid>.p-inputswitch {
 
 .p-inputtext {
     font-family: auto;
-    font-size: 14px !important;
+    /* font-size: 14px !important; */
     color: #495057;
     background: #fff;
-    padding: 5px;
+    /* padding: 5px; */
     border: 1px solid #ced4da;
     transition: background-color .15s, border-color .15s, box-shadow .15s;
     appearance: none;

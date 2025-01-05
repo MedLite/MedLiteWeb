@@ -855,7 +855,7 @@ export class AdmissionComponent implements OnInit {
       console.log("transformDateFormat: ", this.dateFactureFournisseur);
     }
   };
-  userCreate = "soufien";
+    userCreate = sessionStorage.getItem("userName");
   // datecreate !: Date;
   // currentDate = new Date();
 

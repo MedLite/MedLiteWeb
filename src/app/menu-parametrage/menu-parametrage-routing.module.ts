@@ -21,6 +21,8 @@ import { FamilleFacturationComponent } from './famille-facturation/famille-factu
 import { ConventionComponent } from './convention/convention.component';
 import { PriceListComponent } from './price-list/price-list.component';
 import { CouvertureComponent } from './couverture/couverture.component';
+import { SpecialiteMedecinComponent } from './specialite-medecin/specialite-medecin.component';
+import { SpecialiteCabinetComponent } from './specialite-cabinet/specialite-cabinet.component';
  
  
 
@@ -129,8 +131,18 @@ const routes: Routes = [
     path: 'list_couverture',
     component: CouvertureComponent ,
     data:{title:'ListCouverture',icon:'bx bx-shield-quarter'}
+  },
+  {
+    path: 'specialite_medecin',
+    component: SpecialiteMedecinComponent ,
+    data:{title:'SpecialiteMedecin',icon:'bx bx-shield-quarter'}
   }
-  
+  ,
+  {
+    path: 'specialite_cabinet',
+    component: SpecialiteCabinetComponent ,
+    data:{title:'SpecialiteCabinet',icon:'bx bx-shield-quarter'}
+  }
 
 ];
 

@@ -125,14 +125,14 @@ export class AuthInterceptor implements HttpInterceptor {
       if (error.error?.description != undefined) { 
         alertifyjs.set('notifier', 'position', 'top-left');
         alertifyjs.notify(
-          '<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/backend.gif" alt="image" >' +
+          '<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/backend.gif" alt="image" >' +
           ` Error Backend`
         );
 
 
       } else { 
         alertifyjs.set('notifier', 'position', 'top-left');
-        alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/error.gif" alt="image" >' + error.error?.description);
+        alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/error.gif" alt="image" >' + error.error?.description);
 
 
       }
@@ -147,7 +147,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (currentTime - this.lastNotificationTime > 2000) { // Only notify every 2 seconds
       this.lastNotificationTime = currentTime;
       alertifyjs.set('notifier', 'position', 'top-left');
-      alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/error.gif" alt="image" >   Token has expired');
+      alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/error.gif" alt="image" >   Token has expired');
       const currentUrl = window.location.pathname;
 
       if (currentUrl !== '/login') {
@@ -163,7 +163,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (currentTime - this.lastNotificationTime > 2000) { 
       this.lastNotificationTime = currentTime;
       alertifyjs.set('notifier', 'position', 'top-left');
-      alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/expSession.png" alt="image" >' + errorResp.error?.description);
+      alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/expSession.png" alt="image" >' + errorResp.error?.description);
       const currentUrl = window.location.pathname;
 
       if (currentUrl !== '/login') {
@@ -181,10 +181,10 @@ export class AuthInterceptor implements HttpInterceptor {
       alertifyjs.set('notifier', 'position', 'top-left'); 
       if ( errorResp.error?.type =='application/json'){
 
-        alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/error.gif" alt="image" > لا توجد بيانات'  );
+        alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/error.gif" alt="image" > لا توجد بيانات'  );
 
       }else{
-        alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/error.gif" alt="image" >' + errorResp.error?.description);
+        alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/error.gif" alt="image" >' + errorResp.error?.description);
 
       } 
     }
@@ -197,7 +197,7 @@ export class AuthInterceptor implements HttpInterceptor {
       alertifyjs.set('notifier', 'position', 'top-left');
 
 
-      alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/error.gif" alt="image" >' + errorResp.error?.fieldErrors[0].field + ' ' + errorResp.error?.fieldErrors[0].message + ' From Core ');
+      alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/error.gif" alt="image" >' + errorResp.error?.fieldErrors[0].field + ' ' + errorResp.error?.fieldErrors[0].message + ' From Core ');
 
 
 
@@ -209,7 +209,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (currentTime - this.lastNotificationTime > 2000) { // Only notify every 2 seconds
       this.lastNotificationTime = currentTime;
       alertifyjs.set('notifier', 'position', 'top-left');
-      alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/error.gif" alt="image" >' + errorResp.error?.error);
+      alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/error.gif" alt="image" >' + errorResp.error?.error);
 
     }
   }

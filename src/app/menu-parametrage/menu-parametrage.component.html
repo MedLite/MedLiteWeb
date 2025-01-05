@@ -1,0 +1,139 @@
+<div class="container">
+    <div class="row text-center">
+        <h2> {{'Setting' | i18nForMenu:i18nService.currentLanguage}} </h2>
+        <div id="menu-box">
+            <div id="item" class="col-sm-6 col-md-3 myDIV ">
+                <div class="container-block ">
+                    <div class="block1">
+                        <i class="fa fa-tablet"></i>
+                    </div>
+                    <div class="block2 ">
+                        <span class="FloatRight">  {{'Prestation' | i18nForMenu:i18nService.currentLanguage}}  </span>
+                        <mat-icon class="FloatLeft" mat-button [matMenuTriggerFor]="menu1">more_vert</mat-icon>
+                        <mat-menu #menu1="matMenu" class="div-panel">
+                            <button mat-menu-item [routerLink]="['/param_filaille']"> <i class='bx bx-first-aid'></i> {{'Prestation' | i18nForMenu:i18nService.currentLanguage}}</button>
+                            <button mat-menu-item [routerLink]="['/param_filaille']"> <i class='bx bx-food-menu'></i> {{'FamillePrestation' | i18nForMenu:i18nService.currentLanguage}}</button>
+                            <button mat-menu-item [routerLink]="['/affectation_filaille']"><i class='bx bx-detail'></i> {{'FamilleFacturation' | i18nForMenu:i18nService.currentLanguage}}</button>
+                        </mat-menu>
+                    </div>
+                </div>
+            </div>
+            <div id="item" class="col-sm-6 col-md-3 myDIV ">
+                <div class="container-block ">
+                    <div class="block1">
+                        <i class="fa fa-tablet"></i>
+                    </div>
+                    <div class="block2 ">
+                        <span class="FloatRight">  {{'Operation' | i18nForMenu:i18nService.currentLanguage}}  </span>
+                        <mat-icon class="FloatLeft" mat-button [matMenuTriggerFor]="menu2">more_vert</mat-icon>
+                        <mat-menu #menu2="matMenu" class="div-panel">
+                            <button mat-menu-item [routerLink]="['/param_filaille']"> <i class='bx bx-health'></i> {{'Operation' | i18nForMenu:i18nService.currentLanguage}}</button>
+                            <button mat-menu-item [routerLink]="['/affectation_filaille']"> <i class='bx bx-link'></i> {{'TypeOperation' | i18nForMenu:i18nService.currentLanguage}}</button>
+                            <button mat-menu-item [routerLink]="['/affectation_filaille']"> <i class='bx bx-link'></i> {{'FamilleOperation' | i18nForMenu:i18nService.currentLanguage}}</button>
+                            <button mat-menu-item [routerLink]="['/affectation_filaille']"> <i class='bx bx-link'></i>  {{'BlocOperation' | i18nForMenu:i18nService.currentLanguage}}</button>
+                        </mat-menu>
+                    </div>
+                </div>
+            </div>
+            <div id="item" class="col-sm-6 col-md-3 myDIV ">
+                <div class="container-block ">
+                    <div class="block1">
+                        <i class="fa fa-tablet"></i>
+                    </div>
+                    <div class="block2 ">
+                        <span class="FloatRight">  {{'Medecin' | i18nForMenu:i18nService.currentLanguage}}  </span>
+                        <mat-icon class="FloatLeft" mat-button [matMenuTriggerFor]="menu3">more_vert</mat-icon>
+                        <mat-menu #menu3="matMenu" class="div-panel">
+                            <button mat-menu-item [routerLink]="['/param_filaille']"> <i class='bx bx-group'></i> {{'Medecin' | i18nForMenu:i18nService.currentLanguage}} </button>
+                            <button mat-menu-item [routerLink]="['/param_filaille']"> <i class='bx bx-menu-alt-left'></i> {{'TypeIntervenant' | i18nForMenu:i18nService.currentLanguage}} </button>
+                            <button mat-menu-item [routerLink]="['/param_filaille']"> <i class='bx bx-group'></i> {{'SpecialiteMedecin' | i18nForMenu:i18nService.currentLanguage}} </button>
+                            <button mat-menu-item [routerLink]="['/affectation_filaille']"> <i class='bx bxs-door-open'></i> {{'Cabinet' | i18nForMenu:i18nService.currentLanguage}}</button>
+                            <button mat-menu-item [routerLink]="['/affectation_filaille']"> <i class='bx bxs-door-open'></i> {{'SpecialiteCabinet' | i18nForMenu:i18nService.currentLanguage}}</button>
+                        </mat-menu>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div id="item" class="col-sm-6 col-md-3 myDIV ">
+                <div class="container-block ">
+                    <div class="block1">
+                        <i class='bx bxs-arch'></i>
+                    </div>
+                    <div class="block2 ">
+                        <span class="FloatRight">  {{'Societe' | i18nForMenu:i18nService.currentLanguage}}  </span>
+                        <mat-icon class="FloatLeft" mat-button [matMenuTriggerFor]="menu4">more_vert</mat-icon>
+                        <mat-menu #menu4="matMenu" class="div-panel">
+                            <button mat-menu-item [routerLink]="['/param_filaille']"><i class='bx bxl-algolia'></i>  {{'Convention' | i18nForMenu:i18nService.currentLanguage}}</button>
+                            <button mat-menu-item [routerLink]="['/affectation_filaille']"> <mat-icon>settings_input_composite</mat-icon> {{'Forfait' | i18nForMenu:i18nService.currentLanguage}}</button>
+                            <button mat-menu-item [routerLink]="['/affectation_filaille']"> <i class='bx bxs-arch'></i> {{'Societe' | i18nForMenu:i18nService.currentLanguage}}</button>
+                            <button mat-menu-item [routerLink]="['/affectation_filaille']"> <i class='bx bx-shield-quarter'></i>{{'ListCouverture' | i18nForMenu:i18nService.currentLanguage}}</button>
+                        </mat-menu>
+                    </div>
+                </div>
+            </div>
+            <div id="item" class="col-sm-6 col-md-3" [routerLink]="['/filaille']">
+                <div class="container-block">
+                    <div class="block1">
+                        <i class='bx bx-file'></i>
+                    </div>
+                    <div class="block2">
+                        <span class="FloatRight">  {{'PriceList' | i18nForMenu:i18nService.currentLanguage}}  </span>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div id="item" class="col-sm-6 col-md-3" [routerLink]="['/filaille']">
+                <div class="container-block">
+                    <div class="block1">
+                        <i class='bx bx-user'></i>
+                    </div>
+                    <div class="block2">
+                        <span class="FloatRight">  {{'Responsable_remise' | i18nForMenu:i18nService.currentLanguage}}  </span>
+                    </div>
+                </div>
+            </div>
+            <div id="item" class="col-sm-6 col-md-3 myDIV ">
+                <div class="container-block ">
+                    <div class="block1">
+                        <i class="fa fa-tablet"></i>
+                    </div>
+                    <div class="block2 ">
+                        <span class="FloatRight">  {{'Tresorerie' | i18nForMenu:i18nService.currentLanguage}}  </span>
+                        <mat-icon class="FloatLeft" mat-button [matMenuTriggerFor]="menu5">more_vert</mat-icon>
+                        <mat-menu #menu5="matMenu" class="div-panel">
+                            <button mat-menu-item [routerLink]="['/param_filaille']"> <i class='bx bx-list-ul'></i> {{'Caisse' | i18nForMenu:i18nService.currentLanguage}} </button>
+                            <button mat-menu-item [routerLink]="['/affectation_filaille']"> <i class='bx bxs-user-badge'></i> {{'Fournisseur' | i18nForMenu:i18nService.currentLanguage}} </button>
+                            <button mat-menu-item [routerLink]="['/affectation_filaille']"> <i class='bx bxs-bank'></i> {{'Banques' | i18nForMenu:i18nService.currentLanguage}} </button>
+                            <button mat-menu-item [routerLink]="['/affectation_filaille']"> <i class='bx bx-credit-card'></i> {{'ModeReglement' | i18nForMenu:i18nService.currentLanguage}} </button>
+                        </mat-menu>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="item" class="col-sm-6 col-md-3">
+                <div class="container-block">
+                    <div class="block1">
+                        <i class="fa fa-keyboard-o"></i>
+                    </div>
+                    <div class="block2 ">
+                        <span class="FloatRight">  {{'SettingGeneral' | i18nForMenu:i18nService.currentLanguage}}  </span>
+                        <mat-icon class="FloatLeft" mat-button [matMenuTriggerFor]="menu6">more_vert</mat-icon>
+                        <mat-menu #menu6="matMenu" class="div-panel">
+                            <button mat-menu-item [routerLink]="['/param_filaille']">  <i class='bx bx-map'></i>   {{'Ville' | i18nForMenu:i18nService.currentLanguage}} </button>
+                            <button mat-menu-item [routerLink]="['/affectation_filaille']">  <i class='bx bx-map-pin'></i>   {{'Nationalité' | i18nForMenu:i18nService.currentLanguage}}</button>
+                        </mat-menu>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>

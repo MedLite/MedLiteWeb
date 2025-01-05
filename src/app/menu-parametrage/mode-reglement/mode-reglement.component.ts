@@ -67,7 +67,7 @@ export class ModeReglementComponent implements OnInit {
   visible!: boolean;
   LabelActif!: string;
   LabelReqBanque!: string;
-  userCreate = "soufien";
+    userCreate = sessionStorage.getItem("userName");
   dataModeReglement = new Array<any>();
   compteur: number = 0;
   listDesig = new Array<any>();
