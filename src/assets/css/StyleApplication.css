@@ -2687,6 +2687,7 @@ input#PEC {
     overflow-y: auto;
     overflow-x: hidden;
     height: 450px;
+    margin-top: 90px;
 }
 
 :host ::ng-deep .ModalAdd {
@@ -2749,4 +2750,8 @@ input#PEC {
 
 .PaddingRight {
     padding-right: 100px;
+}
+
+:host ::ng-deep .p-dialog-mask {
+    align-items: baseline !important;
 }

@@ -22,7 +22,7 @@
 @import "../src/assets/css/app.css";
 @import "../src/assets/css/theme.css";
 @import "../src/assets/css/icons.css";
-@import '@angular/material/prebuilt-themes/azure-blue.css';
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
 @import 'material-design-icons/iconfont/material-icons.css';
 html,
 body {

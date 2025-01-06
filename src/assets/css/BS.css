@@ -3212,10 +3212,6 @@ textarea.form-control {
     height: auto;
 }
 
-input[type="search"] {
-    /* -webkit-appearance: none; */
-}
-
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
     input[type="date"].form-control,
     input[type="time"].form-control,
@@ -8056,7 +8052,7 @@ button.close {
 
 /*# sourceMappingURL=bootstrap.css.map */
 
-:host ::ng-deep .mat-mdc-menu-item {
+.mat-mdc-menu-item {
     display: flex;
     position: relative;
     align-items: center;
@@ -8072,7 +8068,7 @@ button.close {
     background: none;
     text-decoration: none;
     margin: 0;
-    min-height: 35px;
+    min-height: 35px !important;
     padding-left: var(--mat-menu-item-leading-spacing, 12px);
     padding-right: var(--mat-menu-item-trailing-spacing, 12px);
     -webkit-user-select: none;
@@ -8081,8 +8077,4 @@ button.close {
     outline: none;
     border: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
-}
-
-.xxx {
-    font-size: 18px !important;
 }

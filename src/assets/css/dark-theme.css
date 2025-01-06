@@ -1251,3 +1251,20 @@ html.dark-theme .p-dropdown-panel {
 html.dark-theme .radio-item label {
     color: #ffffff;
 }
+
+html.dark-theme .block2 span {
+    color: rgb(255 255 255) !important;
+}
+
+html.dark-theme .mat-mdc-menu-panel {
+    background-color: #272727 !important;
+}
+
+html.dark-theme #item:hover .block2 span {
+    -webkit-transition: all 0.4s ease-in;
+    -moz-transition: all 0.4s ease-in;
+    -ms-transition: all 0.4s ease-in;
+    -o-transition: all 0.4s ease-in;
+    transition: all 0.4s ease-in;
+    color: #008cff;
+}

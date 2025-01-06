@@ -40,6 +40,8 @@ export class InputValidationService {
     }
   }
 
+
+
   validateInput2(inputElement: ElementRef, errorMessageContainer: ElementRef | undefined, value: string, fieldName: string): boolean {
     let isValid = true;
     let errorMessage = '';
