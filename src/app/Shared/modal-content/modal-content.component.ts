@@ -41,6 +41,7 @@ export class ModalContentComponent implements OnInit {
         this.isLoginFailed = false;
         this.isLoggedIn = true; 
         this.onClose(); 
+        
       },
       err => {
         if ([500].includes(err.status)) {
@@ -58,6 +59,11 @@ export class ModalContentComponent implements OnInit {
   onClose() {
     // outside click
     this.modalService.close();
+ 
+      setTimeout(() => {
+        window.location.reload();
+      }, 1);
+   
   }
   playSoundError() {
     let audio = new Audio();

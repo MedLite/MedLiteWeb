@@ -104,7 +104,7 @@ p {
     display: flex;
     width: 25px;
     text-align: center;
-    margin: 15px 5px 0px 0px;
+    margin: 7px 5px 0px 0px;
 }
 
 .block1 i {
@@ -125,18 +125,29 @@ p {
     -ms-transition: all 0.4s ease-in;
     -o-transition: all 0.4s ease-in;
     transition: all 0.4s ease-in;
-    color: #6733ff;
+    color: #005ded;
 }
 
-#item:focus .block2 p,
-#item:active .block2 p,
-#item:hover .block2 p {
+#item:focus .block2 span,
+#item:active .block2 span,
+#item:hover .block2 span {
     -webkit-transition: all 0.4s ease-in;
     -moz-transition: all 0.4s ease-in;
     -ms-transition: all 0.4s ease-in;
     -o-transition: all 0.4s ease-in;
     transition: all 0.4s ease-in;
-    color: #6733ff;
+    color: #005ded;
+}
+
+.mat-icon:focus,
+.mat-icon:active,
+.mat-icon:hover {
+    -webkit-transition: all 0.4s ease-in;
+    -moz-transition: all 0.4s ease-in;
+    -ms-transition: all 0.4s ease-in;
+    -o-transition: all 0.4s ease-in;
+    /* transition: all 0.4s ease-in; */
+    color: #005ded;
 }
 
 .block2 {
@@ -223,4 +234,8 @@ p {
     margin-top: 2px;
     margin-bottom: 2px;
     margin-left: 2px;
+}
+
+.mat-mdc-menu-item:not([disabled]):hover {
+    color: #005ded;
 }

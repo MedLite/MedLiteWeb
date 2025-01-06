@@ -11,24 +11,6 @@
     </div>
     <!--navigation-->
     <ul class="metismenu" id="menu">
-        <!-- <li>
-            <a href="javascript:;" class="has-arrow">
-                <div class="parent-icon"><i class='bx bx-home-alt'></i>
-                </div>
-                <div class="menu-title">
-                    {{'Dashbord' | i18n:i18nService.currentLanguage}}
-                </div>
-            </a>
-            <ul>
-                <li> <a routerLink="/"><i class='bx bx-radio-circle'></i>Default</a>
-                </li>
-                <li> <a href="#"><i class='bx bx-radio-circle'></i>Alternate</a>
-                </li>
-                <li> <a href="#"><i class='bx bx-radio-circle'></i>Graphical</a>
-                </li>
-            </ul>
-        </li> -->
-
         <li>
             <a [routerLink]="['/home']">
                 <div class="parent-icon"><i class='bx bxs-dashboard'></i>
@@ -36,21 +18,13 @@
                 <div class="menu-title">{{'Dashbord' | i18n:i18nService.currentLanguage}}</div>
             </a>
         </li>
-
-
-
-
-
-
-
-
-
-        <!-- <li class="menu-label">Pages</li> -->
         <li>
             <a class="has-arrow">
-                <div class="parent-icon"><i class='bx bx-cog '></i>
+                <div class="parent-icon">
+                    <i class='bx bx-cog '></i>
                 </div>
-                <div class="menu-title">{{'Setting' | i18n:i18nService.currentLanguage}}</div>
+                <div [routerLink]="['/menu_parametarge']" class="menu-title">{{'Setting' | i18n:i18nService.currentLanguage}}</div>
+                <!-- <div class="arrow-icon"><i class='bx bx-chevron-down'></i></div> -->
             </a>
             <ul>
                 <li>
@@ -171,3 +145,7 @@
     </ul>
     <!--end navigation-->
 </div>
+
+
+<script>
+</script>

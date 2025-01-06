@@ -281,3 +281,82 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
+$(document).ready(function() {
+    $("#menu").metisMenu(); // Initialize metisMenu
+
+
+    // Remove the default click handler on the <a> tag
+    $("#menu .metismenu-item > a").off("click.metisMenu");
+
+
+    // Add a click handler to the parent-icon div
+    $("#menu .menu-title").on("click", function(e) {
+        e.preventDefault(); // Prevent default link behavior if any
+        var $parentLi = $(this).closest("li");
+
+        // Check if the item is already active
+        if ($parentLi.hasClass("mm-active")) {
+            $("#menu").metisMenu('dispose'); // Dispose the metisMenu instance
+            $parentLi.removeClass("mm-active"); // Deactivate parent
+            $parentLi.children("ul").removeClass("mm-show"); // Hide child menu
+            $parentLi.find('a').attr("aria-expanded", "false"); //update aria-expanded attr
+
+        } else {
+
+            // Collapse other open menus if toggle is enabled (default behavior)
+            if ($("#menu").data("metisMenu").config.toggle) {
+                $("#menu > li.mm-active").not($parentLi).removeClass("mm-active").find('ul.mm-show').removeClass("mm-show").end().find('a').attr("aria-expanded", "false");;
+            }
+
+
+
+            $parentLi.addClass("mm-active"); // Activate parent
+            var $childUl = $parentLi.children("ul"); // Find the child 'ul'
+
+            if ($childUl.length > 0) {
+                $childUl.addClass("mm-show"); // Display the child 'ul'
+                $parentLi.find('a').attr("aria-expanded", "true"); //update aria-expanded attr
+            }
+        }
+
+        //  Reinitialize MetisMenu after modification
+        $("#menu").metisMenu();
+
+    });
+    $("#menu .parent-icon").on("click", function(e) {
+        e.preventDefault(); // Prevent default link behavior if any
+        var $parentLi = $(this).closest("li");
+
+        // Check if the item is already active
+        if ($parentLi.hasClass("mm-active")) {
+            $("#menu").metisMenu('dispose'); // Dispose the metisMenu instance
+            $parentLi.removeClass("mm-active"); // Deactivate parent
+            $parentLi.children("ul").removeClass("mm-show"); // Hide child menu
+            $parentLi.find('a').attr("aria-expanded", "false"); //update aria-expanded attr
+
+        } else {
+
+            // Collapse other open menus if toggle is enabled (default behavior)
+            if ($("#menu").data("metisMenu").config.toggle) {
+                $("#menu > li.mm-active").not($parentLi).removeClass("mm-active").find('ul.mm-show').removeClass("mm-show").end().find('a').attr("aria-expanded", "false");;
+            }
+
+
+
+            $parentLi.addClass("mm-active"); // Activate parent
+            var $childUl = $parentLi.children("ul"); // Find the child 'ul'
+
+            if ($childUl.length > 0) {
+                $childUl.addClass("mm-show"); // Display the child 'ul'
+                $parentLi.find('a').attr("aria-expanded", "true"); //update aria-expanded attr
+            }
+        }
+
+        //  Reinitialize MetisMenu after modification
+        $("#menu").metisMenu();
+
+    });
+
+
+});

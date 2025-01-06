@@ -247,6 +247,12 @@
      cursor: pointer;
  }
  
+ .arrow-icon {
+     right: auto;
+     left: 4px;
+     transform: rotate(135deg) translateY(-50%)
+ }
+ 
  @media screen and (min-width:1025px) {
      .wrapper.toggled:not(.sidebar-hovered) .sidebar-wrapper .sidebar-header .logo-text {
          display: none

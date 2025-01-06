@@ -7,6 +7,12 @@
 
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 
+:host ::ng-deep .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text i {
+    margin-right: 14px;
+    font-size: 20px !important;
+    margin-left: 14px;
+}
+
 html {
     font-family: sans-serif;
     -webkit-text-size-adjust: 100%;
