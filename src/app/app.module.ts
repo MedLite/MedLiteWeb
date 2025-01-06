@@ -98,6 +98,7 @@ import { SpecialiteCabinetComponent } from './menu-parametrage/specialite-cabine
 import { SpecialiteMedecinComponent } from './menu-parametrage/specialite-medecin/specialite-medecin.component';
 import { MenuParametrageComponent } from './menu-parametrage/menu-parametrage.component';
 import { I18nPipe } from './Shared/i18n/i18n.pipe';
+import { MenuActiveDirective } from './Shared/service/highlight';
 
 const languages = [
   { lang: 'عربي', flag: 'assets/images/county/ar.png', file: arI18n, valeur: 'ar' },
@@ -108,7 +109,7 @@ const languages = [
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent,MenuActiveDirective,
     DashboardComponent,
     UserCompoComponent, BreadcrumbComponent,
     SidebarComponent,
