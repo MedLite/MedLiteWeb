@@ -17,7 +17,7 @@ declare const PDFObject: any;
   providers: [ConfirmationService, MessageService, InputValidationService, ControlServiceAlertify]
 })
 export class BanqueComponent implements OnInit {
-
+  first = 0;
   @ViewChild('codeSaisieInput') codeSaisieInputElement!: ElementRef;
   @ViewChild('desginationArInput') desginationArInputElement!: ElementRef;
   @ViewChild('desginationLtInput') desginationLtInputElement!: ElementRef;

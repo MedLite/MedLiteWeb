@@ -29,7 +29,7 @@ export class FournisseurComponent {
   @ViewChild('typeFournisseurInput') typeFournisseurInputInputElement!: Dropdown;
   @ViewChild('deviseInput') deviseInputInputElement!: Dropdown;
 
-
+  first = 0;
   IsLoading = true;
   openModal!: boolean;
 

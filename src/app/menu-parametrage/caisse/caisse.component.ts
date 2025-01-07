@@ -29,7 +29,7 @@ export class CaisseComponent {
   @ViewChild('designationLtInput') designationLtInputElement!: ElementRef;
   @ViewChild('typeCaisseInput') typeCaisseInputInputElement!: Dropdown;
   @ViewChild('deviseInput') deviseInputInputElement!: Dropdown;
-
+  first = 0;
 
   IsLoading = true;
   openModal!: boolean;

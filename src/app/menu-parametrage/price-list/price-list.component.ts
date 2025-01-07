@@ -26,7 +26,7 @@ export class PriceListComponent {
   @ViewChild('DesignationArInput') DesignationArInputElement!: ElementRef;
   @ViewChild('DesignationLtInput') DesignationLtInputElement!: ElementRef; 
 
-
+  first = 0;
   IsLoading = true;
   openModal!: boolean;
 

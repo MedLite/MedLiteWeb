@@ -30,7 +30,7 @@ declare const PDFObject: any;
   providers: [ConfirmationService, MessageService, InputValidationService, CalanderTransService, ControlServiceAlertify]
 })
 export class AdmissionComponent implements OnInit {
-
+  first = 0;
   @ViewChild('codeInput') codeInputElement!: ElementRef;
   @ViewChild('codeError') codeErrorElement!: ElementRef;
   @ViewChild('codeErrorDrop') codeErrorElementDrop!: Dropdown;

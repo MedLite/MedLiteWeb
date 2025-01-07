@@ -9,7 +9,8 @@
     <section id="main-container">
         <div class="material-table">
             <div class="card">
-                <p-table #dt1 [columns]="cols" [value]="dataCaisse" rowGroupMode="rowspan" groupRowsBy="typeCaisseDTO.designationAr" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedCaisse"
+                <p-table [paginator]="true" [showCurrentPageReport]="true" [first]="first" currentPageReportTemplate="{{'Page' | i18n:i18nService.currentLanguage}} {first} {{'To' | i18n:i18nService.currentLanguage}} {last} {{'of' | i18n:i18nService.currentLanguage}} {totalRecords} {{'entiers' | i18n:i18nService.currentLanguage}}"
+                    #dt1 [columns]="cols" [value]="dataCaisse" rowGroupMode="rowspan" groupRowsBy="typeCaisseDTO.designationAr" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedCaisse"
                     (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" dataKey="code" [tableStyle]="{'min-width': '50rem', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
                     <ng-template pTemplate="caption" class="col-md-12">
                         <div>

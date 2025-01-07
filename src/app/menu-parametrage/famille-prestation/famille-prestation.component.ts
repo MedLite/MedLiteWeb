@@ -23,7 +23,7 @@ export class FamillePrestationComponent implements OnInit {
   @ViewChild('codeSaisieInput') codeSaisieInputElement!: ElementRef;
   @ViewChild('DesignationArInput') DesignationArInputElement!: ElementRef;
   @ViewChild('DesignationLtInput') DesignationLtInputElement!: ElementRef; 
-
+  first = 0;
 
   IsLoading = true;
   openModal!: boolean;

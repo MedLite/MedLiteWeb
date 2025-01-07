@@ -21,7 +21,7 @@ export class SpecialiteCabinetComponent implements OnInit {
   @ViewChild('desginationArInput') desginationArInputElement!: ElementRef;
   @ViewChild('desginationLtInput') desginationLtInputElement!: ElementRef;
   @ViewChild('ribInput') ribInputInputElement!: ElementRef;
-
+  first = 0;
 
   IsLoading = true;
   openModal!: boolean;

@@ -95,6 +95,11 @@ const arI18n = {
   'SettingGeneral':'إعدادات عامة',
   'Devise':'العملة',
   'TypeCaisse':'نوع الخزينة',
+  'entiers':'الإجمالي',
+  'of':'من',
+  'To':'إلى',
+  'Page':'صفحة',
+  'Row':'سطر'
  
  
 };

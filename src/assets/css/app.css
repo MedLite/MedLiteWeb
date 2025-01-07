@@ -2870,3 +2870,7 @@
      margin-left: 0px !important;
      margin-right: 5px;
  }
+ 
+ [dir="ltr"] .p-paginator {
+     direction: rtl;
+ }

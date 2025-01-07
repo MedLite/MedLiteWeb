@@ -23,7 +23,7 @@ export class SpecialiteMedecinComponent implements OnInit {
   @ViewChild('desginationLtInput') desginationLtInputElement!: ElementRef;
   @ViewChild('ribInput') ribInputInputElement!: ElementRef;
 
-
+  first = 0;
   IsLoading = true;
   openModal!: boolean;
   pdfData!: Blob;

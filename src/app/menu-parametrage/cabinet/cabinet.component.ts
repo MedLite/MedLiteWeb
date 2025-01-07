@@ -28,7 +28,7 @@ export class CabinetComponent implements OnInit {
   @ViewChild('designationLtInput') designationLtInputElement!: ElementRef;
   @ViewChild('specialiteCabinetInput') specialiteCabinetInputElement!: Dropdown;
 
-
+  first = 0;
   IsLoading = true;
   openModal!: boolean;
 

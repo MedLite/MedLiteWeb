@@ -76,7 +76,7 @@ color: white;
     filter: progid: DXImageTransform.Microsoft.gradient(enabled=false) !important;
     border: 1px solid #b9b9b9 !important;
     height: 29px !important;
-    padding: 0px 10px 0px !important;
+    padding: 0px 5px 0px 10px !important;
     box-shadow: 4px -8px 20px 0px rgb(179 179 179 / 36%);
     font-family: auto;
     border-radius: 3px;
@@ -257,20 +257,11 @@ tr.mat-footer-row {
     margin-right: 5px;
     display: flex;
     height: 30px;
-    width: 70px;
-    padding: 3px 7px 0px 5px;
+    /* width: 70px; */
+    padding: 0px 7px 0px 5px;
     margin-bottom: 3px;
     border: 1px solid #adadad;
     align-items: center;
-}
-
-.dropbtn {
-    margin-right: 5px;
-    display: flex;
-    height: 30px;
-    width: 75px;
-    padding: 3px 7px 0px 5px;
-    margin-bottom: 3px;
 }
 
 .Bouton-add-new2 {
@@ -278,8 +269,9 @@ tr.mat-footer-row {
     display: flex;
     height: 30px;
     /* width: 70px; */
-    padding: 3px 7px 0px 5px;
+    padding: 0px 7px 0px 5px;
     margin-bottom: 3px;
+    align-items: center;
     border: 1px solid #adadad;
 }
 
@@ -322,6 +314,15 @@ tr.mat-footer-row {
     font-family: auto;
     font-weight: bold;
     margin: 0px 0px 0px 0px;
+}
+
+.dropbtn {
+    margin-right: 5px;
+    display: flex;
+    height: 30px;
+    width: 75px;
+    padding: 3px 7px 0px 5px;
+    margin-bottom: 3px;
 }
 
 :host ::ng-deep .ActionBtn {
@@ -2756,4 +2757,8 @@ input#PEC {
 
 :host ::ng-deep .p-dialog-mask {
     align-items: baseline !important;
+}
+
+.p-paginator .p-dropdown {
+    display: none !important;
 }

@@ -27,7 +27,7 @@ export class ResponsableRemiseComponent {
 
   IsLoading = true;
   openModal!: boolean;
-
+  first = 0;
   constructor(public i18nService: I18nService, private validationService: InputValidationService, private router: Router, private loadingComponent: LoadingComponent, private confirmationService: ConfirmationService, private messageService: MessageService, private http: HttpClient, private fb: FormBuilder, private cdr: ChangeDetectorRef) {
 
 
