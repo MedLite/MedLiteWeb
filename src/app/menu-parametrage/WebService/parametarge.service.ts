@@ -12,6 +12,18 @@ export class ParametargeService {
   
 
 
+  GetVueByCode(code:number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}VpriceList/`+code )
+  }
+
+  
+  GetVue(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}VpriceList/all` )
+  }
+
+
   GetCompteur(code:string): Observable<any> {
 
     return this.http.get(`${environment.API_Parametrage}compteur/`+code )
@@ -206,6 +218,31 @@ DeleteCaisse(code: any) {
   DeleteDevise(code: any) {
 
     return this.http.delete(`${environment.API_Parametrage}devise/delete/`+code);
+  }
+
+
+
+  
+   /// Fourniseur 
+
+  
+   GetFournisseur(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}fournisseur/all`);
+  }
+
+  PostFournisseur(body: any) {
+
+    return this.http.post(`${environment.API_Parametrage}fournisseur`, body);
+  } 
+  UpdateFournisseur(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}fournisseur/update`, body);
+  }
+
+  DeleteFournisseur(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}fournisseur/delete/`+code);
   }
 
 

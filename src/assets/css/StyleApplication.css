@@ -421,7 +421,7 @@ tr.mat-footer-row {
     border-radius: 6px;
     width: 1100px;
     font-family: auto;
-    /* overflow-y: scroll; */
+    margin-top: 90px;
     overflow-x: hidden;
 }
 

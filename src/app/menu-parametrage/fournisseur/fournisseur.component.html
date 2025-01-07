@@ -6,14 +6,10 @@
         <label class="header_name">{{'Fournisseur' | i18n:i18nService.currentLanguage}} </label>
         <button class="close-button btn btn-default" (click)="closeThisComponent()">X</button>
     </header>
-    <!-- <aside>
-        <div class="Groupe-Bouton"> 
-        </div>
-    </aside> -->
     <section id="main-container">
         <div class="material-table">
             <div class="card">
-                <p-table #dt1 [columns]="cols" [value]="dataBanque" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedBanque" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
+                <p-table #dt1 [columns]="cols" [value]="dataFournisseur" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedFournisseur" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
                     dataKey="code" [tableStyle]="{'min-width': '50rem', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
                     <ng-template pTemplate="caption" class="col-md-12">
                         <div>
@@ -30,7 +26,7 @@
                                     <i class="fa-solid fa-magnifying-glass search-icon"
                                         style="font-size: 18px ;padding-top:2px ;"></i>
                                 </button>
-                                <button type="button" class="Bouton-rechercher btn  btn-default " data-original-title="Add" (click)="clear(dt1)" (click)="GelAllBanque()">
+                                <button type="button" class="Bouton-rechercher btn  btn-default " data-original-title="Add" (click)="clear(dt1)" (click)="GelAllFournisseur()">
                                     <div class="bouton_style-2">{{'Reinitialiser' | i18n:i18nService.currentLanguage}}</div>
                                     <i class="fa-solid fa-arrows-rotate search-icon"
                                         style=" padding-top: 2px; font-size: 18px;"></i>
@@ -114,15 +110,24 @@
 
 
     <ng-template pTemplate="header">
-        <h2 class="text-default headerForm"> {{formHeader}}</h2>
-        <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearForm()"> 
-            <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i> 
-            {{'Close' | i18n:i18nService.currentLanguage}}
-        </button>
-        <button class="btn btn-default save-add-ModalSmall" (click)="PostBanque()"> 
-            <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
-            {{'Save' | i18n:i18nService.currentLanguage}}
-        </button>
+
+
+        <div class="FloatRight">
+            <h2 class="text-default headerForm"> {{formHeader}}</h2>
+        </div>
+        <div class="FloatLeft">
+            <button class="btn btn-default save-add-ModalSmall" (click)="PostFournisseur()"> 
+                <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+                {{'Save' | i18n:i18nService.currentLanguage}}
+            </button>
+            <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearForm()"> 
+                <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i> 
+                {{'Close' | i18n:i18nService.currentLanguage}}
+            </button>
+        </div>
+
+
+
     </ng-template>
 
     <div class="modal-body">
@@ -135,12 +140,12 @@
                         <label class="control-label  flex-4" style="width: 25%; "> {{'CodeSaisie' | i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                         <div class="control-input flex-5-45 ">
-                            <input id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class=" form-control-dev input-xs" #codeSaisieInput required [(ngModel)]="codeSaisie">
+                            <input readonly disabled id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class=" form-control-dev input-xs" #codeSaisieInput required [(ngModel)]="codeSaisie">
 
                         </div>
                     </section>
                     <section class="flex-row-start flex-6 ">
-                        <p-checkbox [binary]="true" name="actif" value="val3" [label]="LabelActif"></p-checkbox>
+                        <p-checkbox [binary]="true" name="actif" [(ngModel)]="actif" value="val3" [label]="LabelActif"></p-checkbox>
                     </section>
                 </div>
                 <div class="flex-row-start flex-12">
@@ -148,14 +153,14 @@
                         <label class="control-label flex-4 ">{{'DesignationAr' | i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                         <div class="control-input flex-5-45">
-                            <input type="text" id="designation_ar" maxlength="200" name="designation_ar" class=" form-control-dev input-xs" #DesignationArInput required [(ngModel)]="designationAr">
+                            <input type="text" id="designation_ar" maxlength="200" name="designation_ar" class=" form-control-dev input-xs" #designationArInput required [(ngModel)]="designationAr">
                         </div>
                     </section>
                     <section class="flex-row-start flex-6">
                         <label class="control-label  flex-4  "> {{'DesignationLt' | i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                         <div class="control-input flex-5-45 ">
-                            <input type="text" id="designation_lt" maxlength="200" name="designation_lt" class=" form-control-dev input-xs" #DesignationLtInput required [(ngModel)]="designationLt">
+                            <input type="text" id="designation_lt" maxlength="200" name="designation_lt" class=" form-control-dev input-xs" #designationLtInput required [(ngModel)]="designationLt">
 
 
                         </div>
@@ -177,6 +182,8 @@
 
 </p-dialog>
 
+
+
 <!-- modal primeNG  Delete-->
 <p-dialog class="modal-delete" id="ModalDelete" data-backdrop="false" header="Header" [(visible)]="visDelete" styleClass="ModalDelete" [modal]="true" [draggable]="false" [resizable]="false">
     <ng-template pTemplate="header">
@@ -185,13 +192,29 @@
     <div class="modal-body">
         <form action="" #addForms="ngForm">
             <fieldset class="deleteForms">
-                <h4 class="text-delete ">هل أنت متأكد من الحذف ?
+                <h4 class="text-delete " style="display: contents;">
+                    <div class="FloatRight">
+                        <h2 class="text-default"> هل أنت متأكد من الحذف ? </h2>
+                    </div>
 
-                    <button class="btn btn-default save-add-ModalSmall" style="right: 430px;" (click)="DeleteBanque(code)"> <i class="fa-solid fa-circle-check" style="color: #065c00;font-size: 16px; padding-right: 10px;"></i>
-                        حذف
-                    </button>
-                    <button class="btn btn-default cancel-add-ModalSmall" style="right: 520px;" :closable="true" data-dismiss="modal"> <i class="fa-solid fa-circle-xmark" style="color: #9e0000;font-size: 16px; padding-right: 5px;"></i>خروج
-                    </button>
+                    <div class="FloatLeft">
+
+                        <button class="btn btn-default save-add-ModalSmall" (click)="DeleteFournisseur(code)"> 
+                            <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+                            {{'Save' | i18n:i18nService.currentLanguage}}
+                        </button>
+
+
+                        <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="CloseModal()"> 
+                            <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i> 
+                            {{'Close' | i18n:i18nService.currentLanguage}}
+                        </button>
+
+
+
+                    </div>
+
+
 
 
 
@@ -202,6 +225,7 @@
     </div>
 </p-dialog>
 <!-- fin modal primeng  -->
+
 
 
 
