@@ -246,5 +246,37 @@ DeleteCaisse(code: any) {
   }
 
 
+  
+  // mode reglement
+
+
+
+
+  GetModeReglement(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}mode_reglement/all`);
+  }
+
+  
+  GetModeReglementByCode(code:number){
+
+    return this.http.get(`${environment.API_Parametrage}mode_reglement/`+code)
+  }
+  PostModeReglement(body: any) : Observable<any> {
+
+    return this.http.post(`${environment.API_Parametrage}mode_reglement`,body)
+  }
+ 
+  UpdateModeReglement(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}mode_reglement/update`, body);
+  }
+
+  DeleteModeReglement(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}mode_reglement/delete/`+code);
+  }
+
+
 
 }
