@@ -41,9 +41,7 @@ getAuthorizationHeaders() {
   }
   PostCaisse(body: any) : Observable<any> {
 
-    return this.http.post(`${environment.API_Parametrage}caisse`, body, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.post(`${environment.API_Parametrage}caisse`, body);
   }
  
   UpdateCaisse(body: any) {
@@ -61,9 +59,7 @@ getAuthorizationHeaders() {
   
   GetDevise(): Observable<any> {
 
-    return this.http.get(`${environment.API_Parametrage}devise/all`, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.get(`${environment.API_Parametrage}devise/all`);
   }
   GetDeviseByHasNotTaux(): Observable<any> {
     return this.http.get(`${environment.API_Parametrage}devise/hasTaux`)
@@ -75,9 +71,7 @@ getAuthorizationHeaders() {
 
   PostDevise(body: any) {
 
-    return this.http.post(`${environment.API_Parametrage}devise`, body, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.post(`${environment.API_Parametrage}devise`, body);
   } 
   UpdateDevise(body: any) {
 
@@ -94,16 +88,12 @@ getAuthorizationHeaders() {
   
   GetBeneficiaire(): Observable<any> {
 
-    return this.http.get(`${environment.API_Parametrage}beneficiaire/all`, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.get(`${environment.API_Parametrage}beneficiaire/all`);
   }
 
   PostBeneficiaire(body: any) {
 
-    return this.http.post(`${environment.API_Parametrage}beneficiaire`, body, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.post(`${environment.API_Parametrage}beneficiaire`, body);
   } 
   UpdateBeneficiaire(body: any) {
 
@@ -121,16 +111,12 @@ getAuthorizationHeaders() {
   
    GetFournisseur(): Observable<any> {
 
-    return this.http.get(`${environment.API_Parametrage}fournisseur/all`, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.get(`${environment.API_Parametrage}fournisseur/all`);
   }
 
   PostFournisseur(body: any) {
 
-    return this.http.post(`${environment.API_Parametrage}fournisseur`, body, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.post(`${environment.API_Parametrage}fournisseur`, body);
   } 
   UpdateFournisseur(body: any) {
 
@@ -166,9 +152,7 @@ getAuthorizationHeaders() {
 
   PostTypeDepense(body: any) {
 
-    return this.http.post(`${environment.API_Parametrage}type_depense`, body, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.post(`${environment.API_Parametrage}type_depense`, body);
   } 
   UpdateTypeDepense(body: any) {
 
@@ -198,9 +182,7 @@ getAuthorizationHeaders() {
 
   PostCategorieDepense(body: any) {
 
-    return this.http.post(`${environment.API_Parametrage}categorie_depense`, body, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.post(`${environment.API_Parametrage}categorie_depense`, body);
   } 
   UpdateCategorieDepense(body: any) {
 
@@ -231,9 +213,7 @@ getAuthorizationHeaders() {
 
   PostTypeRecette(body: any) {
 
-    return this.http.post(`${environment.API_Parametrage}type_recette`, body, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.post(`${environment.API_Parametrage}type_recette`, body);
   } 
   UpdateTypeRecette(body: any) {
 
@@ -264,9 +244,7 @@ getAuthorizationHeaders() {
   }
 
   PostBanque(body: any) {
-    return this.http.post(`${environment.API_Parametrage}banque`, body, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.post(`${environment.API_Parametrage}banque`, body);
   } 
   UpdateBanque(body: any) {
     return this.http.put(`${environment.API_Parametrage}banque/update`, body);
@@ -284,9 +262,7 @@ getAuthorizationHeaders() {
 
   GetModeReglement(): Observable<any> {
 
-    return this.http.get(`${environment.API_Parametrage}mode_reglement/all`, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.get(`${environment.API_Parametrage}mode_reglement/all`);
   }
 
   
@@ -343,16 +319,12 @@ getAuthorizationHeaders() {
   
    GetTypeCaisse(): Observable<any> {
 
-    return this.http.get(`${environment.API_Parametrage}type_caisse/all`, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.get(`${environment.API_Parametrage}type_caisse/all`);
   }
 
   PostTypeCaisse(body: any) {
 
-    return this.http.post(`${environment.API_Parametrage}type_caisse`, body, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.post(`${environment.API_Parametrage}type_caisse`, body);
   } 
   UpdateTypeCaisse(body: any) {
 
@@ -371,16 +343,12 @@ getAuthorizationHeaders() {
   
   GetTypeCostCentre(): Observable<any> {
 
-    return this.http.get(`${environment.API_Parametrage}type_cost_centre/all`, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.get(`${environment.API_Parametrage}type_cost_centre/all`);
   }
 
   PostTypeCostCentre(body: any) {
 
-    return this.http.post(`${environment.API_Parametrage}type_cost_centre`, body, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.post(`${environment.API_Parametrage}type_cost_centre`, body);
   } 
   UpdateTypeCostCentre(body: any) {
 
@@ -399,28 +367,20 @@ getAuthorizationHeaders() {
   
   GetCostCentre(): Observable<any> {
 
-    return this.http.get(`${environment.API_Parametrage}cost_center/all`, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.get(`${environment.API_Parametrage}cost_center/all`);
   }
   
   GetCostCentreByCode(code:number): Observable<any> {
 
-    return this.http.get(`${environment.API_Parametrage}cost_center/`+ code, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.get(`${environment.API_Parametrage}cost_center/`+ code);
   }
   GetCostCentreDetail(): Observable<any> {
 
-    return this.http.get(`${environment.API_Parametrage}cost_center/detail?detail=true`, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.get(`${environment.API_Parametrage}cost_center/detail?detail=true`);
   }
   PostCostCentre(body: any) {
 
-    return this.http.post(`${environment.API_Parametrage}cost_center`, body, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.post(`${environment.API_Parametrage}cost_center`, body);
   } 
   UpdateCostCentre(body: any) {
 
@@ -454,9 +414,7 @@ getAuthorizationHeaders() {
 
   PostTaxe(body: any) {
 
-    return this.http.post(`${environment.API_Parametrage}taxe`, body, {
-      headers: this.getAuthorizationHeaders()
-    });
+    return this.http.post(`${environment.API_Parametrage}taxe`, body);
   } 
   UpdateTaxe(body: any) {
 

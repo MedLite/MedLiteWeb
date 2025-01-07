@@ -114,4 +114,100 @@ export class ParametargeService {
   }
 
 
+  
+   /// TypeCaisse 
+
+  
+   GetTypeCaisse(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}type_caisse/all`);
+  }
+
+  PostTypeCaisse(body: any) {
+
+    return this.http.post(`${environment.API_Parametrage}type_caisse`, body);
+  } 
+  UpdateTypeCaisse(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}type_caisse/update`, body);
+  }
+
+  DeleteTypeCaisse(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}type_caisse/delete/`+code);
+  }
+
+
+  
+  
+//caisse
+
+GetCaisse(): Observable<any> {
+
+  return this.http.get(`${environment.API_Parametrage}caisse/all` )
+}
+
+GetCaisseByCodeDevise(codeDevise : number): Observable<any> {
+
+  return this.http.get(`${environment.API_Parametrage}caisse/codeDevise?codeDevise=`+ codeDevise )
+}
+
+
+GetCaisseByCode(code : number) {
+
+  return this.http.get(`${environment.API_Parametrage}caisse/`+code)
+}
+GetCaisseNotIn(code:number,codeDevise:number): Observable<any> {
+
+  return this.http.get(`${environment.API_Parametrage}caisse/not_in?code=`+code +`&codeDevise=`+codeDevise)  
+}
+PostCaisse(body: any) : Observable<any> {
+
+  return this.http.post(`${environment.API_Parametrage}caisse`, body);
+}
+
+UpdateCaisse(body: any) {
+
+  return this.http.put(`${environment.API_Parametrage}caisse/update`, body);
+}
+
+DeleteCaisse(code: any) {
+
+  return this.http.delete(`${environment.API_Parametrage}caisse/delete/`+code);
+}
+
+
+
+
+  /// Devise 
+
+  
+  GetDevise(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}devise/all`);
+  }
+  GetDeviseByHasNotTaux(): Observable<any> {
+    return this.http.get(`${environment.API_Parametrage}devise/hasTaux`)
+  }
+
+  GetDeviseByCode(code:number) {
+    return this.http.get(`${environment.API_Parametrage}devise/`+code)
+  }
+
+  PostDevise(body: any) {
+
+    return this.http.post(`${environment.API_Parametrage}devise`, body);
+  } 
+  UpdateDevise(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}devise/update`, body);
+  }
+
+  DeleteDevise(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}devise/delete/`+code);
+  }
+
+
+
 }

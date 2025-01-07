@@ -1630,6 +1630,7 @@ padding: 0px 20px 0px 345px;
     border-radius: 6px;
     width: 625px;
     font-family: auto;
+    margin-top: 90px;
 }
 
 :host ::ng-deep .save-delete {
@@ -2690,14 +2691,15 @@ input#PEC {
     margin-top: 90px;
 }
 
-:host ::ng-deep .ModalAdd {
+
+/* :host ::ng-deep .ModalAdd {
     border-radius: 6px;
     width: 800px;
     font-family: auto;
     overflow-y: auto;
     overflow-x: hidden;
     height: 450px;
-}
+} */
 
 :host ::ng-deep .ModalAddLarge {
     border-radius: 6px;

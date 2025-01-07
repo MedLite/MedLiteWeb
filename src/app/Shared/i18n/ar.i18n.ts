@@ -92,7 +92,9 @@ const arI18n = {
   'Parametrage_General':'الإعدادات العامة',
   'Responsable_remise':'مسوؤل التخفيض',
   'Tresorerie':'الإيرادات و المصروفات',
-  'SettingGeneral':'إعدادات عامة'
+  'SettingGeneral':'إعدادات عامة',
+  'Devise':'العملة',
+  'TypeCaisse':'نوع الخزينة',
  
  
 };

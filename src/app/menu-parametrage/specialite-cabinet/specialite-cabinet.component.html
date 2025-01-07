@@ -72,14 +72,14 @@
                             </th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-fl>
-                        <tr [pSelectableRow]="fl">
-                            <td style="font-size: 15px !important;">{{fl.codeSaisie}}</td>
-                            <td style="font-size: 15px !important;">{{fl.designationAr}}</td>
-                            <td style="font-size: 15px !important;">{{fl.designationLt}}</td>
+                    <ng-template pTemplate="body" let-domaine>
+                        <tr [pSelectableRow]="domaine">
+                            <td style="font-size: 15px !important;">{{domaine.codeSaisie}}</td>
+                            <td style="font-size: 15px !important;">{{domaine.designationAr}}</td>
+                            <td style="font-size: 15px !important;">{{domaine.designationLt}}</td>
 
                             <td class="act-col">
-                                <p-checkbox [readonly]="true" [(ngModel)]="fl.actif" [binary]="true" inputId="binary">{{fl.actif}}</p-checkbox>
+                                <p-checkbox [readonly]="true" [(ngModel)]="domaine.actif" [binary]="true" inputId="binary">{{domaine.actif}}</p-checkbox>
                             </td>
 
                         </tr>
