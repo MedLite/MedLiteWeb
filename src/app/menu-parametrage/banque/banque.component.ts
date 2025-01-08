@@ -56,7 +56,7 @@ export class BanqueComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetColumns();
-    this.GelAllBanque();
+    this.GetAllBanque();
   }
 
   GetColumns() {
@@ -268,7 +268,7 @@ export class BanqueComponent implements OnInit {
   }
 
 
-  GelAllBanque() {
+  GetAllBanque() {
     this.param_service.GetBanque().subscribe((data: any) => {
       this.loadingComponent.IsLoading = false;
       this.IsLoading = false;

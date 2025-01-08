@@ -279,4 +279,162 @@ DeleteCaisse(code: any) {
 
 
 
+
+  
+  // Ville  
+  GetVille(): Observable<any> { 
+    return this.http.get(`${environment.API_Parametrage}ville/all`);
+  }
+
+  
+  GetVilleByCode(code:number){ 
+    return this.http.get(`${environment.API_Parametrage}ville/`+code)
+  }
+  PostVille(body: any) : Observable<any> { 
+    return this.http.post(`${environment.API_Parametrage}ville`,body)
+  }
+ 
+  UpdateVille(body: any) { 
+    return this.http.put(`${environment.API_Parametrage}ville/update`, body);
+  }
+
+  DeleteVille(code: any) { 
+    return this.http.delete(`${environment.API_Parametrage}ville/delete/`+code);
+  }
+
+
+  
+  // Nationaliter  
+  GetNationalite(): Observable<any> { 
+    return this.http.get(`${environment.API_Parametrage}nationalite/all`);
+  }
+
+  
+  GetNationaliteByCode(code:number){ 
+    return this.http.get(`${environment.API_Parametrage}nationalite/`+code)
+  }
+  PostNationalite(body: any) : Observable<any> { 
+    return this.http.post(`${environment.API_Parametrage}nationalite`,body)
+  }
+ 
+  UpdateNationalite(body: any) { 
+    return this.http.put(`${environment.API_Parametrage}nationalite/update`, body);
+  }
+
+  DeleteNationalite(code: any) { 
+    return this.http.delete(`${environment.API_Parametrage}nationalite/delete/`+code);
+  }
+
+
+
+  
+  
+  //// Medecin
+  GetMedecin(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}medecin/all` )
+  }
+
+  GetMedecinByCode(code:number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}medecin/`+code )
+  }
+
+  PostMedecin(body: any) {
+    return this.http.post(`${environment.API_Parametrage}medecin`, body);
+  } 
+  UpdateMedecin(body: any) {
+    return this.http.put(`${environment.API_Parametrage}medecin/update`, body);
+  }
+
+  DeleteMedecin(code: any) {
+    return this.http.delete(`${environment.API_Parametrage}medecin/delete/`+code);
+  }
+
+
+  
+   /// TypeIntervenant 
+
+  
+   GetTypeIntervenant(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}type_intervenant/all`);
+  }
+
+  PostTypeIntervenant(body: any) {
+
+    return this.http.post(`${environment.API_Parametrage}type_intervenant`, body);
+  } 
+  UpdateTypeIntervenant(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}type_intervenant/update`, body);
+  }
+
+  DeleteTypeIntervenant(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}type_intervenant/delete/`+code);
+  }
+
+
+  
+   /// Societe 
+
+  
+   GetSociete(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}societe/all`);
+  }
+
+  PostSociete(body: any) {
+
+    return this.http.post(`${environment.API_Parametrage}societe`, body);
+  } 
+  UpdateSociete(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}societe/update`, body);
+  }
+
+  DeleteSociete(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}societe/delete/`+code);
+  }
+
+
+  
+   /// PriceList 
+
+  
+   GetPriceList(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}price_list/all`);
+  }
+
+
+  GetPriceListByCode(code : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}price_list/`+ code);
+  }
+
+  GetDetailsPriceListByCode(codePriceList : number , ): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}details_price_list/BycodePrice?`+ codePriceList);
+  }
+
+
+
+  PostPriceList(body: any) {
+
+    return this.http.post(`${environment.API_Parametrage}price_list`, body);
+  } 
+  UpdatePriceList(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}price_list/update`, body);
+  }
+
+  DeletePriceList(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}price_list/delete/`+code);
+  }
+
+
 }

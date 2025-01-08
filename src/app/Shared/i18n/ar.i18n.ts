@@ -21,7 +21,8 @@ const arI18n = {
   'Operation': 'العمليات',
   'TypeOperation': 'نوع العملية', 
   'BlocOperation': 'جناح العملية', 
-  'TypeIntervenant': 'انواع العناصر الطبية ',
+  'TypeIntervenants': 'انواع العناصر الطبية ',
+  'TypeIntervenant': 'نوع العنصر الطبية ',
   'Medecin': 'الأطباء',
   'Banques': 'المصارف',
   'Banque': 'المصرف',
@@ -99,7 +100,8 @@ const arI18n = {
   'of':'من',
   'To':'إلى',
   'Page':'صفحة',
-  'Row':'سطر'
+  'Row':'سطر',
+  'LabelautoriseFrais':'مسموح له بالأتعاب'
  
  
 };

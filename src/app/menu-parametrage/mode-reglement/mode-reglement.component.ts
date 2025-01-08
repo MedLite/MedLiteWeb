@@ -70,7 +70,7 @@ export class ModeReglementComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetColumns();
-    this.GelAllModeReglement();
+    this.GetAllModeReglement();
     
 
   }
@@ -322,7 +322,7 @@ export class ModeReglementComponent implements OnInit {
  
  
  
-   GelAllModeReglement() {
+   GetAllModeReglement() {
      this.param_service.GetModeReglement().subscribe((data: any) => {
  
        this.loadingComponent.IsLoading = false;

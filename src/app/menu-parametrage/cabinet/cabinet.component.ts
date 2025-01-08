@@ -63,7 +63,7 @@ export class CabinetComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetColumns();
-    this.GelAllCabinet();
+    this.GetAllCabinet();
   }
 
 
@@ -340,7 +340,7 @@ export class CabinetComponent implements OnInit {
 
 
 
-  GelAllCabinet() {
+  GetAllCabinet() {
     this.param_service.GetCabinet().subscribe((data: any) => {
 
       this.loadingComponent.IsLoading = false;

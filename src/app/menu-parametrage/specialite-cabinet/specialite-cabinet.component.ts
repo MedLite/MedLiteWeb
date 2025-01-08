@@ -55,7 +55,7 @@ export class SpecialiteCabinetComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetColumns();
-    this.GelAllSpecialiteCabinet();
+    this.GetAllSpecialiteCabinet();
   }
 
   GetColumns() {
@@ -262,7 +262,7 @@ export class SpecialiteCabinetComponent implements OnInit {
   }
 
 
-  GelAllSpecialiteCabinet() {
+  GetAllSpecialiteCabinet() {
     this.param_service.GetSpecialiteCabinet().subscribe((data: any) => {
       this.loadingComponent.IsLoading = false;
       this.IsLoading = false;

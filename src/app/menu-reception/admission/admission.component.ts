@@ -429,7 +429,7 @@ export class AdmissionComponent implements OnInit {
 
 
     this.GetColumns();
-    this.GelAllBanque();
+    this.GetAllBanque();
 
     this.listDeviseRslt = [
       { label: 'test', value: 'v1' },
@@ -994,7 +994,7 @@ export class AdmissionComponent implements OnInit {
   // brands!: SelectItem[];
   // clonedCars: { [s: string]: Matiere } = {}; 
   dataBanque = new Array<any>();
-  GelAllBanque() {
+  GetAllBanque() {
     // this.param_service.GetBanque().subscribe((data: any) => {
 
     this.loadingComponent.IsLoading = false;

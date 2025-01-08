@@ -80,7 +80,7 @@ export class CaisseComponent {
 
   ngOnInit(): void {
     this.GetColumns();
-    this.GelAllCaisse();
+    this.GetAllCaisse();
     
 
   }
@@ -363,7 +363,7 @@ export class CaisseComponent {
  
  
  
-   GelAllCaisse() {
+   GetAllCaisse() {
      this.param_service.GetCaisse().subscribe((data: any) => {
  
        this.loadingComponent.IsLoading = false;

@@ -79,7 +79,7 @@ export class FournisseurComponent {
 
   ngOnInit(): void {
     this.GetColumns();
-    this.GelAllFournisseur();
+    this.GetAllFournisseur();
     
 
   }
@@ -351,7 +351,7 @@ export class FournisseurComponent {
  
  
  
-   GelAllFournisseur() {
+   GetAllFournisseur() {
      this.param_service.GetFournisseur().subscribe((data: any) => {
  
        this.loadingComponent.IsLoading = false;

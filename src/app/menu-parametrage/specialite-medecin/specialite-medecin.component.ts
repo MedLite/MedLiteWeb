@@ -55,7 +55,7 @@ export class SpecialiteMedecinComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetColumns();
-    this.GelAllSpecialiteMedecin();
+    this.GetAllSpecialiteMedecin();
   }
 
   GetColumns() {
@@ -262,7 +262,7 @@ export class SpecialiteMedecinComponent implements OnInit {
   }
 
 
-  GelAllSpecialiteMedecin() {
+  GetAllSpecialiteMedecin() {
     this.param_service.GetSpecialiteMedecin().subscribe((data: any) => {
       this.loadingComponent.IsLoading = false;
       this.IsLoading = false;

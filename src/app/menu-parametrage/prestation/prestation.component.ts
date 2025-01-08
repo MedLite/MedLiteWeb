@@ -116,7 +116,7 @@ export class PrestationComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetColumns();
-    this.GelAllBanque();
+    this.GetAllBanque();
     this.ListFamilleFacturation = [
       { label: 'Famill Fact 1', value: '1' },
       { label: 'Famille Fact 2', value: '2' },
@@ -473,7 +473,7 @@ export class PrestationComponent implements OnInit {
 
 
 
-  GelAllBanque() {
+  GetAllBanque() {
     // this.param_service.GetBanque().subscribe((data: any) => {
 
     this.loadingComponent.IsLoading = false;
