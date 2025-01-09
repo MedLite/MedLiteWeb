@@ -415,11 +415,14 @@ DeleteCaisse(code: any) {
     return this.http.get(`${environment.API_Parametrage}price_list/`+ code);
   }
 
-  GetDetailsPriceListByCode(codePriceList : number , ): Observable<any> {
+  GetDetailsPriceListByCodePriceListAndCodePrestation(codePriceList : number ,codePrestation:number ): Observable<any> {
 
-    return this.http.get(`${environment.API_Parametrage}details_price_list/BycodePrice?`+ codePriceList);
+    return this.http.get(`${environment.API_Parametrage}details_price_list/By?codePrice=`+ codePriceList + `&codePrestation=`+codePrestation);
   }
+  GetDetailsPriceListByCodePriceListAndCodePrestationAnd(codePriceList : number ,codePrestation:number,codeNatureAdmission:number ): Observable<any> {
 
+    return this.http.get(`${environment.API_Parametrage}details_price_list/FindBy?codePrice=`+ codePriceList + `&codePrestation=`+codePrestation+ `&codeNatureAdmission=`+codeNatureAdmission);
+  }
 
 
   PostPriceList(body: any) {
@@ -435,6 +438,50 @@ DeleteCaisse(code: any) {
 
     return this.http.delete(`${environment.API_Parametrage}price_list/delete/`+code);
   }
+
+
+
+  
+   /// Prestation 
+
+  
+   GetPrestation(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}prestation/all`);
+  }
+
+
+  GetPrestationByCode(code : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}prestation/`+ code);
+  }
+
+  // GetDetailsPriceListByCodePriceListAndCodePrestation(codePriceList : number ,codePrestation:number ): Observable<any> {
+
+  //   return this.http.get(`${environment.API_Parametrage}details_price_list/By?codePrice=`+ codePriceList + `&codePrestation=`+codePrestation);
+  // }
+  // GetDetailsPriceListByCodePriceListAndCodePrestationAnd(codePriceList : number ,codePrestation:number,codeNatureAdmission:number ): Observable<any> {
+
+  //   return this.http.get(`${environment.API_Parametrage}details_price_list/FindBy?codePrice=`+ codePriceList + `&codePrestation=`+codePrestation+ `&codeNatureAdmission=`+codeNatureAdmission);
+  // }
+
+
+  PostPrestation(body: any) {
+
+    return this.http.post(`${environment.API_Parametrage}prestation`, body);
+  } 
+  UpdatePrestation(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}prestation/update`, body);
+  }
+
+  DeletePrestation(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}prestation/delete/`+code);
+  }
+
+
+
 
 
 }

@@ -7,13 +7,14 @@ import * as alertifyjs from 'alertifyjs'
 import { ModalService } from '../modal/modal.service';
 import { AuthService } from '../../Authenfication/_services/auth.service';
 import { TokenStorageService } from '../../Authenfication/_services/token-storage.service';
+import { I18nService } from '../i18n/i18n.service';
 @Component({
   selector: 'app-modal-content',  
   templateUrl: './modal-content.component.html',
   styleUrls: ['./modal-content.component.css']
 })
 export class ModalContentComponent implements OnInit {
-  constructor( private modalService: ModalService,private authService: AuthService, private router: Router, private tokenStorage: TokenStorageService,
+  constructor( private modalService: ModalService,public i18nService: I18nService,private authService: AuthService, private router: Router, private tokenStorage: TokenStorageService,
   ){
 
   }

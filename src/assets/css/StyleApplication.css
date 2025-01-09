@@ -1013,6 +1013,18 @@ button.btn.btn-danger.cancel-voir {
     margin-left: 5px;
 }
 
+.BtnVisibleAll {
+    font-size: 13px;
+    direction: ltr;
+    border: 1px solid #adadad;
+    font-weight: bold;
+    margin-left: 5px;
+    height: 30px;
+    margin-top: 7px;
+    width: 170px;
+    padding-top: 2px;
+}
+
 .save-add-ModalSmall:hover {
     background-color: darkgreen !important;
     color: white !important;
@@ -2079,6 +2091,10 @@ label.header_name {
     pointer-events: none;
 }
 
+.ReadOnly {
+    cursor: not-allowed;
+}
+
 .loader {
     width: 48px;
     height: 48px;
@@ -2762,4 +2778,9 @@ input#PEC {
 
 .p-paginator .p-dropdown {
     display: none !important;
+}
+
+.TabInput {
+    background: white;
+    border: none;
 }

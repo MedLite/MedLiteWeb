@@ -1,26 +1,28 @@
- 
-
 <form style="width: 590px; margin: 20px 30px 0px 0px;padding: 10px;" *ngIf="!isLoggedIn" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-   
-  <div class="form-group">
-    <label for="username" style="float: inline-start; font-size: 13px; font-family: auto;">إسم المستخدم</label>
-    <input type="text" class="form-control" name="username" [(ngModel)]="form.userName" required
-      #userName="ngModel" />
-    <div class="alert alert-danger" role="alert" *ngIf="userName.errors && f.submitted">
-      Username is required!
+
+    <div class="form-group">
+        <label for="username" style="float: inline-start; font-size: 13px; font-family: auto;">    {{'UserName' | i18n:i18nService.currentLanguage}}  </label>
+        <input type="text" class="form-control" name="username" [(ngModel)]="form.userName" required #userName="ngModel" />
+        <div class="alert alert-danger" role="alert" *ngIf="userName.errors && f.submitted">
+            Username is required!
+        </div>
     </div>
-  </div>
-  <div class="form-group">
-    <label for="password" style="float: inline-start; font-size: 13px; font-family: auto; ">كلمة السر</label>
-    <input type="password" class="form-control" name="password" [(ngModel)]="form.password" required
-      #password="ngModel" />
+    <div class="form-group">
+        <label for="password" style="float: inline-start; font-size: 13px; font-family: auto; "> {{'Password' | i18n:i18nService.currentLanguage}} </label>
+        <input type="password" class="form-control" name="password" [(ngModel)]="form.password" required #password="ngModel" />
 
 
-  </div>
-  <div class="form-group">
-    <button class="btn btn-primary btn-block" style=" font-size: 13px; font-family: auto; ">
+    </div>
+    <!-- <div class="form-group" style=" justify-self: center; margin-top: 20px; ">
+        <button class="btn btn-primary btn-block" style=" font-size: 13px; font-family: auto; ">
       تسجيل الدخول
     </button>
-  </div> 
-</form>
+    </div> -->
 
+    <div class="form-group" style="justify-self: center ; margin-top : 20px">
+
+        <button class="btn btn-outline-success btn-block" style=" font-size: 13px; font-family: auto; width: 150px; height: 37px;">
+          {{'Login' | i18n:i18nService.currentLanguage}}
+      </button>
+    </div>
+</form>

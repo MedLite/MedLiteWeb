@@ -101,8 +101,13 @@ const arI18n = {
   'To':'إلى',
   'Page':'صفحة',
   'Row':'سطر',
-  'LabelautoriseFrais':'مسموح له بالأتعاب'
- 
+  'LabelautoriseFrais':'مسموح له بالأتعاب',
+  'Expand_All':'عرض الكل',
+  'Collapse_All':'إخفاء الكل',
+ 'montantAvantMaj':'القيمة بعد الزيادة والنقصان',
+ 'Applique':'تطبيق',
+ 'Pourcentage':'نسبة', 
+ 'AugRem':'زيادة / تخفيض'
  
 };
 

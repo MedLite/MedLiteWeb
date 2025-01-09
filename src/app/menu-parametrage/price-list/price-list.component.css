@@ -1,3 +1,9 @@
-:host ::ng-deep .ModalAdd {
-    width: 1220px !important;
+:host ::ng-deep .ModalAddLarge {
+    margin-top: 10px !important;
+    height: 90% !important;
+}
+
+:host ::ng-deep .table2-container .p-datatable .p-datatable-header {
+    height: 125px;
+    background: #ffffff;
 }

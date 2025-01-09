@@ -72,12 +72,12 @@
 }
 
 .pi {
-    font-size: 1rem
+    /* font-size: 1rem */
 }
 
 .p-icon {
-    width: 1rem;
-    height: 1rem
+    /* width: 1rem;
+    height: 1rem */
 }
 
 .p-link {
@@ -2119,17 +2119,19 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 .p-button {
     color: #000000;
     background: #ffffff;
-    border: 1px solid #007bff;
-    padding: .5rem .75rem;
+    border: 1px solid #007bff82;
+    /* padding: .5rem .75rem; */
     font-size: 1rem;
     transition: background-color .15s, border-color .15s, box-shadow .15s;
     border-radius: 4px
 }
 
 .p-button:enabled:hover {
-    background: #0069d9;
-    color: #fff;
-    border-color: #0069d9
+    /* background: #0069d9;
+    color: #fff; */
+    border: none;
+    background-color: darkgreen !important;
+    color: white !important;
 }
 
 .p-button:enabled:active {
@@ -2206,7 +2208,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 .p-button:focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 .2rem rgba(38, 143, 255, .5)
+    /* box-shadow: 0 0 0 .2rem rgba(38, 143, 255, .5) */
 }
 
 .p-button .p-button-label {
@@ -2251,7 +2253,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 
 .p-button.p-button-icon-only {
     width: 2.357rem;
-    padding: .5rem 0
+    /* padding: .5rem 0 */
 }
 
 .p-button.p-button-icon-only .p-button-icon-left,
@@ -2261,7 +2263,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 
 .p-button.p-button-icon-only.p-button-rounded {
     border-radius: 50%;
-    height: 2.357rem
+    /* height: 2.357rem */
 }
 
 .p-button.p-button-sm {
@@ -2381,7 +2383,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 .p-splitbutton.p-button-secondary>.p-button.p-button-text:enabled:active {
     background: rgba(108, 117, 125, .16);
     border-color: transparent;
-    color: #6c757d
+    color: #6c757d;
 }
 
 .p-button.p-button-info,
@@ -7659,4 +7661,21 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
     border: 1px solid #ff0000;
     transition: background-color .15s, border-color .15s, box-shadow .15s;
     border-radius: 4px;
+}
+
+.no-border-on-click:focus,
+.no-border-on-click:hover,
+.no-border-on-click:active {
+    border-color: transparent !important;
+    /* Or set to your desired color */
+    box-shadow: none !important;
+    /* Remove any box-shadow on click */
+    outline: none !important;
+    /* Remove outline often added on focus */
+}
+
+.custom-toggler {
+    border-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
