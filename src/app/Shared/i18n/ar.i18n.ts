@@ -107,7 +107,9 @@ const arI18n = {
  'montantAvantMaj':'القيمة بعد الزيادة والنقصان',
  'Applique':'تطبيق',
  'Pourcentage':'نسبة', 
- 'AugRem':'زيادة / تخفيض'
+ 'AugRem':'زيادة / تخفيض',
+ 'InvalidPercentage':'خطأ فالنسبة',
+ 'selectTypeRemiseMajoration':'الرجاء إختيار تخفيض أو زيادة'
  
 };
 

@@ -65,7 +65,7 @@ export class PriceListComponent {
   selectedSociete!: any;
   expandedRows: any = {};
 
-  TypeRemMaj = new Array<any>(); 
+  TypeRemMaj: any; 
 
   ngOnInit(): void {
     this.GetColumns();
@@ -407,7 +407,7 @@ export class PriceListComponent {
         group.SelectedMajRem = null; // or a default value if needed
       });
 
-      console.log("groupeeddd", this.groupedData);
+      // console.log("groupeeddd", this.groupedData);
     });
   }
 
@@ -444,6 +444,43 @@ export class PriceListComponent {
   collapseAll() {
     this.expandedRows = {};
   }
+
+
+  ValeurSelectedMajRem:any;
+  MntAvantRemMaj:any;
+  tauxRemMaj:any;
+  AppliquePourcentageInAllPrestationDisponible(group: any, inputElement: HTMLInputElement) {
+    const percentage = parseFloat(inputElement.value); 
+    if (isNaN(percentage) || percentage < 0 || percentage > 100) {
+      // Handle invalid percentage input (e.g., show an error message)
+      // Assuming you have a translation for this
+      this.CtrlAlertify.showLabel();
+      this.CtrlAlertify.showRequiredNotificationِCustom('InvalidPercentage');
+      inputElement.value = ''; // Clear the invalid input
+      return;
+    } 
+    if(group.SelectedMajRem === null || group.SelectedMajRem === undefined ){
+        this.CtrlAlertify.showLabel();
+       this.CtrlAlertify.showRequiredNotificationِCustom('selectTypeRemiseMajoration');
+      return;
+    }
+    group.prestations.forEach((prestation: any) => {
+      const originalMontant = prestation.montant; // Store the original montant  
+      if (group.SelectedMajRem == "MAJ") { 
+        prestation.mntAvantMaj = this.roundToNearest(originalMontant * (1 + percentage / 100));   // Increase by percentage
+      } else if (group.SelectedMajRem == "REM") { 
+        prestation.mntAvantMaj = this.roundToNearest(originalMontant * (1 - percentage / 100)); // Decrease by percentage
+      }
+      prestation.taux = percentage; // Store the percentage 
+    });
+ 
+  }
+
+  private roundToNearest(value: number): number {
+    return Math.round(value); // Rounds to the nearest whole number
+  }
+
+
 }
 
 

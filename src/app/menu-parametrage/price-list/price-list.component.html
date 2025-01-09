@@ -182,7 +182,7 @@
                 <div class="flex-row-start flex-12">
 
                     <div class="table2-container">
-                        <p-table [columns]="ColumnsFamilleFacturation" tableStyleClass="TabFamilleFact" [globalFilterFields]="['designationAr', 'designationLt']" [value]="groupedData" dataKey="familleCode" [tableStyle]="{ 'min-width': '1190px' }" [expandedRowKeys]="expandedRows">
+                        <p-table [value]="groupedData" [columns]="ColumnsFamilleFacturation" tableStyleClass="TabFamilleFact" [globalFilterFields]="['designationAr', 'designationLt']" dataKey="familleCode" [tableStyle]="{ 'min-width': '1190px' }" [expandedRowKeys]="expandedRows">
                             <ng-template pTemplate="caption">
 
                                 <div class="flex-row-start flex-12 ">
@@ -209,7 +209,7 @@
                                             <div class="control-input flex-5-45 ">
                                                 <input type="text" id="designation_lt" maxlength="200" name="designation_lt" class=" form-control-dev input-xs" #designationLtInput required [(ngModel)]="designationLt">
                                             </div>
-                                            <label class="control-label  flex-4  ">  % </label>
+                                            <label class="control-label  flex-4  "> % </label>
 
                                         </div>
                                         <br>
@@ -259,15 +259,15 @@
                                     <td>{{ group.familleFacturationDTO.designationAr }}</td>
                                     <td>{{ group.familleFacturationDTO.designationLt }}</td>
                                     <td>
-                                        <input type="text" class="TabInput">
+                                        <input type="text" class="TabInput" #inputElement>
                                     </td>
                                     <td>
-                                        <p-dropdown name="Societe" [filter]="true" appendTo="body" [options]="TypeRemMaj" [(ngModel)]="group.SelectedMajRem" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" #societeInput required [lazy]="true" #Societe="ngModel">
+                                        <p-dropdown name="RemMaj" [filter]="true" appendTo="body" [options]="TypeRemMaj" [(ngModel)]="group.SelectedMajRem" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" #remMajInput required [lazy]="true" #remMaj="ngModel">
                                         </p-dropdown>
                                     </td>
 
                                     <td>
-                                        <p-button type="button" icon="pi pi-check-circle" />
+                                        <p-button type="button" icon="pi pi-check-circle" (onClick)="AppliquePourcentageInAllPrestationDisponible(group, inputElement)" />
                                     </td>
 
 
@@ -308,11 +308,11 @@
                                                             <td>{{ prestation.designationLt }}</td>
                                                             <td>{{ prestation.montant }}</td>
                                                             <td>
-                                                                <input type="text" class="TabInput"> %
+                                                                {{prestation.taux}} %
                                                             </td>
 
                                                             <td>
-                                                                <input type="text" readonly disabled class="TabInput ReadOnly">
+                                                                {{prestation.mntAvantMaj}}
                                                             </td>
                                                         </tr>
                                                     </ng-template>

@@ -19,6 +19,15 @@ export class ControlServiceAlertify {
     );
   }
 
+
+  
+  showRequiredNotificationِCustom(LabelMessage:string) {
+    const fieldRequiredMessage = this.i18nService.getString(LabelMessage);  // Default to English if not found
+    alertifyjs.notify(
+      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
+      fieldRequiredMessage
+    );
+  }
   showLabel(){
     const currentTime = Date.now();
     if (currentTime - this.lastNotificationTime > 2000) { // Only notify every 2 seconds
