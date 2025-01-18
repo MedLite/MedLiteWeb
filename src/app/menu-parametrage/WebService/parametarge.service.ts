@@ -29,6 +29,12 @@ export class ParametargeService {
     return this.http.get(`${environment.API_Parametrage}compteur/`+code )
   }
 
+  GetParam(codeParam:string): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}param/code?codeParam=`+codeParam )
+  }
+
+
 
 
   //// Banque
@@ -360,6 +366,10 @@ DeleteCaisse(code: any) {
 
     return this.http.get(`${environment.API_Parametrage}type_intervenant/all`);
   }
+  GetTypeIntervenantByCode(code: any): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}type_intervenant/`+code);
+  }
 
   PostTypeIntervenant(body: any) {
 
@@ -456,6 +466,19 @@ DeleteCaisse(code: any) {
     return this.http.get(`${environment.API_Parametrage}prestation/`+ code);
   }
 
+
+  GetDetailsPrestationByCode(code : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}details_prestation/`+ code);
+  }
+
+
+  GetDetailsPrestationByCodeAndCodeNatureAdmission(codePrestation : number,codeNatureAdmission:number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}details_prestation/By?codePrestation=`+ codePrestation +`&codeNatureAdmission=`+codeNatureAdmission);
+  }
+
+
   // GetDetailsPriceListByCodePriceListAndCodePrestation(codePriceList : number ,codePrestation:number ): Observable<any> {
 
   //   return this.http.get(`${environment.API_Parametrage}details_price_list/By?codePrice=`+ codePriceList + `&codePrestation=`+codePrestation);
@@ -480,6 +503,64 @@ DeleteCaisse(code: any) {
     return this.http.delete(`${environment.API_Parametrage}prestation/delete/`+code);
   }
 
+
+  
+   /// FamilleFacturation 
+
+  
+   GetFamilleFacturation(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}famille_facturation/all`);
+  }
+ 
+  GetFamilleFacturationByCode(code : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}famille_facturation/`+ code);
+  } 
+
+  PostFamilleFacturation(body: any) {
+
+    return this.http.post(`${environment.API_Parametrage}famille_facturation`, body);
+  } 
+  UpdateFamilleFacturation(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}famille_facturation/update`, body);
+  }
+
+  DeleteFamilleFacturation(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}famille_facturation/delete/`+code);
+  }
+
+
+
+  
+   /// FamillePrestation 
+
+  
+   GetFamillePrestation(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}famille_prestation/all`);
+  }
+ 
+  GetFamillePrestationByCode(code : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}famille_prestation/`+ code);
+  } 
+
+  PostFamillePrestation(body: any) {
+
+    return this.http.post(`${environment.API_Parametrage}famille_prestation`, body);
+  } 
+  UpdateFamillePrestation(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}famille_prestation/update`, body);
+  }
+
+  DeleteFamillePrestation(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}famille_prestation/delete/`+code);
+  }
 
 
 

@@ -1,4 +1,4 @@
-<form style="width: 590px; margin: 20px 30px 0px 0px;padding: 10px;" *ngIf="!isLoggedIn" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+<form style="width: 350px; margin: 10px;padding: 10px;" *ngIf="!isLoggedIn" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
 
     <div class="form-group">
         <label for="username" style="float: inline-start; font-size: 13px; font-family: auto;">    {{'UserName' | i18n:i18nService.currentLanguage}}  </label>
@@ -10,7 +10,9 @@
     <div class="form-group">
         <label for="password" style="float: inline-start; font-size: 13px; font-family: auto; "> {{'Password' | i18n:i18nService.currentLanguage}} </label>
         <input type="password" class="form-control" name="password" [(ngModel)]="form.password" required #password="ngModel" />
-
+        <div class="alert alert-danger" role="alert" *ngIf="password.errors && f.submitted">
+            Password is required!
+        </div>
 
     </div>
     <!-- <div class="form-group" style=" justify-self: center; margin-top: 20px; ">

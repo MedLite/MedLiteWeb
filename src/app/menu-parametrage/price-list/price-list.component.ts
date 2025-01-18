@@ -23,7 +23,7 @@ declare const PDFObject: any;
 })
 
 
-export class PriceListComponent {
+export class PriceListComponent implements OnInit {
   @ViewChild('codeError') codeErrorElement!: ElementRef;
   @ViewChild('codeSaisieInput') codeSaisieInputElement!: ElementRef;
   @ViewChild('designationArInput') desginationArInputElement!: ElementRef;
@@ -291,10 +291,51 @@ export class PriceListComponent {
 
 
 
+
+  detailsPriceListsListDTOss:any;
   PostPriceList() {
+
+    this.detailsPriceListsListDTOss = [];
+
+    const priceListData = {
+      codeSaisie: 'PL001', // Replace with actual value
+      designationAr: 'PriceList 1', // Replace with actual value
+      designationLt: 'PriceList 1', // Replace with actual value
+      actif: 1,
+      userCreate: 'soufiennnPost', // Replace with actual value
+      dateCreate: '2024-12-29', // Replace with actual value or use Date()
+      codeSociete: '1'  // Replace with actual value
+    };
+
 
     const isValid = this.validateAllInputs();
     if (isValid) {
+    
+
+      this.groupedData.forEach(group => {
+        group.prestations.forEach((prestation:any) => {
+          // Create entries for each codeNatureAdmission (1, 2, and 3)
+          [1, 2, 3].forEach(codeNatureAdmission => { // Iterate over the codes
+            this.detailsPriceListsListDTOss.push({
+              codeNatureAdmission: codeNatureAdmission.toString(), // Convert to string
+              codePrestation: prestation.codeSaisie, // Or however you get codePrestation
+              mntAvantMaj: prestation.mntAvantMaj.toString(),
+              taux: prestation.taux,
+              RemMaj: group.SelectedMajRem,
+              userCreate: 'soufiennnPost', // Replace with actual user
+              dateCreate: '2024-12-29' // Replace with actual date
+            });
+          });
+        });
+      });
+      // 3. Combine the data
+      const dataToSend = {
+        ...priceListData,
+        detailsPriceListsListDTOs: this.detailsPriceListsListDTOss
+      };
+      console.log(JSON.stringify(dataToSend, null, 2)); // Pretty print JSON
+
+
       let body = {
         codeSaisie: this.codeSaisie,
         designationAr: this.designationAr,
@@ -327,19 +368,19 @@ export class PriceListComponent {
 
       }
       else {
-        this.param_service.PostPriceList(body).subscribe(
-          (res: any) => {
-            this.CtrlAlertify.showLabel();
-            this.CtrlAlertify.ShowSavedOK();
-            this.visibleModal = false;
-            this.clearForm();
-            this.ngOnInit();
-            this.code;
-            this.onRowUnselect(event);
-            this.clearForm();
+        // this.param_service.PostPriceList(body).subscribe(
+        //   (res: any) => {
+        //     this.CtrlAlertify.showLabel();
+        //     this.CtrlAlertify.ShowSavedOK();
+        //     this.visibleModal = false;
+        //     this.clearForm();
+        //     this.ngOnInit();
+        //     this.code;
+        //     this.onRowUnselect(event);
+        //     this.clearForm();
 
-          }
-        )
+        //   }
+        // )
       }
 
     } else {
@@ -455,30 +496,34 @@ export class PriceListComponent {
       // Handle invalid percentage input (e.g., show an error message)
       // Assuming you have a translation for this
       this.CtrlAlertify.showLabel();
-      this.CtrlAlertify.showRequiredNotificationِCustom('InvalidPercentage');
+      this.CtrlAlertify.showNotificationِCustom('InvalidPercentage');
       inputElement.value = ''; // Clear the invalid input
       return;
     } 
     if(group.SelectedMajRem === null || group.SelectedMajRem === undefined ){
         this.CtrlAlertify.showLabel();
-       this.CtrlAlertify.showRequiredNotificationِCustom('selectTypeRemiseMajoration');
+       this.CtrlAlertify.showNotificationِCustom('selectTypeRemiseMajoration');
       return;
     }
     group.prestations.forEach((prestation: any) => {
-      const originalMontant = prestation.montant; // Store the original montant  
+      const originalMontantOPD = prestation.montantOPD;
+      const originalMontantER = prestation.montantER;
+      const originalMontantIP = prestation.montantIP;
       if (group.SelectedMajRem == "MAJ") { 
-        prestation.mntAvantMaj = this.roundToNearest(originalMontant * (1 + percentage / 100));   // Increase by percentage
+        prestation.mntApresMajOPD = originalMontantOPD * (1 + percentage / 100);  
+        prestation.mntApresMajER = originalMontantER * (1 + percentage / 100);  
+        prestation.mntApresMajIP = originalMontantIP * (1 + percentage / 100);  
       } else if (group.SelectedMajRem == "REM") { 
-        prestation.mntAvantMaj = this.roundToNearest(originalMontant * (1 - percentage / 100)); // Decrease by percentage
+        prestation.mntApresMajOPD = originalMontantOPD * (1 - percentage / 100); 
+        prestation.mntApresMajER = originalMontantER * (1 - percentage / 100); 
+        prestation.mntApresMajIP = originalMontantIP * (1 - percentage / 100); 
       }
-      prestation.taux = percentage; // Store the percentage 
+      prestation.taux = percentage; 
     });
  
   }
 
-  private roundToNearest(value: number): number {
-    return Math.round(value); // Rounds to the nearest whole number
-  }
+  
 
 
 }

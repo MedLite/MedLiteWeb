@@ -1,1 +1,8 @@
- 
+:host ::ng-deep .ModalAdd {
+    height: 85% !important;
+    width: 930px !important;
+}
+
+.Del {
+    text-align: center;
+}

@@ -21,7 +21,7 @@ export class ControlServiceAlertify {
 
 
   
-  showRequiredNotificationِCustom(LabelMessage:string) {
+  showNotificationِCustom(LabelMessage:string) {
     const fieldRequiredMessage = this.i18nService.getString(LabelMessage);  // Default to English if not found
     alertifyjs.notify(
       `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
@@ -78,5 +78,13 @@ export class ControlServiceAlertify {
       `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/OkSaved.gif" alt="image" >` +
       fieldUpdatedMessage
     ); 
+  }
+
+  showItemUsed() {
+    const fieldRequiredMessage = this.i18nService.getString('ItemUsed');  // Default to English if not found
+    alertifyjs.notify(
+      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
+      fieldRequiredMessage
+    );
   }
 }

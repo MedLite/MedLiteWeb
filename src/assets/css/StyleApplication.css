@@ -1,9 +1,9 @@
 :host ::ng-deep header {
-    padding: 5px 20px 0px 0px;
+    padding: 0px 20px 0px 0px;
     border: 1px solid #bfbfbf;
-    border-radius: 5px;
+    border-radius: 0px;
     display: flex;
-    margin: 5px 0px 0px 0px;
+    margin: 0px;
     align-items: center;
     font-weight: bold;
 }
@@ -1819,7 +1819,7 @@ padding: 0px 20px 0px 345px;
     background: #ffffff;
     border: 1px solid #ffffff;
     position: relative;
-    right: 5px !important;
+    /* right: 5px !important; */
     text-align: center;
     height: 25px;
 }
@@ -2704,8 +2704,8 @@ input#PEC {
     font-family: auto;
     overflow-y: auto;
     overflow-x: hidden;
-    height: 450px;
-    margin-top: 90px;
+    height: 100%;
+    top: 10%;
 }
 
 

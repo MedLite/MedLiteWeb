@@ -46,7 +46,8 @@
 .p-dropdown-panel .p-dropdown-items .p-dropdown-empty-message {
     padding: 3px;
     color: #212529;
-    background: transparent
+    background: transparent;
+    justify-self: center;
 }
 
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item-group {

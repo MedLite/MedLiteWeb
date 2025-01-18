@@ -199,7 +199,6 @@
 
                                             {{'Collapse_All' | i18n:i18nService.currentLanguage}}
                                         </button>
-                                        <!-- <p-button label="Collapse All" icon="pi pi-minus" (click)="collapseAll()"></p-button> -->
                                     </section>
                                     <section class="block-row flex-4">
                                         <div class="flex-row-start">
@@ -259,7 +258,7 @@
                                     <td>{{ group.familleFacturationDTO.designationAr }}</td>
                                     <td>{{ group.familleFacturationDTO.designationLt }}</td>
                                     <td>
-                                        <input type="text" class="TabInput" #inputElement>
+                                        <input type="text" class="TabInput" [(ngModel)]="group.pourcentage" #inputElement>%
                                     </td>
                                     <td>
                                         <p-dropdown name="RemMaj" [filter]="true" appendTo="body" [options]="TypeRemMaj" [(ngModel)]="group.SelectedMajRem" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" #remMajInput required [lazy]="true" #remMaj="ngModel">
@@ -306,14 +305,22 @@
                                                             <td>{{ prestation.codeSaisie }}</td>
                                                             <td>{{ prestation.designationAr }}</td>
                                                             <td>{{ prestation.designationLt }}</td>
-                                                            <td>{{ prestation.montant }}</td>
-                                                            <td>
-                                                                {{prestation.taux}} %
-                                                            </td>
 
-                                                            <td>
-                                                                {{prestation.mntAvantMaj}}
-                                                            </td>
+                                                            <!-- // OPD -->
+                                                            <td>{{ prestation.montantOPD }}</td>
+                                                            <td> {{prestation.taux}} % </td>
+                                                            <td> {{prestation.mntApresMajOPD | toFixedRound}} </td>
+
+                                                            <!-- // ER  -->
+                                                            <td>{{ prestation.montantER }}</td>
+                                                            <td> {{prestation.taux}} % </td>
+                                                            <td> {{prestation.mntApresMajER | toFixedRound}} </td>
+
+                                                            <!-- ///// IP  -->
+                                                            <td>{{ prestation.montantIP }}</td>
+                                                            <td> {{prestation.taux}} % </td>
+                                                            <td> {{prestation.mntApresMajIP | toFixedRound}} </td>
+
                                                         </tr>
                                                     </ng-template>
                                                     <ng-template pTemplate="emptymessage">

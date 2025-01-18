@@ -2213,9 +2213,10 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 
 .p-button .p-button-label {
     transition-duration: .15s;
-    font-size: 13px;
+    font-size: 14px;
     font-family: auto;
     font-weight: 600;
+    padding-top: 3px;
 }
 
 .p-button .p-button-icon-left {
@@ -5283,7 +5284,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 
 .p-tabview .p-tabview-panels {
     background: #fff;
-    padding: 1.25rem;
+    padding: 0.25rem;
     border: 0 none;
     color: #212529;
     border-bottom-right-radius: 4px;
@@ -7678,4 +7679,8 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
     border-color: transparent !important;
     box-shadow: none !important;
     outline: none !important;
+}
+
+style attribute {
+    direction: rtl;
 }

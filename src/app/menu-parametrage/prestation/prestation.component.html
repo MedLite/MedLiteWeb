@@ -16,7 +16,7 @@
         <div class="material-table">
             <div class="card">
                 <p-table [paginator]="true" [rows]="20" [rowsPerPageOptions]="[20, 40,80,100]" [showCurrentPageReport]="true" [first]="first" currentPageReportTemplate="{{'Page' | i18n:i18nService.currentLanguage}} {first} {{'To' | i18n:i18nService.currentLanguage}} {last} {{'of' | i18n:i18nService.currentLanguage}} {totalRecords} {{'entiers' | i18n:i18nService.currentLanguage}}"
-                    #dt1 [columns]="cols" [value]="dataBanque" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedBanque" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
+                    #dt1 [columns]="cols" [value]="dataPrestation" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedPrestation" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
                     dataKey="code" [tableStyle]="{'min-width': '50rem', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
 
                     <ng-template pTemplate="caption" class="col-md-12">
@@ -37,7 +37,7 @@
                                     <i class="fa-solid fa-magnifying-glass search-icon"
                                         style="font-size: 18px ;padding-top:2px ;"></i>
                                 </button>
-                                <button type="button" class="Bouton-rechercher btn  btn-default " data-original-title="Add" (click)="clear(dt1)" (click)="GetAllBanque()">
+                                <button type="button" class="Bouton-rechercher btn  btn-default " data-original-title="Add" (click)="clear(dt1)" (click)="GetAllPrestation()">
                                     <div class="bouton_style-2">{{'Reinitialiser' | i18n:i18nService.currentLanguage}}
                                     </div>
                                     <i class="fa-solid fa-arrows-rotate search-icon"
@@ -134,15 +134,21 @@
 
 
     <ng-template pTemplate="header">
-        <h2 class="text-default headerForm"> {{formHeader}}</h2>
-        <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearForm()">
-            <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
-            {{'Close' | i18n:i18nService.currentLanguage}}
-        </button>
-        <button class="btn btn-default save-add-ModalSmall" (click)="PostBanque()">
-            <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
-            {{'Save' | i18n:i18nService.currentLanguage}}
-        </button>
+        <div class="FloatRight">
+            <h2 class="text-default headerForm"> {{formHeader}}</h2>
+        </div>
+        <div class="FloatLeft">
+            <button class="btn btn-default save-add-ModalSmall" (click)="PostPrestation()">
+                <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+                {{'Save' | i18n:i18nService.currentLanguage}}
+            </button>
+            <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearForm()">
+                <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
+                {{'Close' | i18n:i18nService.currentLanguage}}
+            </button>
+        </div>
+
+
     </ng-template>
 
     <div class="modal-body">
@@ -156,7 +162,7 @@
                             i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                         <div class="control-input flex-5-45 ">
-                            <input id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class=" form-control-dev input-xs" #codeSaisieInput required [(ngModel)]="codeSaisie">
+                            <input readonly disabled id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class=" form-control-dev input-xs" #codeSaisieInput required [(ngModel)]="codeSaisie">
 
                         </div>
                     </section>
@@ -189,8 +195,7 @@
                         <label class="control-label flex-4"> {{'FamillePrestation' | i18n:i18nService.currentLanguage}}
                             : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                         <div class=" control-input flex-5-45 ">
-                            <p-dropdown name="FamillePrestation" required #FamillePrestationInput [filter]="true" appendTo="body" [options]="ListFamillePrestation" [(ngModel)]="selectedFamillePrestation" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;"
-                                [lazy]="true">
+                            <p-dropdown name="FamillePrestation" required #famillePrestationInput [filter]="true" appendTo="body" [options]="ListFamillePrestation" [(ngModel)]="selectedFamillePrestation" [style]="{'width':'100%'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true">
                             </p-dropdown>
                         </div>
 
@@ -199,32 +204,41 @@
                         <label class="control-label flex-4"> {{'FamilleFacturation' | i18n:i18nService.currentLanguage}}
                             : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                         <div class="control-input  flex-5-45 ">
-                            <p-dropdown name="FamilleFacturation" required #FamilleFacturationInput [filter]="true" appendTo="body" [options]="ListFamilleFacturation" [(ngModel)]="selectedFamilleFacturation" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;"
+                            <p-dropdown name="FamilleFacturation" required #familleFacturationInput [filter]="true" appendTo="body" [options]="ListFamilleFacturation" [(ngModel)]="selectedFamilleFacturation" [style]="{'width':'100%'}" [autoDisplayFirst]="true" placeholder="&nbsp;"
                                 [lazy]="true">
                             </p-dropdown>
                         </div>
                     </section>
-
                 </div>
-
-
-
-
-                <!-- <br> -->
             </fieldset>
-
-
-
         </div>
-        <!-- <br> -->
         <div class=" flex-row-start flex-12">
             <fieldset class="flex-row-start flex-12">
                 <div class="flex-6">
-                    <p-panel [header]="HeaderTypeArrvier">
+                    <p-panel [header]="PrixPrestation">
+                        <div class="flex-row-start flex-12">
+                            <section class="flex-row-start flex-12">
+
+                                <label class="control-label  flex-4  " style="padding-bottom: 10px;"> {{'PrixMaster' |
+                                    i18n:i18nService.currentLanguage}} :
+                                    <i class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                                <div class="control-input flex-5-45 ">
+                                    <input type="number" id="prixPrestation" maxlength="10" min="0" name="prixPrestation" class=" form-control-dev input-xs" #prixPrestationInput required [(ngModel)]="prixPrestation">
+
+
+                                </div>
+                            </section>
+
+
+                        </div>
+
+                    </p-panel>
+                    <p-panel [header]=" HeaderTypeArrvier" [style]="{'padding-top': '3px'}">
                         <div class="flex-row-start flex-12">
                             <section class="flex-row-start flex-12" style="justify-content: space-evenly; padding-bottom: 10px; padding-top: 10px;">
-                                <p-checkbox [binary]="true" [ngSwitch]="GetPrixOPD()" name="OutPatient" [(ngModel)]="OutPatientBoolean" value="opd" [label]="OutPatient"></p-checkbox>
-                                <p-checkbox [binary]="true" [ngSwitch]="GetPrixIP()" name="InPatient" [(ngModel)]="InPatientBoolean" value="inpatient" [label]="InPatient"></p-checkbox>
+                                <p-checkbox [binary]="true" id="opd" (onChange)="updatePrices($event, 'opd')" name="OutPatient" [(ngModel)]="outPatientBoolean" value="opd" [label]="OutPatient"></p-checkbox>
+                                <p-checkbox [binary]="true" id="er" (onChange)="updatePrices($event, 'er')" name="ErPatient" [(ngModel)]="erPatientBoolean" value="er" [label]="ErPatient"></p-checkbox>
+                                <p-checkbox [binary]="true" id="ip" (onChange)="updatePrices($event, 'ip')" name="InPatient" [(ngModel)]="ipPatientBoolean" value="inpatient" [label]="InPatient"></p-checkbox>
                             </section>
 
 
@@ -234,34 +248,167 @@
 
                 <div class="flex-6">
                     <p-panel [header]="PrixSelonTypeArriver">
+                        <p-tabView>
+                            <p-tabPanel *ngIf="disPrixOPD" [header]="OutPatient">
+                                <br>
+                                <p-dropdown [resetFilterOnHide]=true class="dropdown" appendTo="body" [options]="ListTypeIntervenant" [(ngModel)]="selectedTypeIntervenantOPD" [filter]="true" [showClear]="true" [style]="{minWidth: '50px', width: '40%' }" filterBy="label,value" [autoDisplayFirst]="true"
+                                    placeholder="&nbsp;" [lazy]="true" id="dropDownLists" (onClick)="clickDropDownUpOPD(dropDownListsOPD)" #dropDownListsOPD (ngModelChange)="PushTableDataOPD()" (onClear)="NoAction()">
+                                </p-dropdown>
 
-                        <div class="flex-row-start flex-12">
-                            <label class="control-label  flex-4  "> {{'OutPatient' | i18n:i18nService.currentLanguage}} :
-                            </label>
-                            <div class="control-input flex-5-45 ">
-                                <input type="number" [disabled]="DisPrixOPD" id="PrixSelonTypeArriverOPD" min="0" name="PrixSelonTypeArriverOPD" class=" form-control-dev input-xs" #PrixSelonTypeArriverOPDInput required [(ngModel)]="PrixSelonTypeArriverOPD">
-                            </div>
-                        </div>
-                        <div class="flex-row-start flex-12">
-                            <label class="control-label  flex-4  "> {{'InPatient' | i18n:i18nService.currentLanguage}} :
-                                   </label>
-                            <div class="control-input flex-5-45 ">
-                                <input type="number" [disabled]="DisPrixIP" id="PrixSelonTypeArriverIP" min="0" name="PrixSelonTypeArriverIP" class=" form-control-dev input-xs" #PrixSelonTypeArriverIPInput required [(ngModel)]="PrixSelonTypeArriverIP">
-                            </div>
-                        </div>
+                                <p-table [value]="DetailsPrestationByCodePrestationOPD" [columns]="ColumnsDetailsPrestationOPD" dataKey="code">
+                                    <ng-template pTemplate="colgroup" let-ColumnsDetailsPrestation>
+                                        <colgroup>
+                                            <col *ngFor="let col of ColumnsDetailsPrestation" [style.width]="col.width">
+                                        </colgroup>
+                                    </ng-template>
+                                    <ng-template pTemplate="header" let-col>
+                                        <tr>
+                                            <th *ngFor="let col of col ; let i = index">
+                                                <span>
+                                                    {{col.header}}
+                                                </span>
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-domaine let-ri="rowIndex" let-editing="editing">
+                                        <tr>
+                                            <td>{{domaine.designationArTypeIntervenant}}
+                                            </td>
+                                            <td>
+                                                <input style="width: 155px;" type="text" class="TabInput" (input)="ValueMntChangedOPD()" [(ngModel)]="domaine.montant" #inputElement>
+                                            </td>
+                                            <td *ngIf="ri !== 0"> <button *ngIf="!editing" pButton type="button" pDeleteEditableRow icon="pi pi-trash" class="p-button-item " (click)="removeOPD(ri) "></button>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="emptymessage">
+                                        <tr>
+                                            <td colspan="2">There are no order for this product yet.</td>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="footer">
+                                        <tr>
+                                            <td colspan="1" class="FooterTable">
+                                                {{'entiers' | i18n:i18nService.currentLanguage}} :
+                                            </td>
+                                            <td class="FooterTable">
+                                                <input readonly disabled style="border: 0px;" type="number" [(ngModel)]="PrixSelonTypeArriverOPD">
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </p-tabPanel>
+                            <p-tabPanel *ngIf="disPrixER" [header]="ErPatient">
+                                <ng-template pTemplate="content">
+                                    <br>
+                                    <p-dropdown [resetFilterOnHide]=true class="dropdown" appendTo="body" [options]="ListTypeIntervenant" [(ngModel)]="selectedTypeIntervenantER" [filter]="true" [showClear]="true" [style]="{minWidth: '50px', width: '40%' }" filterBy="label,value" [autoDisplayFirst]="true"
+                                        placeholder="&nbsp;" [lazy]="true" id="dropDownLists" (onClick)="clickDropDownUpER(dropDownListsER)" #dropDownListsER (ngModelChange)="PushTableDataER()" (onClear)="NoAction()">
+                                    </p-dropdown>
+                                    <p-table [value]="DetailsPrestationByCodePrestationER" [columns]="ColumnsDetailsPrestationER" dataKey="code">
+                                        <ng-template pTemplate="colgroup" let-ColumnsDetailsPrestation>
+                                            <colgroup>
+                                                <col *ngFor="let col of ColumnsDetailsPrestation" [style.width]="col.width">
+                                            </colgroup>
+                                        </ng-template>
+                                        <ng-template pTemplate="header" let-col>
+                                            <tr>
+                                                <th *ngFor="let col of col ; let i = index">
+                                                    <span>
+                                                        {{col.header}}
+                                                    </span>
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-domaine let-ri="rowIndex" let-editing="editing">
+                                            <tr>
+                                                <td>
+                                                    {{domaine.designationArTypeIntervenant}}
+                                                </td>
+                                                <td>
+                                                    <input style="width: 155px;" type="text" class="TabInput" (input)="ValueMntChangedER()" [(ngModel)]="domaine.montant" #inputElement>
+                                                </td>
+                                                <td *ngIf="ri !== 0"> <button *ngIf="!editing" pButton type="button" pDeleteEditableRow icon="pi pi-trash" class="p-button-item " (click)="removeER(ri) "></button>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="emptymessage">
+                                            <tr>
+                                                <td colspan="2">There are no order for this product yet.</td>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="footer">
+                                            <tr>
+                                                <td colspan="1" class="FooterTable">
+                                                    {{'entiers' | i18n:i18nService.currentLanguage}} :
+                                                </td>
+                                                <td class="FooterTable">
+                                                    <input readonly disabled style="border: 0px;" type="number" [(ngModel)]="PrixSelonTypeArriverER">
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                </ng-template>
+                            </p-tabPanel>
+                            <p-tabPanel [header]="InPatient" *ngIf="disPrixIP">
+                                <ng-template pTemplate="content">
+                                    <br>
+                                    <p-dropdown [resetFilterOnHide]=true class="dropdown" appendTo="body" [options]="ListTypeIntervenant" [(ngModel)]="selectedTypeIntervenantIP" [filter]="true" [showClear]="true" [style]="{minWidth: '50px', width: '40%' }" filterBy="label,value" [autoDisplayFirst]="true"
+                                        placeholder="&nbsp;" [lazy]="true" id="dropDownLists" (onClick)="clickDropDownUpIP(dropDownListsIP)" #dropDownListsIP (ngModelChange)="PushTableDataIP()" (onClear)="NoAction()">
+                                    </p-dropdown>
+                                    <p-table [value]="DetailsPrestationByCodePrestationIP" [columns]="ColumnsDetailsPrestationIP" dataKey="code">
+                                        <ng-template pTemplate="colgroup" let-ColumnsDetailsPrestation>
+                                            <colgroup>
+                                                <col *ngFor="let col of ColumnsDetailsPrestation" [style.width]="col.width">
+                                            </colgroup>
+                                        </ng-template>
+                                        <ng-template pTemplate="header" let-col>
+                                            <tr>
+                                                <th *ngFor="let col of col ; let i = index">
+                                                    <span>
+                                                        {{col.header}}
+                                                    </span>
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-domaine let-ri="rowIndex" let-editing="editing">
+                                            <tr>
+                                                <td>
+                                                    {{ domaine.designationArTypeIntervenant}}
+                                                </td>
 
+                                                <td>
+                                                    <input style="width: 155px;" type="text" class="TabInput" (input)="ValueMntChangedIP()" [(ngModel)]="domaine.montant" #inputElement>
+                                                </td>
+                                                <td *ngIf="ri !== 0"> <button *ngIf="!editing" pButton type="button" pDeleteEditableRow icon="pi pi-trash" class="p-button-item " (click)="removeIP(ri) "></button>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="emptymessage">
+                                            <tr>
+                                                <td colspan="2">There are no order for this product yet.</td>
+                                            </tr>
+                                        </ng-template>
+
+                                        <ng-template pTemplate="footer">
+                                            <tr>
+                                                <td colspan="1" class="FooterTable">
+                                                    {{'entiers' | i18n:i18nService.currentLanguage}} :
+                                                </td>
+                                                <td class="FooterTable">
+                                                    <input readonly disabled style="border: 0px;" type="number" [(ngModel)]="PrixSelonTypeArriverIP">
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                </ng-template>
+                            </p-tabPanel>
+                        </p-tabView>
+                        <br>
                     </p-panel>
                 </div>
-
             </fieldset>
-
-
-
         </div>
-
-
-
-
+        <br>
     </div>
 
 </p-dialog>
@@ -276,7 +423,7 @@
             <fieldset class="deleteForms">
                 <h4 class="text-delete ">هل أنت متأكد من الحذف ?
 
-                    <button class="btn btn-default save-add-ModalSmall" style="right: 430px;" (click)="DeleteBanque(code)"> <i class="fa-solid fa-circle-check"
+                    <button class="btn btn-default save-add-ModalSmall" style="right: 430px;" (click)="DeletePrestation(code)"> <i class="fa-solid fa-circle-check"
                             style="color: #065c00;font-size: 16px; padding-right: 10px;"></i>
                         حذف
                     </button>

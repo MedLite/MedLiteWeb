@@ -67,6 +67,7 @@ const arI18n = {
   'FamilleFacturation': 'بند الفاتورة',
   'OutPatient': 'عيادات خارجية',
   'InPatient': 'إيواء',
+  'ErPatient': 'طوارئ',
   'HeaderTypeArrvier': 'نوع الدخول',
   'PrixSelonTypeArriver': 'التسعيرة حسب نوع الدخول',
   'NoItemExist': 'لا توجد بيانات',
@@ -109,7 +110,12 @@ const arI18n = {
  'Pourcentage':'نسبة', 
  'AugRem':'زيادة / تخفيض',
  'InvalidPercentage':'خطأ فالنسبة',
- 'selectTypeRemiseMajoration':'الرجاء إختيار تخفيض أو زيادة'
+ 'selectTypeRemiseMajoration':'الرجاء إختيار تخفيض أو زيادة',
+ 'DetailsPrestation':'التقسيم حسب نوع العنصر الطبي',
+ 'PrixPrestation':'سعر الخدمة',
+ 'PrixMaster':'التسعيرة الرئسية',
+ 'TypeIntervenantDupliquer':'العنصر الطبي مكرر',
+ 'PrixPrestationNotEquals':'المجموع و سعر الخدمة مختلف'
  
 };
 

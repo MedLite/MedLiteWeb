@@ -196,6 +196,28 @@ $(function() {
 
 );
 
+
+var tabsFn = (function() {
+
+    function init() {
+        setHeight();
+    }
+
+    function setHeight() {
+        var $tabPane = $('.tab-pane'),
+            tabsHeight = $('.nav-tabs').height();
+
+        $tabPane.css({
+            height: tabsHeight
+        });
+    }
+
+    $(init);
+})();
+
+
+
+
 function toggleFullScreen() {
     if (!document.fullscreenElement && // alternative standard method
         !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) { // current working methods

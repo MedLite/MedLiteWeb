@@ -10,8 +10,7 @@ import * as arI18n from './Shared/i18n/ar.i18n';
 import { I18nModule } from './Shared/i18n/i18n.module';
 
 /////// fin I18N
-
-
+ 
 
 //// primeng
 
@@ -99,6 +98,7 @@ import { SpecialiteMedecinComponent } from './menu-parametrage/specialite-medeci
 import { MenuParametrageComponent } from './menu-parametrage/menu-parametrage.component';
 import { I18nPipe } from './Shared/i18n/i18n.pipe';
 import { MenuActiveDirective } from './Shared/service/highlight';
+import { ToFixedRoundPipe } from './Shared/service/ToFixedRoundPipe';
 
 const languages = [
   { lang: 'عربي', flag: 'assets/images/county/ar.png', file: arI18n, valeur: 'ar' },
@@ -113,7 +113,7 @@ const languages = [
     DashboardComponent,
     UserCompoComponent, BreadcrumbComponent,
     SidebarComponent,
-    TopBarComponent, LoadingComponent,
+    TopBarComponent, LoadingComponent, ToFixedRoundPipe, 
     FooterComponent, AlertComponent, LoginComponent,ModalContentComponent,
     ////// i18n //////////////// 
     I18nPipe,
