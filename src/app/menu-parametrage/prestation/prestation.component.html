@@ -421,15 +421,29 @@
     <div class="modal-body">
         <form action="" #addForms="ngForm">
             <fieldset class="deleteForms">
-                <h4 class="text-delete ">هل أنت متأكد من الحذف ?
+                <h4 class="text-delete " style="display: contents;">
+                    <div class="FloatRight">
+                        <h2 class="text-default"> هل أنت متأكد من الحذف ? </h2>
+                    </div>
 
-                    <button class="btn btn-default save-add-ModalSmall" style="right: 430px;" (click)="DeletePrestation(code)"> <i class="fa-solid fa-circle-check"
-                            style="color: #065c00;font-size: 16px; padding-right: 10px;"></i>
-                        حذف
-                    </button>
-                    <button class="btn btn-default cancel-add-ModalSmall" style="right: 520px;" :closable="true" data-dismiss="modal"> <i class="fa-solid fa-circle-xmark"
-                            style="color: #9e0000;font-size: 16px; padding-right: 5px;"></i>خروج
-                    </button>
+                    <div class="FloatLeft">
+
+                        <button class="btn btn-default save-add-ModalSmall" (click)="DeletePrestation(code)"> 
+                            <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+                            {{'Save' | i18n:i18nService.currentLanguage}}
+                        </button>
+
+
+                        <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="CloseModal()"> 
+                            <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i> 
+                            {{'Close' | i18n:i18nService.currentLanguage}}
+                        </button>
+
+
+
+                    </div>
+
+
 
 
 
@@ -440,6 +454,7 @@
     </div>
 </p-dialog>
 <!-- fin modal primeng  -->
+
 
 
 

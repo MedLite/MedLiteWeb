@@ -596,6 +596,8 @@ export class PrestationComponent implements OnInit {
           this.CtrlAlertify.showLabel();
           this.CtrlAlertify.ShowSavedOK();
           this.visibleModal = false;
+          this.final = new Array<any>();
+          this.detailsPriceListsPushed = new Array<any>();
           this.clearForm();
           this.ngOnInit();
           this.onRowUnselect(event); // Assuming 'event' is defined somewhere
@@ -604,6 +606,8 @@ export class PrestationComponent implements OnInit {
 
 
     } else {
+      this.final = new Array<any>();
+      this.detailsPriceListsPushed = new Array<any>();
       console.log("Error Validation");
 
     }
@@ -707,21 +711,21 @@ export class PrestationComponent implements OnInit {
     switch (type) {
       case 'opd':
         this.disPrixOPD = event.checked;
-        this.DetailsPrestationByCodePrestationOPD = new Array();
+        // this.DetailsPrestationByCodePrestationOPD = new Array();
         // this.prixSelonTypeArriverOPD = event.checked ? this.prixPrestation : "";
         this.setDefaultSelectedOPD();
 
         break;
       case 'er':
         this.disPrixER = event.checked;
-        this.DetailsPrestationByCodePrestationER = new Array();
+        // this.DetailsPrestationByCodePrestationER = new Array();
         // this.prixSelonTypeArriverER = event.checked ? this.prixPrestation : "";
         this.setDefaultSelectedER();
 
         break;
       case 'ip':
         this.disPrixIP = event.checked;
-        this.DetailsPrestationByCodePrestationIP = new Array();
+        // this.DetailsPrestationByCodePrestationIP = new Array();
         // this.prixSelonTypeArriverIP = event.checked ? this.prixPrestation : "";
         this.setDefaultSelectedIP();
         break;
