@@ -247,7 +247,7 @@
                 </div>
 
                 <div class="flex-6">
-                    <p-panel [header]="PrixSelonTypeArriver">
+                    <p-panel [header]="LabelPrixSelonTypeArriver">
                         <p-tabView>
                             <p-tabPanel *ngIf="disPrixOPD" [header]="OutPatient">
                                 <br>
@@ -275,7 +275,7 @@
                                             <td>{{domaine.designationArTypeIntervenant}}
                                             </td>
                                             <td>
-                                                <input style="width: 155px;" type="text" class="TabInput" (input)="ValueMntChangedOPD()" [(ngModel)]="domaine.montant" #inputElement>
+                                                <input style="width: 155px;" type="number" class="TabInput" (input)="ValueMntChangedOPD()" [(ngModel)]="domaine.prixSelonTypeArriver" #inputElement>
                                             </td>
                                             <td *ngIf="ri !== 0"> <button *ngIf="!editing" pButton type="button" pDeleteEditableRow icon="pi pi-trash" class="p-button-item " (click)="removeOPD(ri) "></button>
                                             </td>
@@ -292,7 +292,7 @@
                                                 {{'entiers' | i18n:i18nService.currentLanguage}} :
                                             </td>
                                             <td class="FooterTable">
-                                                <input readonly disabled style="border: 0px;" type="number" [(ngModel)]="PrixSelonTypeArriverOPD">
+                                                <input readonly disabled style="border: 0px;" type="number" [(ngModel)]="prixSelonTypeArriverOPD">
                                             </td>
                                         </tr>
                                     </ng-template>
@@ -325,7 +325,7 @@
                                                     {{domaine.designationArTypeIntervenant}}
                                                 </td>
                                                 <td>
-                                                    <input style="width: 155px;" type="text" class="TabInput" (input)="ValueMntChangedER()" [(ngModel)]="domaine.montant" #inputElement>
+                                                    <input style="width: 155px;" type="number" class="TabInput" (input)="ValueMntChangedER()" [(ngModel)]="domaine.prixSelonTypeArriver" #inputElement>
                                                 </td>
                                                 <td *ngIf="ri !== 0"> <button *ngIf="!editing" pButton type="button" pDeleteEditableRow icon="pi pi-trash" class="p-button-item " (click)="removeER(ri) "></button>
                                                 </td>
@@ -342,7 +342,7 @@
                                                     {{'entiers' | i18n:i18nService.currentLanguage}} :
                                                 </td>
                                                 <td class="FooterTable">
-                                                    <input readonly disabled style="border: 0px;" type="number" [(ngModel)]="PrixSelonTypeArriverER">
+                                                    <input readonly disabled style="border: 0px;" type="number" [(ngModel)]="prixSelonTypeArriverER">
                                                 </td>
                                             </tr>
                                         </ng-template>
@@ -377,7 +377,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <input style="width: 155px;" type="text" class="TabInput" (input)="ValueMntChangedIP()" [(ngModel)]="domaine.montant" #inputElement>
+                                                    <input style="width: 155px;" type="number" class="TabInput" (input)="ValueMntChangedIP()" [(ngModel)]="domaine.prixSelonTypeArriver" #inputElement>
                                                 </td>
                                                 <td *ngIf="ri !== 0"> <button *ngIf="!editing" pButton type="button" pDeleteEditableRow icon="pi pi-trash" class="p-button-item " (click)="removeIP(ri) "></button>
                                                 </td>
@@ -395,7 +395,7 @@
                                                     {{'entiers' | i18n:i18nService.currentLanguage}} :
                                                 </td>
                                                 <td class="FooterTable">
-                                                    <input readonly disabled style="border: 0px;" type="number" [(ngModel)]="PrixSelonTypeArriverIP">
+                                                    <input readonly disabled style="border: 0px;" type="number" [(ngModel)]="prixSelonTypeArriverIP">
                                                 </td>
                                             </tr>
                                         </ng-template>

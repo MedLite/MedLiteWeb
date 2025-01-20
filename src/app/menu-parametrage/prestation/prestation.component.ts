@@ -1,10 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
-import * as alertifyjs from 'alertifyjs'
 import { Router } from '@angular/router';
 import { LoadingComponent } from '../../Shared/loading/loading.component';
 import { I18nService } from '../../Shared/i18n/i18n.service';
@@ -12,16 +10,15 @@ import { InputValidationService } from '../../Shared/Control/ControlFieldInput';
 import { Dropdown } from 'primeng/dropdown';
 import { ParametargeService } from '../WebService/parametarge.service';
 import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
-import { style } from '@angular/animations';
 import { catchError, throwError } from 'rxjs';
 
 declare const PDFObject: any;
 
 interface DetailsPrestationDTO {
-  code:number;
+  // code:number;
   codeTypeIntervenant: number | null;
-  designationArTypeIntervenant:string;
-  montant: number;
+  designationArTypeIntervenant: string;
+  prixSelonTypeArriver: number;
   userCreate: string;
   dateCreate: string;
 }
@@ -78,9 +75,10 @@ export class PrestationComponent implements OnInit {
   codeNatureAdmissionER: any;
   codeNatureAdmissionIP: any;
   codeNatureAdmissionOPD: any;
+  codePriceListCash: any;
   designationAr: string = 'NULL';
   designationLt: string = "NULL";
-  prixPrestation: string = "";
+  prixPrestation: number = 0;
   rib!: string;
   actif!: boolean;
   visible!: boolean;
@@ -89,7 +87,7 @@ export class PrestationComponent implements OnInit {
   InPatient!: string;
   ErPatient!: string;
   HeaderTypeArrvier !: string;
-  PrixSelonTypeArriver !: string;
+  LabelPrixSelonTypeArriver !: string;
   PrixPrestation!: string;
   Add!: string;
   DetailsPrestation  !: string;
@@ -112,10 +110,9 @@ export class PrestationComponent implements OnInit {
   outPatientBoolean: boolean = false;
   ipPatientBoolean: boolean = false;
   erPatientBoolean: boolean = false;
-  PrixSelonTypeArriverIP: string = "0";
-  PrixSelonTypeArriverOPD: string = "0";
-  PrixSelonTypeArriverER: string = "0";
-
+  prixSelonTypeArriverIP: number = 0;
+  prixSelonTypeArriverOPD:  number = 0;
+  prixSelonTypeArriverER: number = 0;
   disPrixOPD: boolean = false;
   disPrixIP: boolean = false;
   disPrixER: boolean = false;
@@ -148,6 +145,7 @@ export class PrestationComponent implements OnInit {
     this.GetCodeNatureAdmissionIP();
     this.GetCodeNatureAdmissionOPD();
     this.GetCodeNatureAdmissionER();
+    this.GetCodePriceListCash();
     this.GetColumns();
     this.GetAllPrestation();
   }
@@ -171,7 +169,7 @@ export class PrestationComponent implements OnInit {
   }
 
 
-  
+
   GetCodeNatureAdmissionOPD() {
     this.param_service.GetParam("CodeNatureAdmissionOPD").
       subscribe((data: any) => {
@@ -185,6 +183,14 @@ export class PrestationComponent implements OnInit {
         this.codeNatureAdmissionIP = data.valeur;
       })
   }
+
+  GetCodePriceListCash() {
+    this.param_service.GetParam("PriceListCash").
+      subscribe((data: any) => {
+        this.codePriceListCash = data.valeur;
+      })
+  }
+
 
 
 
@@ -255,18 +261,15 @@ export class PrestationComponent implements OnInit {
     this.selectedPrestation = ''
     this.selectedFamilleFacturation = '';
     this.selectedFamillePrestation = '';
-    this.PrixSelonTypeArriverER = '';
-    this.PrixSelonTypeArriverIP = '';
-    this.PrixSelonTypeArriverOPD = '';
+    this.prixSelonTypeArriverER = 0;
+    this.prixSelonTypeArriverIP =  0;
+    this.prixSelonTypeArriverOPD =  0;
     this.ListFamilleFacturation = new Array();
     this.ListFamillePrestation = new Array();
-    this.erPatientBoolean=false;
-    this.outPatientBoolean=false;
-    this.ipPatientBoolean=false;
-    this.PrixSelonTypeArriverER="";
-    this.PrixSelonTypeArriverIP="";
-    this.PrixSelonTypeArriverOPD="";
-    this.prixPrestation="";
+    this.erPatientBoolean = false;
+    this.outPatientBoolean = false;
+    this.ipPatientBoolean = false; 
+    this.prixPrestation = 0;
     this.onRowUnselect(event);
 
   }
@@ -293,10 +296,10 @@ export class PrestationComponent implements OnInit {
     this.outPatientBoolean = event.data.opd;
     this.ipPatientBoolean = event.data.ip;
     this.prixPrestation = event.data.prixPrestation;
-    this.PrixSelonTypeArriverER=event.data.montantER;
-    this.PrixSelonTypeArriverOPD=event.data.montantOPD;
-    this.PrixSelonTypeArriverIP=event.data.montantIP;
-    
+    this.prixSelonTypeArriverER = event.data.montantER;
+    this.prixSelonTypeArriverOPD = event.data.montantOPD;
+    this.prixSelonTypeArriverIP = event.data.montantIP;
+
 
   }
   onRowUnselect(event: any) {
@@ -319,13 +322,24 @@ export class PrestationComponent implements OnInit {
 
 
   public onOpenModal(mode: string) {
+    // this.prixSelonTypeArriverER="";
+    // this.prixSelonTypeArriverIP="";
+    // this.prixSelonTypeArriverOPD="";
+
+    // this.DetailsPrestationByCodePrestationER = new Array();
+    // this.DetailsPrestationByCodePrestationOPD = new Array();
+    // this.DetailsPrestationByCodePrestationIP = new Array();
+
+    this.DetailsPrestationByCodePrestationOPD = [{ codeTypeIntervenant: null, designationArTypeIntervenant: "", prixSelonTypeArriver: 0, userCreate: "", dateCreate: "" }];
+    this.DetailsPrestationByCodePrestationER = [{ codeTypeIntervenant: null, designationArTypeIntervenant: "", prixSelonTypeArriver: 0, userCreate: "", dateCreate: "" }];
+    this.DetailsPrestationByCodePrestationIP = [{ codeTypeIntervenant: null, designationArTypeIntervenant: "", prixSelonTypeArriver: 0, userCreate: "", dateCreate: "" }];
 
     this.LabelActif = this.i18nService.getString('LabelActif');
     this.OutPatient = this.i18nService.getString('OutPatient');
     this.ErPatient = this.i18nService.getString('ErPatient');
     this.InPatient = this.i18nService.getString('InPatient');
     this.HeaderTypeArrvier = this.i18nService.getString('HeaderTypeArrvier');
-    this.PrixSelonTypeArriver = this.i18nService.getString('PrixSelonTypeArriver');
+    this.LabelPrixSelonTypeArriver = this.i18nService.getString('PrixSelonTypeArriver');
     this.DetailsPrestation = this.i18nService.getString('DetailsPrestation');
     this.Add = this.i18nService.getString('Add');
     this.PrixPrestation = this.i18nService.getString('PrixPrestation');
@@ -351,32 +365,32 @@ export class PrestationComponent implements OnInit {
       this.GetColumnTabDetailsPrestationER();
       this.GetColumnTabDetailsPrestationIP();
       this.GetAllTypeIntervenant();
-      this.DetailsPrestationByCodePrestationOPD = [{code:0, codeTypeIntervenant: null,designationArTypeIntervenant:"", montant: 0 ,userCreate:"",dateCreate:""}];
-      this.DetailsPrestationByCodePrestationER = [{code:0,  codeTypeIntervenant: null,designationArTypeIntervenant:"", montant: 0 ,userCreate:"",dateCreate:""}];
-      this.DetailsPrestationByCodePrestationIP = [{ code:0, codeTypeIntervenant: null,designationArTypeIntervenant:"", montant: 0 ,userCreate:"",dateCreate:""}];
+      this.DetailsPrestationByCodePrestationOPD = [{ codeTypeIntervenant: null, designationArTypeIntervenant: "", prixSelonTypeArriver: 0, userCreate: "", dateCreate: "" }];
+      this.DetailsPrestationByCodePrestationER = [{ codeTypeIntervenant: null, designationArTypeIntervenant: "", prixSelonTypeArriver: 0, userCreate: "", dateCreate: "" }];
+      this.DetailsPrestationByCodePrestationIP = [{ codeTypeIntervenant: null, designationArTypeIntervenant: "", prixSelonTypeArriver: 0, userCreate: "", dateCreate: "" }];
 
       this.actif = false;
       this.visible = false;
       this.visibleModal = true;
       this.code == undefined;
-      if(this.erPatientBoolean == true){
+      if (this.erPatientBoolean == true) {
         this.disPrixER = true
-      }else{
+      } else {
         this.disPrixER = false
 
       }
 
-      if(this.outPatientBoolean == true){
+      if (this.outPatientBoolean == true) {
         this.disPrixOPD = true
-      }else{
+      } else {
         this.disPrixOPD = false
 
       }
 
 
-      if(this.ipPatientBoolean == true){
+      if (this.ipPatientBoolean == true) {
         this.disPrixIP = true
-      }else{
+      } else {
         this.disPrixIP = false
 
       }
@@ -404,30 +418,30 @@ export class PrestationComponent implements OnInit {
         this.visibleModal = true;
         this.onRowSelect;
 
-        if(this.erPatientBoolean == true){
+        if (this.erPatientBoolean == true) {
           this.disPrixER = true
-          this.param_service.GetDetailsPrestationByCodeAndCodeNatureAdmission(this.selectedPrestation.code,this.codeNatureAdmissionER).subscribe((data: any) => { 
-            this.DetailsPrestationByCodePrestationER = data; 
+          this.param_service.GetDetailsPrestationByCodeAndCodeNatureAdmission(this.selectedPrestation.code, this.codeNatureAdmissionER).subscribe((data: any) => {
+            this.DetailsPrestationByCodePrestationER = data;
           })
 
-        }else{
-          this.disPrixER = false 
-        } 
-        if(this.outPatientBoolean == true){
+        } else {
+          this.disPrixER = false
+        }
+        if (this.outPatientBoolean == true) {
           this.disPrixOPD = true
-          this.param_service.GetDetailsPrestationByCodeAndCodeNatureAdmission(this.selectedPrestation.code,this.codeNatureAdmissionOPD).subscribe((data: any) => { 
-            this.DetailsPrestationByCodePrestationOPD = data; 
+          this.param_service.GetDetailsPrestationByCodeAndCodeNatureAdmission(this.selectedPrestation.code, this.codeNatureAdmissionOPD).subscribe((data: any) => {
+            this.DetailsPrestationByCodePrestationOPD = data;
           })
-        }else{
-          this.disPrixOPD = false 
-        } 
-        if(this.ipPatientBoolean == true){
+        } else {
+          this.disPrixOPD = false
+        }
+        if (this.ipPatientBoolean == true) {
           this.disPrixIP = true
-          this.param_service.GetDetailsPrestationByCodeAndCodeNatureAdmission(this.selectedPrestation.code,this.codeNatureAdmissionIP).subscribe((data: any) => { 
-            this.DetailsPrestationByCodePrestationIP = data; 
+          this.param_service.GetDetailsPrestationByCodeAndCodeNatureAdmission(this.selectedPrestation.code, this.codeNatureAdmissionIP).subscribe((data: any) => {
+            this.DetailsPrestationByCodePrestationIP = data;
           })
-        }else{
-          this.disPrixIP = false 
+        } else {
+          this.disPrixIP = false
         }
 
       }
@@ -489,97 +503,116 @@ export class PrestationComponent implements OnInit {
 
 
   GetDataFromTableEditor: any;
-final = new Array<any>();
+  final = new Array<any>();
+  detailsPriceListsPushed = new Array<any>();
 
-PostPrestation() {
-  const isValid = this.validateAllInputs();
-  if (!isValid) {
-    console.log("Error");
-    return; // Exit early if validation fails
-  }
+  PostPrestation() {
+    const isValid = this.validateAllInputs();
+    if (isValid) {
 
-  //Simplified price check:
-  const priceCheckPassed = 
-    (this.outPatientBoolean && this.PrixSelonTypeArriverOPD == this.prixPrestation) ||
-    (this.erPatientBoolean && this.PrixSelonTypeArriverER == this.prixPrestation) ||
-    (this.ipPatientBoolean && this.PrixSelonTypeArriverIP == this.prixPrestation) ||
-    (!this.outPatientBoolean && !this.erPatientBoolean && !this.ipPatientBoolean); //No patient type selected - assume valid
+      // Combine data collection into a single loop for each patient type
+      const patientTypes = [
+        { type: 'OPD', boolean: this.outPatientBoolean, codeNatureAdmission: 2, data: this.DetailsPrestationByCodePrestationOPD },
+        { type: 'IP', boolean: this.ipPatientBoolean, codeNatureAdmission: 1, data: this.DetailsPrestationByCodePrestationIP },
+        { type: 'ER', boolean: this.erPatientBoolean, codeNatureAdmission: 3, data: this.DetailsPrestationByCodePrestationER },
+      ];
 
-  if (!priceCheckPassed) {
-    this.CtrlAlertify.showNotificationِCustom('PrixPrestationNotEquals');
-    this.CtrlAlertify.showLabel();
-    return; // Exit early if price check fails
-  }
-
-
-  // Combine data collection into a single loop for each patient type
-  const patientTypes = [
-    { type: 'OPD', boolean: this.outPatientBoolean, codeNatureAdmission: 2, data: this.DetailsPrestationByCodePrestationOPD },
-    { type: 'IP', boolean: this.ipPatientBoolean, codeNatureAdmission: 1, data: this.DetailsPrestationByCodePrestationIP },
-    { type: 'ER', boolean: this.erPatientBoolean, codeNatureAdmission: 3, data: this.DetailsPrestationByCodePrestationER },
-  ];
-
-  patientTypes.forEach(patientType => {
-    if (patientType.boolean) {
-      patientType.data.forEach(item => {
-        this.final.push({
-          codeNatureAdmission: patientType.codeNatureAdmission,
-          codeTypeIntervenant: item.code,
-          montant: item.montant,
-          userCreate: this.userCreate,
-          dateCreate: new Date().toISOString(),
-        });
+      patientTypes.forEach(patientType => {
+        if (patientType.boolean) {
+          patientType.data.forEach(item => {
+            this.final.push({
+              codeNatureAdmission: patientType.codeNatureAdmission,
+              codeTypeIntervenant: item.codeTypeIntervenant,
+              montant: item.prixSelonTypeArriver,
+              userCreate: this.userCreate,
+              dateCreate: new Date().toISOString(),
+            });
+          } 
+       
+        );
+        }
       });
+
+
+      patientTypes.forEach(patientType => {
+        if (patientType.boolean) {
+          patientType.data.forEach(itemDetailsPriceList => {
+            this.detailsPriceListsPushed.push({
+              codeNatureAdmission: patientType.codeNatureAdmission, 
+              montant: itemDetailsPriceList.prixSelonTypeArriver,
+              montantPere:  itemDetailsPriceList.prixSelonTypeArriver,
+              codeTypeIntervenant: itemDetailsPriceList.codeTypeIntervenant,
+              userCreate: this.userCreate,
+              dateCreate: new Date().toISOString(),
+              codePriceList:this.codePriceListCash,
+              remMaj:"REM"
+            });
+          } 
+       
+        );
+        }
+      });
+
+
+
+     
+
+
+
+      const body = {
+        code: this.selectedPrestation.code,
+        codeSaisie: this.codeSaisie,
+        nomIntervAr: this.designationAr,
+        nomIntervLt: this.designationLt,
+        userCreate: this.userCreate,
+        designationAr: this.designationAr,
+        designationLt: this.designationLt,
+        codeFamillePrestation: this.selectedFamillePrestation,
+        codeFamilleFacturation: this.selectedFamilleFacturation,
+        opd: this.outPatientBoolean,
+        er: this.erPatientBoolean,
+        ip: this.ipPatientBoolean,
+        montantOPD: this.prixSelonTypeArriverOPD,
+        montantER: this.prixSelonTypeArriverER,
+        montantIP: this.prixSelonTypeArriverIP,
+        prixPrestation: this.prixPrestation,
+        detailsPrestationDTOs: this.final,
+        dateCreate: new Date().toISOString(),
+        actif: this.actif,
+        detailsPriceLists: this.detailsPriceListsPushed
+      };
+
+      const httpMethod = this.code != null ? this.param_service.UpdatePrestation : this.param_service.PostPrestation;
+      const httpObservable = httpMethod.call(this.param_service, body).pipe(
+        catchError((error: HttpErrorResponse) => {
+          let errorMessage = '';
+          this.final = new Array<any>();
+          this.detailsPriceListsPushed = new Array<any>();
+          return throwError(errorMessage);
+
+        })
+      ).subscribe(
+        (res: any) => {
+          this.CtrlAlertify.showLabel();
+          this.CtrlAlertify.ShowSavedOK();
+          this.visibleModal = false;
+          this.clearForm();
+          this.ngOnInit();
+          this.onRowUnselect(event); // Assuming 'event' is defined somewhere
+        }
+      );
+
+
+    } else {
+      console.log("Error Validation");
+
     }
-  });
-
-  const body = {
-    codeSaisie: this.codeSaisie,
-    nomIntervAr: this.designationAr,
-    nomIntervLt: this.designationLt,
-    userCreate: this.userCreate,
-    designationAr: this.designationAr,
-    designationLt: this.designationLt,
-    codeFamillePrestation: this.selectedFamillePrestation,
-    codeFamilleFacturation: this.selectedFamilleFacturation,
-    opd: this.outPatientBoolean,
-    er: this.erPatientBoolean,
-    ip: this.ipPatientBoolean,
-    montantOPD: this.PrixSelonTypeArriverOPD,
-    montantER: this.PrixSelonTypeArriverER,
-    montantIP: this.PrixSelonTypeArriverIP,
-    prixPrestation: this.prixPrestation,
-    detailsPrestationDTOs: this.final,
-    dateCreate: new Date().toISOString(),
-    actif: this.actif,
-  };
-
-  const httpMethod = this.code != null ? this.param_service.UpdatePrestation : this.param_service.PostPrestation;
-  const httpObservable = httpMethod.call(this.param_service, body).pipe(
-    catchError((error: HttpErrorResponse) => {
-      this.final = new Array<any>();
-      // Handle error more robustly - log the error, display a user-friendly message, etc.
-      console.error("HTTP Error:", error);
-      return throwError(() => new Error('Failed to save prestation.')); //Use throwError to propagate the error
-    })
-  );
 
 
-  httpObservable.subscribe(
-    (res: any) => {
-      this.CtrlAlertify.showLabel();
-      this.CtrlAlertify.ShowSavedOK();
-      this.visibleModal = false;
-      this.clearForm();
-      this.ngOnInit();
-      this.onRowUnselect(event); // Assuming 'event' is defined somewhere
-    },
-    (error: any) => {
-      //Handle Errors
-      this.CtrlAlertify.showNotificationِCustom(error.message || 'An unexpected error occurred.');
-    }
-  );
-}
+
+
+
+  }
 
 
 
@@ -667,26 +700,29 @@ PostPrestation() {
       this.DetailsPrestationByCodePrestationOPD = data;
     });
   }
- 
+
 
 
   updatePrices(event: any, type: string) {
     switch (type) {
       case 'opd':
         this.disPrixOPD = event.checked;
-        // this.PrixSelonTypeArriverOPD = event.checked ? this.prixPrestation : "";
+        this.DetailsPrestationByCodePrestationOPD = new Array();
+        // this.prixSelonTypeArriverOPD = event.checked ? this.prixPrestation : "";
         this.setDefaultSelectedOPD();
 
         break;
       case 'er':
         this.disPrixER = event.checked;
-        // this.PrixSelonTypeArriverER = event.checked ? this.prixPrestation : "";
+        this.DetailsPrestationByCodePrestationER = new Array();
+        // this.prixSelonTypeArriverER = event.checked ? this.prixPrestation : "";
         this.setDefaultSelectedER();
 
         break;
       case 'ip':
         this.disPrixIP = event.checked;
-        // this.PrixSelonTypeArriverIP = event.checked ? this.prixPrestation : "";
+        this.DetailsPrestationByCodePrestationIP = new Array();
+        // this.prixSelonTypeArriverIP = event.checked ? this.prixPrestation : "";
         this.setDefaultSelectedIP();
         break;
     }
@@ -703,12 +739,11 @@ PostPrestation() {
   }
 
   ValueMntChangedOPD() {
-    let x = 0;
-    let Valeur = "";
+    let x = 0; 
     for (let list of this.DetailsPrestationByCodePrestationOPD) {
-      x += +list.montant;
+      x += +list.prixSelonTypeArriver;
     }
-    this.PrixSelonTypeArriverOPD = x.toFixed(3);
+    this.prixSelonTypeArriverOPD = parseFloat(x.toFixed(3));
   }
 
 
@@ -719,12 +754,11 @@ PostPrestation() {
   }
 
   ValueMntChangedER() {
-    let x = 0;
-    let Valeur = "";
+    let x = 0; 
     for (let list of this.DetailsPrestationByCodePrestationER) {
-      x += +list.montant;
+      x += +list.prixSelonTypeArriver;
     }
-    this.PrixSelonTypeArriverER = x.toFixed(3);
+    this.prixSelonTypeArriverER = parseFloat(x.toFixed(3));
   }
   public removeIP(index: number): void {
 
@@ -738,19 +772,21 @@ PostPrestation() {
 
   ValueMntChangedIP() {
     let x = 0;
-    let Valeur = "";
     for (let list of this.DetailsPrestationByCodePrestationIP) {
-      x += +list.montant;
+      x += +list.prixSelonTypeArriver;
     }
-    this.PrixSelonTypeArriverIP = x.toFixed(3);
+    this.prixSelonTypeArriverIP = parseFloat(x.toFixed(3));
   }
 
   setDefaultSelectedIP() {
     if (this.DetailsPrestationByCodePrestationIP && this.DetailsPrestationByCodePrestationIP.length > 0) {
-      this.DetailsPrestationByCodePrestationIP[0].code = 1;
+      this.DetailsPrestationByCodePrestationIP[0].codeTypeIntervenant = 1;
+      this.prixSelonTypeArriverIP = 0;
+
       this.param_service.GetTypeIntervenantByCode(this.codeTypeIntervenantClinique).subscribe((data: any) => {
         this.DetailsPrestationByCodePrestationIP[0].designationArTypeIntervenant = data.designationAr
-        this.DetailsPrestationByCodePrestationIP[0].code = data.code
+
+        this.DetailsPrestationByCodePrestationIP[0].codeTypeIntervenant = data.code
 
       }
       );
@@ -758,11 +794,13 @@ PostPrestation() {
   }
   setDefaultSelectedOPD() {
     if (this.DetailsPrestationByCodePrestationOPD && this.DetailsPrestationByCodePrestationOPD.length > 0) {
-      this.DetailsPrestationByCodePrestationOPD[0].code = 1;
-
+      this.DetailsPrestationByCodePrestationOPD[0].codeTypeIntervenant = 1;
+      this.prixSelonTypeArriverOPD = 0;
       this.param_service.GetTypeIntervenantByCode(this.codeTypeIntervenantClinique).subscribe((data: any) => {
         this.DetailsPrestationByCodePrestationOPD[0].designationArTypeIntervenant = data.designationAr
-        this.DetailsPrestationByCodePrestationOPD[0].code = data.code
+
+
+        this.DetailsPrestationByCodePrestationOPD[0].codeTypeIntervenant = data.code
       }
       );
 
@@ -771,27 +809,16 @@ PostPrestation() {
   setDefaultSelectedER() {
     if (this.DetailsPrestationByCodePrestationER && this.DetailsPrestationByCodePrestationER.length > 0) {
       this.DetailsPrestationByCodePrestationER[0].codeTypeIntervenant = 1;
+      this.prixSelonTypeArriverER = 0;
+
       this.param_service.GetTypeIntervenantByCode(this.codeTypeIntervenantClinique).subscribe((data: any) => {
         this.DetailsPrestationByCodePrestationER[0].designationArTypeIntervenant = data.designationAr
-        this.DetailsPrestationByCodePrestationER[0].code = data.code
+        this.DetailsPrestationByCodePrestationER[0].codeTypeIntervenant = data.code
       }
       );
     }
   }
 
-
-  // onTypeIntervenantChange(index: number, event: any) {
-  //   const selectedValue = event.value; 
-  //   const duplicateFound = this.DetailsPrestationByCodePrestationER.some((item, i) => {
-  //     return i !== index && item.selectedTypeIntervenantER === selectedValue;
-  //   });
-
-  //   if (duplicateFound) {
-  //     this.CtrlAlertify.showNotificationِCustom('TypeIntervenantDupliquer');
-  //     this.CtrlAlertify.showLabel(); 
-  //     this.DetailsPrestationByCodePrestationER[index].selectedTypeIntervenantER = null; // Reset selection
-  //   }
-  // }
 
 
   clickDropDownUpOPD(dropDownModUp: any) {
@@ -815,7 +842,7 @@ PostPrestation() {
     var exist = false;
 
     for (var y = 0; y < this.DetailsPrestationByCodePrestationOPD.length; y++) {
-      if (this.selectedTypeIntervenantOPD != this.DetailsPrestationByCodePrestationOPD[y].codeTypeIntervenant  ) {
+      if (this.selectedTypeIntervenantOPD != this.DetailsPrestationByCodePrestationOPD[y].codeTypeIntervenant) {
         exist = false;
       } else {
         exist = true;
@@ -831,7 +858,7 @@ PostPrestation() {
         this.NewcompteurOPD = this.NewcompteurOPD + 1;
 
         this.DetailsPrestationByCodePrestationOPD.push(Newdata);
-        this.DetailsPrestationByCodePrestationOPD[y].montant = 0;
+        this.DetailsPrestationByCodePrestationOPD[y].prixSelonTypeArriver = 0;
 
 
       })
@@ -839,7 +866,7 @@ PostPrestation() {
 
   }
 
-  
+
   clickDropDownUpIP(dropDownModUp: any) {
     if ((dropDownModUp.documentClickListener !== undefined && dropDownModUp.selectedOption !== null && dropDownModUp.itemClick) || dropDownModUp.itemClick) {
       dropDownModUp.focus();
@@ -852,13 +879,13 @@ PostPrestation() {
       }
     }
   }
-  NewcompteurIP: number = 0; 
+  NewcompteurIP: number = 0;
 
   PushTableDataIP() {
     var exist = false;
 
     for (var y = 0; y < this.DetailsPrestationByCodePrestationIP.length; y++) {
-      if (this.selectedTypeIntervenantIP != this.DetailsPrestationByCodePrestationIP[y].codeTypeIntervenant ) {
+      if (this.selectedTypeIntervenantIP != this.DetailsPrestationByCodePrestationIP[y].codeTypeIntervenant) {
         exist = false;
       } else {
         exist = true;
@@ -874,7 +901,7 @@ PostPrestation() {
         this.NewcompteurIP = this.NewcompteurIP + 1;
 
         this.DetailsPrestationByCodePrestationIP.push(Newdata);
-        this.DetailsPrestationByCodePrestationIP[y].montant = 0;
+        this.DetailsPrestationByCodePrestationIP[y].prixSelonTypeArriver = 0;
 
 
       })
@@ -894,13 +921,13 @@ PostPrestation() {
       }
     }
   }
-  NewcompteurER: number = 0; 
+  NewcompteurER: number = 0;
 
   PushTableDataER() {
     var exist = false;
 
     for (var y = 0; y < this.DetailsPrestationByCodePrestationER.length; y++) {
-      if (this.selectedTypeIntervenantER != this.DetailsPrestationByCodePrestationER[y].codeTypeIntervenant  ) {
+      if (this.selectedTypeIntervenantER != this.DetailsPrestationByCodePrestationER[y].codeTypeIntervenant) {
         exist = false;
       } else {
         exist = true;
@@ -916,7 +943,7 @@ PostPrestation() {
         this.NewcompteurER = this.NewcompteurER + 1;
 
         this.DetailsPrestationByCodePrestationER.push(Newdata);
-        this.DetailsPrestationByCodePrestationER[y].montant = 0;
+        this.DetailsPrestationByCodePrestationER[y].prixSelonTypeArriver = 0;
 
 
       })
