@@ -2784,3 +2784,18 @@ input#PEC {
     background: white;
     border: none;
 }
+
+:host ::ng-deep .pi-file-excel:before {
+    content: "\e98e";
+    color: #b90000;
+}
+
+:host ::ng-deep .pi-file-check:before {
+    content: "\ea1b";
+    color: #039903;
+}
+
+:host ::ng-deep .pi-file:before {
+    content: "\e958";
+    color: #0070ff;
+}

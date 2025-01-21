@@ -23,6 +23,7 @@ import { PriceListComponent } from './price-list/price-list.component';
 import { CouvertureComponent } from './couverture/couverture.component';
 import { SpecialiteMedecinComponent } from './specialite-medecin/specialite-medecin.component';
 import { SpecialiteCabinetComponent } from './specialite-cabinet/specialite-cabinet.component';
+import { SousFamillePrestationComponent } from './sous-famille-prestation/sous-famille-prestation.component';
  
  
 
@@ -142,6 +143,12 @@ const routes: Routes = [
     path: 'specialite_cabinet',
     component: SpecialiteCabinetComponent ,
     data:{title:'SpecialiteCabinet',icon:'bx bx-shield-quarter'}
+  }
+  ,
+  {
+    path: 'sous_famille_prestation',
+    component: SousFamillePrestationComponent ,
+    data:{title:'SousFamillePrestation',icon:'bx bx-category'}
   }
 
 ];

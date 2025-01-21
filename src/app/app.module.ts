@@ -35,7 +35,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog'; 
 import { PanelModule } from 'primeng/panel'; 
- 
+import { TabMenuModule } from 'primeng/tabmenu';
 
 
 /////////////////////////////////////////////
@@ -99,6 +99,7 @@ import { MenuParametrageComponent } from './menu-parametrage/menu-parametrage.co
 import { I18nPipe } from './Shared/i18n/i18n.pipe';
 import { MenuActiveDirective } from './Shared/service/highlight';
 import { ToFixedRoundPipe } from './Shared/service/ToFixedRoundPipe';
+import { SousFamillePrestationComponent } from './menu-parametrage/sous-famille-prestation/sous-famille-prestation.component';
 
 const languages = [
   { lang: 'عربي', flag: 'assets/images/county/ar.png', file: arI18n, valeur: 'ar' },
@@ -123,7 +124,7 @@ const languages = [
     FournisseurComponent, PrestationComponent,OperationComponent, TypeIntervenantComponent, 
     MedecinComponent, ResponsableRemiseComponent,ModeReglementComponent,FamilleFacturationComponent,
     BanqueComponent, FamilleOperationComponent,FamillePrestationComponent,SpecialiteCabinetComponent,SpecialiteMedecinComponent,
-    
+    SousFamillePrestationComponent,
     ////////////// Menu REception
 
     AdmissionComponent,EditionAdmissionComponent, CabinetComponent, ClotureSessionComponent,
@@ -137,7 +138,7 @@ const languages = [
     BrowserModule, NgxEchartsModule.forRoot({
       echarts, // Provide the echarts object here
     }),
-    ChartModule, BrowserModule,PanelModule,
+    ChartModule, BrowserModule,PanelModule,TabMenuModule,
     ReactiveFormsModule, BrowserAnimationsModule,
     AppRoutingModule, DropdownModule, FormsModule,
     HttpClientModule,

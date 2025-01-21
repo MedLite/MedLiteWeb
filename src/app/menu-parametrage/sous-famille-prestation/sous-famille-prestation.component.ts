@@ -11,21 +11,20 @@ import { ParametargeService } from '../WebService/parametarge.service';
 import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
 
 declare const PDFObject: any;
-
 @Component({
-  selector: 'app-medecin',
-  templateUrl: './medecin.component.html',
-  styleUrls: ['./medecin.component.css' ,'.../../../src/assets/css/newStyle.css'
-    , '.../../../src/assets/css/StyleApplication.css'], providers: [ConfirmationService, MessageService]
-  })
-export class MedecinComponent implements OnInit {
-  
+  selector: 'app-sous-famille-prestation',
+  templateUrl: './sous-famille-prestation.component.html',
+  styleUrls:[ './sous-famille-prestation.component.css','.../../../src/assets/css/newStyle.css'
+  , '.../../../src/assets/css/StyleApplication.css'], providers: [ConfirmationService, MessageService]
+})
+export class SousFamillePrestationComponent implements OnInit {
+
     @ViewChild('codeError') codeErrorElement!: ElementRef;
     @ViewChild('codeSaisieInput') codeSaisieInputElement!: ElementRef;
     @ViewChild('designationArInput') desginationArInputElement!: ElementRef;
     @ViewChild('designationLtInput') designationLtInputElement!: ElementRef;
-    @ViewChild('specialiteMedecinInput') specialiteMedecinInputElement!: Dropdown;
-    @ViewChild('typeIntervenatInput') typeIntervenantInputElement!: Dropdown;
+    @ViewChild('specialiteSousFamillePrestationInput') specialiteSousFamillePrestationInputElement!: Dropdown;
+    @ViewChild('FamillePrestationInput') FamillePrestationInputElement!: Dropdown;
   
     first = 0;
     IsLoading = true;
@@ -55,30 +54,27 @@ export class MedecinComponent implements OnInit {
     visible!: boolean;
     LabelActif!: string;
     userCreate = sessionStorage.getItem("userName");
-    dataMedecin = new Array<any>();
-    selectedMedecin!: any;
-    ListspecialiteMedecin = new Array<any>();
-    selectedspecialiteMedecin: any = '';
+    dataSousFamillePrestation = new Array<any>();
+    selectedSousFamillePrestation!: any; 
 
-    ListTypeIntervenant = new Array<any>();
-    selectedTypeIntervenant: any = '';
+    ListFamillePrestation = new Array<any>();
+    selectedFamillePrestation: any = '';
   
     ngOnInit(): void {
       this.GetColumns();
-      this.GetAllMedecin();
+      this.GetAllSousFamillePrestation();
     }
   
   
   
     GetColumns() {
       this.cols = [
-        { field: 'specialiteMedecinDTO.designationAr', header: this.i18nService.getString('SpecialiteMedecin') || 'SpecialiteMedecin', width: '20%', filter: "true" },
+        { field: 'famillePrestationDTO.designationAr', header: this.i18nService.getString('FamillePrestation') || 'SpecialiteSousFamillePrestation', width: '20%', filter: "true" },
   
         { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
-        { field: 'nomIntervAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '16%', filter: "true" },
-        { field: 'nomIntervLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '16%', filter: "false" },
-        { field: 'typeIntervenantDTO.designationAr', header: this.i18nService.getString('TypeIntervenant') || 'TypeIntervenant', width: '16%', filter: "false" },
-        { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
+        { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '16%', filter: "true" },
+        { field: 'designationLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '16%', filter: "false" },
+         { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
   
       ];
     }
@@ -111,16 +107,15 @@ export class MedecinComponent implements OnInit {
       this.actif = false;
       this.visibleModal = false;
       this.codeSaisie = '';
-      this.selectedMedecin = ''
-      this.selectedspecialiteMedecin='';
-      this.selectedTypeIntervenant = '';
+      this.selectedSousFamillePrestation = '' 
+      this.selectedFamillePrestation = '';
       this.onRowUnselect(event);
   
     }
   
   
     GetCodeSaisie() {
-      this.param_service.GetCompteur("CodeSaisieMedecin").
+      this.param_service.GetCompteur("CodeSaisieSousFamillePrestation").
         subscribe((data: any) => {
           this.codeSaisie = data.prefixe + data.suffixe;
         })
@@ -132,10 +127,9 @@ export class MedecinComponent implements OnInit {
       this.actif = event.data.actif;
       this.visible = event.data.visible;
       this.codeSaisie = event.data.codeSaisie;
-      this.designationAr = event.data.nomIntervAr;
-      this.designationLt = event.data.nomIntervLt; 
-      this.selectedspecialiteMedecin = event.data.specialiteMedecinDTO.code
-      this.selectedTypeIntervenant = event.data.typeIntervenantDTO.code
+      this.designationAr = event.data.designationAr;
+      this.designationLt = event.data.designationLt; 
+      this.selectedFamillePrestation = event.data.famillePrestationDTO.code
   
       console.log('vtData : ', event);
     }
@@ -146,8 +140,8 @@ export class MedecinComponent implements OnInit {
   
   
   
-    DeleteMedecin(code: any) {
-      this.param_service.DeleteMedecin(code).subscribe(
+    DeleteSousFamillePrestation(code: any) {
+      this.param_service.DeleteSousFamillePrestation(code).subscribe(
         (res: any) => {
           this.CtrlAlertify.showLabel();
           this.CtrlAlertify.ShowDeletedOK();
@@ -175,9 +169,8 @@ export class MedecinComponent implements OnInit {
         this.onRowUnselect(event);
    
         this.clearForm();
-        this.GetCodeSaisie();
-        this.GetSpecilaiteSpecialiteMedecin();
-        this.GetTypeIntervenat();
+        this.GetCodeSaisie(); 
+        this.GetFamillePrestation();
 
         this.actif = false;
         this.visible = false;
@@ -198,9 +191,8 @@ export class MedecinComponent implements OnInit {
         } else {
   
           button.setAttribute('data-target', '#Modal');
-          this.formHeader = this.i18nService.getString('Modifier');
-          this.GetSpecilaiteSpecialiteMedecin();
-          this.GetTypeIntervenat();
+          this.formHeader = this.i18nService.getString('Modifier'); 
+          this.GetFamillePrestation();
   
           this.visibleModal = true;
           this.onRowSelect;
@@ -236,7 +228,7 @@ export class MedecinComponent implements OnInit {
           this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
         } else {
           button.setAttribute('data-target', '#ModalPrint');
-          this.formHeader = "Imprimer Liste SpecialiteMedecin"
+          this.formHeader = "Imprimer Liste SpecialiteSousFamillePrestation"
           this.visibleModalPrint = true;
           // this.RemplirePrint();
   
@@ -255,26 +247,24 @@ export class MedecinComponent implements OnInit {
       const codeSaisie = this.validationService.validateInputCommun(this.codeSaisieInputElement, this.codeSaisie);
       const designationAr = this.validationService.validateInputCommun(this.desginationArInputElement, this.designationAr);
       const designationLt = this.validationService.validateInputCommun(this.designationLtInputElement, this.designationLt);
-      const spec_Cab = this.validationService.validateDropDownCommun(this.specialiteMedecinInputElement, this.selectedspecialiteMedecin);
+       
+      const TypeInterv = this.validationService.validateDropDownCommun(this.FamillePrestationInputElement, this.selectedFamillePrestation);
       
-      const TypeInterv = this.validationService.validateDropDownCommun(this.typeIntervenantInputElement, this.selectedTypeIntervenant);
-      
-      return codeSaisie && designationAr && designationLt && spec_Cab && TypeInterv;
+      return codeSaisie && designationAr && designationLt && TypeInterv;
     }
   
   
   
-    PostMedecin() {
+    PostSousFamillePrestation() {
   
       const isValid = this.validateAllInputs();
       if (isValid) {
         let body = {
           codeSaisie: this.codeSaisie,
-          nomIntervAr: this.designationAr,
-          nomIntervLt: this.designationLt,
-          userCreate: this.userCreate,
-          codeSpecialiteMedecin: this.selectedspecialiteMedecin,
-          codeTypeIntervenant: this.selectedTypeIntervenant,
+          designationAr: this.designationAr,
+          designationLt: this.designationLt,
+          userCreate: this.userCreate, 
+          codeFamillePrestation: this.selectedFamillePrestation,
   
           dateCreate: new Date().toISOString(), //
           code: this.code,
@@ -284,7 +274,7 @@ export class MedecinComponent implements OnInit {
         if (this.code != null) {
           body['code'] = this.code;
   
-          this.param_service.UpdateMedecin(body).subscribe(
+          this.param_service.UpdateSousFamillePrestation(body).subscribe(
   
             (res: any) => {
               this.CtrlAlertify.showLabel();
@@ -301,7 +291,7 @@ export class MedecinComponent implements OnInit {
   
         }
         else {
-          this.param_service.PostMedecin(body).subscribe(
+          this.param_service.PostSousFamillePrestation(body).subscribe(
             (res: any) => {
               this.CtrlAlertify.showLabel();
               this.CtrlAlertify.ShowSavedOK();
@@ -336,13 +326,13 @@ export class MedecinComponent implements OnInit {
   
   
   
-    GetAllMedecin() {
-      this.param_service.GetMedecin().subscribe((data: any) => {
+    GetAllSousFamillePrestation() {
+      this.param_service.GetSousFamillePrestation().subscribe((data: any) => {
   
         this.loadingComponent.IsLoading = false;
         this.IsLoading = false;
   
-        this.dataMedecin = data;
+        this.dataSousFamillePrestation = data;
         this.onRowUnselect(event);
   
       })
@@ -353,32 +343,20 @@ export class MedecinComponent implements OnInit {
       this.visDelete = false;
     }
   
-   
-    dataspecialiteMedecin = new Array<any>();
-    listSpecialiteMedecinPushed = new Array<any>(); 
-    GetSpecilaiteSpecialiteMedecin() {
-      this.param_service.GetSpecialiteMedecin() .subscribe((data: any) => {
-        this.dataspecialiteMedecin = data;
-        this.listSpecialiteMedecinPushed = [];
-        for (let i = 0; i < this.dataspecialiteMedecin.length; i++) {
-          this.listSpecialiteMedecinPushed.push({ label: this.dataspecialiteMedecin[i].designationAr, value: this.dataspecialiteMedecin[i].code })
-        }
-        this.ListspecialiteMedecin = this.listSpecialiteMedecinPushed;
-      })
-    }
+    
   
 
     
-    dataTypeIntervenant = new Array<any>();
-    listTypeIntervenantPushed = new Array<any>(); 
-    GetTypeIntervenat() {
-      this.param_service.GetTypeIntervenant() .subscribe((data: any) => {
-        this.dataTypeIntervenant = data;
-        this.listTypeIntervenantPushed = [];
-        for (let i = 0; i < this.dataTypeIntervenant.length; i++) {
-          this.listTypeIntervenantPushed.push({ label: this.dataTypeIntervenant[i].designationAr, value: this.dataTypeIntervenant[i].code })
+    dataFamillePrestation = new Array<any>();
+    listFamillePrestationPushed = new Array<any>(); 
+    GetFamillePrestation() {
+      this.param_service.GetFamillePrestation() .subscribe((data: any) => {
+        this.dataFamillePrestation = data;
+        this.listFamillePrestationPushed = [];
+        for (let i = 0; i < this.dataFamillePrestation.length; i++) {
+          this.listFamillePrestationPushed.push({ label: this.dataFamillePrestation[i].designationAr, value: this.dataFamillePrestation[i].code })
         }
-        this.ListTypeIntervenant = this.listTypeIntervenantPushed;
+        this.ListFamillePrestation = this.listFamillePrestationPushed;
       })
     }
   
@@ -392,3 +370,4 @@ export class MedecinComponent implements OnInit {
 
 
 
+ 

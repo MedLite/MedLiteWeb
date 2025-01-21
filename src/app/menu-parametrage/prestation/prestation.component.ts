@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
 import { Router } from '@angular/router';
@@ -11,8 +11,10 @@ import { Dropdown } from 'primeng/dropdown';
 import { ParametargeService } from '../WebService/parametarge.service';
 import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
 import { catchError, throwError } from 'rxjs';
+import * as _ from 'lodash';
+declare const PDFObject: any; 
 
-declare const PDFObject: any;
+
 
 interface DetailsPrestationDTO {
   // code:number;
@@ -35,6 +37,7 @@ export class PrestationComponent implements OnInit {
   @ViewChild('designationArInput') designationArInputElement!: ElementRef;
   @ViewChild('designationLtInput') designationLtInputElement!: ElementRef;
   @ViewChild('famillePrestationInput') famillePrestationInputElement!: Dropdown;
+  @ViewChild('sousFamillePrestationInput') sousFamillePrestationInputElement!: Dropdown;
   @ViewChild('familleFacturationInput') familleFacturationInputElement!: Dropdown;
   @ViewChild('prixSelonTypeArriverIPInput') prixSelonTypeArriverIPInputElement!: ElementRef;
   @ViewChild('prixSelonTypeArriverOPDInput') prixSelonTypeArriverOPDInputElement!: ElementRef;
@@ -48,13 +51,13 @@ export class PrestationComponent implements OnInit {
   IsLoading = true;
   openModal!: boolean;
 
-
-
+  items: MenuItem[] | undefined;
+  activeItem: MenuItem | undefined;
 
 
 
   @ViewChild('modal') modal!: any;
-
+ 
   pdfData!: Blob;
   isLoading = false;
   cols!: any[];
@@ -102,11 +105,13 @@ export class PrestationComponent implements OnInit {
   selectedTypeIntervenantIP: any = '';
   selectedTypeIntervenantER: any = '';
   ListFamillePrestation = new Array<any>();
+  ListSousFamillePrestation = new Array<any>();
   ListTypeIntervenant = new Array<any>();
   DetailsPrestationByCodePrestationOPD = new Array<DetailsPrestationDTO>();
   DetailsPrestationByCodePrestationER = new Array<DetailsPrestationDTO>();
   DetailsPrestationByCodePrestationIP = new Array<DetailsPrestationDTO>();
   selectedFamillePrestation: any = '';
+  selectedSousFamillePrestation: any = '';
   outPatientBoolean: boolean = false;
   ipPatientBoolean: boolean = false;
   erPatientBoolean: boolean = false;
@@ -132,27 +137,23 @@ export class PrestationComponent implements OnInit {
 
 
 
-  //  dataMedecin = new Array<any>();
-  //  selectedMedecin!: any;
-  //  ListspecialiteMedecin = new Array<any>();
-  //  selectedspecialiteMedecin: any = '';
-
-  //  ListTypeIntervenant = new Array<any>();
-  //  selectedTypeIntervenant: any = '';
 
   ngOnInit(): void {
+    this.items = [
+      { label:  this.i18nService.getString('LabelActif') || 'LabelActif' , icon: 'pi pi-file-check' , command: () => { this.GetAllPrestationActif() } },
+      { label: this.i18nService.getString('LabelInActif') || 'LabelInActif', icon: 'pi pi-file-excel' , command: () => { this.GetAllPrestationInActif() }},
+      { label: this.i18nService.getString('LabelAll') || 'LabelAll', icon: 'pi pi-file' , command: () => { this.GetAllPrestation() } }, 
+  ];
+  this.activeItem = this.items[0]; 
     this.GetCodeTypeIntervCinic();
     this.GetCodeNatureAdmissionIP();
     this.GetCodeNatureAdmissionOPD();
     this.GetCodeNatureAdmissionER();
     this.GetCodePriceListCash();
-    this.GetColumns();
-    this.GetAllPrestation();
+    this.GetColumns(); 
+    this.GetAllPrestationActif(); 
   }
-
-
-
-
+  
   GetCodeTypeIntervCinic() {
     this.param_service.GetParam("CodeTypeIntervCinic").
       subscribe((data: any) => {
@@ -196,12 +197,13 @@ export class PrestationComponent implements OnInit {
 
   GetColumns() {
     this.cols = [
-      { field: 'specialiteMedecinDTO.designationAr', header: this.i18nService.getString('SpecialiteMedecin') || 'SpecialiteMedecin', width: '20%', filter: "true" },
+      { field: 'famillePrestationDTO.designationAr', header: this.i18nService.getString('FamillePrestation') || 'FamillePrestation', width: '20%', filter: "true" },
+      { field: 'sousFamillePrestationDTO.designationAr', header: this.i18nService.getString('SousFamillePrestation') || 'SousFamillePrestation', width: '20%', filter: "true" },
 
       { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
-      { field: 'nomIntervAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '16%', filter: "true" },
-      { field: 'nomIntervLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '16%', filter: "false" },
-      { field: 'typeIntervenantDTO.designationAr', header: this.i18nService.getString('TypeIntervenant') || 'TypeIntervenant', width: '16%', filter: "false" },
+      { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '16%', filter: "true" },
+      { field: 'designationLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '16%', filter: "false" },
+      { field: 'familleFacturationDTO.designationAr', header: this.i18nService.getString('FamilleFacturation') || 'FamilleFacturation', width: '16%', filter: "false" },
       { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
 
     ];
@@ -261,11 +263,13 @@ export class PrestationComponent implements OnInit {
     this.selectedPrestation = ''
     this.selectedFamilleFacturation = '';
     this.selectedFamillePrestation = '';
+    this.selectedSousFamillePrestation = '';
     this.prixSelonTypeArriverER = 0;
     this.prixSelonTypeArriverIP =  0;
     this.prixSelonTypeArriverOPD =  0;
     this.ListFamilleFacturation = new Array();
     this.ListFamillePrestation = new Array();
+    this.ListSousFamillePrestation = new Array();
     this.erPatientBoolean = false;
     this.outPatientBoolean = false;
     this.ipPatientBoolean = false; 
@@ -291,6 +295,7 @@ export class PrestationComponent implements OnInit {
     this.designationAr = event.data.designationAr;
     this.designationLt = event.data.designationLt;
     this.selectedFamillePrestation = event.data.famillePrestationDTO.code;
+    this.selectedSousFamillePrestation = event.data.sousFamillePrestationDTO.code;
     this.selectedFamilleFacturation = event.data.familleFacturationDTO.code;
     this.erPatientBoolean = event.data.er;
     this.outPatientBoolean = event.data.opd;
@@ -360,7 +365,8 @@ export class PrestationComponent implements OnInit {
       this.clearForm();
       this.GetCodeSaisie();
       this.GetAllFamilleFacturation();
-      this.GetAllFamillePrestation();
+      this.GetAllFamillePrestation(); 
+
       this.GetColumnTabDetailsPrestationOPD();
       this.GetColumnTabDetailsPrestationER();
       this.GetColumnTabDetailsPrestationIP();
@@ -411,6 +417,7 @@ export class PrestationComponent implements OnInit {
         this.formHeader = this.i18nService.getString('Modifier');
         this.GetAllFamilleFacturation();
         this.GetAllFamillePrestation();
+        this.GetAllSousFamillePrestationForModif();
         this.GetAllTypeIntervenant();
         this.GetColumnTabDetailsPrestationOPD();
         this.GetColumnTabDetailsPrestationER();
@@ -495,6 +502,7 @@ export class PrestationComponent implements OnInit {
     const designationAr = this.validationService.validateInputCommun(this.designationArInputElement, this.designationAr);
     const designationLt = this.validationService.validateInputCommun(this.designationLtInputElement, this.designationLt);
     const famPres = this.validationService.validateDropDownCommun(this.famillePrestationInputElement, this.selectedFamillePrestation);
+    const SousfamPres = this.validationService.validateDropDownCommun(this.sousFamillePrestationInputElement, this.selectedSousFamillePrestation);
 
     const famFac = this.validationService.validateDropDownCommun(this.familleFacturationInputElement, this.selectedFamilleFacturation);
 
@@ -568,6 +576,7 @@ export class PrestationComponent implements OnInit {
         designationAr: this.designationAr,
         designationLt: this.designationLt,
         codeFamillePrestation: this.selectedFamillePrestation,
+        codeSousFamillePrestation: this.selectedSousFamillePrestation,
         codeFamilleFacturation: this.selectedFamilleFacturation,
         opd: this.outPatientBoolean,
         er: this.erPatientBoolean,
@@ -633,11 +642,38 @@ export class PrestationComponent implements OnInit {
       this.loadingComponent.IsLoading = false;
 
       this.IsLoading = false
-      this.dataPrestation = data;
+      this.dataPrestation = data; 
       this.onRowUnselect(event);
 
     })
   }
+
+  GetAllPrestationActif() {
+    this.param_service.GetPrestationByActif(true).subscribe((data: any) => {
+
+      this.loadingComponent.IsLoading = false;
+
+      this.IsLoading = false
+      this.dataPrestation = data; 
+      this.onRowUnselect(event);
+
+    })
+  }
+   
+  GetAllPrestationInActif() {
+    this.param_service.GetPrestationByActif(false).subscribe((data: any) => {
+
+      this.loadingComponent.IsLoading = false;
+
+      this.IsLoading = false
+      this.dataPrestation = data; 
+      this.onRowUnselect(event);
+
+    })
+  }
+   
+
+  
 
 
   CloseModal() {
@@ -672,6 +708,32 @@ export class PrestationComponent implements OnInit {
         this.ListFamillePrestationPushed.push({ label: this.dataFamillePrestation[i].designationAr, value: this.dataFamillePrestation[i].code })
       }
       this.ListFamillePrestation = this.ListFamillePrestationPushed;
+    })
+  }
+
+  
+  dataSousFamillePrestation = new Array<any>();
+  ListSousFamillePrestationPushed = new Array<any>();
+  GetAllSousFamillePrestation(codefamilleprestation: number) {  
+    this.param_service.GetSousFamillePrestationByCodeFamille(codefamilleprestation).subscribe((data: any) => {
+      this.dataSousFamillePrestation = data;
+      this.ListSousFamillePrestationPushed = [];
+      for (let i = 0; i < this.dataSousFamillePrestation.length; i++) {
+        this.ListSousFamillePrestationPushed.push({ label: this.dataSousFamillePrestation[i].designationAr, value: this.dataSousFamillePrestation[i].code })
+      }
+      this.ListSousFamillePrestation = this.ListSousFamillePrestationPushed;
+    })
+  }
+
+
+  GetAllSousFamillePrestationForModif() {  
+    this.param_service.GetSousFamillePrestation().subscribe((data: any) => {
+      this.dataSousFamillePrestation = data;
+      this.ListSousFamillePrestationPushed = [];
+      for (let i = 0; i < this.dataSousFamillePrestation.length; i++) {
+        this.ListSousFamillePrestationPushed.push({ label: this.dataSousFamillePrestation[i].designationAr, value: this.dataSousFamillePrestation[i].code })
+      }
+      this.ListSousFamillePrestation = this.ListSousFamillePrestationPushed;
     })
   }
 

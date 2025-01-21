@@ -13,6 +13,7 @@
                         <mat-menu #menu1="matMenu" class="div-panel" [overlapTrigger]="false" (closed)="onClosed()">
                             <button mat-menu-item class="bold-menu-item" [routerLink]="['/menu_parametarge/prestation']"> <i class='bx bx-first-aid Mn' ></i>     <span style="font-weight: bold;">{{'Prestation' | i18nForMenu:i18nService.currentLanguage}}</span>    </button>
                             <button mat-menu-item class="bold-menu-item" [routerLink]="['/menu_parametarge/famille_prestation']"> <i class='bx bx-food-menu Mn'></i> <span style="font-weight: bold;">{{'FamillePrestation' | i18nForMenu:i18nService.currentLanguage}}</span> </button>
+                            <button mat-menu-item class="bold-menu-item" [routerLink]="['/menu_parametarge/sous_famille_prestation']"><i class='bx bx-category Mn'></i> <span style="font-weight: bold;"> {{'SousFamillePrestation' | i18nForMenu:i18nService.currentLanguage}} </span></button>
                             <button mat-menu-item class="bold-menu-item" [routerLink]="['/menu_parametarge/famille_facturation']"><i class='bx bx-detail Mn'></i> <span style="font-weight: bold;"> {{'FamilleFacturation' | i18nForMenu:i18nService.currentLanguage}} </span></button>
                         </mat-menu>
                     </div>

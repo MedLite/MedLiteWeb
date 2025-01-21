@@ -3282,7 +3282,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
     color: #212529;
     border: solid #dee2e6;
     border-width: 1px 0 0 0;
-    padding: 1rem 1rem;
+    padding: 15px 0px 5px 15px;
     font-weight: 600
 }
 
@@ -6796,7 +6796,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link .p-menuitem-icon {
-    margin-right: .5rem
+    margin-left: .5rem
 }
 
 .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link:not(.p-disabled):focus {

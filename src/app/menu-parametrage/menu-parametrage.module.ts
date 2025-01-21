@@ -6,6 +6,7 @@ import { TagModule } from 'primeng/tag';
 import { MatIconModule } from '@angular/material/icon'
 import {MatMenuModule} from '@angular/material/menu';  
 import { I18nPipeForMenu } from '../Shared/i18n/i18nForMenu.pipe';
+
 @NgModule({
   declarations: [
     MenuParametrageComponent,I18nPipeForMenu

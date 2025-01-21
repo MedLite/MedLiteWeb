@@ -461,6 +461,13 @@ DeleteCaisse(code: any) {
   }
 
 
+    
+  GetPrestationByActif(bool : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}prestation/findBy?actif=`+bool);
+  }
+
+
   GetPrestationByCode(code : number): Observable<any> {
 
     return this.http.get(`${environment.API_Parametrage}prestation/`+ code);
@@ -562,6 +569,39 @@ DeleteCaisse(code: any) {
     return this.http.delete(`${environment.API_Parametrage}famille_prestation/delete/`+code);
   }
 
+///
+   /// SousFamillePrestation 
+
+  
+   GetSousFamillePrestation(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}sous_famille_prestation/all`);
+  }
+ 
+  GetSousFamillePrestationByCode(code : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}sous_famille_prestation/`+ code);
+  } 
+
+  GetSousFamillePrestationByCodeFamille(codeFamillePrestation : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}sous_famille_prestation/FindBy?codeFamillePrestation=`+ codeFamillePrestation);
+  } 
+
+
+  PostSousFamillePrestation(body: any) {
+
+    return this.http.post(`${environment.API_Parametrage}sous_famille_prestation`, body);
+  } 
+  UpdateSousFamillePrestation(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}sous_famille_prestation/update`, body);
+  }
+
+  DeleteSousFamillePrestation(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}sous_famille_prestation/delete/`+code);
+  }
 
 
 

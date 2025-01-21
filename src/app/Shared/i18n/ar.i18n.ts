@@ -41,6 +41,8 @@ const arI18n = {
   'DesignationAr': 'البيان بالعربي',
   'DesignationLt': 'البيان باللاتيني',
   'LabelActif': 'متداول',
+  'LabelInActif': 'متداول غير',
+  'LabelAll': 'الكل',
   'LabelReqBanque': 'يتطلب مصرف',
   'Close': 'خروج',
   'Save': 'حفظ',
@@ -62,7 +64,7 @@ const arI18n = {
   'NomMedecin': 'الطبيب',
   'montantConsultation': 'القيمة',
   'selctedAnyConvention': 'الرجاء إختيار إتفاقية',
-  'FamillePrestation': 'صنف الخدمات',
+  'FamillePrestation': 'نوع الخدمات',
   'FamilleOperation': 'صنف العمليات',
   'FamilleFacturation': 'بند الفاتورة',
   'OutPatient': 'عيادات خارجية',
@@ -115,7 +117,8 @@ const arI18n = {
  'PrixPrestation':'سعر الخدمة',
  'PrixMaster':'التسعيرة الرئسية',
  'TypeIntervenantDupliquer':'العنصر الطبي مكرر',
- 'PrixPrestationNotEquals':'المجموع و سعر الخدمة مختلف'
+ 'PrixPrestationNotEquals':'المجموع و سعر الخدمة مختلف',
+ 'SousFamillePrestation':'فئة الخدمات'
  
 };
 

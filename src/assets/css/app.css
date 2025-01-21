@@ -2897,3 +2897,12 @@ input::placeholder {
 [dir="ltr"] .modal {
     direction: ltr;
 }
+
+[dir="ltr"] .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link .p-menuitem-icon {
+    margin-left: 0rem;
+    margin-right: .5rem;
+}
+
+[dir="ltr"] .p-datatable .p-datatable-header {
+    padding: 15px 15px 5px 0px;
+}

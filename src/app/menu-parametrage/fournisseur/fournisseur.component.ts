@@ -1,10 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Component, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
-import * as alertifyjs from 'alertifyjs'
 import { Router } from '@angular/router';
 import { LoadingComponent } from '../../Shared/loading/loading.component';
 import { I18nService } from '../../Shared/i18n/i18n.service';
@@ -137,21 +134,8 @@ export class FournisseurComponent {
        })
    }
 
-   getVpriceList() {
-    this.param_service.GetVue().
-      subscribe((data: any) => { 
-        console.log("Vueeee" , data)
-      })
-  }
-
-
-  getVpriceListByCode() {
-    this.param_service.GetVueByCode(7).
-      subscribe((data: any) => { 
-        console.log("Vueeee" , data)
-      })
-  }
-
+  
+ 
  
  
    onRowSelect(event: any) {
@@ -199,9 +183,7 @@ export class FournisseurComponent {
        this.onRowUnselect(event);
   
        this.clearForm();
-       this.GetCodeSaisie(); 
-       this.getVpriceList(); 
-       this.getVpriceListByCode();
+       this.GetCodeSaisie();  
        this.actif = false;
        this.visible = false;
        this.visibleModal = true;
