@@ -90,15 +90,16 @@
                             <td *ngIf="rowgroup" [attr.rowspan]="rowspan">
                                 <span class="font-bold ml-2">{{domaine.famillePrestationDTO.designationAr}}</span>
                             </td>
-                            <td>
-                                {{domaine.sousFamillePrestationDTO.designationAr}}
 
-                            </td>
                             <td style="font-size: 15px !important;">{{domaine.codeSaisie}}</td>
                             <td style="font-size: 15px !important;">{{domaine.designationAr}}</td>
                             <td style="font-size: 15px !important;">{{domaine.designationLt}}</td>
                             <td style="font-size: 15px !important;">{{domaine.familleFacturationDTO.designationAr}}</td>
 
+                            <td>
+                                {{domaine.sousFamillePrestationDTO.designationAr}}
+
+                            </td>
                             <td class="act-col">
 
                                 <p-checkbox [readonly]="true" [(ngModel)]="domaine.actif" [binary]="true" inputId="binary">{{domaine.actif}}</p-checkbox>

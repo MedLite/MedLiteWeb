@@ -198,12 +198,14 @@ export class PrestationComponent implements OnInit {
   GetColumns() {
     this.cols = [
       { field: 'famillePrestationDTO.designationAr', header: this.i18nService.getString('FamillePrestation') || 'FamillePrestation', width: '20%', filter: "true" },
-      { field: 'sousFamillePrestationDTO.designationAr', header: this.i18nService.getString('SousFamillePrestation') || 'SousFamillePrestation', width: '20%', filter: "true" },
 
       { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
       { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '16%', filter: "true" },
       { field: 'designationLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '16%', filter: "false" },
+      
       { field: 'familleFacturationDTO.designationAr', header: this.i18nService.getString('FamilleFacturation') || 'FamilleFacturation', width: '16%', filter: "false" },
+      
+      { field: 'sousFamillePrestationDTO.designationAr', header: this.i18nService.getString('SousFamillePrestation') || 'SousFamillePrestation', width: '20%', filter: "true" },
       { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
 
     ];
@@ -274,6 +276,9 @@ export class PrestationComponent implements OnInit {
     this.outPatientBoolean = false;
     this.ipPatientBoolean = false; 
     this.prixPrestation = 0;
+    this.selectedTypeIntervenantER='';
+    this.selectedTypeIntervenantOPD='';
+    this.selectedTypeIntervenantIP='';
     this.onRowUnselect(event);
 
   }
@@ -637,6 +642,7 @@ export class PrestationComponent implements OnInit {
 
 
   GetAllPrestation() {
+    this.IsLoading = true;
     this.param_service.GetPrestation().subscribe((data: any) => {
 
       this.loadingComponent.IsLoading = false;
@@ -649,11 +655,12 @@ export class PrestationComponent implements OnInit {
   }
 
   GetAllPrestationActif() {
+    this.IsLoading = true;
     this.param_service.GetPrestationByActif(true).subscribe((data: any) => {
 
       this.loadingComponent.IsLoading = false;
 
-      this.IsLoading = false
+      this.IsLoading = false;
       this.dataPrestation = data; 
       this.onRowUnselect(event);
 
@@ -661,7 +668,8 @@ export class PrestationComponent implements OnInit {
   }
    
   GetAllPrestationInActif() {
-    this.param_service.GetPrestationByActif(false).subscribe((data: any) => {
+    this.IsLoading = true
+    this.param_service.GetPrestationByActif(false) .subscribe((data: any) => {
 
       this.loadingComponent.IsLoading = false;
 
@@ -828,11 +836,10 @@ export class PrestationComponent implements OnInit {
   }
   public removeIP(index: number): void {
 
-    if (index !== 0) {  // Only remove if not the first row
+ 
       this.DetailsPrestationByCodePrestationIP.splice(index, 1);
-      this.ValueMntChangedER();
-    }
-
+      this.ValueMntChangedIP();
+   
 
   }
 

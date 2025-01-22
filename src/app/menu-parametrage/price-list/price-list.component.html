@@ -306,20 +306,10 @@
                                                             <td>{{ prestation.designationAr }}</td>
                                                             <td>{{ prestation.designationLt }}</td>
 
-                                                            <!-- // OPD -->
-                                                            <td>{{ prestation.montantOPD }}</td>
+                                                            <td>{{ prestation.prixPrestation }}</td>
                                                             <td> {{prestation.taux}} % </td>
                                                             <td> {{prestation.mntApresMajOPD | toFixedRound}} </td>
 
-                                                            <!-- // ER  -->
-                                                            <td>{{ prestation.montantER }}</td>
-                                                            <td> {{prestation.taux}} % </td>
-                                                            <td> {{prestation.mntApresMajER | toFixedRound}} </td>
-
-                                                            <!-- ///// IP  -->
-                                                            <td>{{ prestation.montantIP }}</td>
-                                                            <td> {{prestation.taux}} % </td>
-                                                            <td> {{prestation.mntApresMajIP | toFixedRound}} </td>
 
                                                         </tr>
                                                     </ng-template>

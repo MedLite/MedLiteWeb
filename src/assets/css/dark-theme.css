@@ -5,7 +5,7 @@ html.dark-theme .switcher-wrapper {
 html.dark-theme body {
     color: var(--bs-body-color) !important;
     --bs-body-color: #e4e5e6 !important;
-    background-color: #070d0e;
+    background-color: #272727;
 }
 
 html.dark-theme a {
@@ -77,8 +77,8 @@ html.dark-theme .p-datatable-thead th {
 }
 
 html.dark-theme .p-inputtext {
-    border: 1px solid #2e2e2e !important;
-    background: #121212 !important;
+    border: 1px solid #1f2021 !important;
+    background: #1f2021 !important;
     color: #e7e7e7 !important;
 }
 
@@ -1267,4 +1267,72 @@ html.dark-theme #item:hover .block2 span {
     -o-transition: all 0.4s ease-in;
     transition: all 0.4s ease-in;
     color: #008cff;
+}
+
+html.dark-theme .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
+    background: #272727 !important;
+}
+
+html.dark-theme .row {
+    background: #272727 !important;
+}
+
+html.dark-theme {
+    background: #272727 !important;
+}
+
+html.dark-theme .TitleMenu {
+    color: white !important;
+}
+
+html.dark-theme .p-tabview .p-tabview-panels {
+    background: #1f2021;
+}
+
+html.dark-theme .FooterTable {
+    background: #1f2021 !important;
+    color: white !important;
+}
+
+html.dark-theme .TabInput {
+    background: #1f2021 !important;
+    color: white !important;
+}
+
+html.dark-theme .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+    background: #383e44 !important;
+    color: white !important;
+}
+
+html.dark-theme .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+    background: #1f2021 !important;
+    color: white !important;
+}
+
+html.dark-theme .p-button {
+    background: #1f2021 !important;
+    color: white !important;
+}
+
+html.dark-theme .p-dropdown .p-dropdown-clear-icon {
+    color: white !important;
+}
+
+html.dark-theme .p-paginator {
+    background: #121212 !important;
+    border: solid #121212 !important;
+}
+
+html.dark-theme .p-paginator .p-paginator-current {
+    background: #121212;
+    border: solid #121212 !important;
+}
+
+html.dark-theme .p-paginator .p-paginator-pages .p-paginator-page {
+    border: solid #121212;
+}
+
+html.dark-theme td input {
+    background: #121212;
+    color: whitesmoke;
 }

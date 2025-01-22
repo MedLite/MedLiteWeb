@@ -245,7 +245,7 @@ tr.mat-footer-row {
 /* table postion */
 
 :host ::ng-deep .p-datatable-wrapper {
-    margin: 10px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
     /* border: 1px solid #cbcbcb78; */
     /* border-radius: 6px; */
 }
@@ -452,11 +452,8 @@ tr.mat-footer-row {
 }
 
 :host ::ng-deep .p-datatable .p-datatable-header {
-    background: #f8f9fa;
+    background: #ffffff;
     color: #343a40;
-    border: 1px solid #dee2e6;
-    border-width: 1px 0 1px 0;
-    /* padding: 3rem 0rem !important; */
     font-weight: 700;
     height: 60px;
 }
