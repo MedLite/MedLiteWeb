@@ -103,8 +103,8 @@ export class ConventionComponent {
   GetColumns() {
     this.cols = [
       { field: 'TypeOP', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '5%', filter: "true" },
-      { field: 'SourceDepenese', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '5%', filter: "true" },
-      { field: 'codeEtatApprouver', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '5%', filter: "false" },
+      { field: 'SourceDepenese', header: this.i18nService.getString('Designation') || 'Designation', width: '5%', filter: "true" },
+      { field: 'codeEtatApprouver', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '5%', filter: "false" },
       { field: 'dateCreate', header: this.i18nService.getString('LabelActif') || 'Actif', width: '5%', filter: "true" },
 
     ];

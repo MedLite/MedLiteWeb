@@ -9,7 +9,8 @@
                     </div>
                     <div class="block2  ">
                         <span class="FloatRight " [ngClass]="{ 'MenuOpened': IsOpened }">  {{'Prestation' | i18nForMenu:i18nService.currentLanguage}}  </span>
-                        <mat-icon class="FloatLeft" [ngClass]="{ 'MenuOpened': IsOpened }" (click)="onOpened()" [matMenuTriggerFor]="menu1">more_vert</mat-icon>
+                        <i class='FloatLeft bx bx-dots-vertical-rounded MenuMoreBtn' [ngClass]="{ 'MenuOpened': IsOpened }" (click)="onOpened()" mat-button [matMenuTriggerFor]="menu1"></i>
+
                         <mat-menu #menu1="matMenu" class="div-panel" [overlapTrigger]="false" (closed)="onClosed()">
                             <button mat-menu-item class="bold-menu-item" [routerLink]="['/menu_parametarge/prestation']"> <i class='bx bx-first-aid Mn' ></i>     <span style="font-weight: bold;">{{'Prestation' | i18nForMenu:i18nService.currentLanguage}}</span>    </button>
                             <button mat-menu-item class="bold-menu-item" [routerLink]="['/menu_parametarge/famille_prestation']"> <i class='bx bx-food-menu Mn'></i> <span style="font-weight: bold;">{{'FamillePrestation' | i18nForMenu:i18nService.currentLanguage}}</span> </button>
@@ -26,12 +27,12 @@
                     </div>
                     <div class="block2 ">
                         <span class="FloatRight" [ngClass]="{ 'MenuOpened': IsOpened2 }">  {{'Operation' | i18nForMenu:i18nService.currentLanguage}}  </span>
-                        <mat-icon class="FloatLeft" [ngClass]="{ 'MenuOpened': IsOpened2 }" (click)="onOpened2()" mat-button [matMenuTriggerFor]="menu2">more_vert</mat-icon>
+                        <i class='FloatLeft bx bx-dots-vertical-rounded MenuMoreBtn' [ngClass]="{ 'MenuOpened': IsOpened2 }" (click)="onOpened2()" mat-button [matMenuTriggerFor]="menu2"></i>
                         <mat-menu #menu2="matMenu" class="div-panel" (closed)="onClosed2()">
                             <button mat-menu-item [routerLink]="['/menu_parametarge/operation']"> <i class='bx bx-health Mn'></i> <span style="font-weight: bold;"> {{'Operation' | i18nForMenu:i18nService.currentLanguage}} </span> </button>
-                            <button mat-menu-item [routerLink]="['/menu_parametarge/type_operation']"> <i class='bx bx-link Mn'></i> <span style="font-weight: bold;">{{'TypeOperation' | i18nForMenu:i18nService.currentLanguage}}</span> </button>
+                            <button mat-menu-item [routerLink]="['/menu_parametarge/type_operation']"> <i class='bx bx-align-middle Mn'></i> <span style="font-weight: bold;">{{'TypeOperation' | i18nForMenu:i18nService.currentLanguage}}</span> </button>
                             <button mat-menu-item [routerLink]="['/menu_parametarge/famille_operation']"> <i class='bx bx-link Mn'></i> <span style="font-weight: bold;"> {{'FamilleOperation' | i18nForMenu:i18nService.currentLanguage}} </span></button>
-                            <button mat-menu-item [routerLink]="['/menu_parametarge/bloc_operation']"> <i class='bx bx-link Mn'></i> <span style="font-weight: bold;"> {{'BlocOperation' | i18nForMenu:i18nService.currentLanguage}} </span> </button>
+                            <button mat-menu-item [routerLink]="['/menu_parametarge/bloc_operation']"> <i class='bx bx-category Mn'></i> <span style="font-weight: bold;"> {{'BlocOperation' | i18nForMenu:i18nService.currentLanguage}} </span> </button>
                         </mat-menu>
                     </div>
                 </div>
@@ -43,7 +44,8 @@
                     </div>
                     <div class="block2 ">
                         <span class="FloatRight" [ngClass]="{ 'MenuOpened': IsOpened3 }">  {{'Medecin' | i18nForMenu:i18nService.currentLanguage}}  </span>
-                        <mat-icon class="FloatLeft" [ngClass]="{ 'MenuOpened': IsOpened3 }" (click)="onOpened3()" mat-button [matMenuTriggerFor]="menu3">more_vert</mat-icon>
+                        <i class='FloatLeft bx bx-dots-vertical-rounded MenuMoreBtn' [ngClass]="{ 'MenuOpened': IsOpened3 }" (click)="onOpened3()" mat-button [matMenuTriggerFor]="menu3"></i>
+
                         <mat-menu #menu3="matMenu" class="div-panel" (closed)="onClosed3()">
                             <button mat-menu-item [routerLink]="['/menu_parametarge/medecin']"> <i class='bx bx-group Mn'></i>  <span style="font-weight: bold;"> {{'Medecin' | i18nForMenu:i18nService.currentLanguage}} </span>  </button>
                             <button mat-menu-item [routerLink]="['/menu_parametarge/type_intervenant']"> <i class='bx bx-menu-alt-left Mn'></i> <span style="font-weight: bold;"> {{'TypeIntervenants' | i18nForMenu:i18nService.currentLanguage}}  </span> </button>
@@ -64,7 +66,8 @@
                     </div>
                     <div class="block2 ">
                         <span class="FloatRight" [ngClass]="{ 'MenuOpened': IsOpened4 }">  {{'Societe' | i18nForMenu:i18nService.currentLanguage}}  </span>
-                        <mat-icon class="FloatLeft" [ngClass]="{ 'MenuOpened': IsOpened4 }" (click)="onOpened4()" mat-button [matMenuTriggerFor]="menu4">more_vert</mat-icon>
+                        <i class='FloatLeft bx bx-dots-vertical-rounded MenuMoreBtn' [ngClass]="{ 'MenuOpened': IsOpened4 }" (click)="onOpened4()" mat-button [matMenuTriggerFor]="menu4"></i>
+
                         <mat-menu #menu4="matMenu" class="div-panel" (closed)="onClosed4()">
                             <button mat-menu-item [routerLink]="['/menu_parametarge/convention']"><i class='bx bxl-algolia Mn'></i> <span style="font-weight: bold;"> {{'Convention' | i18nForMenu:i18nService.currentLanguage}} </span>  </button>
                             <button mat-menu-item [routerLink]="['/menu_parametarge/forfait']"> <mat-icon>settings_input_composite</mat-icon> <span style="font-weight: bold;"> {{'Forfait' | i18nForMenu:i18nService.currentLanguage}} </span> </button>
@@ -104,7 +107,9 @@
                     </div>
                     <div class="block2 ">
                         <span class="FloatRight" [ngClass]="{ 'MenuOpened': IsOpened5 }">  {{'Tresorerie' | i18nForMenu:i18nService.currentLanguage}}  </span>
-                        <mat-icon class="FloatLeft" [ngClass]="{ 'MenuOpened': IsOpened5 }" (click)="onOpened5()" mat-button [matMenuTriggerFor]="menu5">more_vert</mat-icon>
+                        <!-- <mat-icon class="FloatLeft" [ngClass]="{ 'MenuOpened': IsOpened5 }" (click)="onOpened5()" mat-button [matMenuTriggerFor]="menu5">more_vert</mat-icon> -->
+                        <i class='FloatLeft bx bx-dots-vertical-rounded MenuMoreBtn' [ngClass]="{ 'MenuOpened': IsOpened5 }" (click)="onOpened5()" mat-button [matMenuTriggerFor]="menu5"></i>
+
                         <mat-menu #menu5="matMenu" class="div-panel" (closed)="onClosed5()">
                             <button mat-menu-item [routerLink]="['/menu_parametarge/caisse']"> <i class='bx bx-list-ul Mn'></i> <span style="font-weight: bold;"> {{'Caisse' | i18nForMenu:i18nService.currentLanguage}} </span> </button>
                             <button mat-menu-item [routerLink]="['/menu_parametarge/fournisseur']"> <i class='bx bxs-user-badge Mn'></i> <span style="font-weight: bold;"> {{'Fournisseur' | i18nForMenu:i18nService.currentLanguage}} </span> </button>
@@ -123,7 +128,9 @@
                     </div>
                     <div class="block2 ">
                         <span class="FloatRight" [ngClass]="{ 'MenuOpened': IsOpened6 }">  {{'SettingGeneral' | i18nForMenu:i18nService.currentLanguage}}  </span>
-                        <mat-icon class="FloatLeft" [ngClass]="{ 'MenuOpened': IsOpened6 }" (click)="onOpened6()" mat-button [matMenuTriggerFor]="menu6">more_vert</mat-icon>
+                        <!-- <mat-icon class="FloatLeft" [ngClass]="{ 'MenuOpened': IsOpened6 }" (click)="onOpened6()" mat-button [matMenuTriggerFor]="menu6">more_vert</mat-icon> -->
+                        <i class='FloatLeft bx bx-dots-vertical-rounded MenuMoreBtn' [ngClass]="{ 'MenuOpened': IsOpened6 }" (click)="onOpened6()" mat-button [matMenuTriggerFor]="menu6"></i>
+
                         <mat-menu #menu6="matMenu" class="div-panel" (closed)="onClosed6()">
                             <button mat-menu-item [routerLink]="['/menu_parametarge/ville']">  <i class='bx bx-map Mn'></i>  <span style="font-weight: bold;">  {{'Ville' | i18nForMenu:i18nService.currentLanguage}} </span>  </button>
                             <button mat-menu-item [routerLink]="['/menu_parametarge/nationalite']">  <i class='bx bx-map-pin Mn'></i>   <span style="font-weight: bold;"> {{'Nationalité' | i18nForMenu:i18nService.currentLanguage}} </span> </button>

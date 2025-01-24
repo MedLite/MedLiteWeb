@@ -1,88 +1,103 @@
 import { Component, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
 import { Router } from '@angular/router';
 import { LoadingComponent } from '../../Shared/loading/loading.component';
 import { I18nService } from '../../Shared/i18n/i18n.service';
 import { InputValidationService } from '../../Shared/Control/ControlFieldInput';
-import { Dropdown } from 'primeng/dropdown';
 import { ParametargeService } from '../WebService/parametarge.service';
 import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
+ 
 
 declare const PDFObject: any;
-
 @Component({
-  selector: 'app-medecin',
-  templateUrl: './medecin.component.html',
-  styleUrls: ['./medecin.component.css' ,'.../../../src/assets/css/newStyle.css'
+  selector: 'app-bloc-operation',
+  templateUrl: './bloc-operation.component.html',
+  styleUrls: ['./bloc-operation.component.css','.../../../src/assets/css/newStyle.css'
     , '.../../../src/assets/css/StyleApplication.css'], providers: [ConfirmationService, MessageService]
-  })
-export class MedecinComponent implements OnInit {
-  
-    @ViewChild('codeError') codeErrorElement!: ElementRef;
-    @ViewChild('codeSaisieInput') codeSaisieInputElement!: ElementRef;
-    @ViewChild('designationArInput') desginationArInputElement!: ElementRef;
-    @ViewChild('designationLtInput') designationLtInputElement!: ElementRef;
-    @ViewChild('specialiteMedecinInput') specialiteMedecinInputElement!: Dropdown;
-    @ViewChild('typeIntervenatInput') typeIntervenantInputElement!: Dropdown;
-  
-    first = 0;
-    IsLoading = true;
-    openModal!: boolean;
-  
-    constructor(public param_service: ParametargeService, public i18nService: I18nService,
-      private router: Router, private loadingComponent: LoadingComponent,
-      private validationService: InputValidationService, private CtrlAlertify: ControlServiceAlertify) {
-    }
-  
-  
-    @ViewChild('modal') modal!: any;
-  
-    pdfData!: Blob;
-    isLoading = false;
-    cols!: any[]; 
-    formHeader = ".....";
-    searchTerm = '';
-    visibleModal: boolean = false;
-    visibleModalPrint: boolean = false;
-    visDelete: boolean = false;
-    code!: number | null;
-    codeSaisie: any;
-    designationAr: string = 'NULL';
-    designationLt: string = "NULL"; 
-    actif!: boolean;
-    visible!: boolean;
-    LabelActif!: string;
+})
+export class BlocOperationComponent implements OnInit {
+ 
+   @ViewChild('codeError') codeErrorElement!: ElementRef;
+   @ViewChild('codeSaisieInput') codeSaisieInputElement!: ElementRef;
+   @ViewChild('designationArInput') desginationArInputElement!: ElementRef;
+   @ViewChild('designationLtInput') designationLtInputElement!: ElementRef; 
+ 
+   first = 0;
+   IsLoading = true;
+   openModal!: boolean;
+ 
+   
+     constructor(public param_service: ParametargeService, public i18nService: I18nService,
+       private router: Router, private loadingComponent: LoadingComponent,
+       private validationService: InputValidationService, private CtrlAlertify: ControlServiceAlertify) {
+     }
+ 
+   
+ 
+   @ViewChild('modal') modal!: any;
+ 
+   pdfData!: Blob;
+   isLoading = false;
+   cols!: any[];
+   items: MenuItem[] | undefined;
+   activeItem: MenuItem | undefined;
+   check_actif = false;
+   check_inactif = false;
+   formHeader = ".....";
+   searchTerm = '';
+   visibleModal: boolean = false;
+   visibleModalPrint: boolean = false;
+   visDelete: boolean = false;
+   code!: number | null;
+   codeSaisie: any;
+   designationAr: string = 'NULL';
+   designationLt: string = "NULL";
+   rib!: string;
+   actif!: boolean;
+   visible!: boolean;
+   LabelActif!: string;
     userCreate = sessionStorage.getItem("userName");
-    dataMedecin = new Array<any>();
-    selectedMedecin!: any;
-    ListspecialiteMedecin = new Array<any>();
-    selectedspecialiteMedecin: any = '';
+   dataBlocOperation = new Array<any>();
+   compteur: number = 0;
+   listDesig = new Array<any>();
+   selectedBlocOperation!: any;
+   ListFamilleFacturation = new Array<any>();
+   selectedFamilleFacturation: any = '';
+   ListTypeBlocOperation = new Array<any>(); 
+   selectedTypeBlocOperation : any = '';
+   ListDevise = new Array<any>(); 
+   selectedDevise : any = '';
+ 
+ 
+ 
+ 
+   ngOnInit(): void {
+    this.items = [
+      { label: this.i18nService.getString('LabelActif') || 'LabelActif', icon: 'pi pi-file-check', command: () => { this.GetAllBlocOperationActif() } },
+      { label: this.i18nService.getString('LabelInActif') || 'LabelInActif', icon: 'pi pi-file-excel', command: () => { this.GetAllBlocOperationInActif() } },
+      { label: this.i18nService.getString('LabelAll') || 'LabelAll', icon: 'pi pi-file', command: () => { this.GetAllBlocOperation() } },
+    ];
+    this.activeItem = this.items[0];
+     this.GetColumns();
+     this.GetAllBlocOperationActif();
+     
+ 
+   }
+ 
+   
 
-    ListTypeIntervenant = new Array<any>();
-    selectedTypeIntervenant: any = '';
-  
-    ngOnInit(): void {
-      this.GetColumns();
-      this.GetAllMedecin();
-    }
-  
-  
-  
-    GetColumns() {
-      this.cols = [
-        { field: 'specialiteMedecinDTO.designationAr', header: this.i18nService.getString('SpecialiteMedecin') || 'SpecialiteMedecin', width: '20%', filter: "true" },
-  
-        { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
-        { field: 'nomIntervAr', header: this.i18nService.getString('Designation') || 'Designation', width: '16%', filter: "true" },
-        { field: 'nomIntervLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '16%', filter: "false" },
-        { field: 'typeIntervenantDTO.designationAr', header: this.i18nService.getString('TypeIntervenant') || 'TypeIntervenant', width: '16%', filter: "false" },
+   GetColumns() {
+     this.cols = [ 
+       { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
+       { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '16%', filter: "true" },
+       { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '16%', filter: "false" },
         { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
-  
-      ];
-    }
-    @Output() closed: EventEmitter<string> = new EventEmitter();
+ 
+     ];
+   }
+   @Output() closed: EventEmitter<string> = new EventEmitter();
     closeThisComponent() {
       const parentUrl = this.router.url.split('/').slice(0, -1).join('/');
       this.closed.emit(parentUrl);
@@ -111,20 +126,22 @@ export class MedecinComponent implements OnInit {
       this.actif = false;
       this.visibleModal = false;
       this.codeSaisie = '';
-      this.selectedMedecin = ''
-      this.selectedspecialiteMedecin='';
-      this.selectedTypeIntervenant = '';
+      this.selectedBlocOperation = '' 
       this.onRowUnselect(event);
   
     }
   
   
     GetCodeSaisie() {
-      this.param_service.GetCompteur("CodeSaisieMedecin").
+      this.param_service.GetCompteur("CodeSaisieBlocOperation").
         subscribe((data: any) => {
           this.codeSaisie = data.prefixe + data.suffixe;
         })
     }
+ 
+    
+ 
+  
   
   
     onRowSelect(event: any) {
@@ -132,22 +149,17 @@ export class MedecinComponent implements OnInit {
       this.actif = event.data.actif;
       this.visible = event.data.visible;
       this.codeSaisie = event.data.codeSaisie;
-      this.designationAr = event.data.nomIntervAr;
-      this.designationLt = event.data.nomIntervLt; 
-      this.selectedspecialiteMedecin = event.data.specialiteMedecinDTO.code
-      this.selectedTypeIntervenant = event.data.typeIntervenantDTO.code
-  
-      console.log('vtData : ', event);
+      this.designationAr = event.data.designationAr;
+      this.designationLt = event.data.designationLt;  
     }
-    onRowUnselect(event: any) {
-      console.log('row unselect : ', event);
+    onRowUnselect(event: any) { 
       this.code = event.data = null;
     }
   
   
   
-    DeleteMedecin(code: any) {
-      this.param_service.DeleteMedecin(code).subscribe(
+    DeleteBlocOperation(code: any) {
+      this.param_service.DeleteBlocOperation(code).subscribe(
         (res: any) => {
           this.CtrlAlertify.PostionLabelNotification();
           this.CtrlAlertify.ShowDeletedOK();
@@ -158,7 +170,9 @@ export class MedecinComponent implements OnInit {
       )
     }
    
+  
    
+  
     public onOpenModal(mode: string) {
   
       this.LabelActif = this.i18nService.getString('LabelActif');
@@ -171,14 +185,11 @@ export class MedecinComponent implements OnInit {
       button.setAttribute('data-toggle', 'modal');
       if (mode === 'add') {
         button.setAttribute('data-target', '#Modal');
-        this.formHeader = this.i18nService.getString('Add');
+        this.formHeader = this.i18nService.getString('Add') +' ' +this.i18nService.getString('BlocOperation')  ;
         this.onRowUnselect(event);
    
         this.clearForm();
-        this.GetCodeSaisie();
-        this.GetSpecilaiteSpecialiteMedecin();
-        this.GetTypeIntervenat();
-
+        this.GetCodeSaisie();   
         this.actif = false;
         this.visible = false;
         this.visibleModal = true;
@@ -198,9 +209,8 @@ export class MedecinComponent implements OnInit {
         } else {
   
           button.setAttribute('data-target', '#Modal');
-          this.formHeader = this.i18nService.getString('Modifier');
-          this.GetSpecilaiteSpecialiteMedecin();
-          this.GetTypeIntervenat();
+          this.formHeader = this.i18nService.getString('Modifier')  +' ' +this.i18nService.getString('BlocOperation')  ;;
+    
   
           this.visibleModal = true;
           this.onRowSelect;
@@ -220,7 +230,7 @@ export class MedecinComponent implements OnInit {
   
           {
             button.setAttribute('data-target', '#ModalDelete');
-            this.formHeader = this.i18nService.getString('Delete');
+            this.formHeader = this.i18nService.getString('Delete')  +' ' +this.i18nService.getString('BlocOperation')  ;;
             this.visDelete = true;
   
           }
@@ -236,7 +246,7 @@ export class MedecinComponent implements OnInit {
           this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
         } else {
           button.setAttribute('data-target', '#ModalPrint');
-          this.formHeader = "Imprimer Liste SpecialiteMedecin"
+          this.formHeader = "Imprimer Liste BlocOperation"
           this.visibleModalPrint = true;
           // this.RemplirePrint();
   
@@ -255,27 +265,20 @@ export class MedecinComponent implements OnInit {
       const codeSaisie = this.validationService.validateInputCommun(this.codeSaisieInputElement, this.codeSaisie);
       const designationAr = this.validationService.validateInputCommun(this.desginationArInputElement, this.designationAr);
       const designationLt = this.validationService.validateInputCommun(this.designationLtInputElement, this.designationLt);
-      const spec_Cab = this.validationService.validateDropDownCommun(this.specialiteMedecinInputElement, this.selectedspecialiteMedecin);
-      
-      const TypeInterv = this.validationService.validateDropDownCommun(this.typeIntervenantInputElement, this.selectedTypeIntervenant);
-      
-      return codeSaisie && designationAr && designationLt && spec_Cab && TypeInterv;
+      return codeSaisie && designationAr && designationLt  ;
     }
   
   
   
-    PostMedecin() {
+    PostBlocOperation() {
   
       const isValid = this.validateAllInputs();
       if (isValid) {
         let body = {
           codeSaisie: this.codeSaisie,
-          nomIntervAr: this.designationAr,
-          nomIntervLt: this.designationLt,
-          userCreate: this.userCreate,
-          codeSpecialiteMedecin: this.selectedspecialiteMedecin,
-          codeTypeIntervenant: this.selectedTypeIntervenant,
-  
+          designationAr: this.designationAr,
+          designationLt: this.designationLt,
+          userCreate: this.userCreate, 
           dateCreate: new Date().toISOString(), //
           code: this.code,
           actif: this.actif,
@@ -284,7 +287,7 @@ export class MedecinComponent implements OnInit {
         if (this.code != null) {
           body['code'] = this.code;
   
-          this.param_service.UpdateMedecin(body).subscribe(
+          this.param_service.UpdateBlocOperation(body).subscribe(
   
             (res: any) => {
               this.CtrlAlertify.PostionLabelNotification();
@@ -301,7 +304,7 @@ export class MedecinComponent implements OnInit {
   
         }
         else {
-          this.param_service.PostMedecin(body).subscribe(
+          this.param_service.PostBlocOperation(body).subscribe(
             (res: any) => {
               this.CtrlAlertify.PostionLabelNotification();
               this.CtrlAlertify.ShowSavedOK();
@@ -336,17 +339,43 @@ export class MedecinComponent implements OnInit {
   
   
   
-    GetAllMedecin() {
-      this.param_service.GetMedecin().subscribe((data: any) => {
-  
+    GetAllBlocOperation() {
+      this.IsLoading=true;
+      this.param_service.GetBlocOperation().subscribe((data: any) => { 
         this.loadingComponent.IsLoading = false;
-        this.IsLoading = false;
-  
-        this.dataMedecin = data;
+        this.IsLoading = false; 
+        this.dataBlocOperation = data;
         this.onRowUnselect(event);
   
       })
     }
+
+      
+    GetAllBlocOperationActif() {
+      this.IsLoading=true;
+      this.param_service.GetBlocOperationActif(true).subscribe((data: any) => { 
+        this.loadingComponent.IsLoading = false;
+        this.IsLoading = false; 
+        this.dataBlocOperation = data;
+        this.onRowUnselect(event);
+  
+      })
+    }
+
+      
+    GetAllBlocOperationInActif() {
+      this.IsLoading=true;
+      this.param_service.GetBlocOperationInActif(false).subscribe((data: any) => { 
+        this.loadingComponent.IsLoading = false;
+        this.IsLoading = false; 
+        this.dataBlocOperation = data;
+        this.onRowUnselect(event);
+  
+      })
+    }
+
+
+    
   
   
     CloseModal() {
@@ -354,40 +383,11 @@ export class MedecinComponent implements OnInit {
     }
   
    
-    dataspecialiteMedecin = new Array<any>();
-    listSpecialiteMedecinPushed = new Array<any>(); 
-    GetSpecilaiteSpecialiteMedecin() {
-      this.param_service.GetSpecialiteMedecin() .subscribe((data: any) => {
-        this.dataspecialiteMedecin = data;
-        this.listSpecialiteMedecinPushed = [];
-        for (let i = 0; i < this.dataspecialiteMedecin.length; i++) {
-          this.listSpecialiteMedecinPushed.push({ label: this.dataspecialiteMedecin[i].designationAr, value: this.dataspecialiteMedecin[i].code })
-        }
-        this.ListspecialiteMedecin = this.listSpecialiteMedecinPushed;
-      })
-    }
+     
   
 
-    
-    dataTypeIntervenant = new Array<any>();
-    listTypeIntervenantPushed = new Array<any>(); 
-    GetTypeIntervenat() {
-      this.param_service.GetTypeIntervenant() .subscribe((data: any) => {
-        this.dataTypeIntervenant = data;
-        this.listTypeIntervenantPushed = [];
-        for (let i = 0; i < this.dataTypeIntervenant.length; i++) {
-          this.listTypeIntervenantPushed.push({ label: this.dataTypeIntervenant[i].designationAr, value: this.dataTypeIntervenant[i].code })
-        }
-        this.ListTypeIntervenant = this.listTypeIntervenantPushed;
-      })
-    }
-  
-  
 
 }
-
-
-
 
 
 

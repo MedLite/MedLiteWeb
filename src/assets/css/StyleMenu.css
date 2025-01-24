@@ -104,7 +104,7 @@ p {
     display: flex;
     width: 25px;
     text-align: center;
-    margin: 18px 5px 0px 0px;
+    margin: 10px 5px 0px 0px;
 }
 
 .block1 i {
@@ -157,8 +157,8 @@ p {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: 6px 5px;
-    font-size: 15px;
+    padding: 6px 1px;
+    font-size: 14px;
     color: #282828;
     outline-width: 0;
     text-overflow: ellipsis;
@@ -286,4 +286,10 @@ p {
 
 .MenuOpened {
     color: #008cff !important;
+}
+
+.MenuMoreBtn {
+    margin-right: 5px;
+    font-size: 25px;
+    margin-top: 0px;
 }

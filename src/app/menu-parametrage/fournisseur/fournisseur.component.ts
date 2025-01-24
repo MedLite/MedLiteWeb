@@ -86,8 +86,8 @@ export class FournisseurComponent {
   GetColumns() {
     this.cols = [ 
       { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
-      { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '16%', filter: "true" },
-      { field: 'designationLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '16%', filter: "false" },
+      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '16%', filter: "true" },
+      { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '16%', filter: "false" },
        { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
 
     ];
@@ -155,7 +155,7 @@ export class FournisseurComponent {
    DeleteFournisseur(code: any) {
      this.param_service.DeleteFournisseur(code).subscribe(
        (res: any) => {
-         this.CtrlAlertify.showLabel();
+         this.CtrlAlertify.PostionLabelNotification();
          this.CtrlAlertify.ShowDeletedOK();
          this.ngOnInit(); 
          this.visDelete = false;
@@ -197,7 +197,7 @@ export class FournisseurComponent {
        if (this.code == undefined) {
          this.clearForm();
          this.onRowUnselect(event);
-         this.CtrlAlertify.showLabel();
+         this.CtrlAlertify.PostionLabelNotification();
          this.CtrlAlertify.showChoseAnyRowNotification();
          this.visDelete == false && this.visibleModal == false
        } else {
@@ -217,7 +217,7 @@ export class FournisseurComponent {
  
        if (this.code == undefined) {
          this.onRowUnselect;
-         this.CtrlAlertify.showLabel();
+         this.CtrlAlertify.PostionLabelNotification();
          this.CtrlAlertify.showChoseAnyRowNotification();
          this.visDelete == false && this.visibleModal == false
        } else {
@@ -235,7 +235,7 @@ export class FournisseurComponent {
      if (mode === 'Print') {
        if (this.code == undefined) {
          this.onRowUnselect;
-         this.CtrlAlertify.showLabel();
+         this.CtrlAlertify.PostionLabelNotification();
          this.CtrlAlertify.showChoseAnyRowNotification();
          this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
        } else {
@@ -284,7 +284,7 @@ export class FournisseurComponent {
          this.param_service.UpdateFournisseur(body).subscribe(
  
            (res: any) => {
-             this.CtrlAlertify.showLabel();
+             this.CtrlAlertify.PostionLabelNotification();
              this.CtrlAlertify.ShowSavedOK();
              this.visibleModal = false;
              this.clearForm();
@@ -300,7 +300,7 @@ export class FournisseurComponent {
        else {
          this.param_service.PostFournisseur(body).subscribe(
            (res: any) => {
-             this.CtrlAlertify.showLabel();
+             this.CtrlAlertify.PostionLabelNotification();
              this.CtrlAlertify.ShowSavedOK();
              this.visibleModal = false;
              this.clearForm();

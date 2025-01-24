@@ -146,9 +146,9 @@ export class InputValidationService {
   }
 
 
-  validateInputCommun(inputElement: ElementRef, value: string): boolean {
+  validateInputCommun(inputElement: ElementRef, value: any): boolean {
     // this.validateInput(inputElement, value);
-    if (value !== null && value !== undefined && value.trim() !== '') {
+    if (value !== null && value !== undefined && value !== '') {
       inputElement.nativeElement.classList.remove('invalid-input'); // Remove error class
       return true;
     } else {

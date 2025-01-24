@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
 import { Router } from '@angular/router';
@@ -35,7 +35,8 @@ export class SousFamillePrestationComponent implements OnInit {
       private validationService: InputValidationService, private CtrlAlertify: ControlServiceAlertify) {
     }
   
-  
+      items: MenuItem[] | undefined;
+      activeItem: MenuItem | undefined;
     @ViewChild('modal') modal!: any;
   
     pdfData!: Blob;
@@ -61,8 +62,16 @@ export class SousFamillePrestationComponent implements OnInit {
     selectedFamillePrestation: any = '';
   
     ngOnInit(): void {
-      this.GetColumns();
-      this.GetAllSousFamillePrestation();
+     
+      this.items = [
+        { label: this.i18nService.getString('LabelActif') || 'LabelActif', icon: 'pi pi-file-check', command: () => { this.GetAllSousFamillePrestationActif() } },
+        { label: this.i18nService.getString('LabelInActif') || 'LabelInActif', icon: 'pi pi-file-excel', command: () => { this.GetAllSousFamillePrestationInActif() } },
+        { label: this.i18nService.getString('LabelAll') || 'LabelAll', icon: 'pi pi-file', command: () => { this.GetAllSousFamillePrestation() } },
+      ];
+      this.activeItem = this.items[0];
+       this.GetColumns();
+       this.GetAllSousFamillePrestation();
+
     }
   
   
@@ -72,8 +81,8 @@ export class SousFamillePrestationComponent implements OnInit {
         { field: 'famillePrestationDTO.designationAr', header: this.i18nService.getString('FamillePrestation') || 'SpecialiteSousFamillePrestation', width: '20%', filter: "true" },
   
         { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
-        { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '16%', filter: "true" },
-        { field: 'designationLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '16%', filter: "false" },
+        { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '16%', filter: "true" },
+        { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '16%', filter: "false" },
          { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
   
       ];
@@ -143,7 +152,7 @@ export class SousFamillePrestationComponent implements OnInit {
     DeleteSousFamillePrestation(code: any) {
       this.param_service.DeleteSousFamillePrestation(code).subscribe(
         (res: any) => {
-          this.CtrlAlertify.showLabel();
+          this.CtrlAlertify.PostionLabelNotification();
           this.CtrlAlertify.ShowDeletedOK();
           this.ngOnInit(); 
           this.visDelete = false;
@@ -185,7 +194,7 @@ export class SousFamillePrestationComponent implements OnInit {
         if (this.code == undefined) {
           this.clearForm();
           this.onRowUnselect(event);
-          this.CtrlAlertify.showLabel();
+          this.CtrlAlertify.PostionLabelNotification();
           this.CtrlAlertify.showChoseAnyRowNotification();
           this.visDelete == false && this.visibleModal == false
         } else {
@@ -205,7 +214,7 @@ export class SousFamillePrestationComponent implements OnInit {
   
         if (this.code == undefined) {
           this.onRowUnselect;
-          this.CtrlAlertify.showLabel();
+          this.CtrlAlertify.PostionLabelNotification();
           this.CtrlAlertify.showChoseAnyRowNotification();
           this.visDelete == false && this.visibleModal == false
         } else {
@@ -223,7 +232,7 @@ export class SousFamillePrestationComponent implements OnInit {
       if (mode === 'Print') {
         if (this.code == undefined) {
           this.onRowUnselect;
-          this.CtrlAlertify.showLabel();
+          this.CtrlAlertify.PostionLabelNotification();
           this.CtrlAlertify.showChoseAnyRowNotification();
           this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
         } else {
@@ -277,7 +286,7 @@ export class SousFamillePrestationComponent implements OnInit {
           this.param_service.UpdateSousFamillePrestation(body).subscribe(
   
             (res: any) => {
-              this.CtrlAlertify.showLabel();
+              this.CtrlAlertify.PostionLabelNotification();
               this.CtrlAlertify.ShowSavedOK();
               this.visibleModal = false;
               this.clearForm();
@@ -293,7 +302,7 @@ export class SousFamillePrestationComponent implements OnInit {
         else {
           this.param_service.PostSousFamillePrestation(body).subscribe(
             (res: any) => {
-              this.CtrlAlertify.showLabel();
+              this.CtrlAlertify.PostionLabelNotification();
               this.CtrlAlertify.ShowSavedOK();
               this.visibleModal = false;
               this.clearForm();
@@ -327,14 +336,30 @@ export class SousFamillePrestationComponent implements OnInit {
   
   
     GetAllSousFamillePrestation() {
-      this.param_service.GetSousFamillePrestation().subscribe((data: any) => {
-  
+      this.IsLoading = true; 
+      this.param_service.GetSousFamillePrestation().subscribe((data: any) => { 
         this.loadingComponent.IsLoading = false;
-        this.IsLoading = false;
-  
+        this.IsLoading = false; 
         this.dataSousFamillePrestation = data;
         this.onRowUnselect(event);
-  
+      })
+    }
+    GetAllSousFamillePrestationActif() {
+      this.IsLoading = true; 
+      this.param_service.GetSousFamillePrestationActif(true).subscribe((data: any) => { 
+        this.loadingComponent.IsLoading = false;
+        this.IsLoading = false; 
+        this.dataSousFamillePrestation = data;
+        this.onRowUnselect(event);
+      })
+    }
+    GetAllSousFamillePrestationInActif() {
+      this.IsLoading = true; 
+      this.param_service.GetSousFamillePrestationInActif(false).subscribe((data: any) => { 
+        this.loadingComponent.IsLoading = false;
+        this.IsLoading = false; 
+        this.dataSousFamillePrestation = data;
+        this.onRowUnselect(event);
       })
     }
   

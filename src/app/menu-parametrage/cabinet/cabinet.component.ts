@@ -73,8 +73,8 @@ export class CabinetComponent implements OnInit {
       { field: 'specialiteCabinetDTO.designationAr', header: this.i18nService.getString('SpecialiteCabinet') || 'SpecialiteCabinet', width: '20%', filter: "true" },
 
       { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '20%', filter: "true" },
-      { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '20%', filter: "true" },
-      { field: 'designationLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '20%', filter: "false" },
+      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '20%', filter: "true" },
+      { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '20%', filter: "false" },
       { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '20%', filter: "true" },
 
     ];
@@ -144,7 +144,7 @@ export class CabinetComponent implements OnInit {
   DeleteCabinet(code: any) {
     this.param_service.DeleteCabinet(code).subscribe(
       (res: any) => {
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
         this.CtrlAlertify.ShowDeletedOK();
         this.ngOnInit(); 
         this.visDelete = false;
@@ -201,7 +201,7 @@ export class CabinetComponent implements OnInit {
       if (this.code == undefined) {
         this.clearForm();
         this.onRowUnselect(event);
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
         this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false
       } else {
@@ -221,7 +221,7 @@ export class CabinetComponent implements OnInit {
 
       if (this.code == undefined) {
         this.onRowUnselect;
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
         this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false
       } else {
@@ -239,7 +239,7 @@ export class CabinetComponent implements OnInit {
     if (mode === 'Print') {
       if (this.code == undefined) {
         this.onRowUnselect;
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
         this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
       } else {
@@ -291,7 +291,7 @@ export class CabinetComponent implements OnInit {
         this.param_service.UpdateCabinet(body).subscribe(
 
           (res: any) => {
-            this.CtrlAlertify.showLabel();
+            this.CtrlAlertify.PostionLabelNotification();
             this.CtrlAlertify.ShowSavedOK();
             this.visibleModal = false;
             this.clearForm();
@@ -307,7 +307,7 @@ export class CabinetComponent implements OnInit {
       else {
         this.param_service.PostCabinet(body).subscribe(
           (res: any) => {
-            this.CtrlAlertify.showLabel();
+            this.CtrlAlertify.PostionLabelNotification();
             this.CtrlAlertify.ShowSavedOK();
             this.visibleModal = false;
             this.clearForm();

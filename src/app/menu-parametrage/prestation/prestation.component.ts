@@ -200,8 +200,8 @@ export class PrestationComponent implements OnInit {
       { field: 'famillePrestationDTO.designationAr', header: this.i18nService.getString('FamillePrestation') || 'FamillePrestation', width: '20%', filter: "true" },
 
       { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
-      { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '16%', filter: "true" },
-      { field: 'designationLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '16%', filter: "false" },
+      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'DesignationArabic', width: '16%', filter: "true" },
+      { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '16%', filter: "false" },
       
       { field: 'familleFacturationDTO.designationAr', header: this.i18nService.getString('FamilleFacturation') || 'FamilleFacturation', width: '16%', filter: "false" },
       
@@ -213,14 +213,14 @@ export class PrestationComponent implements OnInit {
 
   GetColumnTabDetailsPrestationOPD() {
     this.ColumnsDetailsPrestationOPD = [
-      { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '33%', filter: "true" },
+      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '33%', filter: "true" },
       { field: 'montant', header: this.i18nService.getString('MontantTotal') || 'Montant', width: '33%', filter: "true" },
       { field: '', header: this.i18nService.getString('Delete') || 'Delete', width: '33%', filter: "true" },
     ]
   }
   GetColumnTabDetailsPrestationER() {
     this.ColumnsDetailsPrestationER = [
-      { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '33%', filter: "true" },
+      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '33%', filter: "true" },
       { field: 'montant', header: this.i18nService.getString('MontantTotal') || 'Montant', width: '33%', filter: "true" },
       { field: '', header: this.i18nService.getString('Delete') || 'Delete', width: '33%', filter: "true" },
     ]
@@ -228,7 +228,7 @@ export class PrestationComponent implements OnInit {
 
   GetColumnTabDetailsPrestationIP() {
     this.ColumnsDetailsPrestationIP = [
-      { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '33%', filter: "true" },
+      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '33%', filter: "true" },
       { field: 'montant', header: this.i18nService.getString('MontantTotal') || 'Montant', width: '33%', filter: "true" },
       { field: '', header: this.i18nService.getString('Delete') || 'Delete', width: '33%', filter: "true" },
     ]
@@ -321,7 +321,7 @@ export class PrestationComponent implements OnInit {
   DeletePrestation(code: any) {
     this.param_service.DeletePrestation(code).subscribe(
       (res: any) => {
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
         this.CtrlAlertify.ShowDeletedOK();
         this.ngOnInit();
         this.visDelete = false;
@@ -413,7 +413,7 @@ export class PrestationComponent implements OnInit {
       if (this.code == undefined) {
         this.clearForm();
         this.onRowUnselect(event);
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
         this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false
       } else {
@@ -464,7 +464,7 @@ export class PrestationComponent implements OnInit {
 
       if (this.code == undefined) {
         this.onRowUnselect;
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
         this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false
       } else {
@@ -482,7 +482,7 @@ export class PrestationComponent implements OnInit {
     if (mode === 'Print') {
       if (this.code == undefined) {
         this.onRowUnselect;
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
         this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
       } else {
@@ -607,7 +607,7 @@ export class PrestationComponent implements OnInit {
         })
       ).subscribe(
         (res: any) => {
-          this.CtrlAlertify.showLabel();
+          this.CtrlAlertify.PostionLabelNotification();
           this.CtrlAlertify.ShowSavedOK();
           this.visibleModal = false;
           this.final = new Array<any>();
@@ -921,7 +921,7 @@ export class PrestationComponent implements OnInit {
         exist = true;
 
         this.CtrlAlertify.showNotificationِCustom('TypeIntervenantDupliquer');
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
         break;
       }
     }
@@ -964,7 +964,7 @@ export class PrestationComponent implements OnInit {
         exist = true;
 
         this.CtrlAlertify.showNotificationِCustom('TypeIntervenantDupliquer');
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
         break;
       }
     }
@@ -1006,7 +1006,7 @@ export class PrestationComponent implements OnInit {
         exist = true;
 
         this.CtrlAlertify.showNotificationِCustom('TypeIntervenantDupliquer');
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
         break;
       }
     }

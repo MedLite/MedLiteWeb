@@ -92,8 +92,8 @@ export class CaisseComponent {
       { field: 'typeCaisseDTO.designationAr', header: this.i18nService.getString('TypeCaisse') || 'TypeCaisse', width: '20%', filter: "true" },
 
       { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
-      { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '16%', filter: "true" },
-      { field: 'designationLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '16%', filter: "false" },
+      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '16%', filter: "true" },
+      { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '16%', filter: "false" },
       { field: 'deviseDTO.designationAr', header: this.i18nService.getString('Devise') || 'Devise', width: '16%', filter: "false" },
       { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
 
@@ -163,7 +163,7 @@ export class CaisseComponent {
    DeleteCaisse(code: any) {
      this.param_service.DeleteCaisse(code).subscribe(
        (res: any) => {
-         this.CtrlAlertify.showLabel();
+         this.CtrlAlertify.PostionLabelNotification();
          this.CtrlAlertify.ShowDeletedOK();
          this.ngOnInit(); 
          this.visDelete = false;
@@ -221,7 +221,7 @@ export class CaisseComponent {
        if (this.code == undefined) {
          this.clearForm();
          this.onRowUnselect(event);
-         this.CtrlAlertify.showLabel();
+         this.CtrlAlertify.PostionLabelNotification();
          this.CtrlAlertify.showChoseAnyRowNotification();
          this.visDelete == false && this.visibleModal == false
        } else {
@@ -242,7 +242,7 @@ export class CaisseComponent {
  
        if (this.code == undefined) {
          this.onRowUnselect;
-         this.CtrlAlertify.showLabel();
+         this.CtrlAlertify.PostionLabelNotification();
          this.CtrlAlertify.showChoseAnyRowNotification();
          this.visDelete == false && this.visibleModal == false
        } else {
@@ -260,7 +260,7 @@ export class CaisseComponent {
      if (mode === 'Print') {
        if (this.code == undefined) {
          this.onRowUnselect;
-         this.CtrlAlertify.showLabel();
+         this.CtrlAlertify.PostionLabelNotification();
          this.CtrlAlertify.showChoseAnyRowNotification();
          this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
        } else {
@@ -314,7 +314,7 @@ export class CaisseComponent {
          this.param_service.UpdateCaisse(body).subscribe(
  
            (res: any) => {
-             this.CtrlAlertify.showLabel();
+             this.CtrlAlertify.PostionLabelNotification();
              this.CtrlAlertify.ShowSavedOK();
              this.visibleModal = false;
              this.clearForm();
@@ -330,7 +330,7 @@ export class CaisseComponent {
        else {
          this.param_service.PostCaisse(body).subscribe(
            (res: any) => {
-             this.CtrlAlertify.showLabel();
+             this.CtrlAlertify.PostionLabelNotification();
              this.CtrlAlertify.ShowSavedOK();
              this.visibleModal = false;
              this.clearForm();

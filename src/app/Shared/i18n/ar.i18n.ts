@@ -40,8 +40,9 @@ const arI18n = {
   'CodeSaisie': 'الرمز',
   'DesignationAr': 'البيان بالعربي',
   'DesignationLt': 'البيان باللاتيني',
+  'DesignationSecondaire':'البيان الفرعي',
   'LabelActif': 'متداول',
-  'LabelInActif': 'متداول غير',
+  'LabelInActif': 'غير متداول',
   'LabelAll': 'الكل',
   'LabelReqBanque': 'يتطلب مصرف',
   'Close': 'خروج',
@@ -115,10 +116,13 @@ const arI18n = {
  'selectTypeRemiseMajoration':'الرجاء إختيار تخفيض أو زيادة',
  'DetailsPrestation':'التقسيم حسب نوع العنصر الطبي',
  'PrixPrestation':'سعر الخدمة',
+ 'PrixOperation':'سعر العملية',
+ 'PrixMoyen':'متوسط السعر',
  'PrixMaster':'التسعيرة الرئسية',
  'TypeIntervenantDupliquer':'العنصر الطبي مكرر',
- 'PrixPrestationNotEquals':'المجموع و سعر الخدمة مختلف',
- 'SousFamillePrestation':'فئة الخدمات'
+ 'PriceNotEquals':'المجموع و السعر مختلف',
+ 'SousFamillePrestation':'فئة الخدمات',
+ 'LabelautorisModifInterv':'إمكانية تغير العناصر الطبية'
  
 };
 

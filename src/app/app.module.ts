@@ -100,6 +100,8 @@ import { I18nPipe } from './Shared/i18n/i18n.pipe';
 import { MenuActiveDirective } from './Shared/service/highlight';
 import { ToFixedRoundPipe } from './Shared/service/ToFixedRoundPipe';
 import { SousFamillePrestationComponent } from './menu-parametrage/sous-famille-prestation/sous-famille-prestation.component';
+import { TypeOperationComponent } from './menu-parametrage/type-operation/type-operation.component';
+import { BlocOperationComponent } from './menu-parametrage/bloc-operation/bloc-operation.component';
 
 const languages = [
   { lang: 'عربي', flag: 'assets/images/county/ar.png', file: arI18n, valeur: 'ar' },
@@ -124,7 +126,7 @@ const languages = [
     FournisseurComponent, PrestationComponent,OperationComponent, TypeIntervenantComponent, 
     MedecinComponent, ResponsableRemiseComponent,ModeReglementComponent,FamilleFacturationComponent,
     BanqueComponent, FamilleOperationComponent,FamillePrestationComponent,SpecialiteCabinetComponent,SpecialiteMedecinComponent,
-    SousFamillePrestationComponent,
+    SousFamillePrestationComponent,TypeOperationComponent,BlocOperationComponent,
     ////////////// Menu REception
 
     AdmissionComponent,EditionAdmissionComponent, CabinetComponent, ClotureSessionComponent,

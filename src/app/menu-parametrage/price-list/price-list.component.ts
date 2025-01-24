@@ -77,8 +77,8 @@ export class PriceListComponent implements OnInit {
   GetColumns() {
     this.cols = [
       { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
-      { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '16%', filter: "true" },
-      { field: 'designationLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '16%', filter: "true" },
+      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '16%', filter: "true" },
+      { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '16%', filter: "true" },
       { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
     ];
   }
@@ -87,8 +87,8 @@ export class PriceListComponent implements OnInit {
     this.ColumnsFamilleFacturation = [
       { field: '', header: '', width: '1%', filter: "true" },
       { field: 'familleFacturationDTO.codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '24%', filter: "true" },
-      { field: 'familleFacturationDTO.designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '25%', filter: "true" },
-      { field: 'familleFacturationDTO.designationLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '25%', filter: "true" },
+      { field: 'familleFacturationDTO.designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '25%', filter: "true" },
+      { field: 'familleFacturationDTO.designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '25%', filter: "true" },
       { field: 'taux', header: this.i18nService.getString('taux') || 'Taux', width: '25%', filter: "true" },
       { field: 'augRemise', header: this.i18nService.getString('AugRem') || 'AugRem', width: '25%', filter: "true" },
       { field: '',  header: this.i18nService.getString('Applique') || 'CodeSaisie', width: '1%', filter: "true" },
@@ -104,8 +104,8 @@ export class PriceListComponent implements OnInit {
   GetColumnsPrestationTable() {
     this.ColumnsPrestation = [
       { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '10%', filter: "true" },
-      { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '20%', filter: "true" },
-      { field: 'designationLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '20%', filter: "false" },
+      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '20%', filter: "true" },
+      { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '20%', filter: "false" },
       { field: 'montant', header: this.i18nService.getString('montant') || 'Montant', width: '15%', filter: "true" },
       { field: 'taux', header: this.i18nService.getString('taux') || 'Taux', width: '20%', filter: "true" },
       { field: 'mntAvantMaj', header: this.i18nService.getString('montantAvantMaj') || 'MontantAvantMaj', width: '20%', filter: "true" },
@@ -176,7 +176,7 @@ export class PriceListComponent implements OnInit {
   DeletePriceList(code: any) {
     this.param_service.DeletePriceList(code).subscribe(
       (res: any) => {
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
         this.CtrlAlertify.ShowDeletedOK();
         this.ngOnInit();
         this.visDelete = false;
@@ -221,7 +221,7 @@ export class PriceListComponent implements OnInit {
       if (this.code == undefined) {
         this.clearForm();
         this.onRowUnselect(event);
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
         this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false
       } else {
@@ -242,7 +242,7 @@ export class PriceListComponent implements OnInit {
 
       if (this.code == undefined) {
         this.onRowUnselect;
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
         this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false
       } else {
@@ -260,7 +260,7 @@ export class PriceListComponent implements OnInit {
     if (mode === 'Print') {
       if (this.code == undefined) {
         this.onRowUnselect;
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
         this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
       } else {
@@ -354,7 +354,7 @@ export class PriceListComponent implements OnInit {
         this.param_service.UpdatePriceList(body).subscribe(
 
           (res: any) => {
-            this.CtrlAlertify.showLabel();
+            this.CtrlAlertify.PostionLabelNotification();
             this.CtrlAlertify.ShowSavedOK();
             this.visibleModal = false;
             this.clearForm();
@@ -370,7 +370,7 @@ export class PriceListComponent implements OnInit {
       else {
         // this.param_service.PostPriceList(body).subscribe(
         //   (res: any) => {
-        //     this.CtrlAlertify.showLabel();
+        //     this.CtrlAlertify.PostionLabelNotification();
         //     this.CtrlAlertify.ShowSavedOK();
         //     this.visibleModal = false;
         //     this.clearForm();
@@ -495,13 +495,13 @@ export class PriceListComponent implements OnInit {
     if (isNaN(percentage) || percentage < 0 || percentage > 100) {
       // Handle invalid percentage input (e.g., show an error message)
       // Assuming you have a translation for this
-      this.CtrlAlertify.showLabel();
+      this.CtrlAlertify.PostionLabelNotification();
       this.CtrlAlertify.showNotificationِCustom('InvalidPercentage');
       inputElement.value = ''; // Clear the invalid input
       return;
     } 
     if(group.SelectedMajRem === null || group.SelectedMajRem === undefined ){
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
        this.CtrlAlertify.showNotificationِCustom('selectTypeRemiseMajoration');
       return;
     }

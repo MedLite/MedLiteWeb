@@ -69,8 +69,8 @@ export class SocieteComponent  {
      GetColumns() {
        this.cols = [ 
          { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
-         { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '16%', filter: "true" },
-         { field: 'designationLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '16%', filter: "false" },
+         { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '16%', filter: "true" },
+         { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '16%', filter: "false" },
           { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
    
        ];
@@ -138,7 +138,7 @@ export class SocieteComponent  {
      DeleteSociete(code: any) {
        this.param_service.DeleteSociete(code).subscribe(
          (res: any) => {
-           this.CtrlAlertify.showLabel();
+           this.CtrlAlertify.PostionLabelNotification();
            this.CtrlAlertify.ShowDeletedOK();
            this.ngOnInit(); 
            this.visDelete = false;
@@ -179,7 +179,7 @@ export class SocieteComponent  {
          if (this.code == undefined) {
            this.clearForm();
            this.onRowUnselect(event);
-           this.CtrlAlertify.showLabel();
+           this.CtrlAlertify.PostionLabelNotification();
            this.CtrlAlertify.showChoseAnyRowNotification();
            this.visDelete == false && this.visibleModal == false
          } else {
@@ -198,7 +198,7 @@ export class SocieteComponent  {
    
          if (this.code == undefined) {
            this.onRowUnselect;
-           this.CtrlAlertify.showLabel();
+           this.CtrlAlertify.PostionLabelNotification();
            this.CtrlAlertify.showChoseAnyRowNotification();
            this.visDelete == false && this.visibleModal == false
          } else {
@@ -216,7 +216,7 @@ export class SocieteComponent  {
        if (mode === 'Print') {
          if (this.code == undefined) {
            this.onRowUnselect;
-           this.CtrlAlertify.showLabel();
+           this.CtrlAlertify.PostionLabelNotification();
            this.CtrlAlertify.showChoseAnyRowNotification();
            this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
          } else {
@@ -266,7 +266,7 @@ export class SocieteComponent  {
            this.param_service.UpdateSociete(body).subscribe(
    
              (res: any) => {
-               this.CtrlAlertify.showLabel();
+               this.CtrlAlertify.PostionLabelNotification();
                this.CtrlAlertify.ShowSavedOK();
                this.visibleModal = false;
                this.clearForm();
@@ -282,7 +282,7 @@ export class SocieteComponent  {
          else {
            this.param_service.PostSociete(body).subscribe(
              (res: any) => {
-               this.CtrlAlertify.showLabel();
+               this.CtrlAlertify.PostionLabelNotification();
                this.CtrlAlertify.ShowSavedOK();
                this.visibleModal = false;
                this.clearForm();

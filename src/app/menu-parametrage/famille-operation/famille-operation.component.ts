@@ -1,52 +1,44 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { Component, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
-import * as alertifyjs from 'alertifyjs'
 import { Router } from '@angular/router';
 import { LoadingComponent } from '../../Shared/loading/loading.component';
 import { I18nService } from '../../Shared/i18n/i18n.service';
 import { InputValidationService } from '../../Shared/Control/ControlFieldInput';
- 
+import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
+import { ParametargeService } from '../WebService/parametarge.service';
+
 
 declare const PDFObject: any;
 @Component({
   selector: 'app-famille-operation',
   templateUrl: './famille-operation.component.html',
-  styleUrls:[ './famille-operation.component.css','.../../../src/assets/css/newStyle.css'
+  styleUrls: ['./famille-operation.component.css', '.../../../src/assets/css/newStyle.css'
     , '.../../../src/assets/css/StyleApplication.css'], providers: [ConfirmationService, MessageService]
 })
 export class FamilleOperationComponent implements OnInit {
-  @ViewChild('codeError') codeErrorElement!: ElementRef; 
+
+  @ViewChild('codeError') codeErrorElement!: ElementRef;
   @ViewChild('codeSaisieInput') codeSaisieInputElement!: ElementRef;
-  @ViewChild('DesignationArInput') DesignationArInputElement!: ElementRef;
-  @ViewChild('DesignationLtInput') DesignationLtInputElement!: ElementRef; 
+  @ViewChild('designationArInput') desginationArInputElement!: ElementRef;
+  @ViewChild('designationLtInput') designationLtInputElement!: ElementRef;
 
   first = 0;
   IsLoading = true;
   openModal!: boolean;
 
-  constructor(public i18nService: I18nService, private validationService: InputValidationService, private router: Router, private loadingComponent: LoadingComponent, private confirmationService: ConfirmationService, private messageService: MessageService, private http: HttpClient, private fb: FormBuilder, private cdr: ChangeDetectorRef) {
 
-
+  constructor(public param_service: ParametargeService, public i18nService: I18nService,
+    private router: Router, private loadingComponent: LoadingComponent,
+    private validationService: InputValidationService, private CtrlAlertify: ControlServiceAlertify) {
   }
 
-  validateCodeSaisieInput() {
-    this.validationService.validateInput(this.codeSaisieInputElement, this.codeErrorElement, this.codeSaisie, 'codeSaisie');
-  }
-  validateDesignationArInput() {
-    this.validationService.validateInput(this.DesignationArInputElement, this.codeErrorElement, this.designationAr, 'DesignationAr');
-  }
 
-  validateDesignationLtInput() {
-    this.validationService.validateInput(this.DesignationArInputElement, this.codeErrorElement, this.designationAr, 'DesignationAr');
-  }
- 
 
   @ViewChild('modal') modal!: any;
-
+  items: MenuItem[] | undefined;
+  activeItem: MenuItem | undefined;
   pdfData!: Blob;
   isLoading = false;
   cols!: any[];
@@ -66,34 +58,31 @@ export class FamilleOperationComponent implements OnInit {
   actif!: boolean;
   visible!: boolean;
   LabelActif!: string;
-    userCreate = sessionStorage.getItem("userName");
-  dataBanque = new Array<any>();
+  userCreate = sessionStorage.getItem("userName");
+  dataFamilleOperation = new Array<any>();
   compteur: number = 0;
   listDesig = new Array<any>();
-  selectedBanque!: any;
+  selectedFamilleOperation!: any;
   ListFamilleFacturation = new Array<any>();
   selectedFamilleFacturation: any = '';
-  ListFamillePrestation = new Array<any>();
-  selectedFamillePrestation: any = '';
-
+  ListTypeFamilleOperation = new Array<any>();
+  selectedTypeFamilleOperation: any = '';
+  ListDevise = new Array<any>();
+  selectedDevise: any = '';
 
 
 
 
   ngOnInit(): void {
-    this.GetColumns();
-    this.GetAllBanque();
-    this.ListFamilleFacturation = [
-      { label: 'Famill Fact 1', value: '1' },
-      { label: 'Famille Fact 2', value: '2' },
-      { label: 'Famille Fact 3', value: '3' },
+    this.items = [
+      { label: this.i18nService.getString('LabelActif') || 'LabelActif', icon: 'pi pi-file-check', command: () => { this.GetAllFamilleOperationActif() } },
+      { label: this.i18nService.getString('LabelInActif') || 'LabelInActif', icon: 'pi pi-file-excel', command: () => { this.GetAllFamilleOperationInActif() } },
+      { label: this.i18nService.getString('LabelAll') || 'LabelAll', icon: 'pi pi-file', command: () => { this.GetAllFamilleOperation() } },
     ];
+    this.activeItem = this.items[0];
+    this.GetColumns();
 
-    this.ListFamillePrestation = [
-      { label: 'Famill Pres 1', value: '1' },
-      { label: 'Famille Pres 2', value: '2' },
-      { label: 'Famille Pres 3', value: '3' },
-    ]
+    this.GetAllFamilleOperationActif()
 
   }
 
@@ -101,10 +90,10 @@ export class FamilleOperationComponent implements OnInit {
 
   GetColumns() {
     this.cols = [
-      { field: 'TypeOP', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '5%', filter: "true" },
-      { field: 'SourceDepenese', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '5%', filter: "true" },
-      { field: 'codeEtatApprouver', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '5%', filter: "false" },
-      { field: 'dateCreate', header: this.i18nService.getString('LabelActif') || 'Actif', width: '5%', filter: "true" },
+      { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
+      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '16%', filter: "true" },
+      { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '16%', filter: "false" },
+      { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
 
     ];
   }
@@ -131,21 +120,30 @@ export class FamilleOperationComponent implements OnInit {
   }
 
   clearForm() {
-
-
-
     this.code == undefined;
     this.designationAr = '';
     this.designationLt = '';
     this.actif = false;
     this.visibleModal = false;
     this.codeSaisie = '';
+    this.selectedFamilleOperation = ''
     this.onRowUnselect(event);
 
-
-
-
   }
+
+
+  GetCodeSaisie() {
+    this.param_service.GetCompteur("CodeSaisieFamilleOperation").
+      subscribe((data: any) => {
+        this.codeSaisie = data.prefixe + data.suffixe;
+      })
+  }
+
+
+
+
+
+
   onRowSelect(event: any) {
     this.code = event.data.code;
     this.actif = event.data.actif;
@@ -153,55 +151,27 @@ export class FamilleOperationComponent implements OnInit {
     this.codeSaisie = event.data.codeSaisie;
     this.designationAr = event.data.designationAr;
     this.designationLt = event.data.designationLt;
-    this.rib = event.data.rib;
-
-    console.log('vtData : ', event);
   }
   onRowUnselect(event: any) {
-    console.log('row unselect : ', event);
     this.code = event.data = null;
   }
 
 
 
-  DeleteBanque(code: any) {
-    // this.param_service.DeleteBanque(code) .subscribe(
-    //   (res:any) => {
-    //     alertifyjs.set('notifier', 'position', 'top-left');
-    //     alertifyjs.success('<i class="success fa fa-chevron-down" aria-hidden="true" style="margin: 5px 5px 5px;font-size: 15px !important;;""></i>' + "Success Deleted");
+  DeleteFamilleOperation(code: any) {
+    this.param_service.DeleteFamilleOperation(code).subscribe(
+      (res: any) => {
+        this.CtrlAlertify.PostionLabelNotification();
+        this.CtrlAlertify.ShowDeletedOK();
+        this.ngOnInit();
+        this.visDelete = false;
 
-    //     this.ngOnInit();
-    //     this.check_actif = true;
-    //     this.check_inactif = false;
-    // this.visDelete = false;
-
-    //   }
-    // )
-  }
-  clearSelected(): void {
-    this.code == undefined;
-    this.codeSaisie = '';
-    this.designationAr = '';
-    this.designationLt = '';
-    this.actif = false;
-    this.visible = false;
+      }
+    )
   }
 
 
-  showRequiredNotification() {
-    const fieldRequiredMessage = this.i18nService.getString('fieldRequired');  // Default to English if not found
-    alertifyjs.notify(
-      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
-      fieldRequiredMessage
-    );
-  }
-  showChoseAnyRowNotification() {
-    const fieldRequiredMessage = this.i18nService.getString('SelctAnyRow');  // Default to English if not found
-    alertifyjs.notify(
-      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
-      fieldRequiredMessage
-    );
-  }
+
 
   public onOpenModal(mode: string) {
 
@@ -215,9 +185,11 @@ export class FamilleOperationComponent implements OnInit {
     button.setAttribute('data-toggle', 'modal');
     if (mode === 'add') {
       button.setAttribute('data-target', '#Modal');
-      this.formHeader = this.i18nService.getString('Add');
+      this.formHeader = this.i18nService.getString('Add') + ' ' + this.i18nService.getString('FamilleOperation');
       this.onRowUnselect(event);
-      this.clearSelected();
+
+      this.clearForm();
+      this.GetCodeSaisie();
       this.actif = false;
       this.visible = false;
       this.visibleModal = true;
@@ -231,18 +203,14 @@ export class FamilleOperationComponent implements OnInit {
       if (this.code == undefined) {
         this.clearForm();
         this.onRowUnselect(event);
-        if (sessionStorage.getItem("lang") == "ar") {
-          alertifyjs.set('notifier', 'position', 'top-left');
-        } else {
-          alertifyjs.set('notifier', 'position', 'top-right');
-        }
-
-        this.showChoseAnyRowNotification();
+        this.CtrlAlertify.PostionLabelNotification();
+        this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false
       } else {
 
         button.setAttribute('data-target', '#Modal');
-        this.formHeader = this.i18nService.getString('Modifier');
+        this.formHeader = this.i18nService.getString('Modifier') + ' ' + this.i18nService.getString('FamilleOperation');;
+
 
         this.visibleModal = true;
         this.onRowSelect;
@@ -255,19 +223,14 @@ export class FamilleOperationComponent implements OnInit {
 
       if (this.code == undefined) {
         this.onRowUnselect;
-        if (sessionStorage.getItem("lang") == "ar") {
-          alertifyjs.set('notifier', 'position', 'top-left');
-        } else {
-          alertifyjs.set('notifier', 'position', 'top-right');
-        }
-
-        this.showChoseAnyRowNotification();
+        this.CtrlAlertify.PostionLabelNotification();
+        this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false
       } else {
 
         {
           button.setAttribute('data-target', '#ModalDelete');
-          this.formHeader = this.i18nService.getString('Delete');
+          this.formHeader = this.i18nService.getString('Delete') + ' ' + this.i18nService.getString('FamilleOperation');;
           this.visDelete = true;
 
         }
@@ -278,17 +241,12 @@ export class FamilleOperationComponent implements OnInit {
     if (mode === 'Print') {
       if (this.code == undefined) {
         this.onRowUnselect;
-        if (sessionStorage.getItem("lang") == "ar") {
-          alertifyjs.set('notifier', 'position', 'top-left');
-        } else {
-          alertifyjs.set('notifier', 'position', 'top-right');
-        }
-
-        this.showChoseAnyRowNotification();
+        this.CtrlAlertify.PostionLabelNotification();
+        this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
       } else {
         button.setAttribute('data-target', '#ModalPrint');
-        this.formHeader = "Imprimer Liste Banque"
+        this.formHeader = "Imprimer Liste FamilleOperation"
         this.visibleModalPrint = true;
         // this.RemplirePrint();
 
@@ -301,124 +259,74 @@ export class FamilleOperationComponent implements OnInit {
 
   }
 
-  // datecreate !: Date;
-  // currentDate = new Date();
 
-  // ajusterHourAndMinutes() {
-  //   let hour = new Date().getHours();
-  //   let hours;
-  //   if (hour < 10) {
-  //     hours = '0' + hour;
-  //   } else {
-  //     hours = hour;
-  //   }
-  //   let min = new Date().getMinutes();
-  //   let mins;
-  //   if (min < 10) {
-  //     mins = '0' + min;
-  //   } else {
-  //     mins = min;
-  //   }
-  //   return hours + ':' + mins
-  // }
-  // datform = new Date();
 
-  PostBanque() {
+  private validateAllInputs(): boolean { // Returns true if all valid, false otherwise
+    const codeSaisie = this.validationService.validateInputCommun(this.codeSaisieInputElement, this.codeSaisie);
+    const designationAr = this.validationService.validateInputCommun(this.desginationArInputElement, this.designationAr);
+    const designationLt = this.validationService.validateInputCommun(this.designationLtInputElement, this.designationLt);
+    return codeSaisie && designationAr && designationLt;
+  }
 
 
 
-    this.validateCodeSaisieInput();
-    this.validateDesignationArInput();
-    this.validateDesignationLtInput(); 
+  PostFamilleOperation() {
 
-
-
-    if (!this.designationAr || !this.designationLt || !this.codeSaisie  ) {
-      if (sessionStorage.getItem("lang") == "ar") {
-        alertifyjs.set('notifier', 'position', 'top-left');
-      } else {
-        alertifyjs.set('notifier', 'position', 'top-right');
-      }
-
-      this.showRequiredNotification();
-    } else {
-
-
+    const isValid = this.validateAllInputs();
+    if (isValid) {
       let body = {
         codeSaisie: this.codeSaisie,
         designationAr: this.designationAr,
         designationLt: this.designationLt,
         userCreate: this.userCreate,
-        rib: this.rib,
-
         dateCreate: new Date().toISOString(), //
         code: this.code,
-        actif: this.actif, 
+        actif: this.actif,
 
       }
       if (this.code != null) {
         body['code'] = this.code;
 
-        // this.param_service.UpdateBanque(body) .subscribe(
+        this.param_service.UpdateFamilleOperation(body).subscribe(
 
-        //   (res: any) => {
-        //      if(sessionStorage.getItem("lang") == "ar"){
-        //   alertifyjs.set('notifier', 'position', 'top-left');
-        // }else{
-        //   alertifyjs.set('notifier', 'position', 'top-right');
-        // }
+          (res: any) => {
+            this.CtrlAlertify.PostionLabelNotification();
+            this.CtrlAlertify.ShowSavedOK();
+            this.visibleModal = false;
+            this.clearForm();
+            this.ngOnInit();
+            this.onRowUnselect(event);
 
-        //                 alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/ok.png" alt="image" >' + "تم التحيين");
 
-        //     this.visibleModal = false;
-        //     this.clearForm();
-        //     this.ngOnInit();
-        //     this.check_actif = true;
-        //     this.check_inactif = false;
-        //     this.onRowUnselect(event);
-        //     this.clearSelected();
-
-        //   }
-        // );
+          }
+        );
 
 
       }
       else {
-        // this.param_service.PostBanque(body) .subscribe(
-        //   (res:any) => {
-        //     alertifyjs.set('notifier', 'position', 'top-left'); 
-        //     alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/ok.png" alt="image" >' + "تم الحفظ بنجاح");
-        //     this.visibleModal = false;
-        //     this.clearForm();
-        //     this.ngOnInit();
-        //     this.code;
-        //     this.check_actif = true;
-        //     this.check_inactif = false;
-        //     this.onRowUnselect(event);
-        //     this.clearSelected();
+        this.param_service.PostFamilleOperation(body).subscribe(
+          (res: any) => {
+            this.CtrlAlertify.PostionLabelNotification();
+            this.CtrlAlertify.ShowSavedOK();
+            this.visibleModal = false;
+            this.clearForm();
+            this.ngOnInit();
+            this.code;
+            this.onRowUnselect(event);
+            this.clearForm();
 
-        //   }
-        // )
+          }
+        )
       }
+
+    } else {
+      console.log("Erorrrrrr")
     }
 
-  }
-
-
-  Voids(): void {
-    // this.cars = [
-
-    // ].sort((car1, car2) => {
-    //   return 0;
-    // });
-
-  }
 
 
 
-  public remove(index: number): void {
-    this.listDesig.splice(index, 1);
-    console.log(index);
+
   }
 
 
@@ -428,17 +336,48 @@ export class FamilleOperationComponent implements OnInit {
 
 
 
-  GetAllBanque() {
-    // this.param_service.GetBanque().subscribe((data: any) => {
 
-    this.loadingComponent.IsLoading = false;
-    this.IsLoading = false;
 
-    //   this.dataBanque = data;
-    //   this.onRowUnselect(event);
 
-    // }) 
+  GetAllFamilleOperation() {
+    this.IsLoading = true;
+    this.param_service.GetFamilleOperation().subscribe((data: any) => {
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+      this.dataFamilleOperation = data;
+      this.onRowUnselect(event);
+    })
   }
+
+
+  GetAllFamilleOperationActif() {
+    this.IsLoading = true;
+    this.param_service.GetFamilleOperationByActif(true).subscribe((data: any) => {
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+      this.dataFamilleOperation = data;
+      this.onRowUnselect(event);
+    })
+  }
+
+  GetAllFamilleOperationInActif() {
+    this.IsLoading = true;
+    this.param_service.GetFamilleOperationByActif(false).subscribe((data: any) => {
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+      this.dataFamilleOperation = data;
+      this.onRowUnselect(event);
+    })
+  }
+
+
+
+
+  CloseModal() {
+    this.visDelete = false;
+  }
+
+
 
 
 

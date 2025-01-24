@@ -371,6 +371,17 @@ DeleteCaisse(code: any) {
     return this.http.get(`${environment.API_Parametrage}type_intervenant/`+code);
   }
 
+  GetTypeIntervenantActif(IsActif : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}type_intervenant/findBy?actif=`+ IsActif);
+  } 
+
+  
+  GetTypeIntervenantInActif(IsActif : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}type_intervenant/findBy?actif=`+ IsActif);
+  }
+
   PostTypeIntervenant(body: any) {
 
     return this.http.post(`${environment.API_Parametrage}type_intervenant`, body);
@@ -525,6 +536,16 @@ DeleteCaisse(code: any) {
     return this.http.get(`${environment.API_Parametrage}famille_facturation/`+ code);
   } 
 
+  GetFamilleFacturationActif(IsActif : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}famille_facturation/findBy?actif=`+ IsActif);
+  } 
+
+  
+  GetFamilleFacturationInActif(IsActif : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}famille_facturation/findBy?actif=`+ IsActif);
+  }
   PostFamilleFacturation(body: any) {
 
     return this.http.post(`${environment.API_Parametrage}famille_facturation`, body);
@@ -555,6 +576,17 @@ DeleteCaisse(code: any) {
     return this.http.get(`${environment.API_Parametrage}famille_prestation/`+ code);
   } 
 
+  GetFamillePrestationActif(IsActif : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}famille_prestation/findBy?actif=`+ IsActif);
+  } 
+
+  
+  GetFamillePrestationInActif(IsActif : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}famille_prestation/findBy?actif=`+ IsActif);
+  }
+
   PostFamillePrestation(body: any) {
 
     return this.http.post(`${environment.API_Parametrage}famille_prestation`, body);
@@ -583,6 +615,19 @@ DeleteCaisse(code: any) {
     return this.http.get(`${environment.API_Parametrage}sous_famille_prestation/`+ code);
   } 
 
+  GetSousFamillePrestationActif(IsActif : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}sous_famille_prestation/findBy?actif=`+ IsActif);
+  } 
+
+  
+  GetSousFamillePrestationInActif(IsActif : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}sous_famille_prestation/findBy?actif=`+ IsActif);
+  }
+
+
+
   GetSousFamillePrestationByCodeFamille(codeFamillePrestation : number): Observable<any> {
 
     return this.http.get(`${environment.API_Parametrage}sous_famille_prestation/FindBy?codeFamillePrestation=`+ codeFamillePrestation);
@@ -603,6 +648,167 @@ DeleteCaisse(code: any) {
     return this.http.delete(`${environment.API_Parametrage}sous_famille_prestation/delete/`+code);
   }
 
+
+
+  
+   /// TypeOperation 
+
+  
+   GetTypeOperation(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}type_operation/all`);
+  }
+ 
+  GetTypeOperationByCode(code : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}type_operation/`+ code);
+  } 
+  
+  GetTypeOperationActif(IsActif : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}type_operation/findBy?actif=`+ IsActif);
+  } 
+
+  
+  GetTypeOperationInActif(IsActif : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}type_operation/findBy?actif=`+ IsActif);
+  }
+
+  PostTypeOperation(body: any) {
+
+    return this.http.post(`${environment.API_Parametrage}type_operation`, body);
+  } 
+  UpdateTypeOperation(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}type_operation/update`, body);
+  }
+
+  DeleteTypeOperation(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}type_operation/delete/`+code);
+  }
+
+
+
+  
+   /// BlocOperation 
+
+  
+   GetBlocOperation(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}bloc_operation/all`);
+  }
+ 
+  GetBlocOperationByCode(code : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}bloc_operation/`+ code);
+  } 
+
+  GetBlocOperationActif(IsActif : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}bloc_operation/findBy?actif=`+ IsActif);
+  } 
+
+  
+  GetBlocOperationInActif(IsActif : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}bloc_operation/findBy?actif=`+ IsActif);
+  } 
+  PostBlocOperation(body: any) {
+
+    return this.http.post(`${environment.API_Parametrage}bloc_operation`, body);
+  } 
+  UpdateBlocOperation(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}bloc_operation/update`, body);
+  }
+
+  DeleteBlocOperation(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}bloc_operation/delete/`+code);
+  }
+
+
+
+  
+   /// FamilleOperation 
+
+  
+   GetFamilleOperation(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}famille_operation/all`);
+  }
+ 
+  GetFamilleOperationByActif(IsActif : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}famille_operation/findBy?actif=`+ IsActif);
+  } 
+
+  GetFamilleOperationByCode(code : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}famille_operation/`+ code);
+  } 
+  PostFamilleOperation(body: any) {
+
+    return this.http.post(`${environment.API_Parametrage}famille_operation`, body);
+  } 
+  UpdateFamilleOperation(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}famille_operation/update`, body);
+  }
+
+  DeleteFamilleOperation(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}famille_operation/delete/`+code);
+  }
+
+
+
+  
+   /// Operation 
+
+  
+   GetOperation(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}operation/all`);
+  }
+
+
+    
+  GetOperationByActif(bool : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}operation/findBy?actif=`+bool);
+  }
+
+
+  GetOperationByCode(code : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}operation/`+ code);
+  }
+
+
+  GetDetailsOperationByCode(code : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}details_operation/`+ code);
+  }
+
+
+   
+ 
+  PostOperation(body: any) {
+
+    return this.http.post(`${environment.API_Parametrage}operation`, body);
+  } 
+  UpdateOperation(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}operation/update`, body);
+  }
+
+  DeleteOperation(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}operation/delete/`+code);
+  }
 
 
 }

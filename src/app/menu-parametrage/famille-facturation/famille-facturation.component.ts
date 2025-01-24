@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
 import * as alertifyjs from 'alertifyjs'
@@ -45,6 +45,8 @@ export class FamilleFacturationComponent implements OnInit {
      isLoading = false;
      cols!: any[];
    
+       items: MenuItem[] | undefined;
+       activeItem: MenuItem | undefined;
      check_actif = false;
      check_inactif = false;
      formHeader = ".....";
@@ -73,6 +75,12 @@ export class FamilleFacturationComponent implements OnInit {
    
    
      ngOnInit(): void {
+      this.items = [
+        { label: this.i18nService.getString('LabelActif') || 'LabelActif', icon: 'pi pi-file-check', command: () => { this.GetAllFamilleFacturationActif() } },
+        { label: this.i18nService.getString('LabelInActif') || 'LabelInActif', icon: 'pi pi-file-excel', command: () => { this.GetAllFamilleFacturationInActif() } },
+        { label: this.i18nService.getString('LabelAll') || 'LabelAll', icon: 'pi pi-file', command: () => { this.GetAllFamilleFacturation() } },
+      ];
+      this.activeItem = this.items[0];
        this.GetColumns();
        this.GetAllFamilleFacturation();
        
@@ -84,8 +92,8 @@ export class FamilleFacturationComponent implements OnInit {
      GetColumns() {
        this.cols = [ 
          { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
-         { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '16%', filter: "true" },
-         { field: 'designationLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '16%', filter: "false" },
+         { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '16%', filter: "true" },
+         { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '16%', filter: "false" },
           { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
    
        ];
@@ -154,7 +162,7 @@ export class FamilleFacturationComponent implements OnInit {
       DeleteFamilleFacturation(code: any) {
         this.param_service.DeleteFamilleFacturation(code).subscribe(
           (res: any) => {
-            this.CtrlAlertify.showLabel();
+            this.CtrlAlertify.PostionLabelNotification();
             this.CtrlAlertify.ShowDeletedOK();
             this.ngOnInit(); 
             this.visDelete = false;
@@ -196,7 +204,7 @@ export class FamilleFacturationComponent implements OnInit {
           if (this.code == undefined) {
             this.clearForm();
             this.onRowUnselect(event);
-            this.CtrlAlertify.showLabel();
+            this.CtrlAlertify.PostionLabelNotification();
             this.CtrlAlertify.showChoseAnyRowNotification();
             this.visDelete == false && this.visibleModal == false
           } else {
@@ -216,7 +224,7 @@ export class FamilleFacturationComponent implements OnInit {
     
           if (this.code == undefined) {
             this.onRowUnselect;
-            this.CtrlAlertify.showLabel();
+            this.CtrlAlertify.PostionLabelNotification();
             this.CtrlAlertify.showChoseAnyRowNotification();
             this.visDelete == false && this.visibleModal == false
           } else {
@@ -234,7 +242,7 @@ export class FamilleFacturationComponent implements OnInit {
         if (mode === 'Print') {
           if (this.code == undefined) {
             this.onRowUnselect;
-            this.CtrlAlertify.showLabel();
+            this.CtrlAlertify.PostionLabelNotification();
             this.CtrlAlertify.showChoseAnyRowNotification();
             this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
           } else {
@@ -283,7 +291,7 @@ export class FamilleFacturationComponent implements OnInit {
             this.param_service.UpdateFamilleFacturation(body).subscribe(
     
               (res: any) => {
-                this.CtrlAlertify.showLabel();
+                this.CtrlAlertify.PostionLabelNotification();
                 this.CtrlAlertify.ShowSavedOK();
                 this.visibleModal = false;
                 this.clearForm();
@@ -299,7 +307,7 @@ export class FamilleFacturationComponent implements OnInit {
           else {
             this.param_service.PostFamilleFacturation(body).subscribe(
               (res: any) => {
-                this.CtrlAlertify.showLabel();
+                this.CtrlAlertify.PostionLabelNotification();
                 this.CtrlAlertify.ShowSavedOK();
                 this.visibleModal = false;
                 this.clearForm();
@@ -333,14 +341,30 @@ export class FamilleFacturationComponent implements OnInit {
     
     
       GetAllFamilleFacturation() {
-        this.param_service.GetFamilleFacturation().subscribe((data: any) => {
-    
+        this.IsLoading = true; 
+        this.param_service.GetFamilleFacturation().subscribe((data: any) => { 
           this.loadingComponent.IsLoading = false;
-          this.IsLoading = false;
-    
+          this.IsLoading = false; 
           this.dataFamilleFacturation = data;
-          this.onRowUnselect(event);
-    
+          this.onRowUnselect(event); 
+        })
+      }
+      GetAllFamilleFacturationActif() {
+        this.IsLoading = true; 
+        this.param_service.GetFamilleFacturationActif(true).subscribe((data: any) => { 
+          this.loadingComponent.IsLoading = false;
+          this.IsLoading = false; 
+          this.dataFamilleFacturation = data;
+          this.onRowUnselect(event); 
+        })
+      }
+      GetAllFamilleFacturationInActif() {
+        this.IsLoading = true; 
+        this.param_service.GetFamilleFacturationInActif(false).subscribe((data: any) => { 
+          this.loadingComponent.IsLoading = false;
+          this.IsLoading = false; 
+          this.dataFamilleFacturation = data;
+          this.onRowUnselect(event); 
         })
       }
     

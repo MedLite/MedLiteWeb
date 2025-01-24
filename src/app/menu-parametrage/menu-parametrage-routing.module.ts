@@ -24,6 +24,8 @@ import { CouvertureComponent } from './couverture/couverture.component';
 import { SpecialiteMedecinComponent } from './specialite-medecin/specialite-medecin.component';
 import { SpecialiteCabinetComponent } from './specialite-cabinet/specialite-cabinet.component';
 import { SousFamillePrestationComponent } from './sous-famille-prestation/sous-famille-prestation.component';
+import { TypeOperationComponent } from './type-operation/type-operation.component';
+import { BlocOperationComponent } from './bloc-operation/bloc-operation.component';
  
  
 
@@ -150,7 +152,19 @@ const routes: Routes = [
     component: SousFamillePrestationComponent ,
     data:{title:'SousFamillePrestation',icon:'bx bx-category'}
   }
-
+  ,
+  {
+    path: 'type_operation',
+    component: TypeOperationComponent ,
+    data:{title:'TypeOperation',icon:'bx bx-align-middle'}
+  }
+  ,
+  {
+    path: 'bloc_operation',
+    component: BlocOperationComponent ,
+    data:{title:'BlocOperation',icon:'bx bx-category'}
+  }
+ 
 ];
 
 @NgModule({

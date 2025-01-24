@@ -487,8 +487,8 @@ export class AdmissionComponent implements OnInit {
   GetColumns() {
     this.cols = [
       { field: 'TypeOP', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '5%', filter: "true" },
-      { field: 'SourceDepenese', header: this.i18nService.getString('DesignationAr') || 'DesignationArabic', width: '5%', filter: "true" },
-      { field: 'codeEtatApprouver', header: this.i18nService.getString('DesignationLt') || 'DesignationLatin', width: '5%', filter: "false" },
+      { field: 'SourceDepenese', header: this.i18nService.getString('Designation') || 'Designation', width: '5%', filter: "true" },
+      { field: 'codeEtatApprouver', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '5%', filter: "false" },
       { field: 'dateCreate', header: this.i18nService.getString('LabelActif') || 'Actif', width: '5%', filter: "true" },
 
     ];
@@ -673,7 +673,7 @@ export class AdmissionComponent implements OnInit {
           //     `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >`
           //   );
           // }
-          this.CtrlAlertify.showLabel();
+          this.CtrlAlertify.PostionLabelNotification();
           this.CtrlAlertify.showChoseAnyRowNotification();
           this.visDelete == false && this.visibleModal == false
         } else {
@@ -692,7 +692,7 @@ export class AdmissionComponent implements OnInit {
 
           if (this.code == undefined) {
             this.onRowUnselect;
-            this.CtrlAlertify.showLabel();
+            this.CtrlAlertify.PostionLabelNotification();
             this.CtrlAlertify.showChoseAnyRowNotification();
             this.visDelete == false && this.visibleModal == false
           } else {
@@ -710,7 +710,7 @@ export class AdmissionComponent implements OnInit {
           if (mode === 'Print') {
             if (this.code == undefined) {
               this.onRowUnselect;
-              this.CtrlAlertify.showLabel();
+              this.CtrlAlertify.PostionLabelNotification();
               this.CtrlAlertify.showChoseAnyRowNotification();
               this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
             } else {
@@ -781,7 +781,7 @@ export class AdmissionComponent implements OnInit {
     if (mode === 'choisir') {
 
       if (this.NomFullArAdm === '' || this.codePriceList == 0) {
-        this.CtrlAlertify.showLabel();
+        this.CtrlAlertify.PostionLabelNotification();
         this.CtrlAlertify.showChoseAnyPatientNotification();
         this.visibleModal = false;
       } else {

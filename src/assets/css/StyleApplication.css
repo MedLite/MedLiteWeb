@@ -680,7 +680,6 @@ object {
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     -moz-border-radius: 0;
     -ms-border-radius: 0;
-    -o-border-radius: 0;
 }
 
 :host ::ng-deep .form-control-dev:focus {
@@ -1509,7 +1508,6 @@ label:hover input[type=checkbox].checkbox:checked+span:before {
     padding-right: 10px;
     color: #000000;
     font-size: 13px;
-    text-align: justify;
     font-size: 15px;
     font-family: auto;
 }
@@ -1692,22 +1690,6 @@ padding: 0px 20px 0px 345px;
 
 /* ///// drop down  */
 
-:host ::ng-deep .p-dropdown {
-    display: inline-flex;
-    cursor: pointer;
-    position: relative;
-    -webkit-user-select: none;
-    user-select: none;
-    /* height: 23px; */
-}
-
-:host ::ng-deep .p-dropdown-clear-icon {
-    position: absolute;
-    top: 50%;
-    margin-top: -.5rem;
-    right: 123px;
-}
-
 .ligneDuOu {
     display: flex;
     padding: 0px 32px 0px 0px;
@@ -1721,6 +1703,7 @@ padding: 0px 20px 0px 345px;
 }
 
 :host ::ng-deep .p-dropdown-label {
+    text-align: center;
     display: block;
     white-space: nowrap;
     overflow: hidden;
@@ -2779,7 +2762,8 @@ input#PEC {
 
 .TabInput {
     background: white;
-    border: none;
+    border: 1px solid #a9a9a963;
+    border-radius: 6px;
 }
 
 :host ::ng-deep .pi-file-excel:before {

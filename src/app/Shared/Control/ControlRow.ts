@@ -28,7 +28,7 @@ export class ControlServiceAlertify {
       fieldRequiredMessage
     );
   }
-  showLabel(){
+  PostionLabelNotification(){
     const currentTime = Date.now();
     if (currentTime - this.lastNotificationTime > 2000) { // Only notify every 2 seconds
       this.lastNotificationTime = currentTime;
