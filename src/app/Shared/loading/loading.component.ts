@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { I18nService } from '../i18n/i18n.service';
 
 @Component({
   selector: 'app-loading',
@@ -8,5 +9,5 @@ import { Component, Input } from '@angular/core';
 export class LoadingComponent {
 
   @Input('IsLoading') IsLoading:boolean = true;
- 
+   constructor(public i18nService: I18nService) { }
 }

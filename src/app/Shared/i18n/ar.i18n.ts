@@ -122,7 +122,8 @@ const arI18n = {
  'TypeIntervenantDupliquer':'العنصر الطبي مكرر',
  'PriceNotEquals':'المجموع و السعر مختلف',
  'SousFamillePrestation':'فئة الخدمات',
- 'LabelautorisModifInterv':'إمكانية تغير العناصر الطبية'
+ 'LabelautorisModifInterv':'إمكانية تغير العناصر الطبية',
+ 'Loading':'جاري تحميل البيانات'
  
 };
 

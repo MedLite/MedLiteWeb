@@ -57,8 +57,7 @@ a {
 
 .logo-text {
     font-size: 22px;
-    margin-left: 10px;
-    margin-bottom: 0;
+    margin: 0px 10px 0px 0px !important;
     letter-spacing: 1px;
     color: #008cff;
 }

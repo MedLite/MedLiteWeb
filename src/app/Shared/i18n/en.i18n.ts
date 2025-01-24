@@ -119,7 +119,8 @@ const enI18n = {
   'PrixMaster':'Main Rate',
   'TypeIntervenantDupliquer':'Duplicate medical intervenor',
   ' PriceNotEquals':'The total and the service price are different',
-  'SousFamillePrestation':'Service Subcategory'
+  'SousFamillePrestation':'Service Subcategory',
+     'Loading':'Loading'
 };
 
 export default enI18n;

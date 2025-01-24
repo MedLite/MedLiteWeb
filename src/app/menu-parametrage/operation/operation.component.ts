@@ -171,16 +171,14 @@ export class OperationComponent implements OnInit {
 
   GetColumns() {
     this.cols = [
-      { field: 'blocOperationDTO.designationAr', header: this.i18nService.getString('BlocOperation') || 'BlocOperation', width: '20%', filter: "true" },
-
-      { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
-      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'DesignationArabic', width: '16%', filter: "true" },
-      { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '16%', filter: "false" },
-
-      { field: 'familleFacturationDTO.designationAr', header: this.i18nService.getString('FamilleFacturation') || 'FamilleFacturation', width: '16%', filter: "false" },
-
-      { field: 'familleOperationDTO.designationAr', header: this.i18nService.getString('FamilleOperation') || 'FamilleOperation', width: '20%', filter: "true" },
-      { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
+      { field: 'blocOperationDTO.designationAr', header: this.i18nService.getString('BlocOperation') || 'BlocOperation', width: '12%', filter: "true" },
+      { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '10%', filter: "true" },
+      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'DesignationArabic', width: '19%', filter: "true" },
+      { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '19%', filter: "false" },
+      { field: 'familleFacturationDTO.designationAr', header: this.i18nService.getString('FamilleFacturation') || 'FamilleFacturation', width: '10%', filter: "false" },
+      { field: 'familleOperationDTO.designationAr', header: this.i18nService.getString('FamilleOperation') || 'FamilleOperation', width: '10%', filter: "true" },
+      { field: 'prixMoyene', header: this.i18nService.getString('PrixMoyen') || 'PrixMoyen', width: '10%', filter: "true" },
+       { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '4%', filter: "true" },
 
     ];
   }
@@ -233,7 +231,8 @@ export class OperationComponent implements OnInit {
     this.ListTypeOperation = new Array();
     this.prixOperation = 0;
     this.selectedTypeIntervenantIP = '';
-    this.selectedBlocOperation = ''
+    this.selectedBlocOperation = '',
+    this.autorisModifInterv = false;
     this.onRowUnselect(event);
 
   }

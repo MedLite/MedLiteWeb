@@ -121,6 +121,7 @@ const frI18n = {
   ' PriceNotEquals':'Le total et le prix de la prestation sont différents',
   'SousFamillePrestation':'Sous-catégorie prestations',
   'PrixOperation':'Prix Opération',
+   'Loading':'Chargement en cours'
 };
 
 

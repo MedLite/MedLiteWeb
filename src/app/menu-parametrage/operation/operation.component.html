@@ -81,7 +81,7 @@
                         </tr>
                         <tr class="filter-row">
                             <th *ngFor="let col of col; let i = index">
-                                <p-columnFilter *ngIf="i !== 6" [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
+                                <p-columnFilter *ngIf="i !== 7" [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
                             </th>
                         </tr>
                     </ng-template>
@@ -100,6 +100,11 @@
                                 {{domaine.familleOperationDTO.designationAr}}
 
                             </td>
+                            <td>
+                                {{domaine.prixMoyene}}
+
+                            </td>
+
                             <td class="act-col">
 
                                 <p-checkbox [readonly]="true" [(ngModel)]="domaine.actif" [binary]="true" inputId="binary">{{domaine.actif}}</p-checkbox>

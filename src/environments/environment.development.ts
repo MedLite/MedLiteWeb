@@ -5,5 +5,6 @@ export const environment = {
     API_Parametrage: "/parametrage/",
     API_Recette: "/recette/",
     API_Depense: "/depense/",
+    API_SOC: "/soc",
     idleTimeInMinutes: 4
 };

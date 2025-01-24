@@ -46,4 +46,12 @@ export class UserService {
 
 
 
+  GetLogoClinique() {
+
+    return this.http.get(`${environment.API_SOC}/logos/1`);
+  }
+
+
+
+
 }
