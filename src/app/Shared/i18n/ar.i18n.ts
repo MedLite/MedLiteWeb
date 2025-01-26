@@ -108,6 +108,7 @@ const arI18n = {
   'LabelautoriseFrais':'مسموح له بالأتعاب',
   'Expand_All':'عرض الكل',
   'Collapse_All':'إخفاء الكل',
+  'Appliquer':' تطبيق',
  'montantAvantMaj':'القيمة بعد الزيادة والنقصان',
  'Applique':'تطبيق',
  'Pourcentage':'نسبة', 
@@ -123,7 +124,10 @@ const arI18n = {
  'PriceNotEquals':'المجموع و السعر مختلف',
  'SousFamillePrestation':'فئة الخدمات',
  'LabelautorisModifInterv':'إمكانية تغير العناصر الطبية',
- 'Loading':'جاري تحميل البيانات'
+ 'Loading':'جاري تحميل البيانات',
+ 'RemMaj':'تخفيض / زيادة',
+ 'Remise':'تخفيض',
+ 'Majoration':'زيادة'
  
 };
 

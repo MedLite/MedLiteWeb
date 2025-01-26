@@ -6,4 +6,5 @@
 :host ::ng-deep .table2-container .p-datatable .p-datatable-header {
     height: 125px;
     background: #ffffff;
+    padding: 0px 0px 5px 15px;
 }

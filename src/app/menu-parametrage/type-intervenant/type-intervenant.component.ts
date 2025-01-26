@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
 import * as alertifyjs from 'alertifyjs'
@@ -37,6 +37,8 @@ export class TypeIntervenantComponent implements OnInit {
 
 
 
+    items: MenuItem[] | undefined;
+    activeItem: MenuItem | undefined;
   @ViewChild('modal') modal!: any;
 
   pdfData!: Blob;
@@ -69,8 +71,15 @@ export class TypeIntervenantComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.items = [
+      { label: this.i18nService.getString('LabelActif') || 'LabelActif', icon: 'pi pi-file-check', command: () => { this.GetAllTypeIntervenantActif() } },
+      { label: this.i18nService.getString('LabelInActif') || 'LabelInActif', icon: 'pi pi-file-excel', command: () => { this.GetAllTypeIntervenantInactif() } },
+      { label: this.i18nService.getString('LabelAll') || 'LabelAll', icon: 'pi pi-file', command: () => { this.GetAllTypeIntervenant() } },
+    ];
+    this.activeItem = this.items[0];
+
     this.GetColumns();
-    this.GetAllTypeIntervenant();
+    this.GetAllTypeIntervenantActif();
 
 
   }
@@ -331,11 +340,32 @@ export class TypeIntervenantComponent implements OnInit {
 
 
   GetAllTypeIntervenant() {
-    this.param_service.GetTypeIntervenant().subscribe((data: any) => {
-
+    this.IsLoading = true;  
+    this.param_service.GetTypeIntervenant().subscribe((data: any) => { 
       this.loadingComponent.IsLoading = false;
-      this.IsLoading = false;
+      this.IsLoading = false; 
+      this.dataTypeIntervenant = data;
+      this.onRowUnselect(event);
 
+    })
+  }
+  
+  GetAllTypeIntervenantActif() {
+    this.IsLoading = true;  
+    this.param_service.GetTypeIntervenantActif(true).subscribe((data: any) => { 
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false; 
+      this.dataTypeIntervenant = data;
+      this.onRowUnselect(event);
+
+    })
+  }
+  
+  GetAllTypeIntervenantInactif() {
+    this.IsLoading = true;  
+    this.param_service.GetTypeIntervenantInActif(false).subscribe((data: any) => { 
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false; 
       this.dataTypeIntervenant = data;
       this.onRowUnselect(event);
 

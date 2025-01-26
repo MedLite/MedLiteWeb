@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Table, TableRowExpandEvent } from 'primeng/table';
 
 import * as alertifyjs from 'alertifyjs'
@@ -28,11 +28,15 @@ export class PriceListComponent implements OnInit {
   @ViewChild('codeSaisieInput') codeSaisieInputElement!: ElementRef;
   @ViewChild('designationArInput') desginationArInputElement!: ElementRef;
   @ViewChild('designationLtInput') designationLtInputElement!: ElementRef;
+  @ViewChild('pourcentageInput') pourcentageInputElement!: HTMLInputElement;
   @ViewChild('societeInput') societeInputElement!: Dropdown;
 
   first = 0;
   IsLoading = true;
   openModal!: boolean;
+
+  items: MenuItem[] | undefined;
+  activeItem: MenuItem | undefined;
 
   constructor(public param_service: ParametargeService, public i18nService: I18nService,
     private router: Router, private loadingComponent: LoadingComponent,
@@ -56,18 +60,29 @@ export class PriceListComponent implements OnInit {
   codeSaisie: any;
   designationAr: string = 'NULL';
   designationLt: string = "NULL";
+  pourcentage: number = 0;
+  MontantTotalAppliquer: number = 0;
   actif!: boolean;
   visible!: boolean;
   LabelActif!: string;
+  LabelPrestation !: string;
+  LabelOperation !: string;
   userCreate = sessionStorage.getItem("userName");
   dataPriceList = new Array<any>();
   selectedPriceList!: any;
   selectedSociete!: any;
   expandedRows: any = {};
 
-  TypeRemMaj: any; 
+  TypeRemMaj: any;
 
   ngOnInit(): void {
+    this.items = [
+      { label: this.i18nService.getString('LabelActif') || 'LabelActif', icon: 'pi pi-file-check', command: () => { this.GetAllPriceListActif() } },
+      { label: this.i18nService.getString('LabelInActif') || 'LabelInActif', icon: 'pi pi-file-excel', command: () => { this.GetAllPriceListInActif() } },
+      { label: this.i18nService.getString('LabelAll') || 'LabelAll', icon: 'pi pi-file', command: () => { this.GetAllPriceList() } },
+    ];
+    this.activeItem = this.items[0];
+
     this.GetColumns();
     this.GetAllPriceList();
   }
@@ -91,24 +106,26 @@ export class PriceListComponent implements OnInit {
       { field: 'familleFacturationDTO.designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '25%', filter: "true" },
       { field: 'taux', header: this.i18nService.getString('taux') || 'Taux', width: '25%', filter: "true" },
       { field: 'augRemise', header: this.i18nService.getString('AugRem') || 'AugRem', width: '25%', filter: "true" },
-      { field: '',  header: this.i18nService.getString('Applique') || 'CodeSaisie', width: '1%', filter: "true" },
-    
+      { field: '', header: this.i18nService.getString('Applique') || 'CodeSaisie', width: '1%', filter: "true" },
+
     ];
 
-    this.TypeRemMaj=[
-      {label:'Remise',value:'REM'},
-      {label:'Majoration',value:'MAJ'},
+    this.TypeRemMaj = [
+      { label: this.i18nService.getString('Remise') || 'Remise', value: 'REM' },
+      { label: this.i18nService.getString('Majoration') || 'Majoration', value: 'MAJ' },
     ]
   }
 
   GetColumnsPrestationTable() {
     this.ColumnsPrestation = [
       { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '10%', filter: "true" },
-      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '20%', filter: "true" },
-      { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '20%', filter: "false" },
-      { field: 'montant', header: this.i18nService.getString('montant') || 'Montant', width: '15%', filter: "true" },
-      { field: 'taux', header: this.i18nService.getString('taux') || 'Taux', width: '20%', filter: "true" },
-      { field: 'mntAvantMaj', header: this.i18nService.getString('montantAvantMaj') || 'MontantAvantMaj', width: '20%', filter: "true" },
+      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '25%', filter: "true" },
+      { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '25%', filter: "false" },
+      { field: 'montant', header: this.i18nService.getString('montant') || 'Montant', width: '10%', filter: "true" },
+      { field: 'taux', header: this.i18nService.getString('taux') || 'Taux', width: '10%', filter: "true" },
+      { field: 'RemMaj', header: this.i18nService.getString('RemMaj') || 'RemMaj', width: '10%', filter: "true" },
+      // { field: 'RemMajValeur', header: this.i18nService.getString('RemMajValeur') || 'RemMajValeur', width: '1%', filter: "true" },
+      { field: 'mntAvantMaj', header: this.i18nService.getString('montantAvantMaj') || 'MontantAvantMaj', width: '10%', filter: "true" },
     ];
   }
   @Output() closed: EventEmitter<string> = new EventEmitter();
@@ -189,6 +206,8 @@ export class PriceListComponent implements OnInit {
   public onOpenModal(mode: string) {
 
     this.LabelActif = this.i18nService.getString('LabelActif');
+    this.LabelPrestation = this.i18nService.getString('Prestation');
+    this.LabelOperation = this.i18nService.getString('Operation');
     this.visibleModal = false;
     this.visDelete = false;
     this.visibleModalPrint = false;
@@ -292,50 +311,32 @@ export class PriceListComponent implements OnInit {
 
 
 
-  detailsPriceListsListDTOss:any;
+  detailsPriceListsListDTOss: any;
   PostPriceList() {
 
     this.detailsPriceListsListDTOss = [];
-
-    const priceListData = {
-      codeSaisie: 'PL001', // Replace with actual value
-      designationAr: 'PriceList 1', // Replace with actual value
-      designationLt: 'PriceList 1', // Replace with actual value
-      actif: 1,
-      userCreate: 'soufiennnPost', // Replace with actual value
-      dateCreate: '2024-12-29', // Replace with actual value or use Date()
-      codeSociete: '1'  // Replace with actual value
-    };
-
-
+ 
     const isValid = this.validateAllInputs();
     if (isValid) {
-    
+
 
       this.groupedData.forEach(group => {
-        group.prestations.forEach((prestation:any) => {
-          // Create entries for each codeNatureAdmission (1, 2, and 3)
-          [1, 2, 3].forEach(codeNatureAdmission => { // Iterate over the codes
-            this.detailsPriceListsListDTOss.push({
-              codeNatureAdmission: codeNatureAdmission.toString(), // Convert to string
-              codePrestation: prestation.codeSaisie, // Or however you get codePrestation
-              mntAvantMaj: prestation.mntAvantMaj.toString(),
-              taux: prestation.taux,
-              RemMaj: group.SelectedMajRem,
-              userCreate: 'soufiennnPost', // Replace with actual user
-              dateCreate: '2024-12-29' // Replace with actual date
-            });
+        group.prestations.forEach((prestation: any) => { 
+
+          this.detailsPriceListsListDTOss.push({
+            
+            codePrestation: prestation.code, // Or however you get codePrestation
+            montant: prestation.mntApresMaj,
+            montantPere: prestation.prixPrestation,
+            taux: prestation.taux,
+            remMaj: prestation.RemMajValeur,
+            userCreate: this.userCreate,
+            dateCreate: new Date().toISOString(), //
+            codeNatureAdmission: prestation.codeNatureAdmission,
+            codeTypeIntervenant: prestation.codeTypeIntervenant,
           });
         });
-      });
-      // 3. Combine the data
-      const dataToSend = {
-        ...priceListData,
-        detailsPriceListsListDTOs: this.detailsPriceListsListDTOss
-      };
-      console.log(JSON.stringify(dataToSend, null, 2)); // Pretty print JSON
-
-
+      }); 
       let body = {
         codeSaisie: this.codeSaisie,
         designationAr: this.designationAr,
@@ -345,42 +346,46 @@ export class PriceListComponent implements OnInit {
         codeSociete: this.selectedSociete,
         code: this.code,
         actif: this.actif,
-        cash: 0
+        cash: 0,
+        detailsPriceLists: this.detailsPriceListsListDTOss
 
       }
       if (this.code != null) {
         body['code'] = this.code;
 
-        this.param_service.UpdatePriceList(body).subscribe(
+        // this.param_service.UpdatePriceList(body).subscribe(
 
-          (res: any) => {
-            this.CtrlAlertify.PostionLabelNotification();
-            this.CtrlAlertify.ShowSavedOK();
-            this.visibleModal = false;
-            this.clearForm();
-            this.ngOnInit();
-            this.onRowUnselect(event);
-
-
-          }
-        );
-
-
-      }
-      else {
-        // this.param_service.PostPriceList(body).subscribe(
         //   (res: any) => {
         //     this.CtrlAlertify.PostionLabelNotification();
         //     this.CtrlAlertify.ShowSavedOK();
         //     this.visibleModal = false;
         //     this.clearForm();
         //     this.ngOnInit();
-        //     this.code;
         //     this.onRowUnselect(event);
-        //     this.clearForm();
+
 
         //   }
-        // )
+        // );
+
+
+      }
+      else {
+        // console.log("data Price List Body " , body);
+        this.IsLoading=true;
+        this.param_service.PostPriceListNew(body).subscribe(
+          (res: any) => {
+            this.CtrlAlertify.PostionLabelNotification();
+            this.CtrlAlertify.ShowSavedOK();
+            this.visibleModal = false;
+            this.IsLoading=false;
+            this.clearForm();
+            this.ngOnInit();
+            this.code;
+            this.onRowUnselect(event);
+            this.clearForm();
+
+          }
+        )
       }
 
     } else {
@@ -395,6 +400,64 @@ export class PriceListComponent implements OnInit {
 
 
 
+  PostPriceLists() {
+    this.detailsPriceListsListDTOss = [];
+  
+    const isValid = this.validateAllInputs();
+    if (isValid) {
+      this.groupedData.forEach(group => {
+        group.prestations.forEach((prestation: any) => {
+          this.detailsPriceListsListDTOss.push({
+            codePrestation: prestation.code,
+            montant: prestation.mntApresMaj,
+            montantPere: prestation.prixPrestation,
+            remMaj: prestation.RemMajValeur,
+            userCreate: this.userCreate,
+            dateCreate: new Date().toISOString(), //
+            codeNatureAdmission: prestation.codeNatureAdmission,
+            codeTypeIntervenant: prestation.codeTypeIntervenant,
+          });
+        });
+      });
+  
+      const priceListBody = {
+        codeSaisie: this.codeSaisie,
+        designationAr: this.designationAr,
+        designationLt: this.designationLt,
+        userCreate: this.userCreate,
+        dateCreate: new Date().toISOString(), //
+        codeSociete: this.selectedSociete,
+        code: this.code,
+        actif: this.actif,
+        cash: 0,
+        detailsPriceLists:this.detailsPriceListsListDTOss
+      };
+  
+      this.IsLoading = true;
+      const apiCall = this.code === null
+        ? this.param_service.PostPriceListNew(priceListBody)
+        : this.param_service.UpdatePriceList(priceListBody);
+  
+      apiCall.subscribe({
+        next: (res: any) => {
+          this.CtrlAlertify.PostionLabelNotification();
+          this.CtrlAlertify.ShowSavedOK();
+          this.visibleModal = false;
+          this.IsLoading = false;
+          this.clearForm();
+          this.ngOnInit();
+          this.onRowUnselect; //remove event parameter
+        },
+        error: (error) => {
+          this.IsLoading = false;
+          console.error('Error:', error);
+          // Add more robust error handling here (e.g., display user-friendly error messages)
+        }
+      });
+    } else {
+      console.log("Error: Invalid Inputs");
+    }
+  }
 
 
 
@@ -404,14 +467,32 @@ export class PriceListComponent implements OnInit {
 
 
   GetAllPriceList() {
+    this.IsLoading = true;
     this.param_service.GetPriceList().subscribe((data: any) => {
-
       this.loadingComponent.IsLoading = false;
       this.IsLoading = false;
-
       this.dataPriceList = data;
       this.onRowUnselect(event);
+    })
+  }
 
+  GetAllPriceListActif() {
+    this.IsLoading = true;
+    this.param_service.GetPriceListActif().subscribe((data: any) => {
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+      this.dataPriceList = data;
+      this.onRowUnselect(event);
+    })
+  }
+
+  GetAllPriceListInActif() {
+    this.IsLoading = true;
+    this.param_service.GetPriceListInActif().subscribe((data: any) => {
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+      this.dataPriceList = data;
+      this.onRowUnselect(event);
     })
   }
 
@@ -438,17 +519,16 @@ export class PriceListComponent implements OnInit {
   dataPrestation: any[] = [];
   groupedData = new Array<any>();
   GetAllPrestation() {
-    this.param_service.GetPrestation().subscribe((data: any) => {
+    this.IsLoading = true;
+    this.param_service.GetPrestationByActif(true).subscribe((data: any) => {
       this.loadingComponent.IsLoading = false;
       this.IsLoading = false;
-      this.dataPrestation = data; // Keep the original data
+      this.dataPrestation = data;
       this.groupedData = this.groupPrestationsByFamille(data);
 
       this.groupedData.forEach(group => {
-        group.SelectedMajRem = null; // or a default value if needed
+        group.SelectedMajRem = null;
       });
-
-      // console.log("groupeeddd", this.groupedData);
     });
   }
 
@@ -486,45 +566,119 @@ export class PriceListComponent implements OnInit {
     this.expandedRows = {};
   }
 
+  pourcentageValueGrouped: any
+  AppliquerPourcenatgeToAll(pource: HTMLInputElement) {
+    const percentageValue = parseFloat(pource.value);
 
-  ValeurSelectedMajRem:any;
-  MntAvantRemMaj:any;
-  tauxRemMaj:any;
-  AppliquePourcentageInAllPrestationDisponible(group: any, inputElement: HTMLInputElement) {
-    const percentage = parseFloat(inputElement.value); 
+    if (isNaN(percentageValue) || percentageValue < 0 || percentageValue > 100) {
+      this.CtrlAlertify.PostionLabelNotification();
+      this.CtrlAlertify.showNotificationِCustom('InvalidPercentage');
+      return;
+    }
+
+    this.applyPercentageToAll(this.groupedData, percentageValue, this.pourcentageValueGrouped);
+  }
+  applyPercentageToAll(groups: any[], percentage: number, majRemType: string) {
+    if (!majRemType) {
+      this.CtrlAlertify.PostionLabelNotification();
+      this.CtrlAlertify.showNotificationِCustom('selectTypeRemiseMajoration');
+      return;
+    }
+
+    groups.forEach(group => {
+      this.applyPercentageToGroup(group, percentage, majRemType);
+    });
+  }
+
+  applyPercentageToGroup(group: any, percentage: number, majRemType: string) {
+    group.prestations.forEach((prestation: any) => {
+      const originalMontantOPD = prestation.prixPrestation;
+
+      const multiplier = majRemType === 'MAJ' ? (1 + percentage / 100) : (1 - percentage / 100);
+
+      prestation.mntApresMaj = (originalMontantOPD * multiplier).toFixed(3);
+      prestation.taux = percentage;
+      group.SelectedMajRem = majRemType;
+      group.pourcentage = percentage;
+      if (majRemType === 'MAJ') {
+        prestation.RemMaj = this.i18nService.getString('Majoration') || 'Majoration';
+        prestation.RemMajValeur = 'MAJ';
+      } else {
+        prestation.RemMaj = this.i18nService.getString('Remise') || 'Remise';
+        prestation.RemMajValeur = 'REM';
+      }
+
+
+
+
+    });
+  }
+
+
+  ValeurSelectedMajRem: any;
+  MntAvantRemMaj: any;
+  tauxRemMaj: any;
+  AppliquePourcentageInAllPrestationDisponible(group: any, percentage: number) {
+    console.log("this.pourcentageValueGrouped   ", this.pourcentageValueGrouped)
+    // const percentage = parseFloat(inputElement.value); 
     if (isNaN(percentage) || percentage < 0 || percentage > 100) {
       // Handle invalid percentage input (e.g., show an error message)
       // Assuming you have a translation for this
       this.CtrlAlertify.PostionLabelNotification();
       this.CtrlAlertify.showNotificationِCustom('InvalidPercentage');
-      inputElement.value = ''; // Clear the invalid input
+      // inputElement.value = ''; // Clear the invalid input
       return;
-    } 
-    if(group.SelectedMajRem === null || group.SelectedMajRem === undefined ){
-        this.CtrlAlertify.PostionLabelNotification();
-       this.CtrlAlertify.showNotificationِCustom('selectTypeRemiseMajoration');
+    }
+    if (group.SelectedMajRem === null || group.SelectedMajRem === undefined) {
+      this.CtrlAlertify.PostionLabelNotification();
+      this.CtrlAlertify.showNotificationِCustom('selectTypeRemiseMajoration');
       return;
     }
     group.prestations.forEach((prestation: any) => {
-      const originalMontantOPD = prestation.montantOPD;
-      const originalMontantER = prestation.montantER;
-      const originalMontantIP = prestation.montantIP;
-      if (group.SelectedMajRem == "MAJ") { 
-        prestation.mntApresMajOPD = originalMontantOPD * (1 + percentage / 100);  
-        prestation.mntApresMajER = originalMontantER * (1 + percentage / 100);  
-        prestation.mntApresMajIP = originalMontantIP * (1 + percentage / 100);  
-      } else if (group.SelectedMajRem == "REM") { 
-        prestation.mntApresMajOPD = originalMontantOPD * (1 - percentage / 100); 
-        prestation.mntApresMajER = originalMontantER * (1 - percentage / 100); 
-        prestation.mntApresMajIP = originalMontantIP * (1 - percentage / 100); 
+      const originalMontant = prestation.prixPrestation; // Use the correct original price field
+      let newPrice: number;
+
+      if (group.SelectedMajRem === "MAJ") {
+        newPrice = originalMontant * (1 + percentage / 100);
+        prestation.RemMaj = this.i18nService.getString('Majoration') || 'Majoration';
+        prestation.RemMajValeur = 'MAJ';
+      } else if (group.SelectedMajRem === "REM") {
+        newPrice = originalMontant * (1 - percentage / 100);
+        prestation.RemMaj = this.i18nService.getString('Remise') || 'Remise';
+        prestation.RemMajValeur = 'REM';
+      } else {
+        // Handle unexpected majRemType
+        return;
       }
-      prestation.taux = percentage; 
+
+      prestation.mntApresMaj = parseFloat(newPrice.toFixed(3)); // Apply toFixed(3) here
+
+
+      prestation.taux = percentage;
+
     });
- 
+
   }
 
-  
+  // ... other code ...
 
+  calculatePercentage(prestation: any) {
+    const originalMontantOPD = prestation.prixPrestation; // Use prixPrestation
+    if (originalMontantOPD === prestation.mntApresMaj) {
+      prestation.taux = 0;
+      return;
+    }
+    // Use Math.abs to get the absolute difference
+    prestation.taux = (Math.abs(prestation.mntApresMaj - originalMontantOPD) / originalMontantOPD) * 100;
+
+    if (prestation.mntApresMaj < originalMontantOPD) {
+      prestation.RemMaj = this.i18nService.getString('Remise') || 'Remise';
+      prestation.RemMajValeur = 'REM';
+    } else {
+      prestation.RemMaj = this.i18nService.getString('Majoration') || 'Majoration';
+      prestation.RemMajValeur = 'MAJ';
+    }
+  }
 
 }
 

@@ -340,6 +340,14 @@ DeleteCaisse(code: any) {
 
     return this.http.get(`${environment.API_Parametrage}medecin/all` )
   }
+  GetMedecinActif(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}medecin/findBy?actif=true` )
+  }
+  GetMedecinInActif(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}medecin/findBy?actif=false` )
+  }
 
   GetMedecinByCode(code:number): Observable<any> {
 
@@ -431,6 +439,18 @@ DeleteCaisse(code: any) {
   }
 
 
+  GetPriceListActif(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}price_list/findBy?actif=true`);
+  }
+
+
+  GetPriceListInActif(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}price_list/findBy?actif=false`);
+  }
+
+
   GetPriceListByCode(code : number): Observable<any> {
 
     return this.http.get(`${environment.API_Parametrage}price_list/`+ code);
@@ -449,6 +469,10 @@ DeleteCaisse(code: any) {
   PostPriceList(body: any) {
 
     return this.http.post(`${environment.API_Parametrage}price_list`, body);
+  } 
+  PostPriceListNew(body: any ) {
+
+    return this.http.post(`${environment.API_Parametrage}price_lists`, body );
   } 
   UpdatePriceList(body: any) {
 

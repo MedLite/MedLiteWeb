@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
 import { Router } from '@angular/router';
@@ -31,6 +31,8 @@ export class MedecinComponent implements OnInit {
     IsLoading = true;
     openModal!: boolean;
   
+    items: MenuItem[] | undefined;
+    activeItem: MenuItem | undefined;
     constructor(public param_service: ParametargeService, public i18nService: I18nService,
       private router: Router, private loadingComponent: LoadingComponent,
       private validationService: InputValidationService, private CtrlAlertify: ControlServiceAlertify) {
@@ -64,8 +66,15 @@ export class MedecinComponent implements OnInit {
     selectedTypeIntervenant: any = '';
   
     ngOnInit(): void {
+      this.items = [
+        { label: this.i18nService.getString('LabelActif') || 'LabelActif', icon: 'pi pi-file-check', command: () => { this.GetAllMedecinActif() } },
+        { label: this.i18nService.getString('LabelInActif') || 'LabelInActif', icon: 'pi pi-file-excel', command: () => { this.GetAllMedecinInactif() } },
+        { label: this.i18nService.getString('LabelAll') || 'LabelAll', icon: 'pi pi-file', command: () => { this.GetAllMedecin() } },
+      ];
+      this.activeItem = this.items[0];
+
       this.GetColumns();
-      this.GetAllMedecin();
+      this.GetAllMedecinActif();
     }
   
   
@@ -337,11 +346,30 @@ export class MedecinComponent implements OnInit {
   
   
     GetAllMedecin() {
-      this.param_service.GetMedecin().subscribe((data: any) => {
-  
+      this.IsLoading = true;   
+      this.param_service.GetMedecin().subscribe((data: any) => { 
         this.loadingComponent.IsLoading = false;
-        this.IsLoading = false;
+        this.IsLoading = false; 
+        this.dataMedecin = data;
+        this.onRowUnselect(event);
   
+      })
+    }
+    GetAllMedecinActif() {
+      this.IsLoading = true;   
+      this.param_service.GetMedecinActif().subscribe((data: any) => { 
+        this.loadingComponent.IsLoading = false;
+        this.IsLoading = false; 
+        this.dataMedecin = data;
+        this.onRowUnselect(event);
+  
+      })
+    }
+    GetAllMedecinInactif() {
+      this.IsLoading = true;   
+      this.param_service.GetMedecinInActif().subscribe((data: any) => { 
+        this.loadingComponent.IsLoading = false;
+        this.IsLoading = false; 
         this.dataMedecin = data;
         this.onRowUnselect(event);
   

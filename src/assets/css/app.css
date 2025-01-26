@@ -2919,3 +2919,8 @@ input::placeholder {
     rotate: 0deg !important;
     animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
 }
+
+[dir="ltr"] .DropSelectMajRemGrouped {
+    margin-left: 0px !important;
+    margin-right: 10px !important;
+}
