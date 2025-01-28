@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
@@ -12,6 +12,7 @@ import { InputValidationService } from '../../Shared/Control/ControlFieldInput';
 import { ParametargeService } from '../WebService/parametarge.service';
 import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
 import { Dropdown } from 'primeng/dropdown';
+import { catchError, throwError } from 'rxjs';
 
 declare const PDFObject: any;
 
@@ -29,8 +30,9 @@ export class PriceListComponent implements OnInit {
   @ViewChild('designationArInput') desginationArInputElement!: ElementRef;
   @ViewChild('designationLtInput') designationLtInputElement!: ElementRef;
   @ViewChild('pourcentageInput') pourcentageInputElement!: HTMLInputElement;
+  @ViewChild('pourcentageOperationInput') pourcentageOperationInputElement!: HTMLInputElement;
   @ViewChild('societeInput') societeInputElement!: Dropdown;
-
+  
   first = 0;
   IsLoading = true;
   openModal!: boolean;
@@ -61,6 +63,7 @@ export class PriceListComponent implements OnInit {
   designationAr: string = 'NULL';
   designationLt: string = "NULL";
   pourcentage: number = 0;
+  pourcentageOperation: number = 0;
   MontantTotalAppliquer: number = 0;
   actif!: boolean;
   visible!: boolean;
@@ -226,6 +229,7 @@ export class PriceListComponent implements OnInit {
       this.GetCodeSaisie();
       this.GetSociete();
       this.GetAllPrestation();
+      this.GetAllOperationActif();
 
       this.actif = false;
       this.visible = false;
@@ -311,10 +315,10 @@ export class PriceListComponent implements OnInit {
 
 
 
-  detailsPriceListsListDTOss: any;
+  detailsPriceListsListDTOss: any= [];
+  detailsPriceListsListDTOsOperation: any= [];
   PostPriceList() {
-
-    this.detailsPriceListsListDTOss = [];
+  
  
     const isValid = this.validateAllInputs();
     if (isValid) {
@@ -337,6 +341,22 @@ export class PriceListComponent implements OnInit {
           });
         });
       }); 
+
+
+      this.groupedDataOperation.forEach(groupOperation => {
+        groupOperation.operations.forEach((operation: any) => {  
+          this.detailsPriceListsListDTOsOperation.push({
+            codeOperation: operation.code, // Or however you get codePrestation
+            montant: operation.mntApresMaj,
+            montantPere: operation.coutRevient,
+            taux: operation.taux,
+            remMaj: operation.RemMajValeur,
+            userCreate: this.userCreate,
+            dateCreate: new Date().toISOString(), // 
+            codeTypeIntervenant: operation.codeTypeIntervenant,
+          });
+        });
+      }); 
       let body = {
         codeSaisie: this.codeSaisie,
         designationAr: this.designationAr,
@@ -347,7 +367,8 @@ export class PriceListComponent implements OnInit {
         code: this.code,
         actif: this.actif,
         cash: 0,
-        detailsPriceLists: this.detailsPriceListsListDTOss
+        detailsPriceLists: this.detailsPriceListsListDTOss,
+        detailsPriceListOperationDTOs: this.detailsPriceListsListDTOsOperation,
 
       }
       if (this.code != null) {
@@ -369,10 +390,16 @@ export class PriceListComponent implements OnInit {
 
 
       }
-      else {
-        // console.log("data Price List Body " , body);
+      else { 
         this.IsLoading=true;
-        this.param_service.PostPriceListNew(body).subscribe(
+        this.param_service.PostPriceListNew(body).pipe(
+                catchError((error: HttpErrorResponse) => {
+                  this.IsLoading=false;
+                  let errorMessage = ''; 
+                  return throwError(errorMessage);
+        
+                })
+              ).subscribe(
           (res: any) => {
             this.CtrlAlertify.PostionLabelNotification();
             this.CtrlAlertify.ShowSavedOK();
@@ -524,8 +551,7 @@ export class PriceListComponent implements OnInit {
       this.loadingComponent.IsLoading = false;
       this.IsLoading = false;
       this.dataPrestation = data;
-      this.groupedData = this.groupPrestationsByFamille(data);
-
+      this.groupedData = this.groupPrestationsByFamille(data); 
       this.groupedData.forEach(group => {
         group.SelectedMajRem = null;
       });
@@ -534,7 +560,6 @@ export class PriceListComponent implements OnInit {
 
   groupPrestationsByFamille(data: any[]): any[] {
     const grouped: { [key: number]: any } = {};
-
     data.forEach(prestation => {
       const familleCode = prestation.familleFacturationDTO.code; // Correct way to access code
       if (!grouped[familleCode]) {
@@ -544,10 +569,8 @@ export class PriceListComponent implements OnInit {
           prestations: []
         };
       }
-
       grouped[familleCode].prestations.push(prestation);
     });
-
     return Object.values(grouped);
   }
 
@@ -679,6 +702,167 @@ export class PriceListComponent implements OnInit {
       prestation.RemMajValeur = 'MAJ';
     }
   }
+
+/////// tab operation
+  dataOperation: any[] = [];
+  groupedDataOperation = new Array<any>();
+  GetAllOperationActif() {
+    this.IsLoading = true;
+    this.param_service.GetOperationByActif(true).subscribe((data: any) => {
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+      this.dataOperation = data;
+      this.groupedDataOperation = this.groupOperationByFamille(data); 
+      this.groupedDataOperation.forEach(group => {
+        group.SelectedMajRem = null;
+      });
+    });
+  }
+
+  groupOperationByFamille(data: any[]): any[] {
+    const grouped: { [key: number]: any } = {};
+    data.forEach(operation => {
+      const familleCode = operation.familleFacturationDTO.code; // Correct way to access code
+      if (!grouped[familleCode]) {
+        grouped[familleCode] = {
+          familleCode,
+          familleFacturationDTO: operation.familleFacturationDTO,
+          operations: []
+        };
+      }
+      grouped[familleCode].operations.push(operation);
+    });
+    return Object.values(grouped);
+  }
+
+
+  expandAllOperation() {
+    this.expandedRows = {};
+    this.groupedDataOperation.forEach(group => {
+      this.expandedRows[group.familleCode] = true; // Expand based on familleCode
+    });
+  }
+
+  collapseAllOperation() {
+    this.expandedRows = {};
+  }
+
+  pourcentageValueGroupedOperation: any
+  AppliquerPourcenatgeToAllOperation(pource: HTMLInputElement) {
+    const percentageValue = parseFloat(pource.value);
+
+    if (isNaN(percentageValue) || percentageValue < 0 || percentageValue > 100) {
+      this.CtrlAlertify.PostionLabelNotification();
+      this.CtrlAlertify.showNotificationِCustom('InvalidPercentage');
+      return;
+    }
+
+    this.applyPercentageToAllOperation(this.groupedDataOperation, percentageValue, this.pourcentageValueGroupedOperation);
+  }
+  applyPercentageToAllOperation(groups: any[], percentage: number, majRemType: string) {
+    if (!majRemType) {
+      this.CtrlAlertify.PostionLabelNotification();
+      this.CtrlAlertify.showNotificationِCustom('selectTypeRemiseMajoration');
+      return;
+    }
+
+    groups.forEach(group => {
+      this.applyPercentageToGroupOperation(group, percentage, majRemType);
+    });
+  }
+
+  applyPercentageToGroupOperation(group: any, percentage: number, majRemType: string) {
+    group.operations.forEach((operation: any) => {
+      const originalCoutRevient = operation.coutRevient;
+
+      const multiplier = majRemType === 'MAJ' ? (1 + percentage / 100) : (1 - percentage / 100);
+
+      operation.mntApresMaj = (originalCoutRevient * multiplier).toFixed(3);
+      operation.taux = percentage;
+      group.SelectedMajRem = majRemType;
+      group.pourcentage = percentage;
+      if (majRemType === 'MAJ') {
+        operation.RemMaj = this.i18nService.getString('Majoration') || 'Majoration';
+        operation.RemMajValeur = 'MAJ';
+      } else {
+        operation.RemMaj = this.i18nService.getString('Remise') || 'Remise';
+        operation.RemMajValeur = 'REM';
+      }
+
+
+
+
+    });
+  }
+
+
+  ValeurSelectedMajRemOperation: any;
+  MntAvantRemMajOperation: any;
+  tauxRemMajOperation: any;
+  AppliquePourcentageInAllOperationDisponible(group: any, percentage: number) {
+    console.log("this.pourcentageValueGrouped   ", this.pourcentageValueGroupedOperation)
+    // const percentage = parseFloat(inputElement.value); 
+    if (isNaN(percentage) || percentage < 0 || percentage > 100) { 
+      this.CtrlAlertify.PostionLabelNotification();
+      this.CtrlAlertify.showNotificationِCustom('InvalidPercentage'); 
+      return;
+    }
+    if (group.SelectedMajRem === null || group.SelectedMajRem === undefined) {
+      this.CtrlAlertify.PostionLabelNotification();
+      this.CtrlAlertify.showNotificationِCustom('selectTypeRemiseMajoration');
+      return;
+    }
+    group.operation.forEach((operation: any) => {
+      const originalMontant = operation.coutRevient; // Use the correct original price field
+      let newPrice: number;
+
+      if (group.SelectedMajRem === "MAJ") {
+        newPrice = originalMontant * (1 + percentage / 100);
+        operation.RemMaj = this.i18nService.getString('Majoration') || 'Majoration';
+        operation.RemMajValeur = 'MAJ';
+      } else if (group.SelectedMajRem === "REM") {
+        newPrice = originalMontant * (1 - percentage / 100);
+        operation.RemMaj = this.i18nService.getString('Remise') || 'Remise';
+        operation.RemMajValeur = 'REM';
+      } else {
+        // Handle unexpected majRemType
+        return;
+      }
+
+      operation.mntApresMaj = parseFloat(newPrice.toFixed(3)); // Apply toFixed(3) here
+
+
+      operation.taux = percentage;
+
+    });
+
+  }
+
+  // ... other code ...
+
+  calculatePercentageOperation(operation: any) {
+    const originalCoutRevient = operation.coutRevient; // Use prixPrestation
+    if (originalCoutRevient === operation.mntApresMaj) {
+      operation.taux = 0;
+      return;
+    }
+    // Use Math.abs to get the absolute difference
+    operation.taux = (Math.abs(operation.mntApresMaj - originalCoutRevient) / originalCoutRevient) * 100;
+
+    if (operation.mntApresMaj < originalCoutRevient) {
+      operation.RemMaj = this.i18nService.getString('Remise') || 'Remise';
+      operation.RemMajValeur = 'REM';
+    } else {
+      operation.RemMaj = this.i18nService.getString('Majoration') || 'Majoration';
+      operation.RemMajValeur = 'MAJ';
+    }
+  }
+
+
+
+
+
+
 
 }
 

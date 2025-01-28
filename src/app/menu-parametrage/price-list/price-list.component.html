@@ -332,7 +332,174 @@
                                 </p-table>
                             </div>
                         </p-tabPanel>
+
+                        <!-- /// tab operation -->
                         <p-tabPanel [header]="LabelOperation">
+                            <div class="table2-container">
+                                <p-table [value]="groupedDataOperation" [columns]="ColumnsFamilleFacturation" tableStyleClass="TabFamilleFact" [globalFilterFields]="['designationAr', 'designationLt']" dataKey="familleCode" [tableStyle]="{ 'min-width': '1190px' }" [expandedRowKeys]="expandedRows">
+                                    <ng-template pTemplate="caption">
+
+                                        <div class="flex-row-start flex-12 ">
+                                            <section class="block-row flex-2" style="    padding-bottom: 10px;">
+                                                <button class="btn btn-default BtnVisibleAll" (click)="expandAllOperation()">
+                                                    <i class='bx bxs-chevrons-down'
+                                                        style="color: #065c00;font-size: 16px; "></i>
+                                                    {{'Expand_All' | i18n:i18nService.currentLanguage}}
+                                                </button>
+                                                <br>
+
+                                                <button class="btn btn-default BtnVisibleAll" (click)="collapseAllOperation()">
+                                                    <i class='bx bx-chevrons-up'
+                                                        style="color: #065c00;font-size: 16px; "></i>
+
+                                                    {{'Collapse_All' | i18n:i18nService.currentLanguage}}
+                                                </button>
+                                            </section>
+                                            <section class="block-row flex-8">
+                                                <div class="flex-row-start">
+                                                    <label class="control-label  flex-4  "> {{'Pourcentage' |
+                                                        i18n:i18nService.currentLanguage}} :
+                                                        <i class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                                                    <div class="control-input flex-5-45 " style="max-width: 65px;     padding-top: 10px;">
+                                                        <input type="number" id="pourcentage" maxlength="3" min="0" name="pourcentage" class=" form-control-dev input-xs" #pourcentageOperationInput required [(ngModel)]="pourcentageOperation">
+                                                    </div>
+                                                    <label class="control-label  flex-4  pourcentageLabel"> % </label>
+
+                                                    <div class="flex-4 DropSelectMajRemGrouped">
+                                                        <p-dropdown name="RemMaj" [filter]="true" appendTo="body" [options]="TypeRemMaj" [(ngModel)]="pourcentageValueGroupedOperation" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" #remMajInput required [lazy]="true"
+                                                            #remMaj="ngModel">
+                                                        </p-dropdown>
+                                                    </div>
+
+
+
+                                                    <button class="btn btn-default BtnVisibleAll" (click)="AppliquerPourcenatgeToAllOperation(pourcentageOperationInput)">
+                                                        <i class='bx bx-chevrons-up'
+                                                            style="color: #065c00;font-size: 16px; "></i>
+
+                                                        {{'Appliquer' | i18n:i18nService.currentLanguage}}
+                                                    </button>
+
+                                                </div>
+
+
+
+                                            </section>
+                                            <section class="block-row flex-4">
+
+                                            </section>
+
+                                        </div>
+                                    </ng-template>
+                                    <ng-template pTemplate="colgroup" let-ColumnsFamilleFacturation>
+                                        <colgroup>
+                                            <col *ngFor="let col of ColumnsFamilleFacturation" [style.width]="col.width">
+                                        </colgroup>
+                                    </ng-template>
+                                    <ng-template pTemplate="header" let-col>
+                                        <tr>
+                                            <th *ngFor="let col of col ; let i = index" pResizableColumn>
+                                                <span>
+                                                    {{col.header}}
+                                                </span>
+                                            </th>
+                                        </tr>
+
+                                        <tr class="filter-row">
+                                            <th *ngFor="let col of col ; let i = index">
+                                                <p-columnFilter *ngIf="i === 1 || i === 2 || i===3" [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-group let-expanded="expanded">
+                                        <tr>
+                                            <td>
+                                                <p-button type="button" pRipple [pRowToggler]="group" [text]="true" [rounded]="true" [plain]="true" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-left'" />
+                                            </td>
+                                            <td>{{ group.familleFacturationDTO.codeSaisie }}</td>
+                                            <td>{{ group.familleFacturationDTO.designationAr }}</td>
+                                            <td>{{ group.familleFacturationDTO.designationLt }}</td>
+                                            <td>
+                                                <input type="number" class="TabInput" [(ngModel)]="group.pourcentage" #inputElement>%
+                                            </td>
+                                            <td>
+                                                <p-dropdown name="RemMaj" [filter]="true" appendTo="body" [options]="TypeRemMaj" [(ngModel)]="group.SelectedMajRem" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" #remMajInput required [lazy]="true" #remMaj="ngModel">
+                                                </p-dropdown>
+                                            </td>
+
+                                            <td>
+                                                <p-button type="button" icon="pi pi-check-circle" (onClick)="AppliquePourcentageInAllPrestationDisponible(group, group.pourcentage)" />
+                                            </td>
+
+
+
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="rowexpansion" let-group>
+                                        <tr>
+                                            <td colspan="7">
+                                                <div class="p-3">
+
+                                                    <div class="table3-container">
+                                                        <p-table [value]="group.operations" [columns]="ColumnsPrestation" dataKey="code">
+                                                            <ng-template pTemplate="colgroup" let-ColumnsPrestation>
+                                                                <colgroup>
+                                                                    <col *ngFor="let col of ColumnsPrestation" [style.width]="col.width">
+                                                                </colgroup>
+                                                            </ng-template>
+                                                            <ng-template pTemplate="header" let-col>
+                                                                <tr>
+                                                                    <th *ngFor="let col of col ; let i = index" pResizableColumn>
+                                                                        <span>
+                                                    {{col.header}}
+                                                </span>
+                                                                    </th>
+                                                                </tr>
+
+                                                                <tr class="filter-row">
+                                                                    <th *ngFor="let col of col ; let i = index">
+                                                                        <p-columnFilter *ngIf="i !== 5" [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
+                                                                    </th>
+                                                                </tr>
+                                                            </ng-template>
+                                                            <ng-template pTemplate="body" let-operation>
+                                                                <tr>
+                                                                    <td>{{ operation.codeSaisie }}</td>
+                                                                    <td>{{ operation.designationAr }}</td>
+                                                                    <td>{{ operation.designationLt }}</td>
+
+                                                                    <td>{{ operation.coutRevient }}</td>
+                                                                    <td> {{operation.taux | number:'1.2-2'}} % </td>
+                                                                    <td>
+                                                                        <input type="text" class="TabInput" style="border: none;" disabled readonly [(ngModel)]="operation.RemMaj" />
+                                                                    </td>
+                                                                    <!-- <td style="display: none;">
+                                                                        {{ prestation.RemMajValeur }}
+                                                                    </td> -->
+
+                                                                    <td>
+                                                                        <input type="number" class="TabInput" [(ngModel)]="operation.mntApresMaj" (input)="calculatePercentageOperation(operation)" />
+                                                                    </td>
+
+
+                                                                </tr>
+                                                            </ng-template>
+                                                            <ng-template pTemplate="emptymessage">
+                                                                <tr>
+                                                                    <td colspan="6">There are no order for this product yet.</td>
+                                                                </tr>
+                                                            </ng-template>
+                                                        </p-table>
+                                                    </div>
+
+
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
                         </p-tabPanel>
                     </p-tabView>
 
