@@ -1,59 +1,112 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
-import * as alertifyjs from 'alertifyjs'
 import { Router } from '@angular/router';
 import { LoadingComponent } from '../../Shared/loading/loading.component';
 import { I18nService } from '../../Shared/i18n/i18n.service';
 import { InputValidationService } from '../../Shared/Control/ControlFieldInput';
+import { ParametargeService } from '../ServiceClient/parametarge.service';
+import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
+import { Dropdown } from 'primeng/dropdown';
+import { catchError, Observable, throwError } from 'rxjs';
 
 declare const PDFObject: any;
 
+interface OperationDTO {
+  code: number;
+  codeSaisie: string;
+  designationAr: string;
+  designationLt: string;
+  coutRevient: number;
+  mntApresMaj: number; // Added for the table
+  // RemMaj: string;      // Added for the table
+  pourcentage: any; // Added for the table
+  // SelectedMajRem: string; // Added for the table
+  // RemMajValeur: string;
+  taux: any
+}
+
+
+interface PrestationDTO {
+  code: number;
+  codeSaisie: string;
+  designationAr: string;
+  designationLt: string;
+  prixPrestation: number;
+  mntApresMaj: number; // Added for the table 
+  pourcentage: any; // Added for the table
+  // SelectedMajRem: string; // Added for the table
+  // RemMajValeur: string;
+  taux: any
+  // ... other properties
+}
+
+
+interface FamilleFacturationDTO {
+  code: number;
+  codeSaisie: string;
+  designationAr: string;
+  designationLt: string;
+  // ... other properties
+}
+
+interface GroupedDataOperation {
+  familleCode: number;
+  familleFacturationDTO: FamilleFacturationDTO;
+  operations: OperationDTO[];
+  pourcentage: any; // Added for the table
+  // SelectedMajRem: string; // Added for the table
+  // RemMajValeur: string;
+  taux: any
+}
+
+interface GroupedDataPrestation {
+  familleCode: number;
+  familleFacturationDTO: FamilleFacturationDTO;
+  prestations: PrestationDTO[];
+  pourcentage: any; // Added for the table
+  // SelectedMajRem: string; // Added for the table
+  // RemMajValeur: string;
+  taux: any
+}
 @Component({
   selector: 'app-couverture',
   templateUrl: './couverture.component.html',
-  styleUrls: ['./couverture.component.css','.../../../src/assets/css/newStyle.css'
+  styleUrls: ['./couverture.component.css', '.../../../src/assets/css/newStyle.css'
     , '.../../../src/assets/css/StyleApplication.css'], providers: [ConfirmationService, MessageService]
-  })
-  
-export class CouvertureComponent {
-  @ViewChild('codeError') codeErrorElement!: ElementRef; 
+})
+
+export class CouvertureComponent implements OnInit {
+  @ViewChild('codeError') codeErrorElement!: ElementRef;
   @ViewChild('codeSaisieInput') codeSaisieInputElement!: ElementRef;
-  @ViewChild('DesignationArInput') DesignationArInputElement!: ElementRef;
-  @ViewChild('DesignationLtInput') DesignationLtInputElement!: ElementRef; 
+  @ViewChild('designationArInput') desginationArInputElement!: ElementRef;
+  @ViewChild('designationLtInput') designationLtInputElement!: ElementRef;
+  @ViewChild('pourcentageInput') pourcentageInputElement!: HTMLInputElement;
+  @ViewChild('pourcentageOperationInput') pourcentageOperationInputElement!: HTMLInputElement;
+  // @ViewChild('societeInput') societeInputElement!: Dropdown;
 
   first = 0;
   IsLoading = true;
   openModal!: boolean;
 
-  constructor(public i18nService: I18nService, private validationService: InputValidationService, private router: Router, private loadingComponent: LoadingComponent, private confirmationService: ConfirmationService, private messageService: MessageService, private http: HttpClient, private fb: FormBuilder, private cdr: ChangeDetectorRef) {
+  items: MenuItem[] | undefined;
+  activeItem: MenuItem | undefined;
 
-
+  constructor(public param_service: ParametargeService, public i18nService: I18nService,
+    private router: Router, private loadingComponent: LoadingComponent,
+    private validationService: InputValidationService, private CtrlAlertify: ControlServiceAlertify) {
   }
 
-  validateCodeSaisieInput() {
-    this.validationService.validateInput(this.codeSaisieInputElement, this.codeErrorElement, this.codeSaisie, 'codeSaisie');
-  }
-  validateDesignationArInput() {
-    this.validationService.validateInput(this.DesignationArInputElement, this.codeErrorElement, this.designationAr, 'DesignationAr');
-  }
-
-  validateDesignationLtInput() {
-    this.validationService.validateInput(this.DesignationArInputElement, this.codeErrorElement, this.designationAr, 'DesignationAr');
-  }
- 
 
   @ViewChild('modal') modal!: any;
 
   pdfData!: Blob;
   isLoading = false;
   cols!: any[];
-
-  check_actif = false;
-  check_inactif = false;
+  ColumnsFamilleFacturation!: any[];
+  ColumnsPrestation!: any[];
   formHeader = ".....";
   searchTerm = '';
   visibleModal: boolean = false;
@@ -63,50 +116,79 @@ export class CouvertureComponent {
   codeSaisie: any;
   designationAr: string = 'NULL';
   designationLt: string = "NULL";
-  rib!: string;
+  pourcentage: number = 0;
+  pourcentageOperation: number = 0;
+  MontantTotalAppliquer: number = 0;
   actif!: boolean;
   visible!: boolean;
   LabelActif!: string;
-    userCreate = sessionStorage.getItem("userName");
-  dataBanque = new Array<any>();
-  compteur: number = 0;
-  listDesig = new Array<any>();
-  selectedBanque!: any;
-  ListFamilleFacturation = new Array<any>();
-  selectedFamilleFacturation: any = '';
-  ListFamillePrestation = new Array<any>();
-  selectedFamillePrestation: any = '';
+  LabelPrestation !: string;
+  LabelGroupedByFamilleFacturation !: string;
+  LabelOperation !: string;
+  userCreate = sessionStorage.getItem("userName");
+  dataListCouverture = new Array<any>();
+  selectedListCouverture!: any;
+  // selectedSociete!: any;
+  expandedRows: any = {};
 
-
-
-
+  TypeRemMaj: any;
 
   ngOnInit(): void {
+    this.initializeTabMenu();
     this.GetColumns();
-    this.GetAllBanque();
-    this.ListFamilleFacturation = [
-      { label: 'Famill Fact 1', value: '1' },
-      { label: 'Famille Fact 2', value: '2' },
-      { label: 'Famille Fact 3', value: '3' },
+    this.GetAllListCouvertureActif();
+    // this.loadData('actif')
+  }
+
+
+  initializeTabMenu() {
+    this.items = [
+      { label: this.i18nService.getString('LabelActif') || 'Actif', icon: 'pi pi-file-check', command: () => this.GetAllListCouvertureActif() },
+      { label: this.i18nService.getString('LabelInActif') || 'Inactif', icon: 'pi pi-file-excel', command: () => this.GetAllListCouvertureInActif() },
+      { label: this.i18nService.getString('LabelAll') || 'Tous', icon: 'pi pi-file', command: () => this.GetAllListCouverture() },
     ];
-
-    this.ListFamillePrestation = [
-      { label: 'Famill Pres 1', value: '1' },
-      { label: 'Famille Pres 2', value: '2' },
-      { label: 'Famille Pres 3', value: '3' },
-    ]
-
+    this.activeItem = this.items[0];
   }
 
 
 
   GetColumns() {
     this.cols = [
-      { field: 'TypeOP', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '5%', filter: "true" },
-      { field: 'SourceDepenese', header: this.i18nService.getString('Designation') || 'Designation', width: '5%', filter: "true" },
-      { field: 'codeEtatApprouver', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '5%', filter: "false" },
-      { field: 'dateCreate', header: this.i18nService.getString('LabelActif') || 'Actif', width: '5%', filter: "true" },
+      { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
+      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '16%', filter: "true" },
+      { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '16%', filter: "true" },
+      { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
+    ];
+  }
 
+  GetColumnsFamilleFacturationTable() {
+    this.ColumnsFamilleFacturation = [
+      { field: '', header: '', width: '1%', filter: "true" },
+      { field: 'familleFacturationDTO.codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '24%', filter: "true" },
+      { field: 'familleFacturationDTO.designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '25%', filter: "true" },
+      { field: 'familleFacturationDTO.designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '25%', filter: "true" },
+      { field: 'taux', header: this.i18nService.getString('taux') || 'Taux', width: '17%', filter: "true" },
+      // { field: 'augRemise', header: this.i18nService.getString('AugRem') || 'AugRem', width: '25%', filter: "true" },
+      { field: '', header: this.i18nService.getString('Applique') || 'CodeSaisie', width: '1%', filter: "true" },
+
+    ];
+
+    this.TypeRemMaj = [
+      { label: this.i18nService.getString('Remise') || 'Remise', value: 'REM' },
+      { label: this.i18nService.getString('Majoration') || 'Majoration', value: 'MAJ' },
+    ]
+  }
+
+  GetColumnsPrestationTable() {
+    this.ColumnsPrestation = [
+      { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '10%', filter: "true" },
+      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '25%', filter: "true" },
+      { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '25%', filter: "false" },
+      { field: 'montant', header: this.i18nService.getString('MontantTotal') || 'Montant', width: '10%', filter: "true" },
+      { field: 'taux', header: this.i18nService.getString('taux') || 'Taux', width: '10%', filter: "true" },
+      // { field: 'RemMaj', header: this.i18nService.getString('RemMaj') || 'RemMaj', width: '10%', filter: "true" },
+      // { field: 'RemMajValeur', header: this.i18nService.getString('RemMajValeur') || 'RemMajValeur', width: '1%', filter: "true" },
+      { field: 'montantPatient', header: this.i18nService.getString('MontantPatient') || 'MontantPatient', width: '10%', filter: "true" },
     ];
   }
   @Output() closed: EventEmitter<string> = new EventEmitter();
@@ -132,21 +214,31 @@ export class CouvertureComponent {
   }
 
   clearForm() {
-
-
-
     this.code == undefined;
     this.designationAr = '';
     this.designationLt = '';
     this.actif = false;
     this.visibleModal = false;
     this.codeSaisie = '';
+    this.selectedListCouverture = ''
+    // this.selectedSociete = '';
+    this.groupedData = new Array<any>();
+    this.groupedDataOperation = new Array<any>();
+    // this.pourcentageValueGroupedOperation = '';
+    this.pourcentageValueGrouped = '';
     this.onRowUnselect(event);
 
-
-
-
   }
+
+
+  GetCodeSaisie() {
+    this.param_service.GetCompteur("CodeSaisiePL").
+      subscribe((data: any) => {
+        this.codeSaisie = data.prefixe + data.suffixe;
+      })
+  }
+
+
   onRowSelect(event: any) {
     this.code = event.data.code;
     this.actif = event.data.actif;
@@ -154,7 +246,7 @@ export class CouvertureComponent {
     this.codeSaisie = event.data.codeSaisie;
     this.designationAr = event.data.designationAr;
     this.designationLt = event.data.designationLt;
-    this.rib = event.data.rib;
+    // this.selectedSociete = event.data.societeDTO.code;
 
     console.log('vtData : ', event);
   }
@@ -165,48 +257,29 @@ export class CouvertureComponent {
 
 
 
-  DeleteBanque(code: any) {
-    // this.param_service.DeleteBanque(code) .subscribe(
-    //   (res:any) => {
-    //     alertifyjs.set('notifier', 'position', 'top-left');
-    //     alertifyjs.success('<i class="success fa fa-chevron-down" aria-hidden="true" style="margin: 5px 5px 5px;font-size: 15px !important;;""></i>' + "Success Deleted");
+  DeleteListCouverture(code: any) {
+    this.IsLoading = true;
+    this.param_service.DeleteListCouverture(code).subscribe(
+      (res: any) => {
+        this.CtrlAlertify.PostionLabelNotification();
+        this.CtrlAlertify.ShowDeletedOK();
+        this.IsLoading = false;
 
-    //     this.ngOnInit();
-    //     this.check_actif = true;
-    //     this.check_inactif = false;
-    // this.visDelete = false;
+        this.ngOnInit();
+        this.visDelete = false;
 
-    //   }
-    // )
-  }
-  clearSelected(): void {
-    this.code == undefined;
-    this.codeSaisie = '';
-    this.designationAr = '';
-    this.designationLt = '';
-    this.actif = false;
-    this.visible = false;
+      }
+    )
   }
 
-
-  showRequiredNotification() {
-    const fieldRequiredMessage = this.i18nService.getString('fieldRequired');  // Default to English if not found
-    alertifyjs.notify(
-      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
-      fieldRequiredMessage
-    );
-  }
-  showChoseAnyRowNotification() {
-    const fieldRequiredMessage = this.i18nService.getString('SelctAnyRow');  // Default to English if not found
-    alertifyjs.notify(
-      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
-      fieldRequiredMessage
-    );
-  }
 
   public onOpenModal(mode: string) {
 
     this.LabelActif = this.i18nService.getString('LabelActif');
+    this.LabelPrestation = this.i18nService.getString('Prestation');
+    this.LabelOperation = this.i18nService.getString('Operation');
+    this.LabelGroupedByFamilleFacturation = this.i18nService.getString('LabelGroupedByFamilleFacturation');
+
     this.visibleModal = false;
     this.visDelete = false;
     this.visibleModalPrint = false;
@@ -218,7 +291,15 @@ export class CouvertureComponent {
       button.setAttribute('data-target', '#Modal');
       this.formHeader = this.i18nService.getString('Add');
       this.onRowUnselect(event);
-      this.clearSelected();
+
+      this.GetColumnsFamilleFacturationTable();
+      this.GetColumnsPrestationTable();
+      this.clearForm();
+      this.GetCodeSaisie();
+      // this.GetSociete();
+      this.GetAllPrestation();
+      this.GetAllOperationActif();
+
       this.actif = false;
       this.visible = false;
       this.visibleModal = true;
@@ -232,19 +313,18 @@ export class CouvertureComponent {
       if (this.code == undefined) {
         this.clearForm();
         this.onRowUnselect(event);
-        if (sessionStorage.getItem("lang") == "ar") {
-          alertifyjs.set('notifier', 'position', 'top-left');
-        } else {
-          alertifyjs.set('notifier', 'position', 'top-right');
-        }
-
-        this.showChoseAnyRowNotification();
+        this.CtrlAlertify.PostionLabelNotification();
+        this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false
       } else {
 
         button.setAttribute('data-target', '#Modal');
         this.formHeader = this.i18nService.getString('Modifier');
-
+        // this.GetSociete();
+        this.GetColumnsFamilleFacturationTable();
+        this.GetColumnsPrestationTable();
+        this.GetAllPrestationForModif();
+        this.GetAllOperationActifForModif();
         this.visibleModal = true;
         this.onRowSelect;
 
@@ -256,13 +336,8 @@ export class CouvertureComponent {
 
       if (this.code == undefined) {
         this.onRowUnselect;
-        if (sessionStorage.getItem("lang") == "ar") {
-          alertifyjs.set('notifier', 'position', 'top-left');
-        } else {
-          alertifyjs.set('notifier', 'position', 'top-right');
-        }
-
-        this.showChoseAnyRowNotification();
+        this.CtrlAlertify.PostionLabelNotification();
+        this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false
       } else {
 
@@ -279,17 +354,12 @@ export class CouvertureComponent {
     if (mode === 'Print') {
       if (this.code == undefined) {
         this.onRowUnselect;
-        if (sessionStorage.getItem("lang") == "ar") {
-          alertifyjs.set('notifier', 'position', 'top-left');
-        } else {
-          alertifyjs.set('notifier', 'position', 'top-right');
-        }
-
-        this.showChoseAnyRowNotification();
+        this.CtrlAlertify.PostionLabelNotification();
+        this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
       } else {
         button.setAttribute('data-target', '#ModalPrint');
-        this.formHeader = "Imprimer Liste Banque"
+        this.formHeader = "Imprimer Liste SpecialiteListCouverture"
         this.visibleModalPrint = true;
         // this.RemplirePrint();
 
@@ -302,147 +372,633 @@ export class CouvertureComponent {
 
   }
 
-  // datecreate !: Date;
-  // currentDate = new Date();
 
-  // ajusterHourAndMinutes() {
-  //   let hour = new Date().getHours();
-  //   let hours;
-  //   if (hour < 10) {
-  //     hours = '0' + hour;
-  //   } else {
-  //     hours = hour;
-  //   }
-  //   let min = new Date().getMinutes();
-  //   let mins;
-  //   if (min < 10) {
-  //     mins = '0' + min;
-  //   } else {
-  //     mins = min;
-  //   }
-  //   return hours + ':' + mins
-  // }
-  // datform = new Date();
 
-  PostBanque() {
+  private validateAllInputs(): boolean { // Returns true if all valid, false otherwise
+    const codeSaisie = this.validationService.validateInputCommun(this.codeSaisieInputElement, this.codeSaisie);
+    const designationAr = this.validationService.validateInputCommun(this.desginationArInputElement, this.designationAr);
+    const designationLt = this.validationService.validateInputCommun(this.designationLtInputElement, this.designationLt);
+    // const societe = this.validationService.validateDropDownCommun(this.societeInputElement, this.selectedSociete);
+
+    return codeSaisie && designationAr && designationLt;
+  }
 
 
 
-    this.validateCodeSaisieInput();
-    this.validateDesignationArInput();
-    this.validateDesignationLtInput(); 
+
+  detailsListCouverturesListDTOss: any = [];
+  detailsListCouverturesListDTOsOperation: any = [];
+  PostListCouverture() {
 
 
-
-    if (!this.designationAr || !this.designationLt || !this.codeSaisie  ) {
-      if (sessionStorage.getItem("lang") == "ar") {
-        alertifyjs.set('notifier', 'position', 'top-left');
-      } else {
-        alertifyjs.set('notifier', 'position', 'top-right');
-      }
-
-      this.showRequiredNotification();
-    } else {
+    const isValid = this.validateAllInputs();
+    if (isValid) {
 
 
+      this.groupedData.forEach(group => {
+        group.prestations.forEach((prestation: any) => {
+
+          this.detailsListCouverturesListDTOss.push({
+
+            codePrestation: prestation.code, // Or however you get codePrestation
+            montantPatient: prestation.mntApresMaj,
+            montantPEC: (prestation.prixPrestation - prestation.mntApresMaj),
+            montantPere: prestation.prixPrestation,
+            tauxCouverPec: prestation.taux,
+            userCreate: this.userCreate,
+            dateCreate: new Date().toISOString(), //
+            codeNatureAdmission: prestation.codeNatureAdmission,
+          });
+        });
+      });
+
+      this.groupedDataOperation.forEach(groupOperation => {
+        groupOperation.operations.forEach((operation: any) => {
+          this.detailsListCouverturesListDTOsOperation.push({
+            codeOperation: operation.code, // Or however you get codePrestation
+            montantPEC: (operation.coutRevient - operation.mntApresMaj),
+            montantPatient: operation.mntApresMaj,
+            montantPere: operation.coutRevient,
+            tauxCouverPec: operation.taux,
+            userCreate: this.userCreate,
+            dateCreate: new Date().toISOString(), // 
+            codeTypeIntervenant: operation.codeTypeIntervenant,
+          });
+        });
+      });
       let body = {
         codeSaisie: this.codeSaisie,
         designationAr: this.designationAr,
         designationLt: this.designationLt,
         userCreate: this.userCreate,
-        rib: this.rib,
-
         dateCreate: new Date().toISOString(), //
+        // codeSociete: this.selectedSociete,
         code: this.code,
-        actif: this.actif, 
+        actif: this.actif,
+        cash: 0,
+        detailsListCouvertureDTOs: this.detailsListCouverturesListDTOss,
+        detailsListCouvertureOperationDTOs: this.detailsListCouverturesListDTOsOperation,
 
       }
       if (this.code != null) {
         body['code'] = this.code;
+        console.log("body to update ", body)
+        this.IsLoading = true;
+        this.param_service.UpdateListCouverture(body).pipe(
+          catchError((error: HttpErrorResponse) => {
+            this.IsLoading = false;
+            let errorMessage = '';
+            this.detailsListCouverturesListDTOss = new Array();
+            this.detailsListCouverturesListDTOsOperation = new Array();
+            return throwError(errorMessage);
 
-        // this.param_service.UpdateBanque(body) .subscribe(
+          })
+        ).subscribe(
 
-        //   (res: any) => {
-        //      if(sessionStorage.getItem("lang") == "ar"){
-        //   alertifyjs.set('notifier', 'position', 'top-left');
-        // }else{
-        //   alertifyjs.set('notifier', 'position', 'top-right');
-        // }
+          (res: any) => {
 
-        //                 alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/ok.png" alt="image" >' + "تم التحيين");
+            this.CtrlAlertify.PostionLabelNotification();
+            this.CtrlAlertify.ShowSavedOK();
+            this.visibleModal = false;
+            this.detailsListCouverturesListDTOss = new Array();
+            this.detailsListCouverturesListDTOsOperation = new Array();
+            this.IsLoading = false;
+            this.clearForm();
+            this.ngOnInit();
+            this.onRowUnselect(event);
 
-        //     this.visibleModal = false;
-        //     this.clearForm();
-        //     this.ngOnInit();
-        //     this.check_actif = true;
-        //     this.check_inactif = false;
-        //     this.onRowUnselect(event);
-        //     this.clearSelected();
 
-        //   }
-        // );
+          }
+        );
 
 
       }
       else {
-        // this.param_service.PostBanque(body) .subscribe(
-        //   (res:any) => {
-        //     alertifyjs.set('notifier', 'position', 'top-left'); 
-        //     alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/ok.png" alt="image" >' + "تم الحفظ بنجاح");
-        //     this.visibleModal = false;
-        //     this.clearForm();
-        //     this.ngOnInit();
-        //     this.code;
-        //     this.check_actif = true;
-        //     this.check_inactif = false;
-        //     this.onRowUnselect(event);
-        //     this.clearSelected();
+        this.IsLoading = true;
+        this.param_service.PostListCouvertureNew(body).pipe(
+          catchError((error: HttpErrorResponse) => {
+            this.IsLoading = false;
+            let errorMessage = '';
+            this.detailsListCouverturesListDTOss = new Array();
+            this.detailsListCouverturesListDTOsOperation = new Array();
+            return throwError(errorMessage);
 
-        //   }
-        // )
+          })
+        ).subscribe(
+          (res: any) => {
+            this.CtrlAlertify.PostionLabelNotification();
+            this.CtrlAlertify.ShowSavedOK();
+            this.visibleModal = false;
+            this.IsLoading = false;
+            this.detailsListCouverturesListDTOss = new Array();
+            this.detailsListCouverturesListDTOsOperation = new Array();
+            this.ngOnInit();
+            this.code;
+            this.onRowUnselect(event);
+            this.clearForm();
+
+          }
+        )
       }
+
+    } else {
+      console.log("Erorrrrrr")
     }
 
-  }
 
 
-  Voids(): void {
-    // this.cars = [
 
-    // ].sort((car1, car2) => {
-    //   return 0;
-    // });
 
   }
 
 
 
-  public remove(index: number): void {
-    this.listDesig.splice(index, 1);
-    console.log(index);
+
+  GetAllListCouverture() {
+    // this.IsLoading = true;
+    this.param_service.GetListCouverture().subscribe((data: any) => {
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+      this.dataListCouverture = data;
+      this.onRowUnselect(event);
+    })
+  }
+
+  GetAllListCouvertureActif() {
+    // this.IsLoading = true;
+    this.param_service.GetListCouvertureActif().subscribe((data: any) => {
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+      this.dataListCouverture = data;
+      this.onRowUnselect(event);
+    })
+  }
+
+  GetAllListCouvertureInActif() {
+    this.IsLoading = true;
+    this.param_service.GetListCouvertureInActif().subscribe((data: any) => {
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+      this.dataListCouverture = data;
+      this.onRowUnselect(event);
+    })
+  }
+
+  // private ListCouvertureApiCalls: { [key: string]: () => Observable<any> } = {}; 
+
+
+  loadData(status: 'actif' | 'inactif' | '' = '') {
+    this.isLoading = true;
+    const apiCall = this.ListCouvertureApiCalls[status];
+    if (!apiCall) {
+      console.error("Invalid status provided to loadData");
+      this.isLoading = false;
+      return;
+    }
+
+    apiCall().pipe( // Call the function to get the Observable *then* pipe
+      // finalize(() => this.isLoading = false),
+      // catchError(error => {
+      //   this.handleError(error, 'loadData');
+      //   return throwError(() => error); 
+      // })
+    ).subscribe({
+      next: (data) => this.dataListCouverture = data,
+      error: (err) => {
+        // Handle errors more gracefully; don't just log
+        console.error("Error in subscribe:", err);
+        this.CtrlAlertify.showNotificationِCustom("Failed to load data"); //Example
+      }
+    });
+  }
+  get ListCouvertureApiCalls(): { [key: string]: () => Observable<any> } {
+    return {
+      '': this.param_service.GetListCouverture,
+      'actif': this.param_service.GetListCouvertureActif,
+      'inactif': this.param_service.GetListCouvertureInActif,
+    };
+  }
+
+  handleError(error: any, functionName: string) {
+    this.isLoading = false;
+    console.error(`Error in ${functionName}:`, error);
+    this.CtrlAlertify.PostionLabelNotification();
+    // this.CtrlAlertify.show();
+    // this.CtrlAlertify.showErrorNotification(); // Display a generic error message
+  }
+
+  CloseModal() {
+    this.visDelete = false;
+  }
+
+
+  // ListSocieteRslt = new Array<any>();
+  // dataSociete = new Array<any>();
+  // listSocietePushed = new Array<any>();
+  // GetSociete() {
+  //   this.param_service.GetSocieteActif().subscribe((data: any) => {
+  //     this.dataSociete = data;
+  //     this.listSocietePushed = [];
+  //     for (let i = 0; i < this.dataSociete.length; i++) {
+  //       this.listSocietePushed.push({ label: this.dataSociete[i].designationAr, value: this.dataSociete[i].code })
+  //     }
+  //     this.ListSocieteRslt = this.listSocietePushed;
+  //   })
+  // }
+
+  dataPrestation: any[] = [];
+  groupedData = new Array<any>();
+  GetAllPrestation() {
+    this.IsLoading = true;
+    this.param_service.GetPrestationByActif(true).subscribe((data: any) => {
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+      this.dataPrestation = data;
+      this.groupedData = this.groupPrestationsByFamille(data);
+      this.groupedData.forEach(group => {
+        group.SelectedMajRem = 'REM';
+        group.pourcentage = 0;
+        this.AppliquePourcentageInAllPrestationDisponible(group, 0);
+      });
+    });
+  }
+
+  GetAllPrestationForModif() {
+    this.IsLoading = true;
+    this.param_service.GetDetailsListCouverturePrestationByCodeListCouverture(this.selectedListCouverture.code).subscribe((data: any) => {
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+      this.dataPrestation = data;
+      this.groupedData = this.preprocessDataForModifPrestation(data);
+
+
+
+    });
+  }
+
+  groupPrestationsByFamille(data: any[]): any[] {
+    const grouped: { [key: number]: any } = {};
+    data.forEach(prestation => {
+      const familleCode = prestation.familleFacturationDTO.code; // Correct way to access code
+      if (!grouped[familleCode]) {
+        grouped[familleCode] = {
+          familleCode,
+          familleFacturationDTO: prestation.familleFacturationDTO,
+          prestations: []
+        };
+      }
+      grouped[familleCode].prestations.push(prestation);
+    });
+    return Object.values(grouped);
+  }
+
+  getDetailsForPrestation(prestation: any) {
+    return prestation.detailsPrestationDTOs || []; // Directly access details from the prestation
+  }
+
+  expandAll() {
+    this.expandedRows = {};
+    this.groupedData.forEach(group => {
+      this.expandedRows[group.familleCode] = true; // Expand based on familleCode
+    });
+  }
+
+  collapseAll() {
+    this.expandedRows = {};
+  }
+
+  pourcentageValueGrouped: any
+  AppliquerPourcenatgeToAll(pource: HTMLInputElement) {
+    const percentageValue = parseFloat(pource.value);
+
+    if (isNaN(percentageValue) || percentageValue < 0 || percentageValue > 100) {
+      this.CtrlAlertify.PostionLabelNotification();
+      this.CtrlAlertify.showNotificationِCustom('InvalidPercentage');
+      return;
+    }
+
+    this.applyPercentageToAll(this.groupedData, percentageValue, "REM");
+  }
+  applyPercentageToAll(groups: any[], percentage: number, majRemType: string) {
+    // if (!majRemType) {
+    //   this.CtrlAlertify.PostionLabelNotification();
+    //   this.CtrlAlertify.showNotificationِCustom('selectTypeRemiseMajoration');
+    //   return;
+    // }
+
+    groups.forEach(group => {
+      this.applyPercentageToGroup(group, percentage, "REM");
+    });
+  }
+
+  applyPercentageToGroup(group: any, percentage: number, majRemType: string) {
+    group.prestations.forEach((prestation: any) => {
+      const originalMontantOPD = prestation.prixPrestation;
+
+      // const multiplier = majRemType === 'MAJ' ? (1 + percentage / 100) : (1 - percentage / 100);
+
+      prestation.mntApresMaj = (originalMontantOPD * (1 - percentage / 100)).toFixed(3);
+      prestation.taux = percentage;
+      group.SelectedMajRem = majRemType;
+      group.pourcentage = percentage;
+      if (majRemType === 'REM') {
+        prestation.RemMaj = this.i18nService.getString('Remise') || 'Remise';
+        prestation.RemMajValeur = 'REM';
+      }
+
+
+
+
+    });
+  }
+
+
+  ValeurSelectedMajRem: any;
+  MntAvantRemMaj: any;
+  tauxRemMaj: any;
+  AppliquePourcentageInAllPrestationDisponible(group: any, percentage: number) {
+    console.log("this.pourcentageValueGrouped   ", this.pourcentageValueGrouped)
+    // const percentage = parseFloat(inputElement.value); 
+    if (isNaN(percentage) || percentage < 0 || percentage > 100) {
+      // Handle invalid percentage input (e.g., show an error message)
+      // Assuming you have a translation for this
+      this.CtrlAlertify.PostionLabelNotification();
+      this.CtrlAlertify.showNotificationِCustom('InvalidPercentage');
+      // inputElement.value = ''; // Clear the invalid input
+      return;
+    }
+    // if (group.SelectedMajRem === null || group.SelectedMajRem === undefined) {
+    //   this.CtrlAlertify.PostionLabelNotification();
+    //   this.CtrlAlertify.showNotificationِCustom('selectTypeRemiseMajoration');
+    //   return;
+    // }
+    group.prestations.forEach((prestation: any) => {
+      const originalMontant = prestation.prixPrestation; // Use the correct original price field
+      let newPrice: number;
+      newPrice = originalMontant * (1 - percentage / 100);
+      prestation.RemMaj = this.i18nService.getString('Remise') || 'Remise';
+      prestation.RemMajValeur = 'REM';
+      prestation.mntApresMaj = parseFloat(newPrice.toFixed(3)); // Apply toFixed(3) here 
+      prestation.taux = percentage;
+
+    });
+
+  }
+
+  // ... other code ...
+
+  calculatePercentage(prestation: any) {
+    const originalMontantOPD = prestation.prixPrestation; // Use prixPrestation
+    if (originalMontantOPD === prestation.mntApresMaj) {
+      prestation.taux = 0;
+      return;
+    }
+    // Use Math.abs to get the absolute difference
+    prestation.taux = (Math.abs(prestation.mntApresMaj - originalMontantOPD) / originalMontantOPD) * 100;
+
+    if (prestation.mntApresMaj > originalMontantOPD) { 
+      prestation.mntApresMaj= originalMontantOPD;
+      prestation.taux = 0;
+      this.CtrlAlertify.PostionLabelNotification();
+      this.CtrlAlertify.showNotificationِCustom('InvalidMontantCouverture');
+    }
+  }
+
+  /////// tab operation
+  // dataOperation: any[] = [];
+  groupedDataOperation = new Array<any>();
+  GetAllOperationActif() {
+    this.IsLoading = true;
+    this.param_service.GetOperationByActif(true).subscribe((data: any) => {
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+      // this.dataOperation = data;
+      this.groupedDataOperation = this.groupOperationByFamille(data);
+      this.groupedDataOperation.forEach(group => {
+        group.SelectedMajRem = 'REM';
+        group.pourcentage = 0;
+        this.AppliquePourcentageInAllOperationDisponible(group, 0);
+      });
+    });
+  }
+  GetAllOperationActifForModif() {
+    this.IsLoading = true;
+    this.param_service.GetDetailsListCouvertureoperationByCodeListCouverture(this.selectedListCouverture.code).subscribe((data: any) => {
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+      // this.dataOperation = data;
+      this.groupedDataOperation = this.preprocessDataForModifOperation(data); // Handle potential nulls
+    });
+  }
+
+
+  groupOperationByFamille(data: any[]): any[] {
+    if (!data) return [];
+    const grouped: { [key: number]: any } = {};
+    data.forEach(operation => {
+      const familleCode = operation.familleFacturationDTO?.code; // Correct way to access code
+      if (!grouped[familleCode]) {
+        grouped[familleCode] = {
+          familleCode,
+          familleFacturationDTO: operation.familleFacturationDTO,
+          operations: []
+        };
+      }
+      grouped[familleCode].operations.push(operation);
+    });
+    return Object.values(grouped);
+  }
+
+  preprocessDataForModifOperation(data: any[]): GroupedDataOperation[] {
+    const grouped: { [key: number]: GroupedDataOperation } = {};
+    let RemiseMajoration;
+    let RemiseMajorationValeur;
+    data.forEach(item => {
+      if (item.remMaj === "MAJ") {
+        RemiseMajoration = this.i18nService.getString('Majoration') || 'Majoration';
+        RemiseMajorationValeur = "MAJ";
+      } else {
+        RemiseMajoration = this.i18nService.getString('Remise') || 'Remise';
+        RemiseMajorationValeur = 'REM';
+      }
+      const operation: OperationDTO = {
+        code: item.operationDTO.code,
+        codeSaisie: item.operationDTO.codeSaisie,
+        designationAr: item.operationDTO.designationAr,
+        designationLt: item.operationDTO.designationLt,
+        coutRevient: item.operationDTO.coutRevient, 
+        mntApresMaj: item.montantPatient,
+        pourcentage: item.tauxCouverPec,
+        taux: item.tauxCouverPec,
+      };
+
+      const familleCode = item.operationDTO.familleFacturationDTO.code;
+      if (!grouped[familleCode]) {
+        grouped[familleCode] = {
+          familleCode,
+          familleFacturationDTO: item.operationDTO.familleFacturationDTO,
+          operations: [],
+          pourcentage: item.tauxCouverPec,
+          taux: item.tauxCouverPec  // Initialize percentage for the famille
+        };
+      }
+      grouped[familleCode].operations.push(operation);
+    });
+
+    return Object.values(grouped);
   }
 
 
 
+  preprocessDataForModifPrestation(data: any[]): GroupedDataPrestation[] {
+
+    const grouped: { [key: number]: GroupedDataPrestation } = {};
+    let RemiseMajoration;
+    let RemiseMajorationValeur;
+    data.forEach(item => {
+      this.IsLoading = true;
 
 
+      const prestation: PrestationDTO = {
+        code: item.prestationDTO.code,
+        codeSaisie: item.prestationDTO.codeSaisie,
+        designationAr: item.prestationDTO.designationAr,
+        designationLt: item.prestationDTO.designationLt,
+        prixPrestation: item.prestationDTO.prixPrestation,
+        mntApresMaj: item.montantPatient,
+        pourcentage: item.tauxCouverPec,
+        taux: item.tauxCouverPec,
+      };
 
+      const familleCode = item.prestationDTO.familleFacturationDTO.code;
+      if (!grouped[familleCode]) {
+        grouped[familleCode] = {
+          familleCode,
+          familleFacturationDTO: item.prestationDTO.familleFacturationDTO,
+          prestations: [],
+          pourcentage: item.tauxCouverPec,
+          taux: item.tauxCouverPec  // Initialize percentage for the famille
+          // SelectedMajRem: RemiseMajorationValeur, // Initialize dropdown value for the famille
+        };
+      }
 
+      grouped[familleCode].prestations.push(prestation);
 
-  GetAllBanque() {
-    // this.param_service.GetBanque().subscribe((data: any) => {
-
-    this.loadingComponent.IsLoading = false;
+    });
     this.IsLoading = false;
-
-    //   this.dataBanque = data;
-    //   this.onRowUnselect(event);
-
-    // }) 
+    return Object.values(grouped);
   }
 
 
+  expandAllOperation() {
+    this.expandedRows = {};
+    this.groupedDataOperation.forEach(group => {
+      this.expandedRows[group.familleCode] = true; // Expand based on familleCode
+    });
+  }
 
+  collapseAllOperation() {
+    this.expandedRows = {};
+  }
+
+  // pourcentageValueGroupedOperation: any
+  AppliquerPourcenatgeToAllOperation(pource: HTMLInputElement) {
+    const percentageValue = parseFloat(pource.value);
+
+    if (isNaN(percentageValue) || percentageValue < 0 || percentageValue > 100) {
+      this.CtrlAlertify.PostionLabelNotification();
+      this.CtrlAlertify.showNotificationِCustom('InvalidPercentage');
+      return;
+    }
+
+    this.applyPercentageToAllOperation(this.groupedDataOperation, percentageValue, "REM");
+  }
+  applyPercentageToAllOperation(groups: any[], percentage: number, majRemType: string) {
+    // if (!majRemType) {
+    //   this.CtrlAlertify.PostionLabelNotification();
+    //   this.CtrlAlertify.showNotificationِCustom('selectTypeRemiseMajoration');
+    //   return;
+    // }
+
+    groups.forEach(group => {
+      this.applyPercentageToGroupOperation(group, percentage, "REM");
+    });
+  }
+
+  applyPercentageToGroupOperation(group: any, percentage: number, majRemType: string) {
+    group.operations.forEach((operation: any) => {
+      const originalCoutRevient = operation.coutRevient;
+
+      // const multiplier = majRemType === 'REM'  = (1 - percentage / 100);
+
+      operation.mntApresMaj = (originalCoutRevient * (1 - percentage / 100)).toFixed(3);
+      operation.taux = percentage;
+      group.SelectedMajRem = majRemType;
+      group.pourcentage = percentage;
+      // if (majRemType === 'MAJ') {
+      //   operation.RemMaj = this.i18nService.getString('Majoration') || 'Majoration';
+      //   operation.RemMajValeur = 'MAJ';
+      // } else {
+      //   operation.RemMaj = this.i18nService.getString('Remise') || 'Remise';
+      //   operation.RemMajValeur = 'REM';
+      // }
+
+
+
+
+    });
+  }
+
+
+  ValeurSelectedMajRemOperation: any;
+  MntAvantRemMajOperation: any;
+  tauxRemMajOperation: any;
+  AppliquePourcentageInAllOperationDisponible(group: any, percentage: number) {
+    // console.log("this.pourcentageValueGrouped   ", this.pourcentageValueGroupedOperation)
+    // const percentage = parseFloat(inputElement.value); 
+    if (isNaN(percentage) || percentage < 0 || percentage > 100) {
+      this.CtrlAlertify.PostionLabelNotification();
+      this.CtrlAlertify.showNotificationِCustom('InvalidPercentage');
+      return;
+    }
+    // if (group.SelectedMajRem === null || group.SelectedMajRem === undefined) {
+    //   this.CtrlAlertify.PostionLabelNotification();
+    //   this.CtrlAlertify.showNotificationِCustom('selectTypeRemiseMajoration');
+    //   return;
+    // }
+    group.operations.forEach((operation: any) => {
+      const originalMontant = operation.coutRevient; // Use the correct original price field
+      let newPrice: number;
+      newPrice = originalMontant * (1 - percentage / 100);
+      operation.RemMaj = this.i18nService.getString('Remise') || 'Remise';
+      operation.RemMajValeur = 'REM';
+      operation.mntApresMaj = parseFloat(newPrice.toFixed(3)); // Apply toFixed(3) here
+
+
+      operation.taux = percentage;
+
+    });
+
+  }
+
+  // ... other code ...
+
+  calculatePercentageOperation(operation: any) {
+    const originalCoutRevient = operation.coutRevient; // Use prixPrestation
+    if (originalCoutRevient === operation.mntApresMaj) {
+      operation.taux = 0;
+      return;
+    }
+    // Use Math.abs to get the absolute difference
+    operation.taux = ((Math.abs(operation.mntApresMaj - originalCoutRevient) / originalCoutRevient) * 100).toFixed(3);
+
+    if (operation.mntApresMaj > originalCoutRevient) {
+      operation.mntApresMaj = originalCoutRevient
+      operation.taux = 0 
+      this.CtrlAlertify.PostionLabelNotification();
+      this.CtrlAlertify.showNotificationِCustom('InvalidMontantCouverture');
+    }
+  }
 
 }
 

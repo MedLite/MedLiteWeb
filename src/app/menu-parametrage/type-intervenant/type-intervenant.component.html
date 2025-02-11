@@ -68,9 +68,7 @@
                             <td style="font-size: 15px !important;">{{domaine.codeSaisie}}</td>
                             <td style="font-size: 15px !important;">{{domaine.designationAr}}</td>
                             <td style="font-size: 15px !important;">{{domaine.designationLt}}</td>
-                            <td class="act-col">
-                                <p-checkbox [readonly]="true" [(ngModel)]="domaine.autoriseFrais" [binary]="true" inputId="binary">{{domaine.autoriseFrais}}</p-checkbox>
-                            </td>
+
                             <td class="act-col">
                                 <p-checkbox [readonly]="true" [(ngModel)]="domaine.actif" [binary]="true" inputId="binary">{{domaine.actif}}</p-checkbox>
                             </td>
@@ -132,14 +130,13 @@
                     <section class="flex-row-start flex-6">
                         <label class="control-label  flex-4" style="width: 25%; "> {{'CodeSaisie' | i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
-                        <div class="control-input flex-5-45 ">
+                        <div class="control-input flex-5-45 " style="max-width: 100px;">
                             <input readonly disabled id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class=" form-control-dev input-xs" #codeSaisieInput required [(ngModel)]="codeSaisie">
 
                         </div>
                     </section>
                     <section class="flex-row-start flex-6 " style="justify-content: space-evenly;">
                         <p-checkbox [binary]="true" name="actif" [(ngModel)]="actif" value="val3" [label]="LabelActif"></p-checkbox>
-                        <p-checkbox [binary]="true" name="autoriseFrais" [(ngModel)]="autoriseFrais" value="val2" [label]="LabelautoriseFrais"></p-checkbox>
                     </section>
                 </div>
                 <div class="flex-row-start flex-12">

@@ -15,7 +15,7 @@
 
         <div class="material-table">
             <div class="card">
-                <p-table [paginator]="true" [rows]="20" [rowsPerPageOptions]="[20, 40,80,100]" [showCurrentPageReport]="true" [first]="first" currentPageReportTemplate="{{'Page' | i18n:i18nService.currentLanguage}} {first} {{'To' | i18n:i18nService.currentLanguage}} {last} {{'of' | i18n:i18nService.currentLanguage}} {totalRecords} {{'entiers' | i18n:i18nService.currentLanguage}}"
+                <p-table [paginator]="true" [rows]="20" [resizableColumns]="true" [rowsPerPageOptions]="[20, 40,80,100]" [showCurrentPageReport]="true" [first]="first" currentPageReportTemplate="{{'Page' | i18n:i18nService.currentLanguage}} {first} {{'To' | i18n:i18nService.currentLanguage}} {last} {{'of' | i18n:i18nService.currentLanguage}} {totalRecords} {{'entiers' | i18n:i18nService.currentLanguage}}"
                     #dt1 [columns]="cols" rowGroupMode="rowspan" groupRowsBy="famillePrestationDTO.designationAr" [value]="dataPrestation" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedPrestation"
                     (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" dataKey="code" [tableStyle]="{'min-width': '50rem', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
 
@@ -80,14 +80,14 @@
                             </th>
                         </tr>
                         <tr class="filter-row">
-                            <th *ngFor="let col of col; let i = index">
+                            <th *ngFor="let col of col; let i = index" pResizableColumn>
                                 <p-columnFilter *ngIf="i !== 6" [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
                             </th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-domaine let-rowgroup="rowgroup" let-rowspan="rowspan">
                         <tr [pSelectableRow]="domaine">
-                            <td *ngIf="rowgroup" [attr.rowspan]="rowspan">
+                            <td style="width: 20px;" *ngIf="rowgroup" [attr.rowspan]="rowspan">
                                 <span class="font-bold ml-2">{{domaine.famillePrestationDTO.designationAr}}</span>
                             </td>
 
@@ -166,7 +166,7 @@
                         <label class="control-label  flex-4" style="width: 25%; "> {{'CodeSaisie' |
                             i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
-                        <div class="control-input flex-5-45 ">
+                        <div class="control-input flex-5-45 " style="max-width: 100px;">
                             <input readonly disabled id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class=" form-control-dev input-xs" #codeSaisieInput required [(ngModel)]="codeSaisie">
 
                         </div>

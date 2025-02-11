@@ -1,1 +1,90 @@
-<p>menu-reception works!</p>
+<div class="container">
+    <div class="row text-center">
+        <h2 class="TitleMenu"> {{'Reception' | i18nForMenuReception:i18nService.currentLanguage}} </h2>
+        <div id="menu-box">
+            <div id="item" class="col-sm-6 col-md-3 myDIV " [routerLink]="['/menu_reception/admission_opd']">
+                <div class="container-block ">
+                    <div class="block1">
+                        <i class="fa-solid fa-user" style="font-size: 20px; margin-top: 5px;"></i>
+                    </div>
+                    <div class="block2  ">
+                        <span class="FloatRight ">  {{'AdmissionOPD' | i18nForMenuReception:i18nService.currentLanguage}}  </span>
+
+                    </div>
+                </div>
+            </div>
+            <div id="item" class="col-sm-6 col-md-3 myDIV " [routerLink]="['/menu_reception/admission_er']">
+                <div class="container-block ">
+                    <div class="block1">
+                        <i class="fa-solid fa-users" style="font-size: 20px; margin-top: 5px;"></i>
+                    </div>
+                    <div class="block2  ">
+                        <span class="FloatRight ">  {{'AdmissionER' | i18nForMenuReception:i18nService.currentLanguage}}  </span>
+
+                    </div>
+                </div>
+            </div>
+            <div id="item" class="col-sm-6 col-md-3 myDIV " [routerLink]="['/menu_reception/admission_ip']">
+                <div class="container-block ">
+                    <div class="block1">
+                        <i class="fa-solid fa-user-injured" style="font-size: 20px; margin-top: 5px;"></i>
+                    </div>
+                    <div class="block2  ">
+                        <span class="FloatRight ">  {{'AdmissionIP' | i18nForMenuReception:i18nService.currentLanguage}}  </span>
+
+                    </div>
+                </div>
+            </div>
+            <div id="item" class="col-sm-6 col-md-3 myDIV " [routerLink]="['/menu_reception/chambre']">
+                <div class="container-block ">
+                    <div class="block1">
+                        <i class='bx bx-bed'></i>
+                    </div>
+                    <div class="block2 ">
+                        <span class="FloatRight">  {{'Chambre' | i18nForMenuReception:i18nService.currentLanguage}}  </span>
+
+                    </div>
+                </div>
+            </div>
+            <div id="item" class="col-sm-6 col-md-3 myDIV " [routerLink]="['/menu_reception/planning_medecin']">
+                <div class="container-block ">
+                    <div class="block1">
+                        <i class='bx bxs-spreadsheet'></i>
+                    </div>
+                    <div class="block2 ">
+                        <span class="FloatRight">  {{'PlanningMedcin' | i18nForMenuReception:i18nService.currentLanguage}}  </span>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div id="item" class="col-sm-6 col-md-3 myDIV ">
+                <div class="container-block ">
+                    <div class="block1">
+                        <i class='bx bxs-arch' [ngClass]="{ 'MenuOpened': IsOpened4 }"></i>
+                    </div>
+                    <div class="block2 ">
+                        <span class="FloatRight" [ngClass]="{ 'MenuOpened': IsOpened4 }">  {{'Caisse' | i18nForMenuReception:i18nService.currentLanguage}}  </span>
+                        <i class='FloatLeft bx bx-dots-vertical-rounded MenuMoreBtn' [ngClass]="{ 'MenuOpened': IsOpened4 }" (click)="onOpened4()" mat-button [matMenuTriggerFor]="menu4"></i>
+                        <mat-menu #menu4="matMenu" class="div-panel" (closed)="onClosed4()">
+                            <button mat-menu-item [routerLink]="['/menu_reception/caisse_reception']"><i class='bx bx-wallet'></i> <span style="font-weight: bold;"> {{'CaisseReception' | i18nForMenuReception:i18nService.currentLanguage}} </span>  </button>
+                            <button mat-menu-item [routerLink]="['/menu_reception/cloture_session']"> <i class='bx bx-lock-alt'></i> <span style="font-weight: bold;"> {{'ClotureSession' | i18nForMenuReception:i18nService.currentLanguage}} </span> </button>
+                        </mat-menu>
+                    </div>
+                </div>
+            </div>
+            <div id="item" class="col-sm-6 col-md-3" [routerLink]="['/menu_reception/edition_admission']">
+                <div class="container-block">
+                    <div class="block1">
+                        <i class='bx bxs-report'></i>
+                    </div>
+                    <div class="block2">
+                        <span class="FloatRight">  {{'Edition' | i18nForMenuReception:i18nService.currentLanguage}}  </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

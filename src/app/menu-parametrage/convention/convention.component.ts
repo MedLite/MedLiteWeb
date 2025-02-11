@@ -1,59 +1,52 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { Component, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
-import * as alertifyjs from 'alertifyjs'
 import { Router } from '@angular/router';
 import { LoadingComponent } from '../../Shared/loading/loading.component';
 import { I18nService } from '../../Shared/i18n/i18n.service';
 import { InputValidationService } from '../../Shared/Control/ControlFieldInput';
+import { Dropdown } from 'primeng/dropdown';
+import { ParametargeService } from '../ServiceClient/parametarge.service';
+import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
+import { DatePipe } from '@angular/common';
+import { CalanderTransService } from '../../Shared/CalanderService/CalanderTransService';
 
 declare const PDFObject: any;
 
 @Component({
   selector: 'app-convention',
   templateUrl: './convention.component.html',
-  styleUrls: ['./convention.component.css','.../../../src/assets/css/newStyle.css'
+  styleUrls: ['./convention.component.css', '.../../../src/assets/css/newStyle.css'
     , '.../../../src/assets/css/StyleApplication.css'], providers: [ConfirmationService, MessageService]
-  })
-  
-export class ConventionComponent {
-  @ViewChild('codeError') codeErrorElement!: ElementRef; 
-  @ViewChild('codeSaisieInput') codeSaisieInputElement!: ElementRef;
-  @ViewChild('DesignationArInput') DesignationArInputElement!: ElementRef;
-  @ViewChild('DesignationLtInput') DesignationLtInputElement!: ElementRef; 
-  first = 0;
+})
+export class ConventionComponent implements OnInit {
 
+  @ViewChild('codeError') codeErrorElement!: ElementRef;
+  @ViewChild('codeSaisieInput') codeSaisieInputElement!: ElementRef;
+  @ViewChild('designationArInput') desginationArInputElement!: ElementRef;
+  @ViewChild('designationLtInput') designationLtInputElement!: ElementRef;
+  @ViewChild('priceListInput') priceListInputElement!: Dropdown;
+  @ViewChild('societeInput') societeInputElement!: Dropdown;
+
+  first = 0;
   IsLoading = true;
   openModal!: boolean;
 
-  constructor(public i18nService: I18nService, private validationService: InputValidationService, private router: Router, private loadingComponent: LoadingComponent, private confirmationService: ConfirmationService, private messageService: MessageService, private http: HttpClient, private fb: FormBuilder, private cdr: ChangeDetectorRef) {
-
-
+  items: MenuItem[] | undefined;
+  activeItem: MenuItem | undefined;
+  constructor(private calandTrans: CalanderTransService, private datePipe: DatePipe, public param_service: ParametargeService, public i18nService: I18nService,
+    private router: Router, private loadingComponent: LoadingComponent,
+    private validationService: InputValidationService, private CtrlAlertify: ControlServiceAlertify) {
+    this.calandTrans.setLangAR();
   }
 
-  validateCodeSaisieInput() {
-    this.validationService.validateInput(this.codeSaisieInputElement, this.codeErrorElement, this.codeSaisie, 'codeSaisie');
-  }
-  validateDesignationArInput() {
-    this.validationService.validateInput(this.DesignationArInputElement, this.codeErrorElement, this.designationAr, 'DesignationAr');
-  }
-
-  validateDesignationLtInput() {
-    this.validationService.validateInput(this.DesignationArInputElement, this.codeErrorElement, this.designationAr, 'DesignationAr');
-  }
- 
 
   @ViewChild('modal') modal!: any;
 
   pdfData!: Blob;
   isLoading = false;
   cols!: any[];
-
-  check_actif = false;
-  check_inactif = false;
   formHeader = ".....";
   searchTerm = '';
   visibleModal: boolean = false;
@@ -63,49 +56,47 @@ export class ConventionComponent {
   codeSaisie: any;
   designationAr: string = 'NULL';
   designationLt: string = "NULL";
-  rib!: string;
   actif!: boolean;
   visible!: boolean;
   LabelActif!: string;
-    userCreate = sessionStorage.getItem("userName");
-  dataBanque = new Array<any>();
-  compteur: number = 0;
-  listDesig = new Array<any>();
-  selectedBanque!: any;
-  ListFamilleFacturation = new Array<any>();
-  selectedFamilleFacturation: any = '';
-  ListFamillePrestation = new Array<any>();
-  selectedFamillePrestation: any = '';
+  userCreate = sessionStorage.getItem("userName");
+  dataConvention = new Array<any>();
+  selectedConvention!: any;
+  ListpriceList = new Array<any>();
+  selectedpriceList: any = '';
 
+  ListCouverture = new Array<any>();
+  selectedCouverture: any = '';
 
-
-
+  dateDeb: any;
+  dateFin: any;
+  ListSociete = new Array<any>();
+  selectedSociete: any = '';
 
   ngOnInit(): void {
-    this.GetColumns();
-    this.GetAllBanque();
-    this.ListFamilleFacturation = [
-      { label: 'Famill Fact 1', value: '1' },
-      { label: 'Famille Fact 2', value: '2' },
-      { label: 'Famille Fact 3', value: '3' },
+    this.items = [
+      { label: this.i18nService.getString('LabelActif') || 'LabelActif', icon: 'pi pi-file-check', command: () => { this.GetAllConventionActif() } },
+      { label: this.i18nService.getString('LabelInActif') || 'LabelInActif', icon: 'pi pi-file-excel', command: () => { this.GetAllConventionInactif() } },
+      { label: this.i18nService.getString('LabelAll') || 'LabelAll', icon: 'pi pi-file', command: () => { this.GetAllConvention() } },
     ];
+    this.activeItem = this.items[0];
 
-    this.ListFamillePrestation = [
-      { label: 'Famill Pres 1', value: '1' },
-      { label: 'Famille Pres 2', value: '2' },
-      { label: 'Famille Pres 3', value: '3' },
-    ]
-
+    this.GetColumns();
+    this.GetAllConventionActif();
   }
 
 
 
   GetColumns() {
     this.cols = [
-      { field: 'TypeOP', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '5%', filter: "true" },
-      { field: 'SourceDepenese', header: this.i18nService.getString('Designation') || 'Designation', width: '5%', filter: "true" },
-      { field: 'codeEtatApprouver', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '5%', filter: "false" },
-      { field: 'dateCreate', header: this.i18nService.getString('LabelActif') || 'Actif', width: '5%', filter: "true" },
+      { field: 'societeDTO.designationAr', header: this.i18nService.getString('Societe') || 'Societe', width: '20%', filter: "true" },
+
+      { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
+      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '16%', filter: "true" },
+      { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '16%', filter: "false" },
+      { field: 'dateDeb', header: this.i18nService.getString('DateDebut') || 'DateDebut', width: '16%', filter: "false" },
+      { field: 'dateFin', header: this.i18nService.getString('DateFin') || 'DateFin', width: '16%', filter: "false" },
+      { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
 
     ];
   }
@@ -132,21 +123,27 @@ export class ConventionComponent {
   }
 
   clearForm() {
-
-
-
     this.code == undefined;
     this.designationAr = '';
     this.designationLt = '';
     this.actif = false;
     this.visibleModal = false;
     this.codeSaisie = '';
+    this.selectedConvention = ''
+    this.selectedSociete = '';
     this.onRowUnselect(event);
 
-
-
-
   }
+
+
+  GetCodeSaisie() {
+    this.param_service.GetCompteur("CodeSaisieConvention").
+      subscribe((data: any) => {
+        this.codeSaisie = data.prefixe + data.suffixe;
+      })
+  }
+
+
   onRowSelect(event: any) {
     this.code = event.data.code;
     this.actif = event.data.actif;
@@ -154,55 +151,29 @@ export class ConventionComponent {
     this.codeSaisie = event.data.codeSaisie;
     this.designationAr = event.data.designationAr;
     this.designationLt = event.data.designationLt;
-    this.rib = event.data.rib;
+    this.selectedSociete = event.data.societeDTO.code
 
-    console.log('vtData : ', event);
+    // console.log('vtData : ', event);
   }
   onRowUnselect(event: any) {
-    console.log('row unselect : ', event);
+    // console.log('row unselect : ', event);
     this.code = event.data = null;
   }
 
 
 
-  DeleteBanque(code: any) {
-    // this.param_service.DeleteBanque(code) .subscribe(
-    //   (res:any) => {
-    //     alertifyjs.set('notifier', 'position', 'top-left');
-    //     alertifyjs.success('<i class="success fa fa-chevron-down" aria-hidden="true" style="margin: 5px 5px 5px;font-size: 15px !important;;""></i>' + "Success Deleted");
+  DeleteConvention(code: any) {
+    this.param_service.DeleteConvention(code).subscribe(
+      (res: any) => {
+        this.CtrlAlertify.PostionLabelNotification();
+        this.CtrlAlertify.ShowDeletedOK();
+        this.ngOnInit();
+        this.visDelete = false;
 
-    //     this.ngOnInit();
-    //     this.check_actif = true;
-    //     this.check_inactif = false;
-    // this.visDelete = false;
-
-    //   }
-    // )
-  }
-  clearSelected(): void {
-    this.code == undefined;
-    this.codeSaisie = '';
-    this.designationAr = '';
-    this.designationLt = '';
-    this.actif = false;
-    this.visible = false;
+      }
+    )
   }
 
-
-  showRequiredNotification() {
-    const fieldRequiredMessage = this.i18nService.getString('fieldRequired');  // Default to English if not found
-    alertifyjs.notify(
-      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
-      fieldRequiredMessage
-    );
-  }
-  showChoseAnyRowNotification() {
-    const fieldRequiredMessage = this.i18nService.getString('SelctAnyRow');  // Default to English if not found
-    alertifyjs.notify(
-      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
-      fieldRequiredMessage
-    );
-  }
 
   public onOpenModal(mode: string) {
 
@@ -218,7 +189,13 @@ export class ConventionComponent {
       button.setAttribute('data-target', '#Modal');
       this.formHeader = this.i18nService.getString('Add');
       this.onRowUnselect(event);
-      this.clearSelected();
+
+      this.clearForm();
+      this.GetCodeSaisie();
+      this.GetSociete();
+      this.GetPristList();
+      this.GetListCouverture();
+
       this.actif = false;
       this.visible = false;
       this.visibleModal = true;
@@ -232,18 +209,16 @@ export class ConventionComponent {
       if (this.code == undefined) {
         this.clearForm();
         this.onRowUnselect(event);
-        if (sessionStorage.getItem("lang") == "ar") {
-          alertifyjs.set('notifier', 'position', 'top-left');
-        } else {
-          alertifyjs.set('notifier', 'position', 'top-right');
-        }
-
-        this.showChoseAnyRowNotification();
+        this.CtrlAlertify.PostionLabelNotification();
+        this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false
       } else {
 
         button.setAttribute('data-target', '#Modal');
         this.formHeader = this.i18nService.getString('Modifier');
+        this.GetSociete();
+        this.GetPristList();
+        this.GetListCouverture();
 
         this.visibleModal = true;
         this.onRowSelect;
@@ -256,13 +231,8 @@ export class ConventionComponent {
 
       if (this.code == undefined) {
         this.onRowUnselect;
-        if (sessionStorage.getItem("lang") == "ar") {
-          alertifyjs.set('notifier', 'position', 'top-left');
-        } else {
-          alertifyjs.set('notifier', 'position', 'top-right');
-        }
-
-        this.showChoseAnyRowNotification();
+        this.CtrlAlertify.PostionLabelNotification();
+        this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false
       } else {
 
@@ -279,17 +249,12 @@ export class ConventionComponent {
     if (mode === 'Print') {
       if (this.code == undefined) {
         this.onRowUnselect;
-        if (sessionStorage.getItem("lang") == "ar") {
-          alertifyjs.set('notifier', 'position', 'top-left');
-        } else {
-          alertifyjs.set('notifier', 'position', 'top-right');
-        }
-
-        this.showChoseAnyRowNotification();
+        this.CtrlAlertify.PostionLabelNotification();
+        this.CtrlAlertify.showChoseAnyRowNotification();
         this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
       } else {
         button.setAttribute('data-target', '#ModalPrint');
-        this.formHeader = "Imprimer Liste Banque"
+        this.formHeader = "Imprimer Liste priceList"
         this.visibleModalPrint = true;
         // this.RemplirePrint();
 
@@ -302,124 +267,84 @@ export class ConventionComponent {
 
   }
 
-  // datecreate !: Date;
-  // currentDate = new Date();
 
-  // ajusterHourAndMinutes() {
-  //   let hour = new Date().getHours();
-  //   let hours;
-  //   if (hour < 10) {
-  //     hours = '0' + hour;
-  //   } else {
-  //     hours = hour;
-  //   }
-  //   let min = new Date().getMinutes();
-  //   let mins;
-  //   if (min < 10) {
-  //     mins = '0' + min;
-  //   } else {
-  //     mins = min;
-  //   }
-  //   return hours + ':' + mins
-  // }
-  // datform = new Date();
 
-  PostBanque() {
+  private validateAllInputs(): boolean { // Returns true if all valid, false otherwise
+    const codeSaisie = this.validationService.validateInputCommun(this.codeSaisieInputElement, this.codeSaisie);
+    const designationAr = this.validationService.validateInputCommun(this.desginationArInputElement, this.designationAr);
+    const designationLt = this.validationService.validateInputCommun(this.designationLtInputElement, this.designationLt);
+    const spec_Cab = this.validationService.validateDropDownCommun(this.priceListInputElement, this.selectedpriceList);
+
+    const societe = this.validationService.validateDropDownCommun(this.societeInputElement, this.selectedSociete);
+
+    return codeSaisie && designationAr && designationLt && spec_Cab && societe;
+  }
 
 
 
-    this.validateCodeSaisieInput();
-    this.validateDesignationArInput();
-    this.validateDesignationLtInput(); 
+  PostConvention() {
 
-
-
-    if (!this.designationAr || !this.designationLt || !this.codeSaisie  ) {
-      if (sessionStorage.getItem("lang") == "ar") {
-        alertifyjs.set('notifier', 'position', 'top-left');
-      } else {
-        alertifyjs.set('notifier', 'position', 'top-right');
-      }
-
-      this.showRequiredNotification();
-    } else {
-
-
+    const isValid = this.validateAllInputs();
+    if (isValid) {
       let body = {
         codeSaisie: this.codeSaisie,
         designationAr: this.designationAr,
         designationLt: this.designationLt,
         userCreate: this.userCreate,
-        rib: this.rib,
-
+        codeSociete: this.selectedSociete,
+        dateDeb: this.dateDeb,
+        dateFin: this.dateFin,
         dateCreate: new Date().toISOString(), //
         code: this.code,
-        actif: this.actif, 
+        actif: this.actif,
+        codeListCouverture: this.selectedCouverture,
+        codePriceList: this.selectedpriceList,
+
 
       }
       if (this.code != null) {
         body['code'] = this.code;
 
-        // this.param_service.UpdateBanque(body) .subscribe(
+        this.param_service.UpdateConvention(body).subscribe(
 
-        //   (res: any) => {
-        //      if(sessionStorage.getItem("lang") == "ar"){
-        //   alertifyjs.set('notifier', 'position', 'top-left');
-        // }else{
-        //   alertifyjs.set('notifier', 'position', 'top-right');
-        // }
+          (res: any) => {
+            this.CtrlAlertify.PostionLabelNotification();
+            this.CtrlAlertify.ShowSavedOK();
+            this.visibleModal = false;
+            this.clearForm();
+            this.ngOnInit();
+            this.onRowUnselect(event);
 
-        //                 alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/ok.png" alt="image" >' + "تم التحيين");
 
-        //     this.visibleModal = false;
-        //     this.clearForm();
-        //     this.ngOnInit();
-        //     this.check_actif = true;
-        //     this.check_inactif = false;
-        //     this.onRowUnselect(event);
-        //     this.clearSelected();
-
-        //   }
-        // );
+          }
+        );
 
 
       }
       else {
-        // this.param_service.PostBanque(body) .subscribe(
-        //   (res:any) => {
-        //     alertifyjs.set('notifier', 'position', 'top-left'); 
-        //     alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/ok.png" alt="image" >' + "تم الحفظ بنجاح");
-        //     this.visibleModal = false;
-        //     this.clearForm();
-        //     this.ngOnInit();
-        //     this.code;
-        //     this.check_actif = true;
-        //     this.check_inactif = false;
-        //     this.onRowUnselect(event);
-        //     this.clearSelected();
+        this.param_service.PostConvention(body).subscribe(
+          (res: any) => {
+            this.CtrlAlertify.PostionLabelNotification();
+            this.CtrlAlertify.ShowSavedOK();
+            this.visibleModal = false;
+            this.clearForm();
+            this.ngOnInit();
+            this.code;
+            this.onRowUnselect(event);
+            this.clearForm();
 
-        //   }
-        // )
+          }
+        )
       }
+
+    } else {
+      console.log("Erorrrrrr")
     }
 
-  }
-
-
-  Voids(): void {
-    // this.cars = [
-
-    // ].sort((car1, car2) => {
-    //   return 0;
-    // });
-
-  }
 
 
 
-  public remove(index: number): void {
-    this.listDesig.splice(index, 1);
-    console.log(index);
+
   }
 
 
@@ -429,19 +354,171 @@ export class ConventionComponent {
 
 
 
-  GetAllBanque() {
-    // this.param_service.GetBanque().subscribe((data: any) => {
 
-    this.loadingComponent.IsLoading = false;
-    this.IsLoading = false;
 
-    //   this.dataBanque = data;
-    //   this.onRowUnselect(event);
 
-    // }) 
+  GetAllConvention() {
+    this.IsLoading = true;
+    this.param_service.GetAllConvention().subscribe((data: any) => {
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+      this.dataConvention = data;
+      this.onRowUnselect(event);
+
+    })
+  }
+  GetAllConventionActif() {
+    this.IsLoading = true;
+    this.param_service.GetConventionActif().subscribe((data: any) => {
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+      this.dataConvention = data;
+      this.onRowUnselect(event);
+
+    })
+  }
+  GetAllConventionInactif() {
+    this.IsLoading = true;
+    this.param_service.GetConventionInActif().subscribe((data: any) => {
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+      this.dataConvention = data;
+      this.onRowUnselect(event);
+
+    })
   }
 
 
+  CloseModal() {
+    this.visDelete = false;
+  }
+
+
+
+
+  dataSociete = new Array<any>();
+  listSocietePushed = new Array<any>();
+  GetSociete() {
+    this.param_service.GetSocieteActif().subscribe((data: any) => {
+      this.dataSociete = data;
+      this.listSocietePushed = [];
+      for (let i = 0; i < this.dataSociete.length; i++) {
+        this.listSocietePushed.push({ label: this.dataSociete[i].designationAr, value: this.dataSociete[i].code })
+      }
+      this.ListSociete = this.listSocietePushed;
+    })
+  }
+
+
+
+  dataPriceList = new Array<any>();
+  listPriceListPushed = new Array<any>();
+  GetPristList() {
+    this.param_service.GetPriceListActif().subscribe((data: any) => {
+      this.dataPriceList = data;
+      this.listPriceListPushed = [];
+      for (let i = 0; i < this.dataPriceList.length; i++) {
+        this.listPriceListPushed.push({ label: this.dataPriceList[i].designationAr, value: this.dataPriceList[i].code })
+      }
+      this.ListpriceList = this.listPriceListPushed;
+    })
+  }
+
+
+
+
+
+  dataCouverture = new Array<any>();
+  listCouverturePushed = new Array<any>();
+  GetListCouverture() {
+    this.param_service.GetListCouvertureActif().subscribe((data: any) => {
+      this.dataCouverture = data;
+      this.listCouverturePushed = [];
+      for (let i = 0; i < this.dataCouverture.length; i++) {
+        this.listCouverturePushed.push({ label: this.dataCouverture[i].designationAr, value: this.dataCouverture[i].code })
+      }
+      this.ListCouverture = this.listCouverturePushed;
+    })
+  }
+
+
+
+
+  DateTempNew: any;
+  formatInputNew(event: any) {  // Use any because of p-calendar event type
+    let inputValue = event.target.value.replace(/\D/g, ''); // Remove non-digits
+    if (inputValue.length > 0) {
+      inputValue = inputValue.replace(/(\d{2})(\d{2})(\d{4})/, '$1/$2/$3');
+    }
+    event.target.value = inputValue;
+    this.DateTempNew = inputValue;
+    this.tryParseAndSetDateNew(inputValue);
+  }
+
+  tryParseAndSetDateNew(inputValue: string) {
+    let parts = inputValue.split('/');
+    if (parts.length === 3) {
+      let day = parseInt(parts[0], 10);
+      let month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+      let year = parseInt(parts[2], 10);
+
+      if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+        let dateObject = new Date(year, month, day); // Create Date object
+        this.dateDeb = dateObject; // Assign to your dateDeb property (might be a different type, handle accordingly)
+        this.DateTempNew = this.datePipe.transform(dateObject, 'yyyy-MM-dd')!; // Format here
+      }
+    }
+  }
+  // transformDateFormatNew() {
+  //   if (this.dateDeb) {
+  //     this.DateTempNew = this.datePipe.transform(this.dateDeb, 'dd/MM/yyyy')!;
+  //   }
+  // };
+
+
+
+
+  DateTempNewFin: any;
+  formatInputNewFin(event: any) {  // Use any because of p-calendar event type
+    let inputValue = event.target.value.replace(/\D/g, ''); // Remove non-digits
+    if (inputValue.length > 0) {
+      inputValue = inputValue.replace(/(\d{2})(\d{2})(\d{4})/, '$1/$2/$3');
+    }
+    event.target.value = inputValue;
+    this.DateTempNewFin = inputValue;
+    this.tryParseAndSetDateNewFin(inputValue);
+  }
+
+  tryParseAndSetDateNewFin(inputValue: string) {
+    let parts = inputValue.split('/');
+    if (parts.length === 3) {
+      let day = parseInt(parts[0], 10);
+      let month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+      let year = parseInt(parts[2], 10);
+
+      if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+        let dateObject = new Date(year, month, day); // Create Date object
+        this.dateFin = dateObject; // Assign to your dateDeb property (might be a different type, handle accordingly)
+        this.DateTempNew = this.datePipe.transform(dateObject, 'yyyy-MM-dd')!; // Format here
+      }
+    }
+  }
+  transformDateFormatNewFin() {
+    if (this.dateFin) {
+      this.DateTempNewFin = this.datePipe.transform(this.dateFin, 'yyyy-MM-dd')!;
+    }
+  };
+
+
+  transformDateFormat() {
+    this.dateDeb = this.datePipe.transform(this.dateDeb, "yyyy-MM-dd")
+  };
+
+
+
+  transformDateFormatFin() {
+    this.dateFin = this.datePipe.transform(this.dateFin, "yyyy-MM-dd")
+  };
 
 
 }

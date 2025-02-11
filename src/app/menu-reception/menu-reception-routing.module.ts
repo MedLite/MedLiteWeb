@@ -8,13 +8,25 @@ import { ChambreComponent } from './chambre/chambre.component';
 import { PlanningMedecinComponent } from './planning-medecin/planning-medecin.component';
 import { ClotureSessionComponent } from './cloture-session/cloture-session.component';
 import { CaisseReceptionComponent } from './caisse-reception/caisse-reception.component';
+import { AdmissionERComponent } from './admission-er/admission-er.component';
+import { AdmissionIPComponent } from './admission-ip/admission-ip.component';
 
 const routes: Routes = [
   { path: '', component: MenuReceptionComponent }
   ,{
-    path: 'admission',
+    path: 'admission_opd',
     component: AdmissionComponent ,
-    data:{title:'Admission' , icon :'bx bx-user-plus'}
+    data:{title:'AdmissionOPD' , icon :'fas fa-user'}
+  }
+  ,{
+    path: 'admission_er',
+    component: AdmissionERComponent ,
+    data:{title:'AdmissionER' , icon :'fas fa-users'}
+  }
+  ,{
+    path: 'admission_ip',
+    component: AdmissionIPComponent ,
+    data:{title:'AdmissionIP' , icon :'fas fa-user-injured'}
   },{
     path: 'edition_admission',
     component: EditionAdmissionComponent ,

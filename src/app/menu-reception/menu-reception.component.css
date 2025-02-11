@@ -1,0 +1,13 @@
+.vvv {
+    color: red !important;
+}
+
+
+/* :host ::ng-deep .mat-mdc-menu-content .mat-mdc-menu-item {
+  
+    font-weight: bold !important;
+} */
+
+.bold-menu-item {
+    font-weight: bold;
+}

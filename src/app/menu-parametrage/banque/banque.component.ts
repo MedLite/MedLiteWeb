@@ -5,7 +5,7 @@ import { Table } from 'primeng/table';
 import { Router } from '@angular/router';
 import { LoadingComponent } from '../../Shared/loading/loading.component';
 import { I18nService } from '../../Shared/i18n/i18n.service';
-import { ParametargeService } from '../WebService/parametarge.service';
+import { ParametargeService } from '../ServiceClient/parametarge.service';
 import { InputValidationService } from '../../Shared/Control/ControlFieldInput';
 import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
 

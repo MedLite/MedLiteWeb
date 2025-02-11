@@ -26,7 +26,9 @@ const arI18n = {
   'Medecin': 'الأطباء',
   'Banques': 'المصارف',
   'Banque': 'المصرف',
-  'Admission': 'إستقبال مريض',
+  'AdmissionOPD': 'إستقبال مريض عيادات',
+  'AdmissionER': 'إستقبال مريض طوارئ',
+  'AdmissionIP': 'إستقبال مريض داخلي',
   'Edition': 'تقارير',
   'Add': 'إضافة',
   'AddNewPatient': 'إضافة مريض',
@@ -127,7 +129,21 @@ const arI18n = {
  'Loading':'جاري تحميل البيانات',
  'RemMaj':'تخفيض / زيادة',
  'Remise':'تخفيض',
- 'Majoration':'زيادة'
+ 'Majoration':'زيادة',
+ 'LabelGroupedByFamilleFacturation':'تجميعي حسب بند الفاتورة',
+ 'CanNotChangePriceListCash':'لا يمكن تعديل قائمة أسعار نقدي',
+ 'ExportExcel':'تنزيل إكسل',
+ 'taux':'نسبة',
+ 'InvalidMontantCouverture':'قيمة التغطية ليست صحيحة',
+ 'MontantPatient':'قيمة المريض',
+ 'MontantPEC':'قيمة الجهة',
+ 'DateDebut':'تاريخ البداية',
+ 'DateFin':'تاريخ النهاية',
+ 'Other':'إجراءات آخرى',
+ 'LabelautoriseCons':'كشف',
+ 'LabelConsultationER':'كشف طوارئ',
+ 'LabelConsultationOPD':'كشف عيادات',
+ 
  
 };
 

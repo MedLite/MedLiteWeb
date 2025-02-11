@@ -8,7 +8,7 @@ import { LoadingComponent } from '../../Shared/loading/loading.component';
 import { I18nService } from '../../Shared/i18n/i18n.service';
 import { InputValidationService } from '../../Shared/Control/ControlFieldInput';
 import { Dropdown } from 'primeng/dropdown';
-import { ParametargeService } from '../WebService/parametarge.service';
+import { ParametargeService } from '../ServiceClient/parametarge.service';
 import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
 import { catchError, throwError } from 'rxjs';
 import * as _ from 'lodash';
@@ -197,16 +197,13 @@ export class PrestationComponent implements OnInit {
 
   GetColumns() {
     this.cols = [
-      { field: 'famillePrestationDTO.designationAr', header: this.i18nService.getString('FamillePrestation') || 'FamillePrestation', width: '20%', filter: "true" },
-
-      { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
-      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'DesignationArabic', width: '16%', filter: "true" },
-      { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '16%', filter: "false" },
-      
-      { field: 'familleFacturationDTO.designationAr', header: this.i18nService.getString('FamilleFacturation') || 'FamilleFacturation', width: '16%', filter: "false" },
-      
-      { field: 'sousFamillePrestationDTO.designationAr', header: this.i18nService.getString('SousFamillePrestation') || 'SousFamillePrestation', width: '20%', filter: "true" },
-      { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
+      { field: 'famillePrestationDTO.designationAr', header: this.i18nService.getString('FamillePrestation') || 'FamillePrestation', width: '10%', filter: "true" },
+      { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', filter: "true",width: '10%' },
+      { field: 'designationAr', header: this.i18nService.getString('Designation') || 'DesignationArabic', filter: "true",width: '28%' },
+      { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire',  filter: "false",width: '27%' },
+      { field: 'familleFacturationDTO.designationAr', header: this.i18nService.getString('FamilleFacturation') || 'FamilleFacturation', width: '10%', filter: "false" },
+      { field: 'sousFamillePrestationDTO.designationAr', header: this.i18nService.getString('SousFamillePrestation') || 'SousFamillePrestation', filter: "true",width: '10%'},
+      { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', filter: "true" , width: '5%'},
 
     ];
   }

@@ -40,14 +40,15 @@
             <div id="item" class="col-sm-6 col-md-3 myDIV ">
                 <div class="container-block ">
                     <div class="block1">
-                        <i class='bx bx-group' [ngClass]="{ 'MenuOpened': IsOpened3 }"></i>
+                        <!-- <i class='bx bx-group' ></i> -->
+                        <i class="fa-solid fa-user-doctor" [ngClass]="{ 'MenuOpened': IsOpened3 }"></i>
                     </div>
                     <div class="block2 ">
                         <span class="FloatRight" [ngClass]="{ 'MenuOpened': IsOpened3 }">  {{'Medecin' | i18nForMenu:i18nService.currentLanguage}}  </span>
                         <i class='FloatLeft bx bx-dots-vertical-rounded MenuMoreBtn' [ngClass]="{ 'MenuOpened': IsOpened3 }" (click)="onOpened3()" mat-button [matMenuTriggerFor]="menu3"></i>
 
                         <mat-menu #menu3="matMenu" class="div-panel" (closed)="onClosed3()">
-                            <button mat-menu-item [routerLink]="['/menu_parametarge/medecin']"> <i class='bx bx-group Mn'></i>  <span style="font-weight: bold;"> {{'Medecin' | i18nForMenu:i18nService.currentLanguage}} </span>  </button>
+                            <button mat-menu-item [routerLink]="['/menu_parametarge/medecin']"> <i class='fa-solid fa-user-doctor Mn'></i>  <span style="font-weight: bold;"> {{'Medecin' | i18nForMenu:i18nService.currentLanguage}} </span>  </button>
                             <button mat-menu-item [routerLink]="['/menu_parametarge/type_intervenant']"> <i class='bx bx-menu-alt-left Mn'></i> <span style="font-weight: bold;"> {{'TypeIntervenants' | i18nForMenu:i18nService.currentLanguage}}  </span> </button>
                             <button mat-menu-item [routerLink]="['/menu_parametarge/specialite_medecin']"> <i class='bx bx-group Mn'></i> <span style="font-weight: bold;">  {{'SpecialiteMedecin' | i18nForMenu:i18nService.currentLanguage}}  </span></button>
                             <button mat-menu-item [routerLink]="['/menu_parametarge/cabinet']"> <i class='bx bxs-door-open Mn'></i> <span style="font-weight: bold;">  {{'Cabinet' | i18nForMenu:i18nService.currentLanguage}} </span></button>

@@ -924,7 +924,7 @@ p-chips.p-chips-clearable .p-chips-clear-icon {
     -webkit-user-select: none;
     user-select: none;
     margin-right: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     border: 1px solid #ced4da;
     transition: background-color .15s, border-color .15s, box-shadow .15s;
     border-radius: 4px
@@ -3285,7 +3285,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-datatable .p-datatable-header {
-    background: #f3f3f3;
+    background: #ffffff;
     color: #212529;
     padding: 15px 0px 5px 15px;
     font-weight: 600
@@ -5240,8 +5240,8 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 .p-tabview .p-tabview-nav li .p-tabview-nav-link {
     border: solid;
     border-width: 1px;
-    border-color: #fff #fff #dee2e6 #fff;
-    background: #fff;
+    border-color: #dee2e6;
+    background: #f3f3f3;
     color: #6c757d;
     padding: .75rem 1rem;
     font-weight: 600;

@@ -102,6 +102,9 @@ import { ToFixedRoundPipe } from './Shared/service/ToFixedRoundPipe';
 import { SousFamillePrestationComponent } from './menu-parametrage/sous-famille-prestation/sous-famille-prestation.component';
 import { TypeOperationComponent } from './menu-parametrage/type-operation/type-operation.component';
 import { BlocOperationComponent } from './menu-parametrage/bloc-operation/bloc-operation.component';
+ 
+ 
+ 
 
 const languages = [
   { lang: 'عربي', flag: 'assets/images/county/ar.png', file: arI18n, valeur: 'ar' },
@@ -142,14 +145,16 @@ const languages = [
     }),
     ChartModule, BrowserModule,PanelModule,TabMenuModule,
     ReactiveFormsModule, BrowserAnimationsModule,
+   
     AppRoutingModule, DropdownModule, FormsModule,
-    HttpClientModule,
+    HttpClientModule, 
+  
     I18nModule.forRoot(languages), ReactiveFormsModule, TagModule, RippleModule, RatingModule, InputTextareaModule,
     CommonModule, ContextMenuModule, ToolbarModule, ConfirmDialogModule,
     BrowserModule, TableModule, InputTextModule, FileUploadModule,
     AppRoutingModule, DropdownModule, ButtonModule, InputNumberModule, NoopAnimationsModule,
     FormsModule, FormsModule, DialogModule, RadioButtonModule, HttpClientModule,
-    CalendarModule, CheckboxModule, BrowserAnimationsModule, TabViewModule
+    CalendarModule, CheckboxModule, BrowserAnimationsModule, TabViewModule,
 
   ],
   providers: [  authInterceptorProviders,DatePipe, LoginComponent, LoadingComponent, HttpClient, MessageService,

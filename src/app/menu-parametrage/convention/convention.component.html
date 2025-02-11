@@ -14,28 +14,13 @@
         <div class="material-table">
             <div class="card">
                 <p-table [paginator]="true" [rows]="20" [rowsPerPageOptions]="[20, 40,80,100]" [showCurrentPageReport]="true" [first]="first" currentPageReportTemplate="{{'Page' | i18n:i18nService.currentLanguage}} {first} {{'To' | i18n:i18nService.currentLanguage}} {last} {{'of' | i18n:i18nService.currentLanguage}} {totalRecords} {{'entiers' | i18n:i18nService.currentLanguage}}"
-                    #dt1 [columns]="cols" [value]="dataBanque" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedBanque" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
-                    dataKey="code" [tableStyle]="{'min-width': '50rem', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
+                    #dt1 [columns]="cols" rowGroupMode="rowspan" groupRowsBy="specialiteMedecinDTO.designationAr" [value]="dataConvention" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedConvention"
+                    (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" dataKey="code" [tableStyle]="{'min-width': '50rem', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
                     <ng-template pTemplate="caption" class="col-md-12">
                         <div>
                             <div class="flex-row-start FloatRight">
-                                <label class="control-label-titer flex-6">{{'Designation' | i18n:i18nService.currentLanguage}} :</label>
-                                <span class="p-input-icon-left ml-auto flex-6">
-                                    <input pInputText class="recherche-value" [(ngModel)]="searchTerm"
-                                        name="zone-recherche" type="text"
-                                        (keyup.enter)="dt1.filterGlobal($any($event.target).value, 'contains')"
-                                        placeholder=" . . ." />
-                                </span>
-                                <button type="button" class="Bouton-rechercher btn  btn-default " data-original-title="Add" (click)="dt1.filterGlobal($any($event.target).value, 'contains')">
-                                    <div class="bouton_style-2" >{{'Search' | i18n:i18nService.currentLanguage}}</div>
-                                    <i class="fa-solid fa-magnifying-glass search-icon"
-                                        style="font-size: 18px ;padding-top:2px ;"></i>
-                                </button>
-                                <button type="button" class="Bouton-rechercher btn  btn-default " data-original-title="Add" (click)="clear(dt1)" (click)="GetAllBanque()">
-                                    <div class="bouton_style-2">{{'Reinitialiser' | i18n:i18nService.currentLanguage}}</div>
-                                    <i class="fa-solid fa-arrows-rotate search-icon"
-                                        style=" padding-top: 2px; font-size: 18px;"></i>
-                                </button>
+                                <p-tabMenu [model]="items" [(activeItem)]="activeItem" />
+
                             </div>
                             <div class="flex-row-start flex-8 FloatLeft">
                                 <button data-backdrop="false" type="button" class="Bouton-add-new1 btn  btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('add')">
@@ -73,16 +58,22 @@
                             </th>
                         </tr>
                         <tr class="filter-row">
-                            <th *ngFor="let col of col">
-                                <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
+                            <th *ngFor="let col of col; let i = index">
+                                <p-columnFilter *ngIf="i !== 6" [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
                             </th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-domaine>
+                    <ng-template pTemplate="body" let-domaine let-rowgroup="rowgroup" let-rowspan="rowspan">
                         <tr [pSelectableRow]="domaine">
+                            <td *ngIf="rowgroup" [attr.rowspan]="rowspan">
+
+                                <span class="font-bold ml-2">{{domaine.societeDTO.designationAr}}</span>
+                            </td>
                             <td style="font-size: 15px !important;">{{domaine.codeSaisie}}</td>
                             <td style="font-size: 15px !important;">{{domaine.designationAr}}</td>
                             <td style="font-size: 15px !important;">{{domaine.designationLt}}</td>
+                            <td style="font-size: 15px !important;">{{domaine.dateDeb}}</td>
+                            <td style="font-size: 15px !important;">{{domaine.dateFin }}</td>
                             <td class="act-col">
                                 <p-checkbox [readonly]="true" [(ngModel)]="domaine.actif" [binary]="true" inputId="binary">{{domaine.actif}}</p-checkbox>
                             </td>
@@ -115,15 +106,21 @@
 
 
     <ng-template pTemplate="header">
-        <h2 class="text-default headerForm"> {{formHeader}}</h2>
-        <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearForm()"> 
-            <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i> 
-            {{'Close' | i18n:i18nService.currentLanguage}}
-        </button>
-        <button class="btn btn-default save-add-ModalSmall" (click)="PostBanque()"> 
-            <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
-            {{'Save' | i18n:i18nService.currentLanguage}}
-        </button>
+        <div class="FloatRight">
+            <h2 class="text-default headerForm"> {{formHeader}}</h2>
+        </div>
+        <div class="FloatLeft">
+            <button class="btn btn-default save-add-ModalSmall" (click)="PostConvention()"> 
+                <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+                {{'Save' | i18n:i18nService.currentLanguage}}
+            </button>
+            <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearForm()"> 
+                <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i> 
+                {{'Close' | i18n:i18nService.currentLanguage}}
+            </button>
+        </div>
+
+
     </ng-template>
 
     <div class="modal-body">
@@ -135,8 +132,8 @@
                     <section class="flex-row-start flex-6">
                         <label class="control-label  flex-4" style="width: 25%; "> {{'CodeSaisie' | i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
-                        <div class="control-input flex-5-45 ">
-                            <input id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class=" form-control-dev input-xs" #codeSaisieInput required [(ngModel)]="codeSaisie">
+                        <div class="control-input flex-5-45 " style="max-width: 100px;">
+                            <input readonly disabled="disabled" id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class=" form-control-dev input-xs" #codeSaisieInput required [(ngModel)]="codeSaisie">
 
                         </div>
                     </section>
@@ -163,6 +160,86 @@
                     </section>
 
                 </div>
+                <div class="flex-row-start flex-12">
+
+
+                    <section class="flex-row-start flex-6 ">
+                        <label class="control-label flex-4"> {{'Societe' | i18n:i18nService.currentLanguage}}
+                            : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="control-input  flex-5-45 ">
+                            <p-dropdown name="Societe" required #societeInput [filter]="true" appendTo="body" [options]="ListSociete" [(ngModel)]="selectedSociete" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true">
+                            </p-dropdown>
+                        </div>
+                    </section>
+
+                    <section class="flex-row-start flex-6">
+                        <label class="control-label flex-4"> {{'PriceList' | i18n:i18nService.currentLanguage}}
+                            : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="control-input  flex-5-45 ">
+                            <p-dropdown name="PriceList" required #priceListInput [filter]="true" appendTo="body" [options]="ListpriceList" [(ngModel)]="selectedpriceList" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true">
+                            </p-dropdown>
+                        </div>
+                    </section>
+
+
+                </div>
+
+                <div class="flex-row-start flex-12">
+
+                    <section class="flex-row-start flex-6">
+                        <label class="control-label flex-4"> {{'ListCouverture' | i18n:i18nService.currentLanguage}}
+                            : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="control-input  flex-5-45 ">
+                            <p-dropdown name="ListCouverture" required #listCouvertureInput [filter]="true" appendTo="body" [options]="ListCouverture" [(ngModel)]="selectedCouverture" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true">
+                            </p-dropdown>
+                        </div>
+                    </section>
+
+
+                    <section class="flex-row-start flex-6">
+
+                    </section>
+
+
+
+
+
+                </div>
+
+                <div class="flex-row-start flex-12">
+
+                    <section class="flex-row-start flex-6">
+                        <label class="control-label flex-4">  {{'DateDebut' |
+                            i18n:i18nService.currentLanguage}}
+                            : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="control-input  flex-6 " style="  display: flex;">
+
+                            <p-calendar (keyup.enter)="transformDateFormat()" (onInput)="formatInputNew($event)" (onBlur)="transformDateFormat()" (onChange)="transformDateFormat()" (onSelect)="transformDateFormat()" [(ngModel)]="dateDeb" [ngStyle]="{'width':'100%' , 'margin-right': '15px'}"
+                                [showButtonBar]="true" appendTo="body" [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay"></p-calendar>
+
+
+                        </div>
+                    </section>
+
+
+                    <section class="flex-row-start flex-6">
+                        <label class="control-label flex-4">  {{'DateFin' |
+                            i18n:i18nService.currentLanguage}}
+                            : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="control-input  flex-6 " style="  display: flex;">
+
+                            <p-calendar (keyup.enter)="transformDateFormatFin()" (onInput)="formatInputNewFin($event)" (onBlur)="transformDateFormatFin()" (onChange)="transformDateFormatFin()" (onSelect)="transformDateFormatFin()" [(ngModel)]="dateFin" [ngStyle]="{'width':'100%' , 'margin-right': '15px'}"
+                                [showButtonBar]="true" appendTo="body" [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay"></p-calendar>
+
+
+                        </div>
+                    </section>
+
+
+
+
+
+                </div>
 
 
 
@@ -178,6 +255,7 @@
 
 </p-dialog>
 
+
 <!-- modal primeNG  Delete-->
 <p-dialog class="modal-delete" id="ModalDelete" data-backdrop="false" header="Header" [(visible)]="visDelete" styleClass="ModalDelete" [modal]="true" [draggable]="false" [resizable]="false">
     <ng-template pTemplate="header">
@@ -186,13 +264,29 @@
     <div class="modal-body">
         <form action="" #addForms="ngForm">
             <fieldset class="deleteForms">
-                <h4 class="text-delete ">هل أنت متأكد من الحذف ?
+                <h4 class="text-delete " style="display: contents;">
+                    <div class="FloatRight">
+                        <h2 class="text-default"> هل أنت متأكد من الحذف ? </h2>
+                    </div>
 
-                    <button class="btn btn-default save-add-ModalSmall" style="right: 430px;" (click)="DeleteBanque(code)"> <i class="fa-solid fa-circle-check" style="color: #065c00;font-size: 16px; padding-right: 10px;"></i>
-                        حذف
-                    </button>
-                    <button class="btn btn-default cancel-add-ModalSmall" style="right: 520px;" :closable="true" data-dismiss="modal"> <i class="fa-solid fa-circle-xmark" style="color: #9e0000;font-size: 16px; padding-right: 5px;"></i>خروج
-                    </button>
+                    <div class="FloatLeft">
+
+                        <button class="btn btn-default save-add-ModalSmall" (click)="DeleteConvention(code)"> 
+                            <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+                            {{'Save' | i18n:i18nService.currentLanguage}}
+                        </button>
+
+
+                        <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="CloseModal()"> 
+                            <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i> 
+                            {{'Close' | i18n:i18nService.currentLanguage}}
+                        </button>
+
+
+
+                    </div>
+
+
 
 
 
@@ -203,7 +297,6 @@
     </div>
 </p-dialog>
 <!-- fin modal primeng  -->
-
 
 
 

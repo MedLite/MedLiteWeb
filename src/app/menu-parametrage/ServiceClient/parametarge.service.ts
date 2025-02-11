@@ -344,6 +344,13 @@ DeleteCaisse(code: any) {
 
     return this.http.get(`${environment.API_Parametrage}medecin/findBy?actif=true` )
   }
+
+  GetMedecinActifAndHaveConsultation(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}medecin/findBy?actif=true&have_consultation=true` )
+  }
+
+
   GetMedecinInActif(): Observable<any> {
 
     return this.http.get(`${environment.API_Parametrage}medecin/findBy?actif=false` )
@@ -365,6 +372,10 @@ DeleteCaisse(code: any) {
     return this.http.delete(`${environment.API_Parametrage}medecin/delete/`+code);
   }
 
+  GetPrestationConsultationByCodeMedecin(codeMedecin : any ){
+    return this.http.get(`${environment.API_Parametrage}prestation_consultation/codeMedecin?codeMedecin=`+codeMedecin);
+  }
+
 
   
    /// TypeIntervenant 
@@ -382,6 +393,11 @@ DeleteCaisse(code: any) {
   GetTypeIntervenantActif(IsActif : boolean): Observable<any> {
 
     return this.http.get(`${environment.API_Parametrage}type_intervenant/findBy?actif=`+ IsActif);
+  } 
+
+  GetTypeIntervenantActifAndVirtuel(IsActif : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}type_intervenant/findByActifAndVirtuel?actif=`+ IsActif +`&virtuel=false`);
   } 
 
   
@@ -414,6 +430,18 @@ DeleteCaisse(code: any) {
     return this.http.get(`${environment.API_Parametrage}societe/all`);
   }
 
+  GetSocieteActif(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}societe/findBy?actif=true`);
+  } 
+
+  
+  GetSocieteInActif(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}societe/findBy?actif=false`);
+  }
+
+
   PostSociete(body: any) {
 
     return this.http.post(`${environment.API_Parametrage}societe`, body);
@@ -438,6 +466,23 @@ DeleteCaisse(code: any) {
     return this.http.get(`${environment.API_Parametrage}price_list/all`);
   }
 
+
+    
+  GetPriceListExportPriceList(codePriceList :number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}price_list/excelDetailsParTypeIntervenant?codePriceList=`+codePriceList, { observe: 'response', responseType: "blob" });
+  }
+
+
+  
+  GetDetailsPriceListPrestationByCodePriceList(codePriceList:number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}price_list/prestation?codePriceList=`+codePriceList);
+  }
+  GetDetailsPriceListoperationByCodePriceList(codePriceList:number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}price_list/operation?codePriceList=`+codePriceList);
+  }
 
   GetPriceListActif(): Observable<any> {
 
@@ -502,6 +547,13 @@ DeleteCaisse(code: any) {
     return this.http.get(`${environment.API_Parametrage}prestation/findBy?actif=`+bool);
   }
 
+
+  GetPrestationConsultation(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}prestation/prestationConsultation`);
+  }
+
+  
 
   GetPrestationByCode(code : number): Observable<any> {
 
@@ -833,6 +885,115 @@ DeleteCaisse(code: any) {
 
     return this.http.delete(`${environment.API_Parametrage}operation/delete/`+code);
   }
+
+
+
+
+
+  
+   /// ListCouverture 
+
+  
+   GetListCouverture(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}list_couverture/all`);
+  }
+
+
+  
+  GetDetailsListCouverturePrestationByCodeListCouverture(codeListCouverture:number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}list_couverture/prestation?codeListCouverture=`+codeListCouverture);
+  }
+  GetDetailsListCouvertureoperationByCodeListCouverture(codeListCouverture:number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}list_couverture/operation?codeListCouverture=`+codeListCouverture);
+  }
+
+  GetListCouvertureActif(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}list_couverture/findBy?actif=true`);
+  }
+
+
+  GetListCouvertureInActif(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}list_couverture/findBy?actif=false`);
+  }
+
+
+  GetListCouvertureByCode(code : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}list_couverture/`+ code);
+  }
+
+ 
+
+  PostListCouverture(body: any) {
+
+    return this.http.post(`${environment.API_Parametrage}list_couverture`, body);
+  } 
+  PostListCouvertureNew(body: any ) {
+
+    return this.http.post(`${environment.API_Parametrage}list_couvertures`, body );
+  } 
+  UpdateListCouverture(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}list_couverture/update`, body);
+  }
+
+  DeleteListCouverture(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}list_couverture/delete/`+code);
+  }
+
+  //// convention 
+
+  GetAllConvention(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}convention/all`);
+  }
+
+
+  GetConventionByCode(code : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}convention/`+ code);
+  }
+
+  GetConventionByCodeSociete(codeSociete : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}convention/BySociete?code=`+ codeSociete);
+  }
+
+
+  GetConventionActif(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}convention/findBy?actif=true `);
+  }
+
+  GetConventionInActif(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}convention/findBy?actif=false` );
+  }
+  PostConvention(body: any) {
+
+    return this.http.post(`${environment.API_Parametrage}convention`, body);
+  } 
+ 
+  UpdateConvention(body: any) {
+
+    return this.http.put(`${environment.API_Parametrage}convention/update`, body);
+  }
+
+  DeleteConvention(code: any) {
+
+    return this.http.delete(`${environment.API_Parametrage}convention/delete/`+code);
+  }
+
+
+
+
+
 
 
 }

@@ -1,7 +1,6 @@
-import { AfterViewInit, Component, ElementRef, HostListener, QueryList, Renderer2, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { I18nService } from '../Shared/i18n/i18n.service';
 
-import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 
 declare const $: any;
 @Component({

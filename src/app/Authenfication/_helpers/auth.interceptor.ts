@@ -7,7 +7,7 @@ import { TokenStorageService } from '../_services/token-storage.service';
 import { BehaviorSubject, Observable, Subject, catchError, filter, finalize, map, switchMap, take, throwError } from 'rxjs';
 
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
- 
+
 import { MatDialog } from '@angular/material/dialog';
 import { ModalService } from '../../Shared/modal/modal.service';
 import { ModalContentComponent } from '../../Shared/modal-content/modal-content.component';
@@ -24,7 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
   backendDown: Boolean = false;
   private lastNotificationTime = 0;
   private errorSubject = new Subject<HttpErrorResponse>();
-  
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.requests.push(req);
 
@@ -50,7 +50,7 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     return next.handle(req)
-      .pipe( 
+      .pipe(
         map((event: any) => {
 
           if (event.status < 200 || event.status >= 300) {
@@ -63,26 +63,47 @@ export class AuthInterceptor implements HttpInterceptor {
         }),
 
         catchError((response: HttpErrorResponse) => {
+          // console.log("Erorrrr ", response)
+          // if (response.error == null) {
+          //   this.handleConnectionRefused(); //New function
+          // } else
+            if (response.status === 401) {
+              this.handleBackendError401(req, response);
+            } else if (response.status === 500 && !response.error == null) {
+              this.handleBackendError500(response);
+            }else if (response.status === 500 && response.error == null) {
+              this.handleConnectionRefused();
+            } else if (response.status === 404) {
+              this.handleBackendError404(response);
+            } else if (response.status === 409) {
+              this.handleBackendError409(response)
+            } else if (response.status === 400) {
+              this.handleBackendError400(response)
+            } else if (response.status === 403) {
+              this.handleBackendError403(response)
+            }
 
-          if (response.status === 401) {
-            this.handleBackendError401(req, response);
-          } else if (response.status === 500) {
-            this.handleBackendError500(response);
-          } else if (response.status === 404) {
-            this.handleBackendError404(response);
-          } else if (response.status === 409) {
-            this.handleBackendError409(response)
-          } else if (response.status === 400) {
-            this.handleBackendError400(response)
-          } else if (response.status === 403) {
-            this.handleBackendError403(response)
-          }
- 
+          // else{
+          //   this.handleGenericError(response);
+          // }
+
           return throwError("Error Not Exist!");
         }
 
         )
-      ); 
+
+        // catchError((error: any) => {
+        //   else if (error instanceof HttpErrorResponse) {
+        //     // Handle HTTP error codes (401, 500, etc.) after connection is confirmed
+        //     if (error.status === 401) { this.handleBackendError401(req, error); }
+        //     // ... other HTTP error handlers ...
+        //     return throwError(() => error); //Re-throw HttpErrorResponse
+        //   } else {
+        //     this.handleGenericError(error);
+        //     return throwError(() => new Error('An unexpected error occurred.')); //Generic error
+        //   }
+        // })
+      );
 
 
   }
@@ -90,6 +111,34 @@ export class AuthInterceptor implements HttpInterceptor {
   get isLoading(): boolean {
     return this.requests.length > 0;
   }
+
+  private handleConnectionRefused() {
+    // const currentTime = Date.now();
+    // if (currentTime - this.lastNotificationTime > 2000) {
+    //   this.lastNotificationTime = currentTime;
+    //   alertifyjs.set('notifier', 'position', 'top-left');
+    //   alertifyjs.error('Backend server not reachable. Please check your network connection and try again.');
+
+    // }
+
+    const currentTime = Date.now();
+    if (currentTime - this.lastNotificationTime > 1000) { // Only notify every 2 seconds
+      this.lastNotificationTime = currentTime;
+      alertifyjs.set('notifier', 'position', 'top-left');
+      alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/error.gif" alt="image" >   Backend server not reachable. Please check your network connection and try again.');
+
+
+    }
+
+
+  }
+
+  private handleGenericError(error: any) {
+    console.error('Unhandled error:', error); //For debugging
+    // ... your generic error handling ...
+  }
+
+
   LogOut() {
     sessionStorage.clear();
     this.reloadPage();
@@ -122,7 +171,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (currentTime - this.lastNotificationTime > 2000) { // Only notify every 2 seconds
       this.lastNotificationTime = currentTime;
 
-      if (error.error?.description != undefined) { 
+      if (error.error?.description != undefined) {
         alertifyjs.set('notifier', 'position', 'top-left');
         alertifyjs.notify(
           '<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/backend.gif" alt="image" >' +
@@ -130,10 +179,10 @@ export class AuthInterceptor implements HttpInterceptor {
         );
 
 
-      } else { 
+      } else {
         alertifyjs.set('notifier', 'position', 'top-left');
         alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/error.gif" alt="image" >' + error.error?.description);
-
+        console.log("ERrrororrrrrrrrrororororor")
 
       }
 
@@ -160,7 +209,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private handleBackendError401(request: HttpRequest<any>, errorResp: HttpErrorResponse) {
     const currentTime = Date.now();
-    if (currentTime - this.lastNotificationTime > 2000) { 
+    if (currentTime - this.lastNotificationTime > 2000) {
       this.lastNotificationTime = currentTime;
       alertifyjs.set('notifier', 'position', 'top-left');
       alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/expSession.png" alt="image" >' + errorResp.error?.description);
@@ -172,27 +221,27 @@ export class AuthInterceptor implements HttpInterceptor {
 
     }
   }
- 
+
 
   private handleBackendError409(errorResp: HttpErrorResponse) {
     const currentTime = Date.now();
-    if (currentTime - this.lastNotificationTime > 2000) {  
+    if (currentTime - this.lastNotificationTime > 2000) {
       this.lastNotificationTime = currentTime;
-      alertifyjs.set('notifier', 'position', 'top-left'); 
-      if ( errorResp.error?.type =='application/json'){
+      alertifyjs.set('notifier', 'position', 'top-left');
+      if (errorResp.error?.type == 'application/json') {
 
-        alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/error.gif" alt="image" > لا توجد بيانات'  );
+        alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/error.gif" alt="image" > لا توجد بيانات');
 
-      }else{
+      } else {
         alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/error.gif" alt="image" >' + errorResp.error?.description);
 
-      } 
+      }
     }
   }
 
   private handleBackendError400(errorResp: HttpErrorResponse) {
     const currentTime = Date.now();
-    if (currentTime - this.lastNotificationTime > 2000) {  
+    if (currentTime - this.lastNotificationTime > 2000) {
       this.lastNotificationTime = currentTime;
       alertifyjs.set('notifier', 'position', 'top-left');
 

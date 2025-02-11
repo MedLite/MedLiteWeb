@@ -2354,7 +2354,7 @@ input::placeholder {
 
 .topbar .navbar .dropdown-menu {
     -webkit-animation: .6s cubic-bezier(.25, .8, .25, 1) 0s normal forwards 1 animdropdown;
-    animation: .6s cubic-bezier(.25, .8, .25, 1) 0s normal forwards 1 animdropdown
+    animation: .6s cubic-bezier(.25, .8, .25, 1) 0s normal forwards 1 animdropdown;
 }
 
 @-webkit-keyframes animdropdown {
@@ -2923,4 +2923,9 @@ input::placeholder {
 [dir="ltr"] .DropSelectMajRemGrouped {
     margin-left: 0px !important;
     margin-right: 10px !important;
+}
+
+[dir="ltr"] .TabInput {
+    margin-left: 0px !important;
+    margin-right: 10px;
 }

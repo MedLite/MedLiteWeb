@@ -52,7 +52,7 @@ li.breadcrumb-item::after {
     padding-left: 0.5rem;
     color: #6c757d;
     content: url('../../../assets/images/breadcrumb.png');
-    font-family: 'FontAwesome';
+    font-family: "Font Awesome 6 Free";
     transform: rotate(180deg);
     margin-top: -2px;
     height: 40px;

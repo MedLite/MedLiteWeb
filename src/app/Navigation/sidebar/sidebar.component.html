@@ -5,7 +5,7 @@
             <img [src]="logo" id="preview" height="55" alt="Image preview" />
         </div>
         <div>
-            <h4 class="logo-text">Rocker</h4>
+            <h4 class="logo-text">MedLite</h4>
         </div>
         <div class="toggle-icon ms-auto"><i class='bx bx-arrow-back'></i>
         </div>
@@ -111,7 +111,7 @@
             <a class="has-arrow">
                 <div class="parent-icon"><i class='bx bx-first-aid'></i>
                 </div>
-                <div class="menu-title">{{'Reception' | i18n:i18nService.currentLanguage}}</div>
+                <div class="menu-title" [routerLink]="['/menu_reception']">{{'Reception' | i18n:i18nService.currentLanguage}}</div>
             </a>
             <ul>
                 <li> <a [routerLink]="['/menu_reception/admission']"><i class='bx bx-user-plus'></i>

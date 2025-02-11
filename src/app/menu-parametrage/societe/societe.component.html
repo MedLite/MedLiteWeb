@@ -19,23 +19,8 @@
                     <ng-template pTemplate="caption" class="col-md-12">
                         <div>
                             <div class="flex-row-start FloatRight">
-                                <label class="control-label-titer flex-6">{{'Designation' | i18n:i18nService.currentLanguage}} :</label>
-                                <span class="p-input-icon-left ml-auto flex-6">
-                                    <input pInputText class="recherche-value" [(ngModel)]="searchTerm"
-                                        name="zone-recherche" type="text"
-                                        (keyup.enter)="dt1.filterGlobal($any($event.target).value, 'contains')"
-                                        placeholder=" . . ." />
-                                </span>
-                                <button type="button" class="Bouton-rechercher btn  btn-default " data-original-title="Add" (click)="dt1.filterGlobal($any($event.target).value, 'contains')">
-                                    <div class="bouton_style-2" >{{'Search' | i18n:i18nService.currentLanguage}}</div>
-                                    <i class="fa-solid fa-magnifying-glass search-icon"
-                                        style="font-size: 18px ;padding-top:2px ;"></i>
-                                </button>
-                                <button type="button" class="Bouton-rechercher btn  btn-default " data-original-title="Add" (click)="clear(dt1)" (click)="GetAllSociete()">
-                                    <div class="bouton_style-2">{{'Reinitialiser' | i18n:i18nService.currentLanguage}}</div>
-                                    <i class="fa-solid fa-arrows-rotate search-icon"
-                                        style=" padding-top: 2px; font-size: 18px;"></i>
-                                </button>
+                                <p-tabMenu [model]="items" [(activeItem)]="activeItem" />
+
                             </div>
                             <div class="flex-row-start flex-8 FloatLeft">
                                 <button data-backdrop="false" type="button" class="Bouton-add-new1 btn  btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('add')">
@@ -141,7 +126,7 @@
                     <section class="flex-row-start flex-6">
                         <label class="control-label  flex-4" style="width: 25%; "> {{'CodeSaisie' | i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
-                        <div class="control-input flex-5-45 ">
+                        <div class="control-input flex-5-45 " style="max-width: 100px;">
                             <input readonly disabled id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class=" form-control-dev input-xs" #codeSaisieInput required [(ngModel)]="codeSaisie">
 
                         </div>

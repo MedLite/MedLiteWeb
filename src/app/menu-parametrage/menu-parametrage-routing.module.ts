@@ -87,7 +87,7 @@ const routes: Routes = [
   {
     path: 'medecin',
     component: MedecinComponent ,
-    data:{title:'Medecin',icon:'bx bx-group'}
+    data:{title:'Medecin',icon:'fas fa-user-doctor'}
   },
   {
     path: 'banque',

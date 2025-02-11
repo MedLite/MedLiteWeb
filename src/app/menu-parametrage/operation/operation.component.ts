@@ -8,7 +8,7 @@ import { LoadingComponent } from '../../Shared/loading/loading.component';
 import { I18nService } from '../../Shared/i18n/i18n.service';
 import { InputValidationService } from '../../Shared/Control/ControlFieldInput';
 import { Dropdown } from 'primeng/dropdown';
-import { ParametargeService } from '../WebService/parametarge.service';
+import { ParametargeService } from '../ServiceClient/parametarge.service';
 import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
 import { catchError, throwError } from 'rxjs';
 import * as _ from 'lodash';
@@ -233,6 +233,7 @@ export class OperationComponent implements OnInit {
     this.selectedTypeIntervenantIP = '';
     this.selectedBlocOperation = '',
     this.autorisModifInterv = false;
+    this.prixOperationMoyen=0;
     this.onRowUnselect(event);
 
   }
@@ -457,7 +458,8 @@ export class OperationComponent implements OnInit {
               userCreate: this.userCreate,
               dateCreate: new Date().toISOString(),
               codePriceList: this.codePriceListCash,
-              remMaj: "REM"
+              remMaj: "REM",
+              codeNatureAdmission:1
             });
           }
           );

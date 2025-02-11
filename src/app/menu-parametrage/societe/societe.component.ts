@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
 import * as alertifyjs from 'alertifyjs'
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { LoadingComponent } from '../../Shared/loading/loading.component';
 import { I18nService } from '../../Shared/i18n/i18n.service';
 import { InputValidationService } from '../../Shared/Control/ControlFieldInput';
-import { ParametargeService } from '../WebService/parametarge.service';
+import { ParametargeService } from '../ServiceClient/parametarge.service';
 import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
 import { Dropdown } from 'primeng/dropdown';
 
@@ -40,6 +40,8 @@ export class SocieteComponent  {
    
      @ViewChild('modal') modal!: any;
    
+     items: MenuItem[] | undefined;
+     activeItem: MenuItem | undefined;
      pdfData!: Blob;
      isLoading = false;
      cols!: any[]; 
@@ -61,11 +63,21 @@ export class SocieteComponent  {
    
      ngOnInit(): void {
        this.GetColumns();
-       this.GetAllSociete();
+       this.GetAllSocieteActif();
+       this.initializeTabMenu();
      }
    
    
-   
+     
+  initializeTabMenu() {
+    this.items = [
+      { label: this.i18nService.getString('LabelActif') || 'Actif', icon: 'pi pi-file-check', command: () => this.GetAllSocieteActif() },
+      { label: this.i18nService.getString('LabelInActif') || 'Inactif', icon: 'pi pi-file-excel', command: () => this.GetAllSocieteInActif() },
+      { label: this.i18nService.getString('LabelAll') || 'Tous', icon: 'pi pi-file', command: () => this.GetAllSociete() },
+    ];
+    this.activeItem = this.items[0];
+  }
+
      GetColumns() {
        this.cols = [ 
          { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
@@ -316,16 +328,38 @@ export class SocieteComponent  {
    
    
      GetAllSociete() {
-       this.param_service.GetSociete().subscribe((data: any) => {
-   
+      this.IsLoading = true;  
+       this.param_service.GetSociete().subscribe((data: any) => { 
          this.loadingComponent.IsLoading = false;
-         this.IsLoading = false;
-   
+         this.IsLoading = false; 
          this.dataSociete = data;
-         this.onRowUnselect(event);
-   
+         this.onRowUnselect(event);  
        })
      }
+
+      
+     GetAllSocieteActif() {
+      this.IsLoading = true;  
+       this.param_service.GetSocieteActif().subscribe((data: any) => { 
+         this.loadingComponent.IsLoading = false;
+         this.IsLoading = false; 
+         this.dataSociete = data;
+         this.onRowUnselect(event);  
+       })
+     }
+   
+
+      
+     GetAllSocieteInActif() {
+      this.IsLoading = true;  
+       this.param_service.GetSocieteInActif().subscribe((data: any) => { 
+         this.loadingComponent.IsLoading = false;
+         this.IsLoading = false; 
+         this.dataSociete = data;
+         this.onRowUnselect(event);  
+       })
+     }
+   
    
    
      CloseModal() {

@@ -1831,8 +1831,8 @@ padding: 0px 20px 0px 345px;
 }
 
 :host ::ng-deep .p-datatable .p-datatable-tbody>tr.p-highlight {
-    background: #d5dbe2;
-    color: #1D4ED8;
+    background: #005f979e;
+    color: #ffffff;
 }
 
 :host ::ng-deep .p-datatable-scrollable .p-datatable-thead>tr>th,
@@ -2069,6 +2069,7 @@ label.header_name {
     opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
+    /* z-index: 999999; */
 }
 
 .ReadOnly {
@@ -2704,7 +2705,7 @@ input#PEC {
     font-family: auto;
     overflow-y: auto;
     overflow-x: hidden;
-    height: 450px;
+    height: 85%;
     margin-top: 90px;
 }
 
@@ -2765,6 +2766,7 @@ input#PEC {
     border: 1px solid #a9a9a963;
     border-radius: 6px;
     width: 130px;
+    margin-left: 10px;
 }
 
 :host ::ng-deep .pi-file-excel:before {
@@ -2780,4 +2782,8 @@ input#PEC {
 :host ::ng-deep .pi-file:before {
     content: "\e958";
     color: #0070ff;
+}
+
+.ModalAddFacture {
+    margin-top: 10px;
 }

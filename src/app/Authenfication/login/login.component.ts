@@ -65,17 +65,17 @@ export class LoginComponent implements OnInit {
     this.reloadCurrentRoute();
 
     },
-    err => {
-      if ([500].includes(err.status)) {
-        alertifyjs.set('notifier', 'position', 'top-left');
-        alertifyjs.error('<i class="error fa fa-exclamation-circle" aria-hidden="true" style="margin: 5px 5px 5px;font-size: 15px !important;;""></i>' + ` Service Core Not Available 503`);
-        this.playSoundError();
-      }
+    // err => {
+    //   if ([500].includes(err.status)) {
+    //     alertifyjs.set('notifier', 'position', 'top-left');
+    //     alertifyjs.error('<i class="error fa fa-exclamation-circle" aria-hidden="true" style="margin: 5px 5px 5px;font-size: 15px !important;;""></i>' + ` Service Core Not Available 503`);
+    //     this.playSoundError();
+    //   }
 
 
-      this.isLoginFailed = true;
+    //   this.isLoginFailed = true;
 
-    }
+    // }
     );
   }
 

@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { LoadingComponent } from '../../Shared/loading/loading.component';
 import { I18nService } from '../../Shared/i18n/i18n.service';
 import { InputValidationService } from '../../Shared/Control/ControlFieldInput';
-import { ParametargeService } from '../WebService/parametarge.service';
+import { ParametargeService } from '../ServiceClient/parametarge.service';
 import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
 
 
@@ -55,12 +55,10 @@ export class TypeIntervenantComponent implements OnInit {
   code!: number | null;
   codeSaisie: any;
   designationAr: string = 'NULL';
-  designationLt: string = "NULL";
-  autoriseFrais!: boolean;
+  designationLt: string = "NULL"; 
   actif!: boolean;
   visible!: boolean;
-  LabelActif!: string;
-  LabelautoriseFrais !: string;
+  LabelActif!: string; 
 
   userCreate = sessionStorage.getItem("userName");
   dataTypeIntervenant = new Array<any>();
@@ -98,7 +96,6 @@ export class TypeIntervenantComponent implements OnInit {
       { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '16%', filter: "true" },
       { field: 'designationAr', header: this.i18nService.getString('Designation') || 'Designation', width: '16%', filter: "true" },
       { field: 'designationLt', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '16%', filter: "false" },
-      { field: 'autoriseFrais', header: this.i18nService.getString('LabelautoriseFrais') || 'LabelautoriseFrais', width: '16%', filter: "true" },
       { field: 'actif', header: this.i18nService.getString('LabelActif') || 'Actif', width: '16%', filter: "true" },
 
     ];
@@ -132,8 +129,7 @@ export class TypeIntervenantComponent implements OnInit {
     this.actif = false;
     this.visibleModal = false;
     this.codeSaisie = '';
-    this.selectedTypeIntervenant = ''
-    this.autoriseFrais = false;
+    this.selectedTypeIntervenant = '' 
     this.onRowUnselect(event);
 
   }
@@ -144,8 +140,7 @@ export class TypeIntervenantComponent implements OnInit {
 
   onRowSelect(event: any) {
     this.code = event.data.code;
-    this.actif = event.data.actif;
-    this.autoriseFrais = event.data.autoriseFrais;
+    this.actif = event.data.actif; 
     this.visible = event.data.visible;
     this.codeSaisie = event.data.codeSaisie;
     this.designationAr = event.data.designationAr;
@@ -174,8 +169,7 @@ export class TypeIntervenantComponent implements OnInit {
 
   public onOpenModal(mode: string) {
 
-    this.LabelActif = this.i18nService.getString('LabelActif');
-    this.LabelautoriseFrais = this.i18nService.getString('LabelautoriseFrais');
+    this.LabelActif = this.i18nService.getString('LabelActif'); 
     this.visibleModal = false;
     this.visDelete = false;
     this.visibleModalPrint = false;
@@ -280,8 +274,7 @@ export class TypeIntervenantComponent implements OnInit {
         userCreate: this.userCreate,
         dateCreate: new Date().toISOString(), //
         code: this.code,
-        actif: this.actif,
-        autoriseFrais: this.autoriseFrais,
+        actif: this.actif, 
 
       }
       if (this.code != null) {
@@ -352,7 +345,7 @@ export class TypeIntervenantComponent implements OnInit {
   
   GetAllTypeIntervenantActif() {
     this.IsLoading = true;  
-    this.param_service.GetTypeIntervenantActif(true).subscribe((data: any) => { 
+    this.param_service.GetTypeIntervenantActifAndVirtuel(true).subscribe((data: any) => { 
       this.loadingComponent.IsLoading = false;
       this.IsLoading = false; 
       this.dataTypeIntervenant = data;

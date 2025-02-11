@@ -26,6 +26,13 @@
         "logLevel": "debug",
         "changeOrigin": true,
         "timeout": 360000
+    },
+    "/reception": {
+        "target": "http://localhost:9099/api",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "timeout": 360000
     }
 
 }

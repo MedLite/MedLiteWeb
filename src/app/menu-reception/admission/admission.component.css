@@ -1,11 +1,17 @@
 :host ::ng-deep .ModalAddRercherPatient {
     height: 600px !important;
     width: 1130px !important;
+    margin-top: 10px;
 }
 
 :host ::ng-deep .filter-row th {
     padding: 0 !important;
     height: 10px !important;
+}
+
+:host ::ng-deep .ModalAdd {
+    margin-top: 10px !important;
+    height: 310px !important;
 }
 
 .sticky-header {
@@ -21,4 +27,23 @@
 .filter-row th {
     padding: 0 !important;
     height: 10px !important;
+}
+
+:host ::ng-deep .calendar_default_rowheader_inner {
+    text-align: left;
+    padding: 5px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+ :host ::ng-deep .calendar_default_colheader_inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+ :host ::ng-deep .calendar_default_event_inner {
+    color: #333;
 }

@@ -7,7 +7,7 @@ import { LoadingComponent } from '../../Shared/loading/loading.component';
 import { I18nService } from '../../Shared/i18n/i18n.service';
 import { InputValidationService } from '../../Shared/Control/ControlFieldInput';
 import { Dropdown } from 'primeng/dropdown';
-import { ParametargeService } from '../WebService/parametarge.service';
+import { ParametargeService } from '../ServiceClient/parametarge.service';
 import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
 
 declare const PDFObject: any;
