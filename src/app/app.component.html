@@ -4,14 +4,14 @@
 
 <div class="wrapper">
 
-    <app-sidebar *ngIf="TokenOK"></app-sidebar>
-    <app-top-bar *ngIf="TokenOK"></app-top-bar>
+    <app-sidebar *ngIf="TokenOK && showSidebar"></app-sidebar>
+    <app-top-bar *ngIf="TokenOK && showTopBar"></app-top-bar>
 
-    <app-footer *ngIf="TokenOK"></app-footer>
+    <app-footer *ngIf="TokenOK && showFooter"></app-footer>
     <div class="page-wrapper">
         <div class="page-content">
 
-            <app-breadcrumb></app-breadcrumb>
+            <app-breadcrumb *ngIf="showBreadcrumb"></app-breadcrumb>
 
             <router-outlet></router-outlet>
         </div>

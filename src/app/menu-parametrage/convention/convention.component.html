@@ -167,7 +167,8 @@
                         <label class="control-label flex-4"> {{'Societe' | i18n:i18nService.currentLanguage}}
                             : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                         <div class="control-input  flex-5-45 ">
-                            <p-dropdown name="Societe" required #societeInput [filter]="true" appendTo="body" [options]="ListSociete" [(ngModel)]="selectedSociete" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true">
+                            <p-dropdown name="Societe" [disabled]="DisabledSociete" required #societeInput [filter]="true" appendTo="body" [options]="ListSociete" [(ngModel)]="selectedSociete" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true"
+                                (onChange)="GetPriceListAndCouvertureByCodeSociete(selectedSociete)">
                             </p-dropdown>
                         </div>
                     </section>
@@ -176,7 +177,7 @@
                         <label class="control-label flex-4"> {{'PriceList' | i18n:i18nService.currentLanguage}}
                             : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                         <div class="control-input  flex-5-45 ">
-                            <p-dropdown name="PriceList" required #priceListInput [filter]="true" appendTo="body" [options]="ListpriceList" [(ngModel)]="selectedpriceList" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true">
+                            <p-dropdown name="PriceList" [disabled]="DisabledPL" required #priceListInput [filter]="true" appendTo="body" [options]="ListpriceList" [(ngModel)]="selectedpriceList" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true">
                             </p-dropdown>
                         </div>
                     </section>
@@ -190,7 +191,8 @@
                         <label class="control-label flex-4"> {{'ListCouverture' | i18n:i18nService.currentLanguage}}
                             : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                         <div class="control-input  flex-5-45 ">
-                            <p-dropdown name="ListCouverture" required #listCouvertureInput [filter]="true" appendTo="body" [options]="ListCouverture" [(ngModel)]="selectedCouverture" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true">
+                            <p-dropdown name="ListCouverture" [disabled]="DisabledCouverture" required #listCouvertureInput [filter]="true" appendTo="body" [options]="ListCouverture" [(ngModel)]="selectedCouverture" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;"
+                                [lazy]="true">
                             </p-dropdown>
                         </div>
                     </section>

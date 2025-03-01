@@ -67,6 +67,7 @@ const arI18n = {
   'NomMedecin': 'الطبيب',
   'montantConsultation': 'القيمة',
   'selctedAnyConvention': 'الرجاء إختيار إتفاقية',
+  'selctedAnyConventionOrSociete':'الرجاء إختيار إتفاقية أو الجهة',
   'FamillePrestation': 'نوع الخدمات',
   'FamilleOperation': 'صنف العمليات',
   'FamilleFacturation': 'بند الفاتورة',
@@ -143,8 +144,17 @@ const arI18n = {
  'LabelautoriseCons':'كشف',
  'LabelConsultationER':'كشف طوارئ',
  'LabelConsultationOPD':'كشف عيادات',
- 
- 
+ 'DossierMedical':'الملف الطبي',
+ 'NbrePlaceDisponible':'عدد الأماكن المتاحة',
+ 'DateDispo':'تاريخ',
+ 'Planning':'الجدول',
+ 'PlanningDejaExisteWithThisMedecin':'هناك جدول لنفس الطبيب بنفس التاريخ',
+ 'nbrePlaceUtiliser':'عدد الأمكان المحجوزة',
+ 'DateDispoDu':'تاريخ التواجد من',
+ 'DateDispoAu':'تاريخ التواجد إلى',
+ 'PleaseChooseAnyDate':'الرجاء إختيار تاريخ بداية و نهاية',
+ 'ConventionOblgatoire':'الرجاء إختيار إتفاقية',
+ 'NoPlanningInThisDay':'لا يوجد جدول للأطباء اليوم'
 };
 
 

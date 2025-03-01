@@ -75,9 +75,9 @@ export class PrestationComponent implements OnInit {
   code!: number | null;
   codeSaisie: any;
   codeTypeIntervenantClinique: any;
-  codeNatureAdmissionER: any;
-  codeNatureAdmissionIP: any;
-  codeNatureAdmissionOPD: any;
+  // codeNatureAdmissionER: any;
+  // codeNatureAdmissionIP: any;
+  // codeNatureAdmissionOPD: any;
   codePriceListCash: any;
   designationAr: string = 'NULL';
   designationLt: string = "NULL";
@@ -146,9 +146,9 @@ export class PrestationComponent implements OnInit {
   ];
   this.activeItem = this.items[0]; 
     this.GetCodeTypeIntervCinic();
-    this.GetCodeNatureAdmissionIP();
-    this.GetCodeNatureAdmissionOPD();
-    this.GetCodeNatureAdmissionER();
+    // this.GetCodeNatureAdmissionIP();
+    // this.GetCodeNatureAdmissionOPD();
+    // this.GetCodeNatureAdmissionER();
     this.GetCodePriceListCash();
     this.GetColumns(); 
     this.GetAllPrestationActif(); 
@@ -162,28 +162,28 @@ export class PrestationComponent implements OnInit {
   }
 
 
-  GetCodeNatureAdmissionER() {
-    this.param_service.GetParam("CodeNatureAdmissionER").
-      subscribe((data: any) => {
-        this.codeNatureAdmissionER = data.valeur;
-      })
-  }
+  // GetCodeNatureAdmissionER() {
+  //   this.param_service.GetParam("CodeNatureAdmissionER").
+  //     subscribe((data: any) => {
+  //       this.codeNatureAdmissionER = data.valeur;
+  //     })
+  // }
 
 
 
-  GetCodeNatureAdmissionOPD() {
-    this.param_service.GetParam("CodeNatureAdmissionOPD").
-      subscribe((data: any) => {
-        this.codeNatureAdmissionOPD = data.valeur;
-      })
-  }
+  // GetCodeNatureAdmissionOPD() {
+  //   this.param_service.GetParam("CodeNatureAdmissionOPD").
+  //     subscribe((data: any) => {
+  //       this.codeNatureAdmissionOPD = data.valeur;
+  //     })
+  // }
 
-  GetCodeNatureAdmissionIP() {
-    this.param_service.GetParam("CodeNatureAdmissionIP").
-      subscribe((data: any) => {
-        this.codeNatureAdmissionIP = data.valeur;
-      })
-  }
+  // GetCodeNatureAdmissionIP() {
+  //   this.param_service.GetParam("CodeNatureAdmissionIP").
+  //     subscribe((data: any) => {
+  //       this.codeNatureAdmissionIP = data.valeur;
+  //     })
+  // }
 
   GetCodePriceListCash() {
     this.param_service.GetParam("PriceListCash").
@@ -329,13 +329,14 @@ export class PrestationComponent implements OnInit {
 
 
   public onOpenModal(mode: string) {
-    // this.prixSelonTypeArriverER="";
-    // this.prixSelonTypeArriverIP="";
-    // this.prixSelonTypeArriverOPD="";
-
-    // this.DetailsPrestationByCodePrestationER = new Array();
-    // this.DetailsPrestationByCodePrestationOPD = new Array();
-    // this.DetailsPrestationByCodePrestationIP = new Array();
+  
+    
+    const natureAdmEr = sessionStorage.getItem("NatureAdmissionER") ;
+    const codeNatAdmER = Number(natureAdmEr);
+    const natureAdmOPD = sessionStorage.getItem("NatureAdmissionOPD") ;
+    const codeNatAdmOPD = Number(natureAdmOPD);
+    const natureAdmIP = sessionStorage.getItem("NatureAdmissionIP") ;
+    const codeNatAdmIP = Number(natureAdmIP);
 
     this.DetailsPrestationByCodePrestationOPD = [{ codeTypeIntervenant: null, designationArTypeIntervenant: "", prixSelonTypeArriver: 0, userCreate: "", dateCreate: "" }];
     this.DetailsPrestationByCodePrestationER = [{ codeTypeIntervenant: null, designationArTypeIntervenant: "", prixSelonTypeArriver: 0, userCreate: "", dateCreate: "" }];
@@ -429,7 +430,7 @@ export class PrestationComponent implements OnInit {
 
         if (this.erPatientBoolean == true) {
           this.disPrixER = true
-          this.param_service.GetDetailsPrestationByCodeAndCodeNatureAdmission(this.selectedPrestation.code, this.codeNatureAdmissionER).subscribe((data: any) => {
+          this.param_service.GetDetailsPrestationByCodeAndCodeNatureAdmission(this.selectedPrestation.code, codeNatAdmER).subscribe((data: any) => {
             this.DetailsPrestationByCodePrestationER = data;
           })
 
@@ -438,7 +439,7 @@ export class PrestationComponent implements OnInit {
         }
         if (this.outPatientBoolean == true) {
           this.disPrixOPD = true
-          this.param_service.GetDetailsPrestationByCodeAndCodeNatureAdmission(this.selectedPrestation.code, this.codeNatureAdmissionOPD).subscribe((data: any) => {
+          this.param_service.GetDetailsPrestationByCodeAndCodeNatureAdmission(this.selectedPrestation.code, codeNatAdmOPD).subscribe((data: any) => {
             this.DetailsPrestationByCodePrestationOPD = data;
           })
         } else {
@@ -446,7 +447,7 @@ export class PrestationComponent implements OnInit {
         }
         if (this.ipPatientBoolean == true) {
           this.disPrixIP = true
-          this.param_service.GetDetailsPrestationByCodeAndCodeNatureAdmission(this.selectedPrestation.code, this.codeNatureAdmissionIP).subscribe((data: any) => {
+          this.param_service.GetDetailsPrestationByCodeAndCodeNatureAdmission(this.selectedPrestation.code, codeNatAdmIP).subscribe((data: any) => {
             this.DetailsPrestationByCodePrestationIP = data;
           })
         } else {
@@ -520,11 +521,20 @@ export class PrestationComponent implements OnInit {
     const isValid = this.validateAllInputs();
     if (isValid) {
 
+      const natureAdmEr = sessionStorage.getItem("NatureAdmissionER") ;
+      const codeNatAdmER = Number(natureAdmEr);
+      const natureAdmOPD = sessionStorage.getItem("NatureAdmissionOPD") ;
+      const codeNatAdmOPD = Number(natureAdmOPD);
+      const natureAdmIP = sessionStorage.getItem("NatureAdmissionIP") ;
+      const codeNatAdmIP = Number(natureAdmIP);
+
+
+
       // Combine data collection into a single loop for each patient type
       const patientTypes = [
-        { type: 'OPD', boolean: this.outPatientBoolean, codeNatureAdmission: 2, data: this.DetailsPrestationByCodePrestationOPD },
-        { type: 'IP', boolean: this.ipPatientBoolean, codeNatureAdmission: 1, data: this.DetailsPrestationByCodePrestationIP },
-        { type: 'ER', boolean: this.erPatientBoolean, codeNatureAdmission: 3, data: this.DetailsPrestationByCodePrestationER },
+        { type: 'OPD', boolean: this.outPatientBoolean, codeNatureAdmission: codeNatAdmOPD, data: this.DetailsPrestationByCodePrestationOPD },
+        { type: 'IP', boolean: this.ipPatientBoolean, codeNatureAdmission: codeNatAdmIP, data: this.DetailsPrestationByCodePrestationIP },
+        { type: 'ER', boolean: this.erPatientBoolean, codeNatureAdmission: codeNatAdmER, data: this.DetailsPrestationByCodePrestationER },
       ];
 
       patientTypes.forEach(patientType => {

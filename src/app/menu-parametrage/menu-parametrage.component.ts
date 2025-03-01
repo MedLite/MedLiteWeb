@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { I18nService } from '../Shared/i18n/i18n.service';
+import { ParametargeService } from './ServiceClient/parametarge.service';
 
 
 declare const $: any;
@@ -9,10 +10,16 @@ declare const $: any;
   styleUrls: ['./menu-parametrage.component.css', '.../../../src/assets/css/StyleMenu.css'
     , '.../../../src/assets/css/BS.css', '.../../../src/assets/css/BS3.7.css']
 })
-export class MenuParametrageComponent {
+export class MenuParametrageComponent implements OnInit {
   showSubmenu: boolean = false;
-  constructor(public i18nService: I18nService) { }
+  constructor( public param_service: ParametargeService,public i18nService: I18nService) { }
   
+  ngOnInit(): void {
+   this.GetCodeNatureAdmissionOPD(); 
+   this.GetCodeNatureAdmissionER(); 
+   this.GetCodeNatureAdmissionIP(); 
+  }
+
   IsOpened = false;
   onOpened() { 
     this.IsOpened = true;
@@ -62,6 +69,46 @@ export class MenuParametrageComponent {
     this.IsOpened6 = false; 
   } 
 
+  codeNatureAdmissionOPD: any;
+  codeNatureAdmissionER: any;
+  GetCodeNatureAdmissionOPD() {
+    if(sessionStorage.getItem("NatureAdmissionOPD") != undefined ||  sessionStorage.getItem("NatureAdmissionOPD") != null ){
+
+    }else{
+      this.param_service.GetParam("CodeNatureAdmissionOPD").
+      subscribe((data: any) => { 
+        sessionStorage.setItem("NatureAdmissionOPD", data.valeur);
+      })
+    }
+   
+  }
+
+  GetCodeNatureAdmissionER() {
+    if(sessionStorage.getItem("NatureAdmissionER") != undefined ||  sessionStorage.getItem("NatureAdmissionER") != null ){
+
+    }else{
+      this.param_service.GetParam("CodeNatureAdmissionER").
+      subscribe((data: any) => { 
+        sessionStorage.setItem("NatureAdmissionER", data.valeur);
+
+      })
+    }
+   
+  }
+
+  GetCodeNatureAdmissionIP() {
+    if(sessionStorage.getItem("NatureAdmissionIP") != undefined ||  sessionStorage.getItem("NatureAdmissionIP") != null ){
+
+    }else{
+      this.param_service.GetParam("CodeNatureAdmissionIP").
+      subscribe((data: any) => { 
+        sessionStorage.setItem("NatureAdmissionIP", data.valeur);
+
+      })
+    }
+
+   
+  }
 
 
 }

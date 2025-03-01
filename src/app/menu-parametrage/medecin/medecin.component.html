@@ -187,11 +187,6 @@
 
                 </div>
 
-                <!-- <div class="flex-row-start flex-12" *ngIf="VisibleAutoriseConsultation">
-                    <p-tabMenu [model]="itemsNatureAdmission" [(activeItem)]="activeItemNatureAdmission" />
-
-
-                </div> -->
                 <br>
                 <div class="flex-row-start flex-12" *ngIf="VisibleAutoriseConsultation">
                     <p-tabView [style]="{'width':'375px'}">
@@ -201,7 +196,7 @@
                                     i18n:i18nService.currentLanguage}}
                                     : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                                 <div class="control-input  flex-5-45 ">
-                                    <p-dropdown name="PrestationOPD" [filter]="true" appendTo="body" [options]="ListPrestation" [(ngModel)]="SelectedPrestationOPD" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true">
+                                    <p-dropdown name="PrestationOPD" [filter]="true" appendTo="body" [options]="ListPrestationOPD" [(ngModel)]="SelectedPrestationOPD" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true">
                                     </p-dropdown>
                                 </div>
                             </div>
@@ -213,7 +208,7 @@
                                     i18n:i18nService.currentLanguage}}
                                     : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                                 <div class="control-input  flex-5-45 ">
-                                    <p-dropdown name="PrestationER" [filter]="true" appendTo="body" [options]="ListPrestation" [(ngModel)]="SelectedPrestationER" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true">
+                                    <p-dropdown name="PrestationER" [filter]="true" appendTo="body" [options]="ListPrestationER" [(ngModel)]="SelectedPrestationER" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true">
                                     </p-dropdown>
                                 </div>
 

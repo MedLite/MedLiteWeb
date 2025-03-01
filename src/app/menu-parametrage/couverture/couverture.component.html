@@ -126,12 +126,14 @@
                     </section>
                     <section class="flex-row-start flex-6 ">
                         <div class="flex-6">
-                            <!-- <label class="control-label flex-4">{{'Societe' | i18n:i18nService.currentLanguage}} : <i
-                                    class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                            <label class="control-label flex-4">{{'Societe' | i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                             <div class="dop control-input " style="display: flex; place-content: space-evenly;">
-                                <p-dropdown name="Societe" [filter]="true" appendTo="body" [options]="ListSocieteRslt" [(ngModel)]="selectedSociete" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" #societeInput required [lazy]="true" #Societe="ngModel">
+                                <p-dropdown name="Societe" [filter]="true" appendTo="body" [options]="ListPriceListRslt" [(ngModel)]="selectedPriceList" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" #societeInput required [lazy]="true"
+                                    #Societe="ngModel" (ngModelChange)="GetAllPrestation(this.selectedPriceList)">
                                 </p-dropdown>
-                            </div> -->
+                            </div>
+
                         </div>
                         <div class="flex-6 PaddingRight" style="align-self: center;">
                             <p-checkbox [binary]="true" name="actif" [(ngModel)]="actif" value="val3" [label]="LabelActif"></p-checkbox>
@@ -283,7 +285,7 @@
                                                                         </th>
                                                                     </tr>
                                                                 </ng-template>
-                                                                <ng-template pTemplate="body" let-prestation>
+                                                                <ng-template pTemplate="body" let-prestation let-prestationsPrice>
                                                                     <tr>
                                                                         <td>{{ prestation.codeSaisie }}</td>
                                                                         <td>{{ prestation.designationAr }}</td>

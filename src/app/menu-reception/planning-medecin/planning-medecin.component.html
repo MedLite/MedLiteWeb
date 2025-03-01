@@ -1,1 +1,467 @@
-<p>planning-medecin works!</p>
+<body class="card" [ngClass]="{ 'disabled': IsLoading }">
+    <app-loading [IsLoading]="IsLoading">
+    </app-loading>
+    <header>
+
+        <label class="header_name">{{'PlanningMedcin' | i18n:i18nService.currentLanguage}} </label>
+        <button class="close-button btn btn-default" (click)="closeThisComponent()">X</button>
+    </header>
+    <aside>
+        <div class="Groupe-Bouton">
+            <div class="flex-row-around">
+                <button data-backdrop="false" type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="RecherPatient" data-toggle="modal" data-target="#ModalRercherPatient" (click)="onOpenModal('add')">
+                    <span class="label-btn">
+                        <i class="fa-solid fa-file-invoice-dollar iconADD2"></i>
+                    </span>
+                    <div class="bouton_style-2"> {{'Add' | i18n:i18nService.currentLanguage}} </div>
+
+                </button>
+            </div>
+            <div class="flex-row-around">
+                <button type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('edit')">
+
+                    <i class='bx bx-edit-alt iconModif'></i>
+                    <div class="bouton_style-2">{{'Modifier' | i18n:i18nService.currentLanguage}} </div>
+                </button>
+
+
+
+
+            </div>
+
+
+
+            <div class="flex-row-around">
+                <button type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('voir')">
+                    <i class='bx bxs-trash IconDel'></i>
+                    <div class="bouton_style-2"> {{'Delete' | i18n:i18nService.currentLanguage}} </div>
+                </button>
+
+
+            </div>
+
+
+
+        </div>
+    </aside>
+    <section id="main-container">
+
+        <div class="material-table">
+            <div class="card">
+                <p-table [paginator]="true" [rows]="20" [rowsPerPageOptions]="[20, 40,80,100]" [showCurrentPageReport]="true" [first]="first" currentPageReportTemplate="{{'Page' | i18n:i18nService.currentLanguage}} {first} {{'To' | i18n:i18nService.currentLanguage}} {last} {{'of' | i18n:i18nService.currentLanguage}} {totalRecords} {{'entiers' | i18n:i18nService.currentLanguage}}"
+                    #dt1 [columns]="cols" rowGroupMode="subheader" groupRowsBy="dateExiste" [value]="dataPlanningCabinet" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedPlanning"
+                    (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" dataKey="code" [tableStyle]="{'min-width': '50rem', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
+
+                    <ng-template pTemplate="caption" class="col-md-12">
+
+                        <div>
+                            <div class="flex-row-start FloatRight" style="display: block;">
+
+                                <div style="display: flex;">
+                                    <label class="control-label-titer flex-4">{{'DateDispoDu' |
+                                        i18n:i18nService.currentLanguage}} :</label>
+                                    <span class="p-input-icon-left ml-auto flex-6"> 
+                                        <p-calendar selectionMode="single"  (keyup.enter)="transformDateFormatRechercheDu()"
+                                            (onInput)="formatInputNewRechercheDu($event)" 
+                                            (onChange)="transformDateFormatRechercheDu()"
+                                            (onSelect)="transformDateFormatRechercheDu()"
+                                            [(ngModel)]="dateDisponibleRechercheDu" [ngStyle]="{'width':'81%' }"
+                                            [showButtonBar]="true" appendTo="body" [iconDisplay]="'input'" #calendar
+                                            dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true"
+                                            inputId="icondisplay"></p-calendar> 
+                                    </span>
+
+                                    <label class="control-label-titer flex-4">{{'DateDispoAu' |
+                                        i18n:i18nService.currentLanguage}} :</label>
+                                    <span class="p-input-icon-left ml-auto flex-6"> 
+                                        <p-calendar selectionMode="single" (keyup.enter)="transformDateFormatRechercheAu()"
+                                        (onInput)="formatInputNewRechercheAu($event)" 
+                                            (onChange)="transformDateFormatRechercheAu()"
+                                            (onSelect)="transformDateFormatRechercheAu()"
+                                            [(ngModel)]="dateDisponibleRechercheAu" [ngStyle]="{'width':'81%' }"
+                                            [showButtonBar]="true" appendTo="body" [iconDisplay]="'input'" #calendar
+                                            dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true"
+                                            inputId="icondisplay"></p-calendar> 
+                                    </span>
+
+
+                                    <button type="button" class="Bouton-rechercher btn  btn-default " data-original-title="Add" (click)="RechercherPlanningParDateBetween()">
+                                        <div class="bouton_style-2">{{'Search' | i18n:i18nService.currentLanguage}}
+                                        </div>
+                                        <i class="fa-solid fa-magnifying-glass search-icon"
+                                            style="font-size: 18px ;padding-top:2px ;"></i>
+                                    </button>
+                                    <button type="button" class="Bouton-rechercher btn  btn-default " data-original-title="Add" (click)="ngOnInit()">
+                                        <div class="bouton_style-2">{{'Reinitialiser' |
+                                            i18n:i18nService.currentLanguage}}
+                                        </div>
+                                        <i class="fa-solid fa-arrows-rotate search-icon"
+                                            style=" padding-top: 2px; font-size: 18px;"></i>
+                                    </button>
+                                </div>
+
+
+
+                                <div>
+                                    <p-tabMenu [model]="items" [(activeItem)]="activeItem" />
+                                </div>
+
+
+
+                            </div>
+
+
+
+
+
+                        </div>
+
+
+
+
+                    </ng-template>
+
+
+
+                    <ng-template pTemplate="colgroup" let-col>
+                        <colgroup>
+                            <col *ngFor="let col of col" [style.width]="col.width">
+                        </colgroup>
+                    </ng-template>
+                    <ng-template pTemplate="groupheader" let-customer>
+                        <tr pRowGroupHeader>
+                            <td colspan="4">
+                                <span class="font-bold ml-2">{{customer.dateExiste}}</span>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-col>
+                        <tr>
+                            <th *ngFor="let col of col ; let i = index" pResizableColumn>
+                                <span>
+                                    {{col.header}}
+                                </span>
+                            </th>
+                        </tr>
+                        <tr class="filter-row">
+                            <th *ngFor="let col of col">
+                                <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-domaine>
+                        <tr [pSelectableRow]="domaine">
+                            <!-- <td style="width: 20px;" *ngIf="rowgroup" [attr.rowspan]="rowspan">
+                                <span class="font-bold ml-2">{{domaine.medecinDTO.codeSaisie}}</span>
+                            </td> -->
+
+                            <td style="width: 20px;">
+
+                            </td>
+                            <td style="font-size: 15px !important;">{{domaine.medecinDTO.nomIntervAr}}</td>
+                            <td style="width: 20px;">
+                                <span class="font-bold ml-2">{{domaine.cabinetDTO.designationAr}}</span>
+                            </td>
+                            <td style="font-size: 15px !important;">{{domaine.nbrePlaceDispo}}</td>
+
+                            <td style="font-size: 15px !important;">{{domaine.nbrePlaceUtiliser}}</td>
+
+
+
+                            <td class="act-col">
+
+                                <p-checkbox [readonly]="true" [(ngModel)]="domaine.actif" [binary]="true" inputId="binary">{{domaine.actif}}</p-checkbox>
+                            </td>
+
+
+
+
+
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="4">لا توجد بيانات</td>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+
+
+
+
+
+                <!-- <p-table [value]="dataPlanningCabinet" [columns]="cols" sortField="dateExiste" sortMode="single" [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader" groupRowsBy="dateExiste" [tableStyle]="{'min-width': '60rem'}">
+                    <ng-template pTemplate="header" let-col>
+                        <tr>
+                            <th *ngFor="let col of col ; let i = index" pResizableColumn>
+                                <span>
+                                    {{col.header}}
+                                </span>
+                            </th>
+                        </tr>
+                        <tr class="filter-row">
+                            <th *ngFor="let col of col">
+                                <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="groupheader" let-customer>
+                        <tr pRowGroupHeader>
+                            <td colspan="4">
+                                <span class="font-bold ml-2">{{customer.dateExiste}}</span>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="groupfooter" let-customer>
+                        <tr>
+                            <td colspan="5" class="text-right font-bold pr-6">
+                                Total Customers:
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-customer let-rowIndex="rowIndex">
+                        <tr>
+                            <td>
+                                {{customer.medecinDTO.codeSaisie}}
+                            </td>
+
+                            <td>
+                                {{customer.nbrePlaceDispo}}
+                            </td>
+
+                            <td>
+                                {{customer.cabinetDTO.designationAr}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table> -->
+
+
+            </div>
+        </div>
+    </section>
+    <!-- <aside>aside</aside> -->
+    <!-- <footer>footer
+ 
+    </footer> -->
+</body>
+
+
+
+
+
+<!-- modal primeNG ADD -->
+<p-dialog id="Modal" header="Header" [scrollLeft]="true" #modal [closeOnEscape]="true" [(visible)]="visibleModal" data-backdrop="false" [modal]="true" styleClass="ModalAdd" [draggable]="false">
+
+
+    <ng-template pTemplate="header">
+        <div class="FloatRight">
+            <h2 class="text-default headerForm"> {{formHeader}}</h2>
+        </div>
+        <div class="FloatLeft">
+            <button class="btn btn-default save-add-ModalSmall" (click)="PostPlanning()">
+                <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+                {{'Save' | i18n:i18nService.currentLanguage}}
+            </button>
+            <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearForm()">
+                <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
+                {{'Close' | i18n:i18nService.currentLanguage}}
+            </button>
+        </div>
+
+
+    </ng-template>
+
+    <div class="modal-body">
+
+
+        <div class="flex-row-start flex-12">
+            <fieldset class="flex-12">
+
+                <br>
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-6">
+                        <label class="control-label flex-4"> {{'NomMedecin' | i18n:i18nService.currentLanguage}}
+                            : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="control-input  flex-5-45 ">
+                            <p-dropdown name="NomMedecin" [disabled]="disbledMedecinSelected" required #medecinInput [filter]="true" appendTo="body" [options]="ListMedecin" [(ngModel)]="selectedMedecins" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;"
+                                [lazy]="true">
+                            </p-dropdown>
+                        </div>
+                    </section>
+                    <section class="flex-row-start flex-6">
+                        <label class="control-label flex-4"> {{'Cabinet' | i18n:i18nService.currentLanguage}}
+                            : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="control-input  flex-5-45 ">
+                            <p-dropdown name="NomMedecin" required #cabinetInput [filter]="true" appendTo="body" [options]="ListCabinet" [(ngModel)]="selectedCabinet" [style]="{'width':'217px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true">
+                            </p-dropdown>
+                        </div>
+                    </section>
+
+                </div>
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-6 ">
+                        <label class="control-label flex-4"> {{'DateDispo' |
+                            i18n:i18nService.currentLanguage}} :<i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="control-input flex-60" style="padding: 0px ; display: flex;">
+
+
+                            <p-calendar (keyup.enter)="transformDateFormat()" (onInput)="formatInputNew($event)" (onChange)="transformDateFormat()" (onSelect)="transformDateFormat()" [(ngModel)]="dateDisponible" [ngStyle]="{'width':'81%' , 'padding-right': '20px'}" [showButtonBar]="true"
+                                appendTo="body" [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay"></p-calendar>
+
+
+
+                        </div>
+
+                    </section>
+                    <section class="flex-row-start flex-6">
+                        <label class="control-label  flex-4" style="width: 25%; "> {{'NbrePlaceDisponible' |
+                            i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-5-45 ">
+                            <input id="NbrePlaceDisponible" [(ngModel)]="NbrePlaceDisponible" maxlength="10" name="NumTel" type="number" class="form-control-dev input-xs" #nbrePlaceDispoInput required>
+                        </div>
+                        <div class="flex-2 btnAddToPlanning">
+                            <button class="btnAddStyel" (click)="btnAddToPlanningClicked()">
+                                +
+                            </button>
+
+                        </div>
+                    </section>
+                </div>
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-6" style="justify-content: space-evenly;">
+                        <p-checkbox [binary]="true" name="actif" [(ngModel)]="actif" value="val3" [label]="LabelActif"></p-checkbox>
+
+                    </section>
+                    <section class="flex-row-start flex-6 " style="justify-content: space-evenly;">
+                        <!-- <p-checkbox [binary]="true" name="actif" [(ngModel)]="actif" value="val3" [label]="LabelActif"></p-checkbox> -->
+                    </section>
+                </div>
+
+                <br>
+
+                <div class="flex-row-start flex-12">
+                    <fieldset class="flex-12">
+                        <section class="flex-row-start flex-12 ">
+                            <label class="control-label flex-2"> {{'Planning' |
+                                i18n:i18nService.currentLanguage}} :<i
+                                    class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                            <div class="control-input flex-10" style="padding: 0px ; display: flex;">
+
+                                <p-table #dt2 [columns]="ColumnPlanningTabel" [value]="ListPlanningCabinetTabel" selectionMode="single" [metaKeySelection]="false" (onRowUnselect)="onRowUnselectFromTabsPlanning($event)" [(selection)]="SelectedPlanningRow" (onRowSelect)="onRowSelectFromTabsPlanning($event)"
+                                    dataKey="dateDispo" [scrollable]="false" [tableStyle]="{'min-width': '39rem', 'width': '100%' , 'padding': '1px'}">
+
+                                    <ng-template pTemplate="header" let-col>
+                                        <tr>
+                                            <th *ngFor="let col of col" pResizableColumn [style.display]="col.visible ? 'table-cell' : 'none'">
+                                                <span>{{col.header}}</span>
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-domaine let-editing="editing" let-ri="rowIndex">
+                                        <tr [pSelectableRow]="domaine">
+                                            <td style="display: none;"> {{domaine.code}}</td>
+                                            <td> {{domaine.nomIntervAr}}</td>
+                                            <td> {{domaine.dateDispo}}</td>
+                                            <td style="font-size: 15px !important;">
+                                                <input [(ngModel)]="domaine.nbrePlaceDispo " style="width: 100%;" class="InputQte" type="number" id="nbrePlaceUtiliser" name="nbrePlaceUtiliser" required minlength="4" maxlength="8" size="10" min="0" />
+                                            </td>
+                                            <td>
+                                                <button *ngIf="!editing" pButton type="button" pDeleteEditableRow icon="pi pi-trash" class="p-button-item " (click)="remove(ri) "></button>
+
+                                            </td>
+
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+
+
+
+
+                            </div>
+
+                        </section>
+                    </fieldset>
+                </div>
+
+
+
+
+            </fieldset>
+
+        </div>
+
+
+
+
+    </div>
+
+</p-dialog>
+
+
+<!-- modal primeNG  Delete-->
+<p-dialog class="modal-delete" id="ModalDelete" data-backdrop="false" header="Header" [(visible)]="visDelete" styleClass="ModalDelete" [modal]="true" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+        <h2 class="text-default headerForm"> {{formHeader}}</h2>
+    </ng-template>
+    <div class="modal-body">
+        <form action="" #addForms="ngForm">
+            <fieldset class="deleteForms">
+                <h4 class="text-delete " style="display: contents;">
+                    <div class="FloatRight">
+                        <h2 class="text-default"> هل أنت متأكد من الحذف ? </h2>
+                    </div>
+
+                    <div class="FloatLeft">
+
+                        <button class="btn btn-default save-add-ModalSmall" (click)="DeleteMedecin(code)">
+                            <i class="fa-solid fa-circle-check IconBtnModal"
+                                style="color: #065c00;font-size: 16px; "></i>
+                            {{'Save' | i18n:i18nService.currentLanguage}}
+                        </button>
+
+
+                        <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="CloseModal()">
+                            <i class="fa-solid fa-circle-xmark IconBtnModal"
+                                style="color: #9e0000;font-size: 16px;"></i>
+                            {{'Close' | i18n:i18nService.currentLanguage}}
+                        </button>
+
+
+
+                    </div>
+
+
+
+
+
+                </h4>
+            </fieldset>
+            <br>
+        </form>
+    </div>
+</p-dialog>
+<!-- fin modal primeng  -->
+
+
+
+
+<!-- modal primeNG Print -->
+<p-dialog id="ModalPrint" header="Header" [scrollLeft]="true" [closeOnEscape]="true" [(visible)]="visibleModalPrint" data-backdrop="false" [modal]="true" styleClass="ModalPrint" [draggable]="false">
+
+
+    <ng-template pTemplate="header">
+        <h2 class="text-default headerForm"> {{formHeader}}</h2>
+        <button style="right: 995px;" class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearForm() ; CloseModalPrint()"> <i class="fa-solid fa-circle-xmark"
+                style="color: #9e0000;font-size: 16px; padding-right: 5px;"></i>خروج
+        </button>
+
+    </ng-template>
+    <div class="modal-body">
+        <div id="pdfContainer"></div>
+    </div>
+
+</p-dialog>

@@ -1,0 +1,84 @@
+<body dir="ltr">
+    <main>
+        <nav class="main-menu">
+            <h1>Dossier Medical</h1>
+            <!-- <img class="logo" src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/4cfdcb5a-0137-4457-8be1-6e7bd1f29ebb" alt="" /> -->
+            <ul>
+                <li class="nav-item  " routerLinkActive="active">
+                    <b></b>
+                    <b></b>
+                    <a href="#">
+                        <i class="fa fa-house nav-icon"></i>
+                        <span class="nav-text">Home</span>
+                    </a>
+                </li>
+                <li class="nav-item" routerLinkActive="active" [routerLink]="['/dossier_medical_opd/list_admission_opd']">
+                    <b></b>
+                    <b></b>
+                    <a>
+                        <!-- <i class="fa fa-user nav-icon"></i> -->
+                        <i class="fa-solid fa-list nav-icon"></i>
+                        <span class="nav-text">List Admission </span>
+                    </a>
+                </li>
+
+                <li class="nav-item" routerLinkActive="active" [routerLink]=" ['/dossier_medical_opd/feuille_soin_opd'] ">
+                    <b></b>
+                    <b></b>
+                    <a>
+                        <i class="fa-solid fa-clipboard-list nav-icon"></i>
+                        <span class="nav-text">Feuille Soin Opd</span>
+                    </a>
+                </li>
+
+                <li class="nav-item" routerLinkActive="active" [routerLink]="['/dossier_medical_opd/request_opd']">
+                    <b></b>
+                    <b></b>
+                    <a>
+                        <i class="fa fa-calendar-check nav-icon"></i>
+                        <span class="nav-text">Request</span>
+                    </a>
+                </li>
+
+                <li class="nav-item" routerLinkActive="active">
+                    <b></b>
+                    <b></b>
+                    <a href="#">
+                        <i class="fa fa-person-running nav-icon"></i>
+                        <span class="nav-text">Activities</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <b></b>
+                    <b></b>
+                    <a href="#">
+                        <i class="fa fa-sliders nav-icon"></i>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <section class="content">
+            <div class="flex-row-start flex-12 Entent-Admission">
+                <section class="block-row">
+                    <a> Patient ID : {{patientSelectionService.selectedPatientCode$ | async }}</a>
+                </section>
+                <section class="block-row">
+                    <a> Patient Name : {{patientSelectionService.selectedPatientName$  | async }}</a>
+                </section>
+
+
+
+            </div>
+
+            <div class="dossier-container">
+                <!-- Container for DossierMedicalOPDComponent's content -->
+                <div class="main-content">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>

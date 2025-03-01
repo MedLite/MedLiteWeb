@@ -67,6 +67,11 @@ export class ParametargeService {
     return this.http.get(`${environment.API_Parametrage}cabinet/all` )
   }
 
+  GetCabinetByActif(actif : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}cabinet/findBy?actif=`+actif )
+  }
+
   GetCabinetByCode(code:number): Observable<any> {
 
     return this.http.get(`${environment.API_Parametrage}cabinet/`+code )
@@ -345,9 +350,9 @@ DeleteCaisse(code: any) {
     return this.http.get(`${environment.API_Parametrage}medecin/findBy?actif=true` )
   }
 
-  GetMedecinActifAndHaveConsultation(): Observable<any> {
+  GetMedecinActifAndHaveConsultationOpdAndER(opd : boolean , er:boolean): Observable<any> {
 
-    return this.http.get(`${environment.API_Parametrage}medecin/findBy?actif=true&have_consultation=true` )
+    return this.http.get(`${environment.API_Parametrage}medecin/have_consultation?autorisConsultation=true&actif=true&opd=`+opd+`&er=`+er  )
   }
 
 
@@ -372,10 +377,12 @@ DeleteCaisse(code: any) {
     return this.http.delete(`${environment.API_Parametrage}medecin/delete/`+code);
   }
 
-  GetPrestationConsultationByCodeMedecin(codeMedecin : any ){
-    return this.http.get(`${environment.API_Parametrage}prestation_consultation/codeMedecin?codeMedecin=`+codeMedecin);
+  GetPrestationConsultationByCodeMedecinAndCodeNatureAdmission(codeMedecin : any , codeNatureAdmission : number ){
+    return this.http.get(`${environment.API_Parametrage}prestation_consultation/codeMedecin?codeMedecin=`+codeMedecin + `&codeNatureAdmission=`+codeNatureAdmission);
   }
-
+  GetPrestationConsultationByCodeMedecin(codeMedecin : any  ){
+    return this.http.get(`${environment.API_Parametrage}prestation_consultation/codeMedecin?codeMedecin=`+codeMedecin );
+  }
 
   
    /// TypeIntervenant 
@@ -467,6 +474,12 @@ DeleteCaisse(code: any) {
   }
 
 
+  GetPriceListByCodeSociete(codeSociete:number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}price_list/societe?codeSociete=`+codeSociete);
+  }
+
+
     
   GetPriceListExportPriceList(codePriceList :number): Observable<any> {
 
@@ -505,9 +518,15 @@ DeleteCaisse(code: any) {
 
     return this.http.get(`${environment.API_Parametrage}details_price_list/By?codePrice=`+ codePriceList + `&codePrestation=`+codePrestation);
   }
-  GetDetailsPriceListByCodePriceListAndCodePrestationAnd(codePriceList : number ,codePrestation:number,codeNatureAdmission:number ): Observable<any> {
 
-    return this.http.get(`${environment.API_Parametrage}details_price_list/FindBy?codePrice=`+ codePriceList + `&codePrestation=`+codePrestation+ `&codeNatureAdmission=`+codeNatureAdmission);
+  
+  GetDetailsPriceListByCodePriceList(codePriceList : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}price_list/prestation?codePriceList=`+ codePriceList );
+  }
+  GetDetailsPriceListByCodePriceListAndCodePrestationAnd(codePriceList : number ,codePrestation:any,codeNatureAdmission:number ): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}details_price_list/findBy?codePriceList=`+ codePriceList + `&codePrestation=`+codePrestation+ `&codeNatureAdmission=`+codeNatureAdmission);
   }
 
 
@@ -548,16 +567,25 @@ DeleteCaisse(code: any) {
   }
 
 
-  GetPrestationConsultation(): Observable<any> {
+  GetPrestationConsultation(codeNatureAdmission : number): Observable<any> {
 
-    return this.http.get(`${environment.API_Parametrage}prestation/prestationConsultation`);
+    return this.http.get(`${environment.API_Parametrage}prestation/prestationConsultation?CodeNatureAdmission=`+codeNatureAdmission);
   }
+
+  
+
 
   
 
   GetPrestationByCode(code : number): Observable<any> {
 
     return this.http.get(`${environment.API_Parametrage}prestation/`+ code);
+  }
+
+
+  GetPrestationByCodeIn(codes: number[]): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}prestation/FindByCodeIn?code=`+ codes);
   }
 
 
@@ -572,15 +600,7 @@ DeleteCaisse(code: any) {
     return this.http.get(`${environment.API_Parametrage}details_prestation/By?codePrestation=`+ codePrestation +`&codeNatureAdmission=`+codeNatureAdmission);
   }
 
-
-  // GetDetailsPriceListByCodePriceListAndCodePrestation(codePriceList : number ,codePrestation:number ): Observable<any> {
-
-  //   return this.http.get(`${environment.API_Parametrage}details_price_list/By?codePrice=`+ codePriceList + `&codePrestation=`+codePrestation);
-  // }
-  // GetDetailsPriceListByCodePriceListAndCodePrestationAnd(codePriceList : number ,codePrestation:number,codeNatureAdmission:number ): Observable<any> {
-
-  //   return this.http.get(`${environment.API_Parametrage}details_price_list/FindBy?codePrice=`+ codePriceList + `&codePrestation=`+codePrestation+ `&codeNatureAdmission=`+codeNatureAdmission);
-  // }
+ 
 
 
   PostPrestation(body: any) {
@@ -905,6 +925,11 @@ DeleteCaisse(code: any) {
 
     return this.http.get(`${environment.API_Parametrage}list_couverture/prestation?codeListCouverture=`+codeListCouverture);
   }
+
+  GetDetailsListCouverturePrestationByCodeListCouvertureAndCodePrestation(codeListCouverture:number,codePrestation:any): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}list_couverture/prestation?codeListCouverture=`+codeListCouverture +`&codePrestation=`+codePrestation);
+  }
   GetDetailsListCouvertureoperationByCodeListCouverture(codeListCouverture:number): Observable<any> {
 
     return this.http.get(`${environment.API_Parametrage}list_couverture/operation?codeListCouverture=`+codeListCouverture);
@@ -925,6 +950,13 @@ DeleteCaisse(code: any) {
   GetListCouvertureByCode(code : number): Observable<any> {
 
     return this.http.get(`${environment.API_Parametrage}list_couverture/`+ code);
+  }
+
+
+  
+  GetListCouvertureByCodeSociete(codeSociete : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}list_couverture/societe?codeSociete=`+ codeSociete);
   }
 
  

@@ -131,8 +131,8 @@ export class CouvertureComponent implements OnInit {
   // selectedSociete!: any;
   expandedRows: any = {};
 
-  TypeRemMaj: any;
-
+  TypeRemMaj: any; 
+  selectedPriceList: any = '';
   ngOnInit(): void {
     this.initializeTabMenu();
     this.GetColumns();
@@ -259,7 +259,7 @@ export class CouvertureComponent implements OnInit {
 
   DeleteListCouverture(code: any) {
     this.IsLoading = true;
-    this.param_service.DeleteListCouverture(code).subscribe(
+    this.param_service.DeleteListCouverture(code) .subscribe(
       (res: any) => {
         this.CtrlAlertify.PostionLabelNotification();
         this.CtrlAlertify.ShowDeletedOK();
@@ -269,7 +269,9 @@ export class CouvertureComponent implements OnInit {
         this.visDelete = false;
 
       }
+     
     )
+    this.IsLoading = false;
   }
 
 
@@ -291,13 +293,12 @@ export class CouvertureComponent implements OnInit {
       button.setAttribute('data-target', '#Modal');
       this.formHeader = this.i18nService.getString('Add');
       this.onRowUnselect(event);
-
+      this.GetPriceList();
       this.GetColumnsFamilleFacturationTable();
       this.GetColumnsPrestationTable();
       this.clearForm();
-      this.GetCodeSaisie();
-      // this.GetSociete();
-      this.GetAllPrestation();
+      this.GetCodeSaisie(); 
+      // this.GetAllPrestation();
       this.GetAllOperationActif();
 
       this.actif = false;
@@ -325,6 +326,7 @@ export class CouvertureComponent implements OnInit {
         this.GetColumnsPrestationTable();
         this.GetAllPrestationForModif();
         this.GetAllOperationActifForModif();
+        this.GetPriceList();
         this.visibleModal = true;
         this.onRowSelect;
 
@@ -608,19 +610,16 @@ export class CouvertureComponent implements OnInit {
 
   dataPrestation: any[] = [];
   groupedData = new Array<any>();
-  GetAllPrestation() {
+  GetAllPrestation(codePriceList : number) {
     this.IsLoading = true;
-    this.param_service.GetPrestationByActif(true).subscribe((data: any) => {
-      this.loadingComponent.IsLoading = false;
-      this.IsLoading = false;
-      this.dataPrestation = data;
-      this.groupedData = this.groupPrestationsByFamille(data);
-      this.groupedData.forEach(group => {
-        group.SelectedMajRem = 'REM';
-        group.pourcentage = 0;
-        this.AppliquePourcentageInAllPrestationDisponible(group, 0);
-      });
-    });
+
+    this.param_service.GetDetailsPriceListByCodePriceList(codePriceList).subscribe ( (dataDetailsPriceList:any) => 
+    {
+      const codePrestationList: number[] = dataDetailsPriceList.map((item: { codePrestation: number }) => item.codePrestation); 
+      this.groupedData = this.groupPrestationsByFamille2(dataDetailsPriceList);
+      this.IsLoading = false; 
+    })
+    
   }
 
   GetAllPrestationForModif() {
@@ -648,6 +647,22 @@ export class CouvertureComponent implements OnInit {
         };
       }
       grouped[familleCode].prestations.push(prestation);
+    });
+    return Object.values(grouped);
+  }
+  groupPrestationsByFamille2(data: any[]): any[] {
+    const grouped: { [key: number]: any } = {};
+    data.forEach(detailsPriceList => {
+      const familleCode = detailsPriceList.prestationDTO.familleFacturationDTO.code; // Correct way to access code
+      if (!grouped[familleCode]) {
+        grouped[familleCode] = {
+          familleCode,
+          familleFacturationDTO: detailsPriceList.prestationDTO.familleFacturationDTO,
+          prestations: [], 
+        };
+      }
+      const prestationWithPrice = { ...detailsPriceList.prestationDTO, prixPrestation: detailsPriceList.mntApresMaj };
+      grouped[familleCode].prestations.push(prestationWithPrice);
     });
     return Object.values(grouped);
   }
@@ -756,8 +771,8 @@ export class CouvertureComponent implements OnInit {
     // Use Math.abs to get the absolute difference
     prestation.taux = (Math.abs(prestation.mntApresMaj - originalMontantOPD) / originalMontantOPD) * 100;
 
-    if (prestation.mntApresMaj > originalMontantOPD) { 
-      prestation.mntApresMaj= originalMontantOPD;
+    if (prestation.mntApresMaj > originalMontantOPD) {
+      prestation.mntApresMaj = originalMontantOPD;
       prestation.taux = 0;
       this.CtrlAlertify.PostionLabelNotification();
       this.CtrlAlertify.showNotificationِCustom('InvalidMontantCouverture');
@@ -826,7 +841,7 @@ export class CouvertureComponent implements OnInit {
         codeSaisie: item.operationDTO.codeSaisie,
         designationAr: item.operationDTO.designationAr,
         designationLt: item.operationDTO.designationLt,
-        coutRevient: item.operationDTO.coutRevient, 
+        coutRevient: item.operationDTO.coutRevient,
         mntApresMaj: item.montantPatient,
         pourcentage: item.tauxCouverPec,
         taux: item.tauxCouverPec,
@@ -994,12 +1009,42 @@ export class CouvertureComponent implements OnInit {
 
     if (operation.mntApresMaj > originalCoutRevient) {
       operation.mntApresMaj = originalCoutRevient
-      operation.taux = 0 
+      operation.taux = 0
       this.CtrlAlertify.PostionLabelNotification();
       this.CtrlAlertify.showNotificationِCustom('InvalidMontantCouverture');
     }
   }
 
+
+
+  ListPriceListRslt = new Array<any>();
+  dataPriceList = new Array<any>();
+  listSocietePushed = new Array<any>();
+  GetPriceList() {
+    this.param_service.GetPriceListActif().subscribe((data: any) => {
+      this.dataPriceList = data;
+      this.listSocietePushed = [];
+      for (let i = 0; i < this.dataPriceList.length; i++) {
+        this.listSocietePushed.push({ label: this.dataPriceList[i].designationAr, value: this.dataPriceList[i].code })
+      }
+      this.ListPriceListRslt = this.listSocietePushed;
+    })
+  }
+
+  GetDetailsPriceListWithCodeSociete(codePriceList: number) {
+    // this.IsLoading = true;
+    this.param_service.GetDetailsPriceListByCodePriceList(codePriceList).subscribe((data: any) => {
+      // this.loadingComponent.IsLoading = false;
+      // this.IsLoading = false;
+      // this.dataPrestation = data;
+      // this.groupedData = this.groupPrestationsByFamille(data);
+      // this.groupedData.forEach(group => {
+      //   group.SelectedMajRem = 'REM';
+      //   group.pourcentage = 0;
+      //   this.AppliquePourcentageInAllPrestationDisponible(group, 0);
+      // });
+    });
+  }
 }
 
 

@@ -27,7 +27,7 @@
     color: #212529;
     background: white;
     transition: box-shadow .15s;
-    border-radius: 0;
+    border-radius: 6px;
     font-size: 15px;
     text-align: center;
     font-family: auto;

@@ -75,7 +75,8 @@ export class MedecinComponent implements OnInit {
   ListTypeIntervenant = new Array<any>();
   selectedTypeIntervenant: any = '';
 
-  ListPrestation = new Array<any>();
+  ListPrestationOPD = new Array<any>();
+  ListPrestationER = new Array<any>();
   SelectedPrestationOPD: any = '';
   SelectedPrestationER: any = '';
 
@@ -87,9 +88,9 @@ export class MedecinComponent implements OnInit {
 
   VisibleAutoriseConsultation: boolean = false;
 
-  codeNatureAdmissionOPD: any;
-  codeNatureAdmissionER: any;
 
+  medecinOPD: boolean = false;
+  medecinER: boolean = false;
   ngOnInit(): void {
     this.items = [
       { label: this.i18nService.getString('LabelActif') || 'LabelActif', icon: 'pi pi-file-check', command: () => { this.GetAllMedecinActif() } },
@@ -104,6 +105,19 @@ export class MedecinComponent implements OnInit {
 
 
 
+  // GetCodeNatureAdmissionOPD() {
+  //   this.param_service.GetParam("CodeNatureAdmissionOPD").
+  //     subscribe((data: any) => {
+  //       this.codeNatureAdmissionOPD = data.valeur;
+  //     })
+  // }
+
+  // GetCodeNatureAdmissionER() {
+  //   this.param_service.GetParam("CodeNatureAdmissionER").
+  //     subscribe((data: any) => {
+  //       this.codeNatureAdmissionER = data.valeur;
+  //     })
+  // }
   GetColumns() {
     this.cols = [
       { field: 'specialiteMedecinDTO.designationAr', header: this.i18nService.getString('SpecialiteMedecin') || 'SpecialiteMedecin', width: '20%', filter: "true" },
@@ -152,9 +166,9 @@ export class MedecinComponent implements OnInit {
     this.selectedTypeIntervenant = '';
     this.VisibleAutoriseConsultation = false;
     this.autoriseFrais = false;
-    this.autoriseCons = false; 
-    this.SelectedPrestationER='';
-    this.SelectedPrestationOPD=''
+    this.autoriseCons = false;
+    this.SelectedPrestationER = '';
+    this.SelectedPrestationOPD = ''
     this.prestationMedecinConsultationDTO = new Array<any>();
     this.onRowUnselect(event);
 
@@ -204,6 +218,11 @@ export class MedecinComponent implements OnInit {
 
 
   public onOpenModal(mode: string) {
+    const natureAdmEr = sessionStorage.getItem("NatureAdmissionER") ;
+      const codeNatAdmER = Number(natureAdmEr);
+      const natureAdmOPD = sessionStorage.getItem("NatureAdmissionOPD") ;
+      const codeNatAdmOPD = Number(natureAdmOPD);
+
 
     this.LabelActif = this.i18nService.getString('LabelActif');
 
@@ -220,8 +239,7 @@ export class MedecinComponent implements OnInit {
       button.setAttribute('data-target', '#Modal');
       this.formHeader = this.i18nService.getString('Add');
       this.onRowUnselect(event);
-      this.GetCodeNatureAdmissionOPD();
-      this.GetCodeNatureAdmissionER();
+
       this.clearForm();
       this.GetCodeSaisie();
       this.GetSpecilaiteSpecialiteMedecin();
@@ -245,49 +263,52 @@ export class MedecinComponent implements OnInit {
         this.visDelete == false && this.visibleModal == false
       } else {
 
+
         button.setAttribute('data-target', '#Modal');
         this.formHeader = this.i18nService.getString('Modifier');
 
-        this.GetPrestationByTypePrestationConsultation();
-        if(this.selectedMedecin.autorisConsultation == true){
-          this.param_service.GetPrestationConsultationByCodeMedecin(this.selectedMedecin.code).subscribe (
+        this.GetPrestationByTypePrestationConsultationOPD();
+        this.GetPrestationByTypePrestationConsultationER();
+        if (this.selectedMedecin.autorisConsultation == true) {
+
+
+          this.param_service.GetPrestationConsultationByCodeMedecin(this.selectedMedecin.code).subscribe(
             (res: any) => {
-           
-              
-              if(res != null){
-             
+
+
+              if (res != null) {
+
                 this.LabelConsultationER = this.i18nService.getString('LabelConsultationER');
                 this.LabelConsultationOPD = this.i18nService.getString('LabelConsultationOPD');
                 this.autoriseCons = true;
-                this.VisibleAutoriseConsultation=true;
-                if(res.codeNatureAdmission == this.codeNatureAdmissionOPD){
+                this.VisibleAutoriseConsultation = true;
+                if (res.codeNatureAdmission == codeNatAdmOPD) {
                   this.SelectedPrestationOPD = res.codePrestation;
                 }
-  
-                if(res.codeNatureAdmission == this.codeNatureAdmissionER){
+
+                if (res.codeNatureAdmission == codeNatAdmER) {
                   this.SelectedPrestationER = res.codePrestation
                 }
-               
-              }else{
+
+              } else {
                 this.autoriseCons = false;
-                this.VisibleAutoriseConsultation=false;
+                this.VisibleAutoriseConsultation = false;
               }
-  
-  
+
+
             }
           )
 
         }
-       
- 
+
+
 
 
 
 
         this.GetSpecilaiteSpecialiteMedecin();
         this.GetTypeIntervenat();
-        this.GetCodeNatureAdmissionOPD();
-        this.GetCodeNatureAdmissionER();
+
         this.visibleModal = true;
         this.onRowSelect;
 
@@ -353,35 +374,45 @@ export class MedecinComponent implements OnInit {
   PostMedecin() {
 
 
+
     const isValid = this.validateAllInputs();
     if (isValid) {
 
-
+      const natureAdmEr = sessionStorage.getItem("NatureAdmissionER") ;
+      const codeNatAdmER = Number(natureAdmEr);
+      const natureAdmOPD = sessionStorage.getItem("NatureAdmissionOPD") ;
+      const codeNatAdmOPD = Number(natureAdmOPD);
 
 
       if (this.autoriseCons == true) {
-        if (this.SelectedPrestationOPD != null) {
+        if (this.SelectedPrestationOPD != null || this.SelectedPrestationOPD !== "") {
           let bodyTOPrestationOPD = {
             codePrestation: this.SelectedPrestationOPD,
-            codeNatureAdmission: this.codeNatureAdmissionOPD
+            codeNatureAdmission: codeNatAdmOPD
           }
           this.prestationMedecinConsultationDTO.push(bodyTOPrestationOPD);
         }
 
-        if (this.SelectedPrestationER != null || this.SelectedPrestationER  !== "") {
+        if (this.SelectedPrestationER != null || this.SelectedPrestationER !== "") {
           let bodyTOPrestationER = {
             codePrestation: this.SelectedPrestationER,
-            codeNatureAdmission: this.codeNatureAdmissionER
+            codeNatureAdmission: codeNatAdmER
           }
           this.prestationMedecinConsultationDTO.push(bodyTOPrestationER);
         }
 
 
         if (this.SelectedPrestationER == null || this.SelectedPrestationER === "") {
+          this.medecinOPD = true;
+          this.medecinER = false;
           this.prestationMedecinConsultationDTO = this.prestationMedecinConsultationDTO.filter(item => item.codePrestation !== this.SelectedPrestationER); //remove if null or empty
-      }
+        }
 
-
+        if (this.SelectedPrestationOPD == null || this.SelectedPrestationOPD === "") {
+          this.medecinOPD = false;
+          this.medecinER = true;
+          this.prestationMedecinConsultationDTO = this.prestationMedecinConsultationDTO.filter(item => item.codePrestation !== this.SelectedPrestationOPD); //remove if null or empty
+        }
 
       }
 
@@ -393,12 +424,14 @@ export class MedecinComponent implements OnInit {
         userCreate: this.userCreate,
         codeSpecialiteMedecin: this.selectedspecialiteMedecin,
         codeTypeIntervenant: this.selectedTypeIntervenant,
-        autorisConsultation:this.autoriseCons,
+        autorisConsultation: this.autoriseCons,
         autoriseFrais: this.autoriseFrais,
         dateCreate: new Date().toISOString(), //
         code: this.code,
         actif: this.actif,
-        prestationMedecinConsultationDTOs: this.prestationMedecinConsultationDTO
+        prestationMedecinConsultationDTOs: this.prestationMedecinConsultationDTO,
+        opd: this.medecinOPD,
+        er: this.medecinER,
 
       }
 
@@ -408,7 +441,7 @@ export class MedecinComponent implements OnInit {
 
         this.param_service.UpdateMedecin(body).pipe(
           catchError((error: HttpErrorResponse) => {
-            let errorMessage = ''; 
+            let errorMessage = '';
             this.prestationMedecinConsultationDTO = new Array<any>();
             return throwError(errorMessage);
 
@@ -433,7 +466,7 @@ export class MedecinComponent implements OnInit {
       else {
         this.param_service.PostMedecin(body).pipe(
           catchError((error: HttpErrorResponse) => {
-            let errorMessage = ''; 
+            let errorMessage = '';
             this.prestationMedecinConsultationDTO = new Array<any>();
             return throwError(errorMessage);
 
@@ -539,19 +572,44 @@ export class MedecinComponent implements OnInit {
   }
 
 
-  dataPrestation = new Array<any>();
-  listPrestationPushed = new Array<any>();
-  GetPrestationByTypePrestationConsultation() {
-    this.param_service.GetPrestationConsultation().subscribe((data: any) => {
-      this.dataPrestation = data;
-      this.listPrestationPushed = [];
-      for (let i = 0; i < this.dataPrestation.length; i++) {
-        this.listPrestationPushed.push({ label: this.dataPrestation[i].designationAr, value: this.dataPrestation[i].code })
-      }
-      this.ListPrestation = this.listPrestationPushed;
-    })
+  dataPrestationOPD = new Array<any>();
+  listPrestationPushedOPD = new Array<any>();
+  GetPrestationByTypePrestationConsultationOPD() {
+
+    const natureAdmOPD = sessionStorage.getItem("NatureAdmissionOPD") ;
+    const codeNatAdm = Number(natureAdmOPD);
+        this.param_service.GetPrestationConsultation(codeNatAdm).subscribe((dataOPD: any) => {
+          this.dataPrestationOPD = dataOPD;
+          this.listPrestationPushedOPD = [];
+          for (let i = 0; i < this.dataPrestationOPD.length; i++) {
+            this.listPrestationPushedOPD.push({ label: this.dataPrestationOPD[i].designationAr, value: this.dataPrestationOPD[i].code })
+          }
+          this.ListPrestationOPD = this.listPrestationPushedOPD;
+        })
+   
+
+
   }
 
+
+  dataPrestationER = new Array<any>();
+  listPrestationPushedER = new Array<any>();
+  GetPrestationByTypePrestationConsultationER() { 
+    const natureAdmEr = sessionStorage.getItem("NatureAdmissionER") ;
+    const codeNatAdm = Number(natureAdmEr);
+        this.param_service.GetPrestationConsultation(codeNatAdm).subscribe((dataER: any) => {
+          this.dataPrestationER = dataER;
+          this.listPrestationPushedER = [];
+          for (let i = 0; i < this.dataPrestationER.length; i++) {
+            this.listPrestationPushedER.push({ label: this.dataPrestationER[i].designationAr, value: this.dataPrestationER[i].code })
+          }
+          this.ListPrestationER = this.listPrestationPushedER;
+        })
+    
+
+
+
+  }
 
 
 
@@ -568,26 +626,14 @@ export class MedecinComponent implements OnInit {
     this.VisibleAutoriseConsultation = event.checked;
     this.LabelConsultationER = this.i18nService.getString('LabelConsultationER');
     this.LabelConsultationOPD = this.i18nService.getString('LabelConsultationOPD');
-    this.GetPrestationByTypePrestationConsultation();
+    this.GetPrestationByTypePrestationConsultationOPD();
+    this.GetPrestationByTypePrestationConsultationER();
 
 
     this.cdRef.detectChanges();
   }
 
 
-  GetCodeNatureAdmissionOPD() {
-    this.param_service.GetParam("CodeNatureAdmissionOPD").
-      subscribe((data: any) => {
-        this.codeNatureAdmissionOPD = data.valeur;
-      })
-  }
-
-  GetCodeNatureAdmissionER() {
-    this.param_service.GetParam("CodeNatureAdmissionER").
-      subscribe((data: any) => {
-        this.codeNatureAdmissionER = data.valeur;
-      })
-  }
 
 
 

@@ -23,6 +23,8 @@ const routes: Routes = [
   // },
   { path: 'menu_parametarge', loadChildren: () => import('./menu-parametrage/menu-parametrage.module').then(m => m.MenuParametrageModule), data:{title:'Setting',icon:'bx bx-cog'} },
   { path: 'menu_reception', loadChildren: () => import('./menu-reception/menu-reception.module').then(m => m.MenuReceptionModule) , data:{title:'Reception',icon:'bx bx-first-aid'} },
+  { path: 'dossier_medical_opd', loadChildren: () => import('./dossier-medical-opd/dossier-medical-opd.module').then(m => m.DossierMedicalOPDModule) , data:{title:'DossierMedical',icon:'bx bx-first-aid'} },
+  { path: 'DossierMedicalIP', loadChildren: () => import('./dossier-medical-ip/dossier-medical-ip.module').then(m => m.DossierMedicalIPModule) },
 
 ];
 

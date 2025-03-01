@@ -58,7 +58,7 @@
         <div class="material-table">
             <div class="card">
                 <p-table [paginator]="true" [rows]="20" [rowsPerPageOptions]="[20, 40,80,100]" [showCurrentPageReport]="true" [first]="first" currentPageReportTemplate="{{'Page' | i18n:i18nService.currentLanguage}} {first} {{'To' | i18n:i18nService.currentLanguage}} {last} {{'of' | i18n:i18nService.currentLanguage}} {totalRecords} {{'entiers' | i18n:i18nService.currentLanguage}}"
-                    #dt1 [columns]="cols" [value]="dataBanque" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedBanque" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
+                    #dt1 [columns]="cols" [value]="dataAdmission" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedBanque" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
                     dataKey="code" [tableStyle]="{'min-width': '50rem', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
 
                     <ng-template pTemplate="caption" class="col-md-12">
@@ -215,8 +215,8 @@
                                     class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                             <div class="control-input flex-60" style="padding: 0px ; display: flex;">
 
-                                <p-calendar (keyup.enter)="dt2.filterGlobal($any($event.target).value, 'contains') ; transformDateFormatRecherche()" (onInput)="formatInputRecherche($event)" (onBlur)="transformDateFormatRecherche()" (onChange)="transformDateFormatRecherche()" (onSelect)="transformDateFormatRecherche()"
-                                    [ngStyle]="{'width':'100%' , 'margin-right': '3px'}" [showButtonBar]="true" [(ngModel)]="dateNaissanceRecherche" [iconDisplay]="'input'" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay" />
+                                <p-calendar (keyup.enter)="dt2.filterGlobal($any($event.target).value, 'contains') ; transformDateFormatRecherche()" (onInput)="formatInputRecherche($event)" (onChange)="transformDateFormatRecherche()" (onSelect)="transformDateFormatRecherche()" [ngStyle]="{'width':'100%' , 'margin-right': '3px'}"
+                                    [showButtonBar]="true" [(ngModel)]="dateNaissanceRecherche" [iconDisplay]="'input'" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay" />
 
                             </div>
 
@@ -350,14 +350,12 @@
 
 <!-- modal ajout Admission-->
 <p-dialog id="Modal" header="Header" [scrollLeft]="true" [closeOnEscape]="true" [(visible)]="visibleModal" data-backdrop="false" [modal]="true" styleClass="ModalAddFacture" [draggable]="false">
-
-
     <ng-template pTemplate="header">
         <div class="FloatRight">
             <h2 class="text-default headerForm"> {{formHeader}}</h2>
         </div>
         <div class="FloatLeft">
-            <button class="btn btn-default save-add-ModalSmallXXL" (click)="PostBanque()">
+            <button class="btn btn-default save-add-ModalSmallXXL" (click)="PostAdmission()">
                 <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
                 {{'Save' | i18n:i18nService.currentLanguage}}
             </button>
@@ -421,17 +419,19 @@
                                     class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                             <div class="radio-group" style="height: 30px;">
                                 <div class="radio-item">
-                                    <input type="radio" id="Encours" name="selectedValue" [value]=1 [(ngModel)]="selectedValue" (change)="GetIfNeedSocForAddAdmission()">
-                                    <label for="Encours" [class.bold-label]="selectedValue == 1">{{'Cash' |
+                                    <input type="radio" id="Cash" name="selectedValue" [value]=1 [(ngModel)]="selectedValue" (change)="GetIfNeedSocForAddAdmission()">
+                                    <label for="Cash" [class.bold-label]="selectedValue == 1">{{'Cash' |
                                         i18n:i18nService.currentLanguage}} </label>
                                 </div>
 
                                 <div class="radio-item">
-                                    <input type="radio" id="Valider" name="selectedValue" [value]=2 [(ngModel)]="selectedValue" (change)="GetIfNeedSocForAddAdmission()">
-                                    <label for="Valider" [class.bold-label]="selectedValue == 2">{{'PEC' |
+                                    <input type="radio" id="PEC" name="selectedValue" [value]=2 [(ngModel)]="selectedValue" (change)="GetIfNeedSocForAddAdmission()">
+                                    <label for="PEC" [class.bold-label]="selectedValue == 2">{{'PEC' |
                                         i18n:i18nService.currentLanguage}} </label>
                                 </div>
                             </div>
+
+
                         </fieldset>
 
                         <fieldset *ngIf="VisiblePEC" class="flex-12" style="display: flex;">
@@ -439,8 +439,7 @@
                                 i18n:i18nService.currentLanguage}} : <i
                                     class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                             <div class="dop control-input " style="display: flex;">
-                                <p-dropdown name="Soceite" [filter]="true" appendTo="body" (onChange)="GetConventionByCodeSocieteSelected(this.selectedSociete.code)" [options]="ListSocieteRslt" [(ngModel)]="selectedSociete" [style]="{'width':'150px'}" [autoDisplayFirst]="true" placeholder="&nbsp;"
-                                    [required]="true" [lazy]="true" #Soceite="ngModel">
+                                <p-dropdown name="Soceite" [filter]="true" appendTo="body" [options]="ListSocieteRslt" [(ngModel)]="selectedSociete" [style]="{'width':'150px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #Soceite="ngModel" (onChange)="GetListConventionFromSociete(this.selectedSociete)">
                                 </p-dropdown>
                             </div>
 
@@ -448,8 +447,8 @@
                                 i18n:i18nService.currentLanguage}} : <i
                                     class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                             <div class="dop control-input " style="display: flex;">
-                                <p-dropdown name="Convention" [filter]="true" appendTo="body" (onChange)="GetDetailsConventionSelected()" [options]="ListConventionRslt" [(ngModel)]="selectedConvention" [style]="{'width':'150px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true"
-                                    [lazy]="true" #Convention="ngModel">
+                                <p-dropdown name="Convention" [filter]="true" appendTo="body" [options]="ListConventionRslt" [(ngModel)]="selectedConvention" [style]="{'width':'150px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #Convention="ngModel"
+                                    (onChange)="GetDetailsConventionSelected()">
                                 </p-dropdown>
                             </div>
                         </fieldset>
@@ -483,12 +482,22 @@
                                     </ng-template>
                                     <ng-template pTemplate="body" let-domaine>
                                         <tr [pSelectableRowDblClick]="domaine" [pSelectableRowDisabled]="AraiaDis">
-                                            <td> {{domaine.codeMedecin}}</td>
-                                            <td>{{domaine.NomFullArMedecin}}</td>
-                                            <td>{{domaine.NomFullLtMedecin}}</td>
-                                            <td> {{domaine.specialite_medecin}}</td>
-                                            <td> {{domaine.Cabinet}}</td>
-                                            <td> {{domaine.montantConsultation}}</td>
+
+                                            <td> {{domaine.medecinDTO.codeSaisie}}</td>
+                                            <td>{{domaine.medecinDTO.nomIntervAr}}</td>
+                                            <td>{{domaine.medecinDTO.nomIntervLt}}</td>
+                                            <td> {{domaine.medecinDTO.specialiteMedecinDTO.designationAr}}</td>
+                                            <td> {{domaine.cabinetDTO.designationAr}}</td>
+                                            <td> {{domaine.montantConsultation}}
+
+                                            </td>
+
+                                        </tr>
+                                    </ng-template>
+
+                                    <ng-template pTemplate="emptymessage">
+                                        <tr>
+                                            <td colspan="6">لا توجد بيانات</td>
                                         </tr>
                                     </ng-template>
                                 </p-table>
@@ -565,7 +574,8 @@
                             i18n:i18nService.currentLanguage}} :<i
                                 class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                         <div class="dop control-input " style=" display: flex; padding-right: 20px;    justify-content: space-evenly;">
-                            <p-dropdown [disabled]="DisBanque" required name="banque" appendTo="body" class="dropdown" [options]="listBanqueRslt" [(ngModel)]="selectedBanque" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true" #BanqueInput>
+                            <p-dropdown [disabled]="DisBanque" [filter]="true" required name="banque" appendTo="body" class="dropdown" [options]="listBanqueRslt" [(ngModel)]="selectedBanque" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true"
+                                #BanqueInput>
                             </p-dropdown>
                         </div>
 
@@ -584,6 +594,8 @@
             </fieldset>
         </div>
     </div>
+
+
 
 
 </p-dialog>
@@ -706,11 +718,9 @@
                                 class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                         <div class="control-input flex-60" style="padding: 0px ; display: flex;">
 
-                            <!-- <p-calendar (keyup.enter)="transformDateFormatNew()" (onInput)="formatInputNew($event)" (onBlur)="transformDateFormatNew()" (onChange)="transformDateFormatNew()" (onSelect)="transformDateFormatNew()" [ngStyle]="{'width':'78%' , 'margin-right': '3px'}"
-                                [showButtonBar]="true" appendTo="body" [(ngModel)]="dateNaissanceNew" [iconDisplay]="'input'" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay" /> -->
 
-                            <p-calendar (keyup.enter)="transformDateFormat()" (onInput)="formatInputNew($event)" (onBlur)="transformDateFormat()" (onChange)="transformDateFormat()" (onSelect)="transformDateFormat()" [(ngModel)]="dateNaissanceNew" [ngStyle]="{'width':'100%' , 'margin-right': '15px'}"
-                                [showButtonBar]="true" appendTo="body" [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay"></p-calendar>
+                            <p-calendar (keyup.enter)="transformDateFormat()" (onInput)="formatInputNew($event)" (onChange)="transformDateFormat()" (onSelect)="transformDateFormat()" [(ngModel)]="dateNaissanceNew" [ngStyle]="{'width':'73%' , 'margin-right': '10px'}" [showButtonBar]="true"
+                                appendTo="body" [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay"></p-calendar>
 
 
 

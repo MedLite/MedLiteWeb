@@ -95,16 +95,19 @@ import { authInterceptorProviders, AuthInterceptor } from './Authenfication/_hel
 import { ModalContentComponent } from './Shared/modal-content/modal-content.component';
 import { SpecialiteCabinetComponent } from './menu-parametrage/specialite-cabinet/specialite-cabinet.component';
 import { SpecialiteMedecinComponent } from './menu-parametrage/specialite-medecin/specialite-medecin.component';
-import { MenuParametrageComponent } from './menu-parametrage/menu-parametrage.component';
 import { I18nPipe } from './Shared/i18n/i18n.pipe';
 import { MenuActiveDirective } from './Shared/service/highlight';
 import { ToFixedRoundPipe } from './Shared/service/ToFixedRoundPipe';
 import { SousFamillePrestationComponent } from './menu-parametrage/sous-famille-prestation/sous-famille-prestation.component';
 import { TypeOperationComponent } from './menu-parametrage/type-operation/type-operation.component';
 import { BlocOperationComponent } from './menu-parametrage/bloc-operation/bloc-operation.component';
+import { FeuilleSoinComponent } from './dossier-medical-opd/feuille-soin/feuille-soin.component';
+import { ListAdmissionOPDComponent } from './dossier-medical-opd/list-admission-opd/list-admission-opd.component';
+import { TreeTableModule } from 'primeng/treetable';
  
- 
- 
+import { ToastModule } from 'primeng/toast';
+import { RequestOPDComponent } from './dossier-medical-opd/request-opd/request-opd.component';
+import { CustomSelectComponent } from './Shared/TAB/custom-select.component';
 
 const languages = [
   { lang: 'عربي', flag: 'assets/images/county/ar.png', file: arI18n, valeur: 'ar' },
@@ -113,8 +116,12 @@ const languages = [
 
 ]
 
+
+
 @NgModule({
   declarations: [
+
+    CustomSelectComponent,
     AppComponent,MenuActiveDirective,
     DashboardComponent,
     UserCompoComponent, BreadcrumbComponent,
@@ -137,6 +144,9 @@ const languages = [
 
 
 
+    /// DMI 
+    FeuilleSoinComponent,ListAdmissionOPDComponent,RequestOPDComponent,
+
     
   ],
   imports: [
@@ -144,21 +154,21 @@ const languages = [
       echarts, // Provide the echarts object here
     }),
     ChartModule, BrowserModule,PanelModule,TabMenuModule,
-    ReactiveFormsModule, BrowserAnimationsModule,
+    ReactiveFormsModule, BrowserAnimationsModule,ToastModule,
    
-    AppRoutingModule, DropdownModule, FormsModule,
-    HttpClientModule, 
+    AppRoutingModule, DropdownModule,
+    HttpClientModule, TreeTableModule,
   
-    I18nModule.forRoot(languages), ReactiveFormsModule, TagModule, RippleModule, RatingModule, InputTextareaModule,
+    I18nModule.forRoot(languages), TagModule, RippleModule, RatingModule, InputTextareaModule,
     CommonModule, ContextMenuModule, ToolbarModule, ConfirmDialogModule,
-    BrowserModule, TableModule, InputTextModule, FileUploadModule,
-    AppRoutingModule, DropdownModule, ButtonModule, InputNumberModule, NoopAnimationsModule,
-    FormsModule, FormsModule, DialogModule, RadioButtonModule, HttpClientModule,
-    CalendarModule, CheckboxModule, BrowserAnimationsModule, TabViewModule,
+     TableModule, InputTextModule, FileUploadModule,
+     ButtonModule, InputNumberModule, NoopAnimationsModule,
+    FormsModule, DialogModule, RadioButtonModule,
+    CalendarModule, CheckboxModule, TabViewModule,
 
   ],
   providers: [  authInterceptorProviders,DatePipe, LoginComponent, LoadingComponent, HttpClient, MessageService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true ,  }, 
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true ,  },
     provideAnimationsAsync(),
   ],
   bootstrap: [AppComponent]

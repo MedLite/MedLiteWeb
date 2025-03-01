@@ -31,13 +31,19 @@ export class SidebarComponent {
         
         if (typeof data.logo === 'string' && data.logo.trim() !== '') {
           this.logo = this._sanitizer.bypassSecurityTrustResourceUrl(`data:image/jpg;base64,${data.logo}`);
+          
         } else {
           console.error("Invalid logo data received.");
           this.logo = '/path/to/default/logo.png'; //Fallback to default
         }
 
+      
       }
+      
     )
+
+
+
  
   }
 

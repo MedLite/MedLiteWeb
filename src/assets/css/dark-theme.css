@@ -1224,6 +1224,7 @@ html.dark-theme .p-dropdown .p-dropdown-trigger {
 html.dark-theme .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
     background: #181818;
     color: #ffffff;
+    border: 1px solid #9f9595;
 }
 
 html.dark-theme .p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
@@ -1333,6 +1334,11 @@ html.dark-theme .p-paginator .p-paginator-pages .p-paginator-page {
 }
 
 html.dark-theme td input {
+    background: #121212;
+    color: whitesmoke;
+}
+
+html.dark-theme .Bouton_new3 {
     background: #121212;
     color: whitesmoke;
 }

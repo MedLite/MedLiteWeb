@@ -43,5 +43,56 @@ constructor(private http: HttpClient) { }
 
 
 
+  
+  //// PlanningCabinet
+  GetPlanningCabinetAll(): Observable<any> {
+
+    return this.http.get(`${environment.API_Reception}planning_cabinet/all` )
+  }
+  GetPlanningCabinetByActif(actif : boolean): Observable<any> {
+
+    return this.http.get(`${environment.API_Reception}planning_cabinet/findBy?actif=`+actif )
+  }
+  
+
+  GetPlanningCabinetByActifAndDateExiste(actif : any,dateDebut : any , dateFin :any): Observable<any> {
+
+    return this.http.get(`${environment.API_Reception}planning_cabinet/findByDateAndActif?actif=`+actif + `&dateDebut=`+dateDebut + `&dateFin=`+dateFin )
+  }
+  GetPlanningCabinetByDateExiste(dateDebut : any , dateFin :any): Observable<any> {
+
+    return this.http.get(`${environment.API_Reception}planning_cabinet/findByDate?dateDebut=`+dateDebut + `&dateFin=`+dateFin )
+  }
+  
+
+  GetPlanningCabinetByCode(code:number): Observable<any> {
+
+    return this.http.get(`${environment.API_Reception}planning_cabinet/`+code )
+  }
+
+  GetPlanningCabinetByDate(dateDispo:any,dateFin:any): Observable<any> {
+
+    return this.http.get(`${environment.API_Reception}planning_cabinet/findByDate?dateDebut=`+dateDispo`&dateFin=`+dateFin)
+  }
+
+  PostPlanningCabinet(body: any) {
+    return this.http.post(`${environment.API_Reception}planning_cabinet`, body);
+  } 
+
+  PostPlanningCabinetList(body: any) {
+    return this.http.post(`${environment.API_Reception}planning_cabinet/List`, body);
+  } 
+
+
+  UpdatePlanningCabinet(body: any) {
+    return this.http.put(`${environment.API_Reception}planning_cabinet/update`, body);
+  }
+
+  DeletePlanningCabinet(code: any) {
+    return this.http.delete(`${environment.API_Reception}planning_cabinet/delete/`+code);
+  }
+
+ 
+
 
 }

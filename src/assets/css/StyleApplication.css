@@ -708,7 +708,7 @@ fieldset[disabled] .form-control-dev {
 
 :host ::ng-deep .control-label-titer {
     /* text-align: right !important; */
-    padding-top: 10px;
+    padding-top: 5px;
     font-size: 15px;
     color: black;
     padding-right: 5px;
@@ -2786,4 +2786,22 @@ input#PEC {
 
 .ModalAddFacture {
     margin-top: 10px;
+}
+
+.btnAddToPlanning {
+    padding-right: 22px;
+}
+
+.btnAddStyel {
+    /* background-color: green; */
+    border: 1px solid #aeb4b9;
+    border-radius: 6px;
+    font-weight: bold;
+    width: 40px;
+    background-color: #f8f9fa;
+}
+
+.btnAddStyel:hover {
+    background-color: green;
+    color: white;
 }

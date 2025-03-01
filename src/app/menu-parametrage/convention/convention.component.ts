@@ -73,6 +73,10 @@ export class ConventionComponent implements OnInit {
   ListSociete = new Array<any>();
   selectedSociete: any = '';
 
+  DisabledPL=false;
+  DisabledSociete= false;
+  DisabledCouverture = false;
+
   ngOnInit(): void {
     this.items = [
       { label: this.i18nService.getString('LabelActif') || 'LabelActif', icon: 'pi pi-file-check', command: () => { this.GetAllConventionActif() } },
@@ -131,6 +135,10 @@ export class ConventionComponent implements OnInit {
     this.codeSaisie = '';
     this.selectedConvention = ''
     this.selectedSociete = '';
+    this.selectedCouverture='';
+    this.selectedpriceList='';
+    this.dateDeb="";
+    this.dateFin="";
     this.onRowUnselect(event);
 
   }
@@ -151,9 +159,11 @@ export class ConventionComponent implements OnInit {
     this.codeSaisie = event.data.codeSaisie;
     this.designationAr = event.data.designationAr;
     this.designationLt = event.data.designationLt;
-    this.selectedSociete = event.data.societeDTO.code
-
-    // console.log('vtData : ', event);
+    this.selectedSociete = event.data.societeDTO.code;
+    this.selectedCouverture = event.data.listCouvertureDTO.code;
+    this.selectedpriceList = event.data.codePriceList;
+    this.dateDeb = event.data.dateDeb;
+    this.dateFin = event.data.dateFin; 
   }
   onRowUnselect(event: any) {
     // console.log('row unselect : ', event);
@@ -192,14 +202,16 @@ export class ConventionComponent implements OnInit {
 
       this.clearForm();
       this.GetCodeSaisie();
-      this.GetSociete();
-      this.GetPristList();
+      this.GetSociete(); 
       this.GetListCouverture();
 
       this.actif = false;
       this.visible = false;
       this.visibleModal = true;
       this.code == undefined;
+      this.DisabledCouverture=false;
+      this.DisabledPL=false;
+      this.DisabledSociete=false;
 
 
     }
@@ -216,11 +228,13 @@ export class ConventionComponent implements OnInit {
 
         button.setAttribute('data-target', '#Modal');
         this.formHeader = this.i18nService.getString('Modifier');
-        this.GetSociete();
-        this.GetPristList();
-        this.GetListCouverture();
-
+        this.GetSociete(); 
+        this.GetListCouverture(); 
+        this.GetPriceListByCodeForModif();
         this.visibleModal = true;
+        this.DisabledCouverture=true;
+        this.DisabledPL=true;
+        this.DisabledSociete=true;
         this.onRowSelect;
 
       }
@@ -411,35 +425,17 @@ export class ConventionComponent implements OnInit {
 
 
 
-  dataPriceList = new Array<any>();
-  listPriceListPushed = new Array<any>();
-  GetPristList() {
-    this.param_service.GetPriceListActif().subscribe((data: any) => {
-      this.dataPriceList = data;
-      this.listPriceListPushed = [];
-      for (let i = 0; i < this.dataPriceList.length; i++) {
-        this.listPriceListPushed.push({ label: this.dataPriceList[i].designationAr, value: this.dataPriceList[i].code })
-      }
-      this.ListpriceList = this.listPriceListPushed;
-    })
-  }
+
+  // GetPristList() {
+  
+  // }
 
 
 
 
 
-  dataCouverture = new Array<any>();
-  listCouverturePushed = new Array<any>();
-  GetListCouverture() {
-    this.param_service.GetListCouvertureActif().subscribe((data: any) => {
-      this.dataCouverture = data;
-      this.listCouverturePushed = [];
-      for (let i = 0; i < this.dataCouverture.length; i++) {
-        this.listCouverturePushed.push({ label: this.dataCouverture[i].designationAr, value: this.dataCouverture[i].code })
-      }
-      this.ListCouverture = this.listCouverturePushed;
-    })
-  }
+
+   
 
 
 
@@ -520,6 +516,57 @@ export class ConventionComponent implements OnInit {
     this.dateFin = this.datePipe.transform(this.dateFin, "yyyy-MM-dd")
   };
 
+  dataPriceList = new Array<any>();
+  listPriceListPushed = new Array<any>();
+  dataCouverture = new Array<any>();
+  listCouverturePushed = new Array<any>();
+  GetPriceListAndCouvertureByCodeSociete(codeSociete : number){
+
+    
+    this.param_service.GetPriceListByCodeSociete(codeSociete).subscribe((data: any) => {
+      this.dataPriceList = data;
+      this.listPriceListPushed = [];
+      for (let i = 0; i < this.dataPriceList.length; i++) {
+        this.listPriceListPushed.push({ label: this.dataPriceList[i].designationAr, value: this.dataPriceList[i].code })
+      }
+      this.ListpriceList = this.listPriceListPushed;
+    }) ;  
+  }
+
+  GetListCouverture(){
+    this.param_service.GetListCouvertureActif().subscribe((data: any) => {
+      this.dataCouverture = data;
+      this.listCouverturePushed = [];
+      for (let i = 0; i < this.dataCouverture.length; i++) {
+        this.listCouverturePushed.push({ label: this.dataCouverture[i].designationAr, value: this.dataCouverture[i].code })
+      }
+      this.ListCouverture = this.listCouverturePushed;
+    })
+  }
+
+  GetPriceListByCodeForModif(){
+    // this.param_service.GetPriceListByCode(codePriceList).subscribe((data: any) => {
+    //   this.dataPriceList = data;
+    //   this.listPriceListPushed = [];
+    //   for (let i = 0; i < this.dataPriceList.length; i++) {
+    //     this.listPriceListPushed.push({ label: this.dataPriceList[i].designationAr, value: this.dataPriceList[i].code })
+    //   }
+    //   this.ListpriceList = this.listPriceListPushed;
+    //   // this.selectedpriceList = this.ListpriceList[0];
+     
+    // })
+
+    this.param_service. GetPriceList().subscribe((data: any) => {
+      this.dataPriceList = data;
+      this.listPriceListPushed = [];
+      for (let i = 0; i < this.dataPriceList.length; i++) {
+        this.listPriceListPushed.push({ label: this.dataPriceList[i].designationAr, value: this.dataPriceList[i].code })
+      }
+      this.ListpriceList = this.listPriceListPushed; 
+    }) ;  
+
+
+  }
 
 }
 

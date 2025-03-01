@@ -1,0 +1,7 @@
+:host ::ng-deep .ModalAdd {
+    height: 410px !important;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-header {
+    height: 100px !important;
+}
