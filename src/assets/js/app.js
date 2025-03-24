@@ -393,3 +393,56 @@ navItems.forEach((navItem, i) => {
         navItem.className = "nav-item active";
     });
 });
+
+
+function myFunction() {
+    var x = document.getElementById("myInput");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+
+}
+
+
+function previewFile() {
+    // const preview = document.querySelector("preview");
+    var x = document.getElementById("ImgSig");
+    const file = document.querySelector("input[type=file]").files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener(
+        "load",
+        () => {
+            // convert image file to base64 string
+            x.src = reader.result;
+        },
+        false,
+    );
+
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+}
+let isListenerAdded = false;
+
+function clickupload() {
+
+    const fileUpload = document.getElementById('file-upload');
+    const fileButton = document.querySelector('.file-upload-button');
+    const fileNameDisplay = document.querySelector('.file-name');
+
+    fileUpload.addEventListener('change', () => {
+        const fileName = fileUpload.files[0].name;
+        fileNameDisplay.textContent = fileName;
+    });
+
+
+    if (!isListenerAdded) { // Add the event listener only once
+        fileButton.addEventListener('click', () => {
+            fileUpload.click();
+        });
+        isListenerAdded = true; // Set the flag to true after adding the listener
+    }
+}

@@ -1,7 +1,7 @@
 <body dir="ltr">
     <main>
         <nav class="main-menu">
-            <h1>Dossier Medical</h1>
+            <h1 style="font-size: 21px ;">Dossier Medical</h1>
             <!-- <img class="logo" src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/4cfdcb5a-0137-4457-8be1-6e7bd1f29ebb" alt="" /> -->
             <ul>
                 <li class="nav-item  " routerLinkActive="active">
@@ -40,12 +40,12 @@
                     </a>
                 </li>
 
-                <li class="nav-item" routerLinkActive="active">
+                <li class="nav-item" routerLinkActive="active" [routerLink]="['/dossier_medical_opd/prescription_opd']">
                     <b></b>
                     <b></b>
-                    <a href="#">
+                    <a>
                         <i class="fa fa-person-running nav-icon"></i>
-                        <span class="nav-text">Activities</span>
+                        <span class="nav-text">Prescription</span>
                     </a>
                 </li>
 
@@ -62,12 +62,24 @@
 
         <section class="content">
             <div class="flex-row-start flex-12 Entent-Admission">
-                <section class="block-row">
-                    <a> Patient ID : {{patientSelectionService.selectedPatientCode$ | async }}</a>
-                </section>
-                <section class="block-row">
-                    <a> Patient Name : {{patientSelectionService.selectedPatientName$  | async }}</a>
-                </section>
+                <div class="flex-6">
+                    <section class="block-row">
+                        <a> Admission Code :  {{ (patientSelectionService.selectedAdmissionCode$ | async)?.toString() || '' }}</a>
+                    </section>
+                    <section class="block-row">
+                        <a> Patient Name : {{(patientSelectionService.selectedPatientName$ | async)?.toString() || ''}}</a>
+                    </section>
+                </div>
+
+
+                <div class="flex-6" style="padding-left: 20px;">
+                    <section class="block-row">
+                        <a> Patient ID :  {{ (patientSelectionService.selectedcodeSaisiePatient$ | async)?.toString() || '' }}</a>
+                    </section>
+                    <section class="block-row">
+                        <a> Other :  </a>
+                    </section>
+                </div>
 
 
 

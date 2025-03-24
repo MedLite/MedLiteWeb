@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment.development';
  
 
 const TOKEN_KEY = 'auth-token';
+const TOKEN_KEY_USER = 'auth-user';
 const USER_ID = 'USER-ID';
 const USER_KEY = 'auth-user';
 const fresh_Token = 'RefTok';
@@ -45,7 +46,9 @@ export class TokenStorageService {
   public getToken(): string | null {
     return window.sessionStorage.getItem(TOKEN_KEY);
   }
-
+  public getTokenUSer(): string | null {
+    return window.sessionStorage.getItem(TOKEN_KEY_USER);
+  }
   public saveUser(user: any): void {
     window.sessionStorage.removeItem(USER_KEY);
     window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));

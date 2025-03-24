@@ -23,3 +23,183 @@
 .content {
     font-family: auto !important;
 }
+
+:host ::ng-deep .ModalCheifComplaint {
+    border-radius: 6px;
+    width: 606px !important;
+    font-family: auto;
+    margin-top: 20px;
+}
+
+:host ::ng-deep .ModalHistoryAllergy {
+    border-radius: 6px;
+    width: 1050px !important;
+    font-family: auto;
+    margin-top: 20px;
+}
+
+:host ::ng-deep .p-panel .p-panel-content {
+    border: none !important;
+}
+
+@media screen and (min-width: 768px) {
+    .md\:w-full {
+        width: 100%!important
+    }
+    .md\:w-screen {
+        width: 100vw!important
+    }
+    .md\:w-auto {
+        width: auto!important
+    }
+    .md\:w-1 {
+        width: 8.3333%!important
+    }
+    .md\:w-2 {
+        width: 16.6667%!important
+    }
+    .md\:w-3 {
+        width: 25%!important
+    }
+    .md\:w-4 {
+        width: 33.3333%!important
+    }
+    .md\:w-5 {
+        width: 41.6667%!important
+    }
+    .md\:w-6 {
+        width: 50%!important
+    }
+    .md\:w-7 {
+        width: 58.3333%!important
+    }
+    .md\:w-8 {
+        width: 66.6667%!important
+    }
+    .md\:w-9 {
+        width: 75%!important
+    }
+    .md\:w-10 {
+        width: 83.3333%!important
+    }
+    .md\:w-11 {
+        width: 91.6667%!important
+    }
+    .md\:w-12 {
+        width: 100%!important
+    }
+    .md\:w-min {
+        width: min-content!important
+    }
+    .md\:w-max {
+        width: max-content!important
+    }
+    .md\:w-fit {
+        width: fit-content!important
+    }
+    .md\:w-1rem {
+        width: 1rem!important
+    }
+    .md\:w-2rem {
+        width: 2rem!important
+    }
+    .md\:w-3rem {
+        width: 3rem!important
+    }
+    .md\:w-4rem {
+        width: 4rem!important
+    }
+    .md\:w-5rem {
+        width: 5rem!important
+    }
+    .md\:w-6rem {
+        width: 6rem!important
+    }
+    .md\:w-7rem {
+        width: 7rem!important
+    }
+    .md\:w-8rem {
+        width: 8rem!important
+    }
+    .md\:w-9rem {
+        width: 9rem!important
+    }
+    .md\:w-10rem {
+        width: 10rem!important
+    }
+    .md\:w-11rem {
+        width: 11rem!important
+    }
+    .md\:w-12rem {
+        width: 12rem!important
+    }
+    .md\:w-13rem {
+        width: 13rem!important
+    }
+    .md\:w-14rem {
+        width: 14rem!important
+    }
+    .md\:w-15rem {
+        width: 15rem!important
+    }
+    .md\:w-16rem {
+        width: 16rem!important
+    }
+    .md\:w-17rem {
+        width: 17rem!important
+    }
+    .md\:w-18rem {
+        width: 18rem!important
+    }
+    .md\:w-19rem {
+        width: 19rem!important
+    }
+    .md\:w-20rem {
+        width: 20rem!important
+    }
+    .md\:w-21rem {
+        width: 21rem!important
+    }
+    .md\:w-22rem {
+        width: 22rem!important
+    }
+    .md\:w-23rem {
+        width: 23rem!important
+    }
+    .md\:w-24rem {
+        width: 24rem!important
+    }
+    .md\:w-25rem {
+        width: 25rem!important
+    }
+    .md\:w-26rem {
+        width: 26rem!important
+    }
+    .md\:w-27rem {
+        width: 27rem!important
+    }
+    .md\:w-28rem {
+        width: 28rem!important
+    }
+    .md\:w-29rem {
+        width: 29rem!important
+    }
+    .md\:w-30rem {
+        width: 30rem!important
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .md\:flex-row {
+        flex-direction: row!important
+    }
+    .md\:flex-row-reverse {
+        flex-direction: row-reverse!important
+    }
+    .md\:flex-column {
+        flex-direction: column!important
+    }
+    .md\:flex-column-reverse {
+        flex-direction: column-reverse!important
+    }
+}

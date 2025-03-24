@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../_services/auth.service';
-import { TokenStorageService } from '../_services/token-storage.service';
+import { Component, inject, OnInit } from '@angular/core';
+ 
 import { ActivatedRoute, Router } from '@angular/router';
 import * as alertifyjs from 'alertifyjs'
 import { I18nService } from '../../Shared/i18n/i18n.service';
+import { StorageService } from '../JWT/_services/storage.service';
+import { AuthService } from '../JWT/_services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -20,14 +21,14 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   roles: string[] = [];
 
-  constructor(private route: ActivatedRoute,public i18nService: I18nService, private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router) {
+  constructor( private authServiceNew: AuthService, private storageService: StorageService,private route: ActivatedRoute, public i18nService: I18nService , private router: Router) {
 
   }
   countries: any;
 
-  selectedCountry: any; 
-  ngOnInit(): void { 
-   
+  selectedCountry: any;
+  ngOnInit(): void {
+
     this.countries = [
       { name: 'عربي', code: 'LY', value: 'ar' },
       { name: 'English', code: 'US', value: 'en' },
@@ -36,54 +37,69 @@ export class LoginComponent implements OnInit {
     ];
     this.selectedCountry = this.countries[0];
 
-    this.setDocumentDirection(this.selectedCountry.value); 
+    this.setDocumentDirection(this.selectedCountry.value);
   }
 
-  
+
   playSoundError() {
     let audio = new Audio();
     audio.src = "../assets/son/erro.mp3";
     audio.load();
     audio.play();
-  } 
+  }
+  // onSubmit(): void {
+  //   const { userName, password } = this.form;
+
+  //   this.authService.sigin(userName, password).subscribe(
+  //     data => {
+  //       this.tokenStorage.saveToken(data.token);
+  //       this.tokenStorage.saveUser(data);
+  //       this.tokenStorage.SaveRefreshToken(data.refreshToken);
+
+  //       sessionStorage.setItem("userName", userName);
+
+  //       sessionStorage.setItem("lang", this.selectedCountry.value);
+
+  //       this.isLoginFailed = false;
+  //       this.isLoggedIn = true;
+
+
+  //       this.reloadCurrentRoute();
+
+  //     }, 
+  //   );
+  // }
+
+  routers  = inject (Router);
   onSubmit(): void {
     const { userName, password } = this.form;
 
-    this.authService.login(userName, password).subscribe(
-      data => { 
-        this.tokenStorage.saveToken(data.token);
-        this.tokenStorage.saveUser(data); 
+    this.authServiceNew.login(userName, password).subscribe({
+      next: (data:any) => {
+        this.storageService.saveUser(data);
 
-    sessionStorage.setItem("userName", userName); 
-
-    sessionStorage.setItem("lang", this.selectedCountry.value);
-
-    this.isLoginFailed = false;
-    this.isLoggedIn = true;
-
-
-    this.reloadCurrentRoute();
-
-    },
-    // err => {
-    //   if ([500].includes(err.status)) {
-    //     alertifyjs.set('notifier', 'position', 'top-left');
-    //     alertifyjs.error('<i class="error fa fa-exclamation-circle" aria-hidden="true" style="margin: 5px 5px 5px;font-size: 15px !important;;""></i>' + ` Service Core Not Available 503`);
-    //     this.playSoundError();
-    //   }
-
-
-    //   this.isLoginFailed = true;
-
-    // }
-    );
+        this.isLoginFailed = false;
+        this.isLoggedIn = true;
+        this.roles = this.storageService.getUser().roles;
+        // this.reloadPage();
+        this.reloadCurrentRoute(); 
+      },
+      error: (err:any) => {
+        console.log("errrorrr messgae not read ", err)
+        this.errorMessage = err.error.message;
+        this.isLoginFailed = true;
+      }
+    });
   }
 
-   
+  reloadPage(): void {
+    window.location.reload();
+  }
 
-  reloadCurrentRoute() {   
-      this.reloadPageCurrent();
-        this.router.navigate(['/home'] );
+
+  reloadCurrentRoute() {
+    this.reloadPageCurrent();
+    this.router.navigate(['/home']);
   }
 
   reloadPageCurrent() {

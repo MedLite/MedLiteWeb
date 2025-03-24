@@ -5,11 +5,11 @@ import { MenuParametrageComponent } from './menu-parametrage.component';
 import { TagModule } from 'primeng/tag';
 import { MatIconModule } from '@angular/material/icon'
 import {MatMenuModule} from '@angular/material/menu';  
-import { I18nPipeForMenu } from '../Shared/i18n/i18nForMenu.pipe';
-
+import { I18nPipeForMenu } from '../Shared/i18n/i18nForMenu.pipe'; 
+import { BadgeModule } from 'primeng/badge';
 @NgModule({
   declarations: [
-    MenuParametrageComponent,I18nPipeForMenu
+    MenuParametrageComponent,I18nPipeForMenu, 
 
   
   ],

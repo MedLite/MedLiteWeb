@@ -5,16 +5,18 @@ import { Router } from '@angular/router';
 
 import * as alertifyjs from 'alertifyjs'
 import { ModalService } from '../modal/modal.service';
-import { AuthService } from '../../Authenfication/_services/auth.service';
-import { TokenStorageService } from '../../Authenfication/_services/token-storage.service';
+// import { AuthService } from '../../Authenfication/_services/auth.service';
+// import { TokenStorageService } from '../../Authenfication/_services/token-storage.service';
 import { I18nService } from '../i18n/i18n.service';
+import { AuthService } from '../../Authenfication/JWT/_services/auth.service';
+import { StorageService } from '../../Authenfication/JWT/_services/storage.service';
 @Component({
   selector: 'app-modal-content',  
   templateUrl: './modal-content.component.html',
   styleUrls: ['./modal-content.component.css']
 })
 export class ModalContentComponent implements OnInit {
-  constructor( private modalService: ModalService,public i18nService: I18nService,private authService: AuthService, private router: Router, private tokenStorage: TokenStorageService,
+  constructor(  private storageService: StorageService, private modalService: ModalService,public i18nService: I18nService,private authService: AuthService, private router: Router ,
   ){
 
   }
@@ -36,8 +38,7 @@ export class ModalContentComponent implements OnInit {
 
     this.authService.login(userName, password).subscribe(
       data => {  
-        this.tokenStorage.saveToken(data.token);
-        this.tokenStorage.saveUser(data); 
+        this.storageService.saveUser(data);
         sessionStorage.setItem("userName", userName);  
         this.isLoginFailed = false;
         this.isLoggedIn = true; 

@@ -26,6 +26,7 @@ import { SpecialiteCabinetComponent } from './specialite-cabinet/specialite-cabi
 import { SousFamillePrestationComponent } from './sous-famille-prestation/sous-famille-prestation.component';
 import { TypeOperationComponent } from './type-operation/type-operation.component';
 import { BlocOperationComponent } from './bloc-operation/bloc-operation.component';
+import { SignatureMedecinComponent } from './signature-medecin/signature-medecin.component';
  
  
 
@@ -139,6 +140,11 @@ const routes: Routes = [
     path: 'specialite_medecin',
     component: SpecialiteMedecinComponent ,
     data:{title:'SpecialiteMedecin',icon:'bx bx-shield-quarter'}
+  },
+  {
+    path: 'signature_medecin',
+    component: SignatureMedecinComponent ,
+    data:{title:'Signature',icon:'fas fa-signature'}
   }
   ,
   {

@@ -1,0 +1,269 @@
+<body class="card" [ngClass]="{ 'disabled': IsLoading }">
+    <app-loading [IsLoading]="IsLoading">
+    </app-loading>
+    <header>
+
+        <label class="header_name">{{'Signature' | i18n:i18nService.currentLanguage}} </label>
+        <button class="close-button btn btn-default" (click)="closeThisComponent()">X</button>
+    </header>
+    <!-- <aside>
+            <div class="Groupe-Bouton"> 
+            </div>
+        </aside> -->
+    <section id="main-container">
+
+        <div class="material-table">
+            <div class="card">
+                <p-table [paginator]="true" [rows]="20" [rowsPerPageOptions]="[20, 40,80,100]" [showCurrentPageReport]="true" [first]="first" currentPageReportTemplate="{{'Page' | i18n:i18nService.currentLanguage}} {first} {{'To' | i18n:i18nService.currentLanguage}} {last} {{'of' | i18n:i18nService.currentLanguage}} {totalRecords} {{'entiers' | i18n:i18nService.currentLanguage}}"
+                    #dt1 [columns]="cols" [value]="dataSignatureMedecin" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedMedecin" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" dataKey="code" [tableStyle]="{'min-width': '50rem', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
+                    <ng-template pTemplate="caption" class="col-md-12">
+                        <div>
+                            <div class="flex-row-start FloatRight">
+                                <!-- <p-tabMenu [model]="items" [(activeItem)]="activeItem" /> -->
+
+                            </div>
+                            <div class="flex-row-start flex-8 FloatLeft">
+                                <button data-backdrop="false" type="button" class="Bouton-add-new1 btn  btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('add')">
+                                    <div class="bouton_style-2"> {{'Add' | i18n:i18nService.currentLanguage}}</div>
+                                    <i class="fa-solid fa-plus add-icon"></i>
+                                </button>
+                                <button data-backdrop="false" type="button" class="Bouton-add-new1 btn  btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="onOpenModal('edit')">
+                                    <div class="bouton_style-2">{{'Modifier' | i18n:i18nService.currentLanguage}}</div>
+                                    <i class="fa-solid fa-pen modif-icon"></i>
+                                </button>
+                                <button type="button" class="Bouton-add-new2 btn  btn-default " data-original-title="Delete" data-toggle="modal" data-target="#ModalDelete" (click)="onOpenModal('Delete')">
+                                    <div class="bouton_style-2">{{'Delete' | i18n:i18nService.currentLanguage}}</div>
+                                    <i class="fa-solid fa-trash-can delete-icon"></i>
+                                </button>
+                                <button data-backdrop="false" type="button" class="Bouton-add-new2 btn btn-default " data-original-title="Print" data-toggle="modal" data-target="#ModalPrint" (click)="onOpenModal('Print')">
+                                    <div class="bouton_style-2">{{'Print' | i18n:i18nService.currentLanguage}}</div>
+                                    <i class="fa-solid fa-print print-icon"></i>
+                                </button>
+                                <!-- <button data-backdrop="false" type="button" class="Bouton-add-new2 btn btn-default " data-original-title="Signature" data-toggle="modal" data-target="#ModalSignature" (click)="onOpenModal('Signature')">
+                                    <div class="bouton_style-2">{{'Signature' | i18n:i18nService.currentLanguage}}</div>
+                             
+                                    <i class="fa-solid fa-signature print-icon"></i>
+                                </button> -->
+
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="colgroup" let-col>
+                        <colgroup>
+                            <col *ngFor="let col of col" [style.width]="col.width">
+                        </colgroup>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-col>
+                        <tr>
+                            <th *ngFor="let col of col ; let i = index" pResizableColumn>
+                                <span>
+                                    {{col.header}}
+                                </span>
+                            </th>
+                        </tr>
+                        <tr class="filter-row">
+                            <th *ngFor="let col of col; let i = index">
+                                <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
+                                <!-- *ngIf="i !== 5" -->
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-domaine>
+                        <tr [pSelectableRow]="domaine">
+
+                            <td style="font-size: 15px !important;">{{domaine.medecinDTO.codeSaisie}}</td>
+                            <td style="font-size: 15px !important;">{{domaine.medecinDTO.nomIntervAr}}</td>
+                            <td style="font-size: 15px !important;">{{domaine.medecinDTO.nomIntervLt}}</td>
+
+
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="4">
+                                {{'NoItemExist' | i18n:i18nService.currentLanguage}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+
+            </div>
+        </div>
+    </section>
+    <!-- <aside>aside</aside> -->
+    <footer>footer
+
+        <!-- <div id="pdfContainer"></div>  -->
+    </footer>
+</body>
+
+
+
+
+
+
+<!-- modal primeNG ADD -->
+<p-dialog id="Modal" header="Header" [scrollLeft]="true" [closeOnEscape]="true" [(visible)]="visibleModal" [draggable]="false" data-backdrop="false" [modal]="true" styleClass="ModalAdd">
+
+
+    <ng-template pTemplate="header">
+        <div class="FloatRight">
+            <h2 class="text-default headerForm"> {{formHeader}}</h2>
+        </div>
+        <div class="FloatLeft">
+            <button class="btn btn-default save-add-ModalSmall" (click)="PostUser($event)">
+                <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+                {{'Save' | i18n:i18nService.currentLanguage}}
+            </button>
+            <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearForm()">
+                <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
+                {{'Close' | i18n:i18nService.currentLanguage}}
+            </button>
+        </div>
+
+
+    </ng-template>
+
+
+
+    <div class="modal-body">
+        <!-- <form> -->
+        <div class="flex-row-start flex-12">
+            <fieldset class="flex-12">
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-6">
+                        <label class="control-label flex-4"> {{'Medecin' | i18n:i18nService.currentLanguage}}
+                            : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="control-input  flex-5-45 ">
+                            <p-dropdown name="Medecin" required #medecinInput [filter]="true" appendTo="body" [options]="ListMedecin" [(ngModel)]="selectedMedecin" [style]="{'width':'265px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true">
+                            </p-dropdown>
+                        </div>
+                    </section>
+
+                    <section class="flex-row-start flex-6 ">
+
+                    </section>
+
+
+                </div>
+
+            </fieldset>
+
+        </div>
+        <div class="flex-row-start flex-12">
+            <fieldset class="flex-12">
+
+                <div class="flex-row-start flex-12">
+
+                    <section class="flex-row-start flex-6">
+                        <label class="control-label flex-4" style=" padding: 5px 0px 4px 0px; ">Sginature File :</label>
+                        <div class="control-input flex-6">
+                            <!-- <input type="file" id="browse" onchange="previewFile()" (change)="onFileChanged($event)"> -->
+
+                            <div class="file-upload-wrapper">
+                                <input type="file" id="file-upload" style="display: none;" onchange="previewFile()" (change)="onFileChanged($event)">
+                                <button onclick="clickupload()" type="button" class="file-upload-button">Choose File</button>
+                                <span class="file-name" style="margin: 7px;">No file chosen</span>
+                            </div>
+                        </div>
+
+
+
+
+                    </section>
+                    <br />
+                    <section class="flex-row-start flex-6">
+                        <label class="control-label flex-2" style=" padding: 5px 0px 4px 0px; ">Preview :</label>
+                        <div class="control-input flex-6">
+                            <img [src]="signature" style="padding:35px" id="ImgSig" height="200" alt="Image preview" />
+                        </div>
+                    </section>
+
+
+
+                </div>
+
+
+            </fieldset>
+
+        </div>
+
+
+
+
+    </div>
+
+
+</p-dialog>
+
+<!-- modal primeNG  Delete-->
+<p-dialog class="modal-delete" id="ModalDelete" data-backdrop="false" header="Header" [(visible)]="visDelete" styleClass="ModalDelete" [modal]="true" [draggable]="false" [resizable]="false">
+    <div class="modal-header">
+        <h3 class="footer-dev">
+            <div class="action">
+                <h2 class="text-center text-default txt-header-modal"> {{formHeader}}</h2>
+            </div>
+        </h3>
+    </div>
+    <div class="modal-body">
+        <form action="" #addForms="ngForm">
+            <fieldset class="deleteForms">
+                <h4 class="text-delete ">Êtes-vous sûr de vouloir supprimer ?
+                    <p-button icon="pi pi-save" data-dismiss="modal" label="supprimer" styleClass="save-delete p-button-success" (click)="DeleteUser(code)"></p-button>
+                    <p-button icon="pi pi-sign-out" label="Fermer" styleClass="btn-cancel-delete p-button-danger" data-dismiss="modal"> </p-button>
+
+
+                </h4>
+            </fieldset>
+            <br>
+        </form>
+    </div>
+</p-dialog>
+<!-- fin modal primeng  -->
+
+
+
+
+
+
+<!-- modal primeNG Print -->
+<p-dialog id="ModalPrint" header="Header" [scrollLeft]="true" [closeOnEscape]="true" [(visible)]="visibleModalPrint" data-backdrop="false" [modal]="true" styleClass="ModalPrint" [draggable]="false" [resizable]="false">
+    <div>
+        <div class="modal-header">
+            <h3 class="footer-dev">
+                <div class="action">
+                    <h2 class="text-default headerForm"> {{formHeader}}</h2>
+
+                    <button class="btn btn-default cancel-add-ModalSmall" :closable="false" data-dismiss="modal" (click)="clearForm()"> <i class="fa-lg fa-fw fa fa-times  icon-fermer "></i>Fermer
+                    </button>
+
+                    <p-toast key="toast1"></p-toast>
+
+                </div>
+            </h3>
+        </div>
+        <div class="modal-body">
+            <div id="pdfContainer"></div>
+
+
+            <!-- <div id="myContainer">
+                <div id="outerContainer">
+////sidebarContainer
+                    <div id="sidebarContainer"> </div>  
+
+
+                 /// /mainContainer 
+                    <div id="mainContainer"> </div> 
+
+
+                /// overlayContainer
+                    <div id="overlayContainer" class="hidden"> </div> 
+
+                </div>  
+            </div> -->
+
+        </div>
+
+    </div>
+</p-dialog>

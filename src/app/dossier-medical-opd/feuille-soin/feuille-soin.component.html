@@ -10,34 +10,114 @@
 
         <div class="row">
             <div class="col-12 col-lg-8 d-flex">
-                <div class="card radius-10 w-100" style="height: 220px;">
+                <div class="card radius-10 w-100" style="height: 255px;">
                     <div class="card-header">
-                        <div class="d-flex align-items-center">
+
+                        <div class="d-flex align-items-center FloatRight" style="    margin-top: 8px;">
                             <div>
                                 <h6 class="mb-0">Chief Complaint</h6>
                             </div>
+                        </div>
+                        <div class="d-flex align-items-center FloatLeft">
+                            <div style="display: flex;">
+                                <button type="button" style="width: 35px !important;  margin-left:20px  !important " class="Bouton-rechercher btn  btn-default" data-original-title="CheifComplaint" data-toggle="modal" data-target="#ModalAddCheifComplaint" (click)="onOpenModal('CheifComplaint')">
+                              
+                                    <i class="fa-solid fa-square-plus"
+                                        style=" color: #00b500;padding-top: 2px; font-size: 18px;  margin:0px"></i>
 
+                                </button>
+                                <button type="button" style="width: 35px !important;  margin-left:20px  !important" class="Bouton-rechercher btn  btn-default" data-original-title="CheifComplaint" data-toggle="modal" data-target="#ModalAddCheifComplaint" (click)="onOpenModal('CheifComplaint')">
+                               
+                                    <i class="fa-solid fa-trash-can"
+                                        style=" color: #b50000c4;padding-top: 2px; font-size: 18px;  margin:0px"></i>
+
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
 
                         <div class="place-1">
+                            <p-scrollPanel [style]="{ width: '100%', height: '150px' }">
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                </p>
+                                <p>
+                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
+                                    sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                                </p>
+                                <p class="m-0">
+                                    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia
+                                    animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                                </p>
+
+
+                            </p-scrollPanel>
                         </div>
                     </div>
-                    <div class="row row-cols-1 row-cols-md-3 row-cols-xl-3 g-0 row-group text-center border-top">
+                    <!-- <div class="row row-cols-1 row-cols-md-3 row-cols-xl-3 g-0 row-group text-center border-top">
 
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="col-12 col-lg-4 d-flex">
-                <div class="card radius-10 w-100" style="height: 220px;">
+                <div class="card radius-10 w-100" style="height: 255px;">
                     <div class="card-header">
-                        <h6 class="mb-0">Past history / Allergy</h6>
 
+
+                        <div class="d-flex align-items-center FloatRight" style="    margin-top: 8px;">
+                            <div>
+                                <h6 class="mb-0">Past history / Allergy</h6>
+                            </div>
+                        </div>
+
+
+                        <div class="d-flex align-items-center FloatLeft">
+                            <div>
+                                <button type="button" style="width: 35px !important;  margin-left:20px  !important " class="Bouton-rechercher btn  btn-default" data-original-title="HistoryAllergy" data-toggle="modal" data-target="#ModalHistoryAllergy" (click)="onOpenModal('HistoryAllergy')">
+                              
+                                    <i class="fa-solid fa-square-plus"
+                                        style=" color: #00b500;padding-top: 2px; font-size: 18px;  margin:0px"></i>
+
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="place-2">
+                            <p-scrollPanel [style]="{ width: '100%', height: '150px' }">
 
+                                <p-divider align="center" type="solid">
+                                    <b>Past history</b>
+                                    <button type="button" style="width: 40px !important; margin-left:20px  !important " class="Bouton-rechercher btn  btn-default" data-original-title="HistoryAllergy" data-toggle="modal" data-target="#ModalHistoryAllergy" (click)="onOpenModal('HistoryAllergy')">
+                                      
+                                        <i class="fa-solid fa-trash-can"
+                                            style=" color: #b50000c4;padding-top: 2px; font-size: 18px; margin:0px"></i>
+                                      
+                                    </button>
+                                </p-divider>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                </p>
+                                <p-divider align="center" type="solid">
+                                    <b>Allergy</b>
+                                    <button type="button" style="width: 40px !important; margin-left:20px  !important " class="Bouton-rechercher btn  btn-default" data-original-title="HistoryAllergy" data-toggle="modal" data-target="#ModalHistoryAllergy" (click)="onOpenModal('HistoryAllergy')">
+                                      
+                                        <i class="fa-solid fa-trash-can"
+                                            style=" color: #b50000c4;padding-top: 2px; font-size: 18px; margin:0px"></i>
+                                      
+                                    </button>
+                                </p-divider>
+                                <p>
+                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
+                                    sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                                </p>
+
+
+
+                            </p-scrollPanel>
 
                         </div>
                     </div>
@@ -49,18 +129,62 @@
 
 
             <div class="col-12 col-lg-8 d-flex">
-                <div class="card radius-10 w-100" style="height: 220px;">
-                    <div class="card-header">
+                <div class="card radius-10 w-100" style="height: 255px;">
+                    <!-- <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div>
                                 <h6 class="mb-0">Diagnosis</h6>
                             </div>
 
                         </div>
+                    </div> -->
+
+                    <div class="card-header">
+
+
+                        <div class="d-flex align-items-center FloatRight" style="    margin-top: 8px;">
+                            <div>
+                                <h6 class="mb-0">Diagnosis</h6>
+                            </div>
+                        </div>
+
+
+                        <div class="d-flex align-items-center FloatLeft">
+                            <div style="display: flex;">
+                                <button type="button" style="width: 35px !important;  margin-left:20px  !important " class="Bouton-rechercher btn  btn-default" data-original-title="CheifComplaint" data-toggle="modal" data-target="#ModalAddCheifComplaint" (click)="onOpenModal('CheifComplaint')">
+                              
+                                    <i class="fa-solid fa-square-plus"
+                                        style=" color: #00b500;padding-top: 2px; font-size: 18px;  margin:0px"></i>
+
+                                </button>
+                                <button type="button" style="width: 35px !important;  margin-left:20px  !important" class="Bouton-rechercher btn  btn-default" data-original-title="CheifComplaint" data-toggle="modal" data-target="#ModalAddCheifComplaint" (click)="onOpenModal('CheifComplaint')">
+                               
+                                    <i class="fa-solid fa-trash-can"
+                                        style=" color: #b50000c4;padding-top: 2px; font-size: 18px;  margin:0px"></i>
+
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
 
                         <div class="place-1">
+                            <p-scrollPanel [style]="{ width: '100%', height: '150px' }">
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                </p>
+                                <p>
+                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
+                                    sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                                </p>
+                                <p class="m-0">
+                                    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia
+                                    animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                                </p>
+
+
+                            </p-scrollPanel>
                         </div>
                     </div>
                     <div class="row row-cols-1 row-cols-md-3 row-cols-xl-3 g-0 row-group text-center border-top">
@@ -69,14 +193,58 @@
                 </div>
             </div>
             <div class="col-12 col-lg-4 d-flex">
-                <div class="card radius-10 w-100" style="height: 220px;">
-                    <div class="card-header">
-                        <h6 class="mb-0">Family history</h6>
+                <div class="card radius-10 w-100" style="height: 255px;">
 
+
+                    <div class="card-header">
+
+
+                        <div class="d-flex align-items-center FloatRight" style="    margin-top: 8px;">
+                            <div>
+                                <h6 class="mb-0">Family history</h6>
+                            </div>
+                        </div>
+
+
+                        <div class="d-flex align-items-center FloatLeft">
+                            <div>
+                                <div style="display: flex;">
+                                    <button type="button" style="width: 35px !important;  margin-left:20px  !important " class="Bouton-rechercher btn  btn-default" data-original-title="CheifComplaint" data-toggle="modal" data-target="#ModalAddCheifComplaint" (click)="onOpenModal('CheifComplaint')">
+                                  
+                                        <i class="fa-solid fa-square-plus"
+                                            style=" color: #00b500;padding-top: 2px; font-size: 18px;  margin:0px"></i>
+    
+                                    </button>
+                                    <button type="button" style="width: 35px !important;  margin-left:20px  !important" class="Bouton-rechercher btn  btn-default" data-original-title="CheifComplaint" data-toggle="modal" data-target="#ModalAddCheifComplaint" (click)="onOpenModal('CheifComplaint')">
+                                   
+                                        <i class="fa-solid fa-trash-can"
+                                            style=" color: #b50000c4;padding-top: 2px; font-size: 18px;  margin:0px"></i>
+    
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+
                     <div class="card-body">
                         <div class="place-2">
+                            <p-scrollPanel [style]="{ width: '100%', height: '150px' }">
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                </p>
+                                <p>
+                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
+                                    sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                                </p>
+                                <p class="m-0">
+                                    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia
+                                    animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                                </p>
 
+
+                            </p-scrollPanel>
 
                         </div>
                     </div>
@@ -89,3 +257,112 @@
     </div>
 
 </div>
+
+
+<p-dialog id="ModalAddCheifComplaint" data-backdrop="false" header="Header" [(visible)]="visibleModalCheifComplaint" styleClass="ModalCheifComplaint" [modal]="true" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+        <div class="FloatRight">
+            <h2 class="text-default headerForm"> Add Cheif Complaint </h2>
+        </div>
+        <div class="FloatLeft">
+            <button class="btn btn-default save-add-ModalSmall" (click)="PostCheifComplaint()">
+                <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+                Save
+            </button>
+            <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearFormCheifComplaint()">
+                <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
+                Close
+            </button>
+        </div>
+
+
+    </ng-template>
+    <div class="modal-body">
+        <div class="flex-row-start flex-12">
+            <form [formGroup]="formGroup">
+                <textarea rows="5" cols="20" [(ngModel)]="cheifComplaint" pInputTextarea formControlName="text">
+                </textarea>
+            </form>
+        </div>
+    </div>
+</p-dialog>
+
+
+
+<p-dialog id="ModalHistoryAllergy" data-backdrop="false" header="Header" [(visible)]="visbileModalHistoryAllergy" styleClass="ModalHistoryAllergy" [modal]="true" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+        <div class="FloatRight">
+            <h2 class="text-default headerForm"> Add Past History / Allergy </h2>
+        </div>
+        <div class="FloatLeft">
+            <button class="btn btn-default save-add-ModalSmall" (click)="PostHistoryAllergy()">
+                <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+                Save
+            </button>
+            <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearFormHistoryAllergy()">
+                <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
+                Close
+            </button>
+        </div>
+
+
+    </ng-template>
+    <div class="modal-body">
+        <div class="flex-row-start flex-12">
+            <div class="flex-row-start flex-6">
+
+                <p-panel header="Past History">
+                    <form [formGroup]="formGroup">
+                        <textarea rows="5" cols="10" [(ngModel)]="history" pInputTextarea formControlName="text">
+                        </textarea>
+                    </form>
+                </p-panel>
+
+            </div>
+
+            <div class="flex-row-start flex-6">
+
+                <p-panel header="Allergy">
+                    <form [formGroup]="formGroup">
+                        <textarea rows="5" cols="10" [(ngModel)]="allergy" pInputTextarea formControlName="text">
+                </textarea>
+                    </form>
+                </p-panel>
+
+            </div>
+
+
+
+        </div>
+    </div>
+</p-dialog>
+
+
+
+<p-dialog id="ModalDiagnocis" data-backdrop="false" header="Header" [(visible)]="visibleModalDiagnocis" styleClass="ModalDiagnocis" [modal]="true" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+        <div class="FloatRight">
+            <h2 class="text-default headerForm"> Add Diagnocis </h2>
+        </div>
+        <div class="FloatLeft">
+            <button class="btn btn-default save-add-ModalSmall" (click)="PostCheifComplaint()">
+                <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+                Save
+            </button>
+            <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearFormCheifComplaint()">
+                <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
+                Close
+            </button>
+        </div>
+
+
+    </ng-template>
+    <div class="modal-body">
+        <div class="flex-row-start flex-12">
+            <form [formGroup]="formGroup">
+                <textarea rows="5" cols="20" [(ngModel)]="cheifComplaint" pInputTextarea formControlName="text">
+                </textarea>
+            </form>
+        </div>
+    </div>
+</p-dialog>

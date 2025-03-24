@@ -58,6 +58,7 @@ export class MedecinComponent implements OnInit {
   searchTerm = '';
   visibleModal: boolean = false;
   visibleModalPrint: boolean = false;
+  VisbileModalSignature: boolean = false;
   visDelete: boolean = false;
   code!: number | null;
   codeSaisie: any;
@@ -143,7 +144,9 @@ export class MedecinComponent implements OnInit {
     this.visibleModalPrint = false;
   }
 
-
+  CloseModalSignature() {
+    this.VisbileModalSignature = false;
+  }
   handleRenderPdf(data: any) {
     const pdfObject = PDFObject.embed(data, '#pdfContainer');
   }
@@ -171,6 +174,7 @@ export class MedecinComponent implements OnInit {
     this.SelectedPrestationOPD = ''
     this.prestationMedecinConsultationDTO = new Array<any>();
     this.onRowUnselect(event);
+    this.VisbileModalSignature=false;
 
   }
 
@@ -231,6 +235,7 @@ export class MedecinComponent implements OnInit {
     this.visibleModal = false;
     this.visDelete = false;
     this.visibleModalPrint = false;
+    this.VisbileModalSignature = false;
     const button = document.createElement('button');
     button.type = 'button';
     button.style.display = 'none';
@@ -335,21 +340,33 @@ export class MedecinComponent implements OnInit {
 
     }
 
-    if (mode === 'Print') {
-      if (this.code == undefined) {
-        this.onRowUnselect;
-        this.CtrlAlertify.PostionLabelNotification();
-        this.CtrlAlertify.showChoseAnyRowNotification();
-        this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false
-      } else {
-        button.setAttribute('data-target', '#ModalPrint');
-        this.formHeader = "Imprimer Liste SpecialiteMedecin"
-        this.visibleModalPrint = true;
-        // this.RemplirePrint();
+    // if (mode === 'Signature') {
+    //   if (this.code == undefined) {
+    //     this.onRowUnselect;
+    //     this.CtrlAlertify.PostionLabelNotification();
+    //     this.CtrlAlertify.showChoseAnyRowNotification();
+    //     this.visDelete == false && this.visibleModal == false && this.visibleModalPrint == false && this.VisbileModalSignature == false
+    //   } else {
+    //     button.setAttribute('data-target', '#ModalSignature');
+    //     this.formHeader = "Signature Medecin "
+    //     this.VisbileModalSignature = true; 
 
-      }
+    //   } 
+    // }
+    if (mode === 'add') {
+      button.setAttribute('data-target', '#Modal');
+      this.formHeader = this.i18nService.getString('Add');
+      this.onRowUnselect(event);
 
+      this.clearForm();
+      this.GetCodeSaisie();
+      this.GetSpecilaiteSpecialiteMedecin();
+      this.GetTypeIntervenat();
 
+      this.actif = false;
+      this.visible = false;
+      this.visibleModal = true;
+      this.code == undefined;
 
 
     }

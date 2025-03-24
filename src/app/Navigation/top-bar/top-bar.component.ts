@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { I18nService } from '../../Shared/i18n/i18n.service';
-import { DomSanitizer } from '@angular/platform-browser';
-import { TokenStorageService } from '../../Authenfication/_services/token-storage.service';
+import { DomSanitizer } from '@angular/platform-browser'; 
 import { ActivatedRoute, Router } from '@angular/router';
+import { StorageService } from '../../Authenfication/JWT/_services/storage.service';
+import { AuthService } from '../../Authenfication/JWT/_services/auth.service';
  
 @Component({
   selector: 'app-top-bar',
@@ -10,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './top-bar.component.css', providers: [I18nService]
 })
 export class TopBarComponent implements OnInit  {
-  constructor(  private tokenStorageService: TokenStorageService, private route: ActivatedRoute,public i18nService: I18nService, private router: Router ,private sanitization: DomSanitizer, private tokenStorage: TokenStorageService) { }
+  constructor(  private authServiceNew: AuthService, private storageService: StorageService, private route: ActivatedRoute,public i18nService: I18nService, private router: Router ,private sanitization: DomSanitizer) { }
 
 
   en:any = "EN";
@@ -78,9 +79,18 @@ export class TopBarComponent implements OnInit  {
   LogOut() {
     // this.reloadPage();
     window.location.reload();
-    this.tokenStorageService.signOut();
+    this.storageService.clean();
+  
   
     sessionStorage.clear();
+    this.authServiceNew.logout().subscribe({
+      next: (data:any) => { 
+        this.isLoggedIn = false;  
+      },
+      error: (err:any) => {
+        
+      }
+    });
  
     // this.router.navigate(['/login']);
 

@@ -4,17 +4,27 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class PatientSelectionService {
-  private _selectedPatientCode = new BehaviorSubject<string | null>(null);
-  selectedPatientCode$ = this._selectedPatientCode.asObservable();
+  private _selectedCodeAdmission = new BehaviorSubject<string | null>(null);
+  selectedAdmissionCode$ = this._selectedCodeAdmission.asObservable();
 
   private _selectedPatientName = new BehaviorSubject<string | null>(null);
   selectedPatientName$ = this._selectedPatientName.asObservable();
 
-  setSelectedPatientCode(codePatient: string  ) {
-    this._selectedPatientCode.next(codePatient);
+
+  private _selectedcodeSaisiePatient = new BehaviorSubject<string | null>(null);
+  selectedcodeSaisiePatient$ = this._selectedcodeSaisiePatient.asObservable();
+
+
+  setSelectedCodeAdmission(codeAdmission: string  ) {
+    this._selectedCodeAdmission.next(codeAdmission);
   }
 
   setSelectedPatientName(PatientName: string  ) {
     this._selectedPatientName.next(PatientName);
   }
+  setSelectedCodePatient(codeSaisiePatient: string  ) {
+    this._selectedcodeSaisiePatient.next(codeSaisiePatient);
+  }
+
+
 }

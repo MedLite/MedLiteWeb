@@ -154,7 +154,14 @@ const arI18n = {
  'DateDispoAu':'تاريخ التواجد إلى',
  'PleaseChooseAnyDate':'الرجاء إختيار تاريخ بداية و نهاية',
  'ConventionOblgatoire':'الرجاء إختيار إتفاقية',
- 'NoPlanningInThisDay':'لا يوجد جدول للأطباء اليوم'
+ 'NoPlanningInThisDay':'لا يوجد جدول للأطباء اليوم',
+ "PleaseSelectAnyMedecin":'الرجاء إختيار طبيب',
+ "PasswordError":'Password Error',
+ "LabelRegDefferral":"تأجيل الدفع",
+ "Error":"Error",
+ "Signature":"الإمضاء",
+ "SelectAnyMedecin":'الرجاء إختيار طبيب',
+ 'YouDontHaveAccessToSendReq':'Request Only For Doctor '
 };
 
 

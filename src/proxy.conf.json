@@ -33,6 +33,20 @@
         "logLevel": "debug",
         "changeOrigin": true,
         "timeout": 360000
+    },
+    "/caisse": {
+        "target": "http://localhost:9099/api",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "timeout": 360000
+    },
+    "/examen": {
+        "target": "http://localhost:9099/api",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "timeout": 360000
     }
 
 }

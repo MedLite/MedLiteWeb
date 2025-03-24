@@ -5072,7 +5072,8 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-divider.p-divider-horizontal .p-divider-content {
-    padding: 0 .5rem
+    padding: 0 .5rem;
+    display: flex;
 }
 
 .p-divider.p-divider-vertical {
@@ -5210,8 +5211,17 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-scrollpanel .p-scrollpanel-bar {
-    background: #efefef;
-    border: 0 none
+    background: #006de5;
+    border: 0 none;
+    width: 6px;
+}
+
+.p-divider.p-divider-horizontal:before {
+    border-top: 1px #e2e8f0;
+}
+
+.p-divider-solid.p-divider-horizontal:before {
+    border-top-style: solid;
 }
 
 .p-splitter {

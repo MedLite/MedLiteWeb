@@ -11,28 +11,37 @@ import { SessionStorageService } from './service/SessionStorageService';
 export class DossierMedicalOPDComponent implements OnInit, OnDestroy {
   constructor(   private cdRef: ChangeDetectorRef ,private route: ActivatedRoute, public patientSelectionService: PatientSelectionService) { }
 
-  CodePatient: string | null = null;
-  PatientName: string | null = null;
+  CodeAdmission: string = ''; // Initialize with an empty string
+  PatientName: string = ''; // Initialize with an empty string
+  codeSaisiePatient: string = ''; // Initialize with an empty string
   private subscription: Subscription = new Subscription();
   storedPatientData:any;
   ngOnInit() {
 
-    if(sessionStorage.getItem("codeAdmissionSelected") != null || sessionStorage.getItem("codeAdmissionSelected") != undefined){
+    // if(sessionStorage.getItem("codeAdmissionSelected") != null || sessionStorage.getItem("codeAdmissionSelected") != undefined){
  
-      this.subscription = this.patientSelectionService.selectedPatientCode$.subscribe(codeSaisie => {
-        this.CodePatient = codeSaisie;
+      this.subscription = this.patientSelectionService.selectedAdmissionCode$.subscribe(codeSaisie => {
+        this.CodeAdmission = codeSaisie ?? '';;
         this.cdRef.detectChanges(); 
         // this.savePatientDataToSessionStorage(); // Save to session storage
       });
       this.subscription = this.patientSelectionService.selectedPatientName$.subscribe(Name => {
-        this.PatientName = Name;
+        this.PatientName = Name ?? '';;
         this.cdRef.detectChanges(); 
         // this.savePatientDataToSessionStorage(); // Save to session storage
       });
-    }else{
-      this.patientSelectionService.setSelectedPatientCode('');
-      this.patientSelectionService.setSelectedPatientName( '');
-    }
+
+      this.subscription = this.patientSelectionService.selectedcodeSaisiePatient$.subscribe(codeSaisiePatient => {
+        this.codeSaisiePatient = codeSaisiePatient ?? 'vv';;
+        this.cdRef.detectChanges(); 
+        // this.savePatientDataToSessionStorage(); // Save to session storage
+      });
+
+
+    // }else{
+    //   this.patientSelectionService.setSelectedPatientCode(' ');
+    //   this.patientSelectionService.setSelectedPatientName( ' ');
+    // }
 
     
 

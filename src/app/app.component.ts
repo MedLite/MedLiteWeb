@@ -1,6 +1,11 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { ParametargeService } from './menu-parametrage/ServiceClient/parametarge.service';
+import { IdleService } from './idle.service';
+import { environment } from '../environments/environment.development';
+import { ModalService } from './Shared/modal/modal.service';
+import { ModalContentComponent } from './Shared/modal-content/modal-content.component';
 
 
 @Component({
@@ -10,7 +15,7 @@ import { Location } from '@angular/common';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private router: Router, private ngZone: NgZone,private route: ActivatedRoute, private location: Location) { } 
+  constructor(private modalService: ModalService, private idleService: IdleService, public param_service: ParametargeService, private router: Router, private ngZone: NgZone, private route: ActivatedRoute, private location: Location) { }
 
   title = 'MedLiteWeb';
 
@@ -22,6 +27,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.GetTokenFromStorage();
     this.setDirection();
+    this.initialIdleSettings();
 
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -30,6 +36,47 @@ export class AppComponent implements OnInit {
       }
     });
   }
+
+  // private initialIdleSettings() {
+  //   const idleTimeoutInSeconds: number = environment.idleTimeInMinutes * 60;
+  //   this.idleService.startWatching(idleTimeoutInSeconds).subscribe((isTimeOut: boolean) => {
+  //     console.log("isTimeOut  " , isTimeOut );
+  //     console.log("idleTimeoutInSeconds  " , idleTimeoutInSeconds );
+
+  //      if (isTimeOut) {
+  //       if(!window.location.hash.includes('/login')){
+  //         this.openModalComponent();
+  //       }
+  //     } 
+  //   });
+  // }
+
+
+  private initialIdleSettings() {
+    const idleTimeoutInSeconds: number = environment.idleTimeInMinutes * 60;
+    this.idleService.startWatching(idleTimeoutInSeconds).subscribe((isTimeOut: boolean) => {
+      if (isTimeOut) {
+        // alert("Session timeout. It will redirect to login page.");
+        if (!window.location.hash.includes('/login')) {
+          this.openModalComponent();
+        }
+
+      }
+    });
+  }
+
+
+  openModalComponent() {
+    this.modalService.open(ModalContentComponent, {
+      ignoreBackdropClick: true,
+      backdrop: 'static',
+      keyboard: false,
+      focus: true,
+      disableClose: true,
+    });
+
+  }
+
 
   setDirection() {
     let lang = sessionStorage.getItem("lang");
@@ -41,12 +88,15 @@ export class AppComponent implements OnInit {
   TokenOK: any;
   TokenNo: any;
   GetTokenFromStorage() {
-    let token = sessionStorage.getItem("auth-token");
+    let token = sessionStorage.getItem("auth-user");
     if (token == "" || token == undefined) {
       this.reloadPage();
       this.TokenOK = false;
     } else {
       this.TokenOK = true;
+      this.GetCodeNatureAdmissionOPD();
+      this.GetCodeNatureAdmissionER();
+      this.GetCodeNatureAdmissionIP();
     }
   }
 
@@ -62,7 +112,7 @@ export class AppComponent implements OnInit {
 
   applyMarginStyle(url: string) {
     this.ngZone.runOutsideAngular(() => {
-      const pageWrapper = document.querySelector('.page-wrapper')as HTMLElement;
+      const pageWrapper = document.querySelector('.page-wrapper') as HTMLElement;
       if (pageWrapper) {
         if (url.startsWith('/dossier_medical_opd') || url === '/login') {
           pageWrapper.style.marginRight = '0px';
@@ -80,7 +130,7 @@ export class AppComponent implements OnInit {
   }
 
   showHideComponents(url: string) {
-   
+
 
     const hideComponents = url.startsWith('/dossier_medical_opd');
     this.showSidebar = !hideComponents;
@@ -88,8 +138,52 @@ export class AppComponent implements OnInit {
     this.showFooter = !hideComponents;
     this.showBreadcrumb = !hideComponents;
   }
+
+
+
+  codeNatureAdmissionOPD: any;
+  codeNatureAdmissionER: any;
+  GetCodeNatureAdmissionOPD() {
+    if (sessionStorage.getItem("NatureAdmissionOPD") != undefined || sessionStorage.getItem("NatureAdmissionOPD") != null) {
+
+    } else {
+      this.param_service.GetParam("CodeNatureAdmissionOPD").
+        subscribe((data: any) => {
+          sessionStorage.setItem("NatureAdmissionOPD", data.valeur);
+        })
+    }
+
+  }
+
+  GetCodeNatureAdmissionER() {
+    if (sessionStorage.getItem("NatureAdmissionER") != undefined || sessionStorage.getItem("NatureAdmissionER") != null) {
+
+    } else {
+      this.param_service.GetParam("CodeNatureAdmissionER").
+        subscribe((data: any) => {
+          sessionStorage.setItem("NatureAdmissionER", data.valeur);
+
+        })
+    }
+
+  }
+
+  GetCodeNatureAdmissionIP() {
+    if (sessionStorage.getItem("NatureAdmissionIP") != undefined || sessionStorage.getItem("NatureAdmissionIP") != null) {
+
+    } else {
+      this.param_service.GetParam("CodeNatureAdmissionIP").
+        subscribe((data: any) => {
+          sessionStorage.setItem("NatureAdmissionIP", data.valeur);
+
+        })
+    }
+
+
+  }
+
 }
 
-  
 
- 
+
+

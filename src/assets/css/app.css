@@ -2825,7 +2825,7 @@ input::placeholder {
 }
 
 [dir="ltr"] .control-label {
-    padding-right: 0px !important;
+    padding-right: 10px !important;
     padding-left: 4px !important;
     float: left !important;
 }

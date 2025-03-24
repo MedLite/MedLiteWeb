@@ -27,7 +27,7 @@
                 <label for="username" style="float: inline-start; font-size: 13px; font-family: auto;">
                     {{'UserName' | i18n:i18nService.currentLanguage}}
                 </label>
-                <input type="text" id="username" class="form-control" name="username" [(ngModel)]="form.userName" required #userName="ngModel" />
+                <input type="text" id="userName" class="form-control" name="userName" [(ngModel)]="form.userName" required #userName="ngModel" />
                 <div class="alert alert-danger" role="alert" *ngIf="userName.errors && f.submitted">
                     Username is required!
                 </div>

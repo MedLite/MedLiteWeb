@@ -1549,11 +1549,11 @@ label:hover input[type=checkbox].checkbox:checked+span:before {
 
 :host ::ng-deep .ModalPassword {
     border-radius: 6px;
-    width: 400px;
+    width: 385px;
     font-family: auto;
     overflow-y: auto;
     overflow-x: hidden;
-    height: 150px;
+    height: 185px;
     position: fixed;
     top: 50px !important;
     bottom: 100px !important;
@@ -1831,7 +1831,7 @@ padding: 0px 20px 0px 345px;
 }
 
 :host ::ng-deep .p-datatable .p-datatable-tbody>tr.p-highlight {
-    background: #005f979e;
+    background: #005f979e !important;
     color: #ffffff;
 }
 
@@ -2423,8 +2423,8 @@ input.p-column-filter {
 
 .eyePassword {
     position: absolute;
-    top: 36px;
-    right: 159px;
+    top: 16px;
+    right: 152px;
     font-size: 17px;
 }
 
@@ -2455,7 +2455,7 @@ input.p-column-filter {
 
 .flex-2 {
     flex: 2;
-    text-align: right;
+    text-align: -webkit-auto;
     max-width: 16.67%;
 }
 
@@ -2520,7 +2520,7 @@ input.p-column-filter {
     flex: 6;
     max-width: 50%;
     padding: 3px 4px 10px;
-    text-align: right;
+    text-align: -webkit-auto;
 }
 
 .flex-6-6 {
@@ -2804,4 +2804,56 @@ input#PEC {
 .btnAddStyel:hover {
     background-color: green;
     color: white;
+}
+
+.btn-modif-PEC-Cash {
+    border: 1px solid gray;
+    border-radius: 6px;
+}
+
+.btn-modif-PEC-Cash:hover {
+    background-color: #00539f;
+    color: white;
+}
+
+.ModalPassword {
+    border-radius: 6px;
+    width: 400px;
+    font-family: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 150px;
+    position: fixed;
+    top: 50px !important;
+    bottom: 100px !important;
+}
+
+
+/* input:disabled {
+    color: #000;
+} */
+
+input[type="radio"]:disabled {
+    color: black;
+    /* Change the color to black */
+    cursor: default;
+    /* Optional: change cursor to indicate it's disabled */
+}
+
+
+/* More specific selector if needed (replace .radio-item with your actual class) */
+
+.radio-item input[type="radio"]:disabled {
+    color: black;
+}
+
+:host ::ng-deep .ModalAddRequest {
+    border-radius: 6px;
+    width: 850px;
+    font-family: auto;
+    margin-top: 20px;
+}
+
+.file-upload-button {
+    border: 1px solid gray;
 }

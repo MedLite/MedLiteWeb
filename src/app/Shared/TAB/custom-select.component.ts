@@ -10,15 +10,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
           <thead>
             <tr>
               <th>Column 1</th>
-              <th>Column 2</th>
-              <!-- <th>Column 3</th> -->
+              <th>Column 2</th> 
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let row of data" (click)="selectRow(row[2])">
               <td (click)="selectRow(row[2])">{{ row.codeSaisie }}</td>
               <td (click)="selectRow(row[2])">{{ row.designationAr }}</td>
-              <!-- <td (click)="selectRow(row[2])">{{ row.designationAr }}</td> -->
+              
             
             </tr>
           </tbody>
@@ -28,9 +27,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   `,
   styles: [`
     .custom-select-container {
-      position: relative;
-    //   border: 1px solid black;
-      cursor: pointer; /* Make it clear it's clickable */
+      position: relative; 
+      cursor: pointer;  
       width:100px;
     }
 
@@ -75,13 +73,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class CustomSelectComponent {
   @Output() valueChange = new EventEmitter<string>();
   @Output() showTableChange = new EventEmitter<boolean>(); 
-//   data = [
-//     ['Value 1A', 'Value 2A', 'Value 3A'],
-//     ['Value 1B', 'Value 2B', 'Value 3B'],
-//     ['Value 1C', 'Value 2C', 'Value 3C'],
-//     ['Value 1D', 'Value 2D', 'Value 3D'],
-//   ];
-
+ 
   @Input() data: any[] = [];
   showTable = false;
   selectedValue: string = ""; // Use 'selectedValue' consistently

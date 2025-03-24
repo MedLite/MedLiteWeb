@@ -93,6 +93,54 @@ constructor(private http: HttpClient) { }
   }
 
  
+  //// Admission
+  GetAdmission(): Observable<any> {
 
+    return this.http.get(`${environment.API_Reception}admission/all` )
+  }
+
+  GetAdmissionByCode(code:number): Observable<any> {
+
+    return this.http.get(`${environment.API_Reception}admission/`+code )
+  }
+  GetAdmissionByCodeNatureAdmission(codeNatureAdmission : any): Observable<any> {
+
+    return this.http.get(`${environment.API_Reception}admission/findByCodeNatureAdmission?codeNatureAdmission=`+codeNatureAdmission )
+  }
+
+ 
+  PostAdmission(body: any) {
+    return this.http.post(`${environment.API_Reception}admission`, body);
+  } 
+  UpdateAdmission(body: any) {
+    return this.http.put(`${environment.API_Reception}admission/update`, body);
+  }
+
+  DeleteAdmission(code: any) {
+    return this.http.delete(`${environment.API_Reception}admission/delete/`+code);
+  }
+
+
+  // reglemnet
+  GetReglement(): Observable<any> {
+
+    return this.http.get(`${environment.API_Caisse}reglement/all` )
+  }
+
+  GetReglementByCode(code:number): Observable<any> {
+
+    return this.http.get(`${environment.API_Reception}reglement/`+code )
+  }
+ 
+  PostReglement(body: any) {
+    return this.http.post(`${environment.API_Reception}reglement`, body);
+  } 
+  UpdateReglement(body: any) {
+    return this.http.put(`${environment.API_Reception}reglement/update`, body);
+  }
+
+  DeleteReglement(code: any) {
+    return this.http.delete(`${environment.API_Reception}reglement/delete/`+code);
+  }
 
 }

@@ -4,17 +4,19 @@ import {
   ViewChild,
   AfterViewInit,
   HostListener,
+  OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalService } from './modal.service';
 import { Options } from './modal-options';
-import { Observable, fromEvent, zip } from 'rxjs';
- 
+import { Observable, Subject, fromEvent, of, zip } from 'rxjs';
+
 
 import * as alertifyjs from 'alertifyjs'
 import { Router } from '@angular/router';
-import { AuthService } from '../../Authenfication/_services/auth.service';
-import { TokenStorageService } from '../../Authenfication/_services/token-storage.service';
+import { AuthService } from '../../Authenfication/JWT/_services/auth.service';
+import { StorageService } from '../../Authenfication/JWT/_services/storage.service';
+import { map } from 'lodash';
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
@@ -22,7 +24,8 @@ import { TokenStorageService } from '../../Authenfication/_services/token-storag
   imports: [CommonModule],
   standalone: true,
 })
-export class ModalComponent implements AfterViewInit {
+export class ModalComponent implements AfterViewInit, OnDestroy {
+
   @ViewChild('modal') modal!: ElementRef<HTMLDivElement>;
   @ViewChild('overlay') overlay!: ElementRef<HTMLDivElement>;
   options!: Options | undefined;
@@ -32,14 +35,23 @@ export class ModalComponent implements AfterViewInit {
   overlayAnimationEnd!: Observable<Event>;
   modalLeaveTiming!: number;
   overlayLeaveTiming!: number;
-  constructor(private authService: AuthService, private router: Router, private tokenStorage: TokenStorageService,
+
+
+  close$ = new Subject<void>();
+
+
+  constructor(private authService: AuthService, private router: Router, private storageService: StorageService,
     private modalService: ModalService,
     private element: ElementRef
   ) { }
 
   @HostListener('document:keydown.escape')
+  // onEscape() {
+  //   this.modalService.close();
+  // }
+
   onEscape() {
-    this.modalService.close();
+    this.close();
   }
 
   onClose() {
@@ -53,45 +65,69 @@ export class ModalComponent implements AfterViewInit {
     this.addEnterAnimations();
   }
 
+  // addEnterAnimations() {
+  //   this.modal.nativeElement.style.animation =
+  //     this.options?.animations?.modal?.enter || '';
+  //   this.overlay.nativeElement.style.animation =
+  //     this.options?.animations?.overlay?.enter || '';
+  // }
   addEnterAnimations() {
-    this.modal.nativeElement.style.animation =
-      this.options?.animations?.modal?.enter || '';
-    this.overlay.nativeElement.style.animation =
-      this.options?.animations?.overlay?.enter || '';
+    this.modal.nativeElement.style.animation = this.options?.animations?.modal?.enter || '';
+    this.overlay.nativeElement.style.animation = this.options?.animations?.overlay?.enter || '';
   }
 
-  addOptions() {
-    // Style overload
-    this.modal.nativeElement.style.minWidth =
-      this.options?.size?.minWidth || 'auto';
-    this.modal.nativeElement.style.width = this.options?.size?.width || 'auto';
-    this.modal.nativeElement.style.maxWidth =
-      this.options?.size?.maxWidth || 'auto';
-    this.modal.nativeElement.style.minHeight =
-      this.options?.size?.minHeight || 'auto';
-    this.modal.nativeElement.style.height =
-      this.options?.size?.height || '215px';
-    this.modal.nativeElement.style.maxHeight =
-      this.options?.size?.maxHeight || 'auto';
-    this.modal.nativeElement.style.border =
-      this.options?.border || '1px solid #ff0000';
-      this.modal.nativeElement.style.borderRadius =
-      this.options?.borderRadius || '6px';
+  // addOptions() {
+  //   // Style overload
+  //   this.modal.nativeElement.style.minWidth =
+  //     this.options?.size?.minWidth || 'auto';
+  //   this.modal.nativeElement.style.width = this.options?.size?.width || 'auto';
+  //   this.modal.nativeElement.style.maxWidth =
+  //     this.options?.size?.maxWidth || 'auto';
+  //   this.modal.nativeElement.style.minHeight =
+  //     this.options?.size?.minHeight || 'auto';
+  //   this.modal.nativeElement.style.height =
+  //     this.options?.size?.height || '215px';
+  //   this.modal.nativeElement.style.maxHeight =
+  //     this.options?.size?.maxHeight || 'auto';
+  //   this.modal.nativeElement.style.border =
+  //     this.options?.border || '1px solid #ff0000';
+  //     this.modal.nativeElement.style.borderRadius =
+  //     this.options?.borderRadius || '6px';
 
+
+  //   this.modalLeaveAnimation = this.options?.animations?.modal?.leave || '';
+  //   this.overlayLeaveAnimation = this.options?.animations?.overlay?.leave || '';
+
+  //   this.modalAnimationEnd = this.animationendEvent(this.modal.nativeElement);
+  //   this.overlayAnimationEnd = this.animationendEvent(
+  //     this.overlay.nativeElement
+  //   );
+
+  //   this.modalLeaveTiming = this.getAnimationTime(this.modalLeaveAnimation);
+  //   this.overlayLeaveTiming = this.getAnimationTime(this.overlayLeaveAnimation);
+  // }
+
+  addOptions() {
+    this.modal.nativeElement.style.minWidth = this.options?.size?.minWidth || 'auto';
+    this.modal.nativeElement.style.width = this.options?.size?.width || 'auto';
+    this.modal.nativeElement.style.maxWidth = this.options?.size?.maxWidth || 'auto';
+    this.modal.nativeElement.style.minHeight = this.options?.size?.minHeight || 'auto';
+    this.modal.nativeElement.style.height = this.options?.size?.height || '215px';
+    this.modal.nativeElement.style.maxHeight = this.options?.size?.maxHeight || 'auto';
+    this.modal.nativeElement.style.border = this.options?.border || '1px solid #ff0000';
+    this.modal.nativeElement.style.borderRadius = this.options?.borderRadius || '6px';
 
     this.modalLeaveAnimation = this.options?.animations?.modal?.leave || '';
     this.overlayLeaveAnimation = this.options?.animations?.overlay?.leave || '';
 
     this.modalAnimationEnd = this.animationendEvent(this.modal.nativeElement);
-    this.overlayAnimationEnd = this.animationendEvent(
-      this.overlay.nativeElement
-    );
+    this.overlayAnimationEnd = this.animationendEvent(this.overlay.nativeElement);
 
     this.modalLeaveTiming = this.getAnimationTime(this.modalLeaveAnimation);
     this.overlayLeaveTiming = this.getAnimationTime(this.overlayLeaveAnimation);
   }
 
-  animationendEvent(element: HTMLDivElement) {
+  animationendEvent(element: HTMLDivElement): Observable<Event> {
     return fromEvent(element, 'animationend');
   }
 
@@ -101,30 +137,30 @@ export class ModalComponent implements AfterViewInit {
     }
   }
 
+
+
   close() {
     this.modal.nativeElement.style.animation = this.modalLeaveAnimation;
     this.overlay.nativeElement.style.animation = this.overlayLeaveAnimation;
 
-    // Goal here is to clean up the DOM to not have 'dead elements'
-    // No animations on both elements
-    if (
-      !this.options?.animations?.modal?.leave &&
-      !this.options?.animations?.overlay?.leave
-    ) {
+    if (!this.modalLeaveAnimation && !this.overlayLeaveAnimation) {
       this.modalService.options = undefined;
       this.element.nativeElement.remove();
+      this.close$.next();
       return;
     }
 
-    // Remove element if not animated
-    this.removeElementIfNoAnimation(
-      this.modal.nativeElement,
-      this.modalLeaveAnimation
-    );
-    this.removeElementIfNoAnimation(
-      this.overlay.nativeElement,
-      this.overlayLeaveAnimation
-    );
+    this.removeElementIfNoAnimation(this.modal.nativeElement, this.modalLeaveAnimation);
+    this.removeElementIfNoAnimation(this.overlay.nativeElement, this.overlayLeaveAnimation);
+
+    //Improved animation handling
+    const modalTime = this.getAnimationTime(this.modalLeaveAnimation);
+    const overlayTime = this.getAnimationTime(this.overlayLeaveAnimation);
+    const longestAnimationTime = Math.max(modalTime, overlayTime);
+
+    const animationEnd$ = longestAnimationTime > 0 ?
+      (modalTime >= overlayTime ? this.modalAnimationEnd : this.overlayAnimationEnd) :
+      of(null); // Emit null if no animation
 
     // Both elements are animated, remove modal as soon as longest one ends
     if (this.modalLeaveTiming > this.overlayLeaveTiming) {
@@ -141,21 +177,17 @@ export class ModalComponent implements AfterViewInit {
       });
     }
 
+
+
     this.modalService.options = undefined;
   }
 
-  getAnimationTime(animation: string) {
-    let animationTime = 0;
-    const splittedAnimation = animation.split(' ');
-    for (const expression of splittedAnimation) {
-      const currentValue = +expression.replace(/s$/, '');
-      if (!isNaN(currentValue)) {
-        animationTime = currentValue;
-        break;
-      }
-    }
-
-    return animationTime;
+  ngOnDestroy() {
+    this.close$.complete();
+  }
+  getAnimationTime(animation: string): number {
+    const match = animation.match(/(\d+(\.\d+)?)(ms|s)/);
+    return match ? parseFloat(match[1]) * (match[3] === 'ms' ? 0.001 : 1) : 0;
   }
   form: any = {
     userName: null,
@@ -170,10 +202,10 @@ export class ModalComponent implements AfterViewInit {
     const { userName, password } = this.form;
 
     this.authService.login(userName, password).subscribe(
-      data => {
+      (data: any) => {
         console.log("data", data);
-        this.tokenStorage.saveToken(data.token);
-        this.tokenStorage.saveUser(data);
+        this.storageService.saveUser(data);
+
 
         sessionStorage.setItem("userName", userName);
 

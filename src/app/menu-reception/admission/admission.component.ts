@@ -1,7 +1,6 @@
 import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import * as alertifyjs from 'alertifyjs'
 import { Router } from '@angular/router';
 import { LoadingComponent } from '../../Shared/loading/loading.component';
 import { I18nService } from '../../Shared/i18n/i18n.service';
@@ -15,9 +14,10 @@ import { ParametargeService } from '../../menu-parametrage/ServiceClient/paramet
 
 
 
-import { forkJoin, of, mergeMap, lastValueFrom, throwError } from 'rxjs';
+import { throwError, firstValueFrom } from 'rxjs';
 import { catchError, map } from 'rxjs/operators'; //You still need map from rxjs/operators
 import { HttpErrorResponse } from '@angular/common/http';
+import { EncryptionService } from '../../Shared/EcrypteService/EncryptionService';
 
 interface YourDataType {
   // Define the structure of your data (matches the SQL table columns)
@@ -58,6 +58,11 @@ export class AdmissionComponent implements OnInit {
   @ViewChild('nomFullArNewInput') nomFullArNewInputElement!: ElementRef;
   @ViewChild('nomFullLtNewInput') nomFullLtNewInputElement!: ElementRef;
   @ViewChild('telPatientNewInput') telPatientNewInputElement!: ElementRef;
+
+  @ViewChild('iDPatientInput') iDPatientInputElement!: ElementRef;
+  @ViewChild('mntPayedInput') mntPayedInputElement!: ElementRef;
+
+
 
   private validateAllInputs(): boolean { // Returns true if all valid, false otherwise
     const codeSaisie = this.validationService.validateInputCommun(this.codePatientNewInputElement, this.codePatientNew);
@@ -188,7 +193,7 @@ export class AdmissionComponent implements OnInit {
   ListPatientTried = new Array<any>();
   ListMedecinTried = new Array<any>();
   MontantEnDeviseFacture: any;
-  numPiece: any = "";
+  numPiece: any = null;
   listCaisseRslt = new Array<any>();
   // selectedCaisse: any;
   listBanqueRslt = new Array<any>();
@@ -221,10 +226,10 @@ export class AdmissionComponent implements OnInit {
   MontantTotal: any;
   selectedValue: any = 0;
   selectedValueNew: any = 0;
-  MntCash: any = 0;
-  MntPEC: any = 0;
-  MntReqPayed: any = 0;
-  MntPayed: any = 0;
+  mntCash: any = 0;
+  mntPEC: any = 0;
+  mntReqPayed: any = 0;
+  mntPayed: any = 0;
   HeaderRecherchePatient = '';
   HeaderListPatient = '';
   nomFullArNew = '';
@@ -241,7 +246,7 @@ export class AdmissionComponent implements OnInit {
   // codeNatureAdmissionOPDFromData: any;
 
   SourceDeFinancement = 'SourceDeFinancement';
-
+  visbileModalPassword = false;
   DateNaiss = 'DateNaiss';
   codePriceListTemp = "NULL";
 
@@ -266,8 +271,10 @@ export class AdmissionComponent implements OnInit {
   dataAdmission = new Array<any>();
 
 
+  RegDeferral = false;
+  RegDef = false;
 
-  constructor(private CtrlAlertify: ControlServiceAlertify, private calandTrans: CalanderTransService,
+  constructor(private encryptionService: EncryptionService, private CtrlAlertify: ControlServiceAlertify, private calandTrans: CalanderTransService,
     private datePipe: DatePipe, private validationService: InputValidationService,
     public i18nService: I18nService, private router: Router, private loadingComponent: LoadingComponent,
     private cdr: ChangeDetectorRef, private recept_service: ReceptionService, private param_service: ParametargeService) {
@@ -331,8 +338,8 @@ export class AdmissionComponent implements OnInit {
 
   onRowSelectFromTabsMedecin(event: any) {
 
-    if (this.selectedValue == 2 && this.selectedConvention == null  || this.selectedValue == 2 &&  this.selectedSociete ==null ) {
-     
+    if (this.selectedValue == 2 && this.selectedConvention == null || this.selectedValue == 2 && this.selectedSociete == null) {
+
 
       this.CtrlAlertify.showNotificationِCustom('selctedAnyConventionOrSociete')
       this.CtrlAlertify.PostionLabelNotification();
@@ -340,11 +347,32 @@ export class AdmissionComponent implements OnInit {
     } else {
 
       if (this.selectedValue == 1) {
-        this.MntCash = event.data.montantConsultation;
-        this.MntPEC = 0;
-        this.MntReqPayed = event.data.montantConsultation;
-        this.MntPayed = event.data.montantConsultation;
+        this.mntCash = event.data.montantConsultation;
+        this.mntPEC = 0;
+        this.mntReqPayed = event.data.montantConsultation;
+        this.mntPayed = event.data.montantConsultation;
+        console.log("SelectedMedecinFromList  ", this.SelectedMedecinFromList)
       } else {
+
+        if (this.selectedConvention == "" || this.selectedConvention == undefined || this.selectedConvention == null) {
+
+          this.CtrlAlertify.showNotificationِCustom('selctedAnyConventionOrSociete')
+          this.CtrlAlertify.PostionLabelNotification();
+        } else {
+          const conventionSelected = this.dataConvention.find(m => m.code === this.selectedConvention);
+
+          const codeNatureAdmissionOPd = sessionStorage.getItem("NatureAdmissionOPD");
+          this.param_service.GetDetailsListCouverturePrestationByCodeListCouvertureAndCodePrestationAndCodeNatureAdmission(conventionSelected.codeListCouverture, this.SelectedMedecinFromList.medecinDTO.prestationConsultationDTO.codePrestation, codeNatureAdmissionOPd).subscribe(
+            (data: any) => {
+              console.log("data couverure", data);
+              console.log("SelectedMedecinFromList  ", this.SelectedMedecinFromList)
+              this.mntCash = data.montantPatient;
+              this.mntPEC = data.montantPEC;
+              this.mntReqPayed = data.montantPatient;
+              this.mntPayed = data.montantPatient;
+
+            })
+        }
 
         // GetDataFromConventionEtListCouverture
 
@@ -429,8 +457,11 @@ export class AdmissionComponent implements OnInit {
   ngOnInit(): void {
 
 
-
-
+    sessionStorage.removeItem("CodePatientTemp");
+    sessionStorage.removeItem("ListCouvertureTemp");
+    sessionStorage.removeItem("PriceListTempSelectedTemp");
+    sessionStorage.removeItem("CodePatientTemp");
+    this.GetParamCheckRegDef();
     this.GetColumns();
     this.GetAllAdmission();
 
@@ -539,10 +570,10 @@ export class AdmissionComponent implements OnInit {
     this.selectedBanque = "";
     this.numPiece = "";
     this.selectedModeReglement = '';
-    this.MntCash = '';
-    this.MntPEC = '';
-    this.MntPayed = '';
-    this.MntReqPayed = '';
+    this.mntCash = '';
+    this.mntPEC = '';
+    this.mntPayed = '';
+    this.mntReqPayed = '';
     this.dateNaissanceAdm = "";
     this.dateNaissanceNew = "";
     this.dateNaissanceRecherche = "";
@@ -572,11 +603,11 @@ export class AdmissionComponent implements OnInit {
   codePatient = 'NULL';
   codePatientNew = '';
   IDPatient = 'NULL';
-  rib!: string;
+  // rib!: string;
   actif!: boolean;
   visible!: boolean;
   dateNaissance!: Date;
-  selectedBanque: any = "";
+  selectedBanque: any = null;
 
 
   onRowSelect(event: any) {
@@ -586,7 +617,7 @@ export class AdmissionComponent implements OnInit {
     this.codeSaisie = event.data.codeSaisie;
     this.designationAr = event.data.designationAr;
     this.designationLt = event.data.designationLt;
-    this.rib = event.data.rib;
+    // this.rib = event.data.rib;
 
     console.log('vtData : ', event);
   }
@@ -637,6 +668,7 @@ export class AdmissionComponent implements OnInit {
   // }
 
   LabelActif!: string;
+  LabelRegDefferral = "";
   public onOpenModalX(mode: string) {
 
     this.LabelActif = this.i18nService.getString('LabelActif');
@@ -780,6 +812,9 @@ export class AdmissionComponent implements OnInit {
 
 
   onOpenModalAdmission(mode: string) {
+
+    const sessionValue = sessionStorage.getItem("CheckRegDef");
+    const checkedRegDef = sessionValue === "true";
     this.visibleModal = false;
     this.visDelete = false;
     this.visibleModalPrint = false;
@@ -788,6 +823,9 @@ export class AdmissionComponent implements OnInit {
     button.type = 'button';
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
+    this.LabelRegDefferral = this.i18nService.getString('LabelRegDefferral');
+
+    this.RegDef = checkedRegDef;
     if (mode === 'choisir') {
 
       if (this.NomFullArAdm === '' || this.codePriceList == 0) {
@@ -811,10 +849,20 @@ export class AdmissionComponent implements OnInit {
           this.selectedSociete = this.codeSociete;
           this.selectedValue == 2;
         }
+        sessionStorage.setItem("CodePatientTemp", this.SelectedPatientFromList);
         this.visibleModalRecherPatient = false;
+        this.getCodeSaisieAdmissionOPD();
+
+
+
+        this.RegDeferral = checkedRegDef;
         this.visibleModal = true;
         this.GetAllMedecinContientConsultation();
-        this.GetAllModeReglement();
+        if(sessionStorage.getItem("CheckRegDef")=="false"){
+          this.GetAllModeReglement();
+        }
+       
+
         this.code == undefined;
 
       }
@@ -881,113 +929,166 @@ export class AdmissionComponent implements OnInit {
 
 
   userCreate = sessionStorage.getItem("userName");
-  // datecreate !: Date;
-  // currentDate = new Date();
-
-  // ajusterHourAndMinutes() {
-  //   let hour = new Date().getHours();
-  //   let hours;
-  //   if (hour < 10) {
-  //     hours = '0' + hour;
-  //   } else {
-  //     hours = hour;
-  //   }
-  //   let min = new Date().getMinutes();
-  //   let mins;
-  //   if (min < 10) {
-  //     mins = '0' + min;
-  //   } else {
-  //     mins = min;
-  //   }
-  //   return hours + ':' + mins
-  // }
-  // datform = new Date();
 
 
 
+  private validateAllInputsAddAdmission(): boolean { // Returns true if all valid, false otherwise
+    const codeSaisie = this.validationService.validateInputCommun(this.codeInputElement, this.codeSaisie);
+    const codePatient = this.validationService.validateInputCommun(this.iDPatientInputElement, this.IDPatient);
+    const mntPayed = this.validationService.validateInputCommun(this.mntPayedInputElement, this.mntPayed);
+    // const modReg = this.validationService.validateDropDownCommun(this.modeReglementInputElement, this.selectedModeReglement);
+
+    return codeSaisie && codePatient  && mntPayed;
+  }
 
 
 
+  detailsAdmission = new Array<any>();
+  reglementPused = new Array<any>();
+  AdmissionFacturationPush = new Array<any>();
   PostAdmission() {
 
-    // if (this.numPiece == "" && this.selectedModeReglement == "2") {
-    //   // this.validateNumPieceInput();
+    if (this.SelectedMedecinFromList == "" || this.SelectedMedecinFromList == null) {
 
-    // } else {
+      this.CtrlAlertify.PostionLabelNotification();
+      this.CtrlAlertify.showNotificationِCustom("PleaseSelectAnyMedecin")
+    } else {
 
-    // }
+      const isValid = this.validateAllInputsAddAdmission();
+
+      if (isValid) {
+
+        this.detailsAdmission.push({
+          codePrestation: this.SelectedMedecinFromList.medecinDTO.prestationConsultationDTO.codePrestation,
+          montant: this.SelectedMedecinFromList.montantConsultation,
+          montantPatient: this.mntCash,
+          montantPEC: this.mntPEC,
+          etatPaiement: false
+        })
 
 
-    this.validateModeReglementInput();
-    this.validateBanqueInput();
-    this.validateNumPieceInput();
-    this.validateCodeInput(); // Validate the input before posting
-    this.validateNomArInput();
-    this.validateNomLtInput();
-    this.validateTelPatientInput()
-    // this.validateSpecialiteMedecinInput();
+        if (this.RegDeferral == false) {
+          this.reglementPused.push({
+            codePrestation: this.SelectedMedecinFromList.medecinDTO.prestationConsultationDTO.codePrestation,
+            montantBon: this.SelectedMedecinFromList.montantConsultation,
+            montantReglement: this.mntPayed,
+            montantPEC: this.mntPEC,
+            dateReglement: this.datePipe.transform(new Date(), "yyyy-MM-dd"),
+            typeReglement: "REGLEMENT",
+            codeNatureAdmission: sessionStorage.getItem("NatureAdmissionOPD"),
+            codeModeReglement: this.selectedModeReglement,
+            caissier: this.userCreate,
+            codeBanque: this.selectedBanque,
+            numPiece: this.numPiece
+          })
+        } else {
+
+        }
+
+        this.AdmissionFacturationPush.push({
+          dateCreate: new Date().toISOString(), 
+          userCreate: this.userCreate,
+          codeSociete: this.selectedSociete,
+          codeConvention: this.selectedConvention,
+          codeNatureAdmission: sessionStorage.getItem("NatureAdmissionOPD"),
+          codeEtatPatient:0
+        })
+        let bodyAdmission = {
+          codeSaisie: this.codeSaisie,
+          codePatient: sessionStorage.getItem("CodePatientTemp"),
+          codeNatureAdmission: sessionStorage.getItem("NatureAdmissionOPD"),
+          codeMedecin: this.SelectedMedecinFromList.codeMedecin,
+          codeMotifAdmission: 1,
+          codeSociete: this.selectedSociete,
+          codeConvention: this.selectedConvention,
+          codeListCouverture: sessionStorage.getItem("ListCouvertureTemp"),
+          codeCabinet: this.SelectedMedecinFromList.codeCabinet,
+          codePriceList: sessionStorage.getItem("PriceListTempSelectedTemp"),
+          dateCreate: new Date().toISOString(), //
+          code: this.code,
+          userCreate: this.userCreate,
+          detailsAdmissionDTOs: this.detailsAdmission,
+          reglementDTOs: this.reglementPused,
+          regDeferral:this.RegDeferral,
+          admissionFacturationDTOs:this.AdmissionFacturationPush,
+        }
+        console.log("this.SelectedMedecinFromList"), this.SelectedMedecinFromList;
 
 
-    let body = {
-      codeSaisie: this.codeSaisie,
-      designationAr: this.designationAr,
-      designationLt: this.designationLt,
-      userCreate: this.userCreate,
-      rib: this.rib,
+        if (this.code != null) {
+          bodyAdmission['code'] = this.code;
 
-      dateCreate: new Date().toISOString(), //
-      code: this.code,
-      actif: this.actif,
-      visible: this.visible,
+          // this.param_service.UpdateBanque(body) .subscribe(
 
+          //   (res: any) => {
+          //      if(sessionStorage.getItem("lang") == "ar"){
+          //   alertifyjs.set('notifier', 'position', 'top-left');
+          // }else{
+          //   alertifyjs.set('notifier', 'position', 'top-right');
+          // }
+
+          //                 alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/ok.png" alt="image" >' + "تم التحيين");
+
+          //     this.visibleModal = false;
+          //     this.clearForm();
+          //     this.ngOnInit();
+          //     this.check_actif = true;
+          //     this.check_inactif = false;
+          //     this.onRowUnselect(event);
+          //     this.clearSelected();
+
+          //   }
+          // );
+
+
+        }
+        else {
+          // console.log("body to post ", bodyAdmission);
+          // console.log( " body details admission " , bodyDetailsAdmission)
+          this.recept_service.PostAdmission(bodyAdmission).pipe(
+            catchError((error: HttpErrorResponse) => {
+              let errorMessage = '';
+              this.reglementPused = new Array<any>();
+              this.detailsAdmission = new Array<any>();
+              this.AdmissionFacturationPush = new Array<any>();
+              
+              return throwError(errorMessage);
+
+            })
+          ).subscribe(
+            (res: any) => {
+
+              this.CtrlAlertify.PostionLabelNotification();
+              this.CtrlAlertify.ShowSavedOK();
+              this.visibleModal = false;
+              this.detailsAdmission = new Array<any>();
+              this.reglementPused = new Array<any>();
+              this.AdmissionFacturationPush = new Array<any>();
+
+              this.clearForm();
+              this.ngOnInit();
+              this.code;
+              this.check_actif = true;
+              this.check_inactif = false;
+              this.onRowUnselect(event);
+              this.clearSelected();
+
+            }
+          )
+        }
+        // }
+
+        // }
+      } else {
+        this.reglementPused = new Array<any>();
+        this.detailsAdmission = new Array<any>();
+        console.log("Error Validation");
+
+      }
     }
-    if (this.code != null) {
-      body['code'] = this.code;
-
-      // this.param_service.UpdateBanque(body) .subscribe(
-
-      //   (res: any) => {
-      //      if(sessionStorage.getItem("lang") == "ar"){
-      //   alertifyjs.set('notifier', 'position', 'top-left');
-      // }else{
-      //   alertifyjs.set('notifier', 'position', 'top-right');
-      // }
-
-      //                 alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/ok.png" alt="image" >' + "تم التحيين");
-
-      //     this.visibleModal = false;
-      //     this.clearForm();
-      //     this.ngOnInit();
-      //     this.check_actif = true;
-      //     this.check_inactif = false;
-      //     this.onRowUnselect(event);
-      //     this.clearSelected();
-
-      //   }
-      // );
 
 
-    }
-    else {
-      // this.param_service.PostBanque(body) .subscribe(
-      //   (res:any) => {
-      //     alertifyjs.set('notifier', 'position', 'top-left'); 
-      //     alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/files/images/ok.png" alt="image" >' + "تم الحفظ بنجاح");
-      //     this.visibleModal = false;
-      //     this.clearForm();
-      //     this.ngOnInit();
-      //     this.code;
-      //     this.check_actif = true;
-      //     this.check_inactif = false;
-      //     this.onRowUnselect(event);
-      //     this.clearSelected();
 
-      //   }
-      // )
-    }
-    // }
-
-    // }
   }
 
 
@@ -1069,25 +1170,57 @@ export class AdmissionComponent implements OnInit {
   }
   VisiblePEC: boolean = false;
   GetIfNeedSocForAddAdmission() {
-    if (this.selectedValue == 1) {
-      this.VisiblePEC = false;
-      this.SelectedMedecinFromList = '';
+
+    const encryptedValue = sessionStorage.getItem('PassCashPEC');
+    if (encryptedValue) {
+
+      this.decryptedValue = this.encryptionService.decrypt(encryptedValue);
 
     } else {
-      this.SelectedMedecinFromList = '';
-      this.MntCash = 0;
-      this.MntPEC = 0;
-      this.MntPayed = 0;
-      this.MntReqPayed = 0;
-      this.VisiblePEC = true;
-      this.GetSociete();
+      this.decryptedValue = 'No value found in session storage';
     }
+    if (this.password != this.decryptedValue) {
+      this.CtrlAlertify.PostionLabelNotification();
+      this.CtrlAlertify.showNotificationِCustom("PasswordError");
+
+
+
+
+    } else {
+      this.password = "";
+
+      this.visbileModalPassword = false;
+      if (this.selectedValue === 1) {
+        this.selectedValue = 2
+        this.SelectedMedecinFromList = '';
+        this.mntCash = 0;
+        this.mntPEC = 0;
+        this.mntPayed = 0;
+        this.mntReqPayed = 0;
+        this.VisiblePEC = true;
+        sessionStorage.removeItem("PriceListTempSelectedTemp");
+        sessionStorage.removeItem("ListCouvertureTemp");
+        this.GetSociete();
+        this.GetAllMedecinContientConsultation();
+      } else {
+        this.selectedValue = 1;
+        this.VisiblePEC = false;
+        this.SelectedMedecinFromList = '';
+        this.selectedConvention = "";
+        this.selectedSociete = ""; 
+        this.GetAllMedecinContientConsultation(); 
+      }
+    }
+
+
+
   }
 
   GetCodePriceListFromConventionSelected(codeConvention: number) {
     if (this.selectedValueNew != 1) {
       this.param_service.GetConventionByCode(codeConvention).subscribe((data: any) => {
         this.codePriceList = data.codePriceList;
+
         console.group("code pl ", this.codePriceList)
       })
     }
@@ -1097,22 +1230,31 @@ export class AdmissionComponent implements OnInit {
   GetIfNeedSocForAddPatient() {
     if (this.selectedValueNew == 1) {
       this.VisiblePEC = false;
-      this.SelectedMedecinFromList = '';
+      this.SelectedMedecinFromList = "";
       this.codePriceList = 1;
 
     } else {
-      this.SelectedMedecinFromList = '';
-      this.MntCash = 0;
-      this.MntPEC = 0;
-      this.MntPayed = 0;
-      this.MntReqPayed = 0;
+      this.SelectedMedecinFromList = "";
+      this.mntCash = 0;
+      this.mntPEC = 0;
+      this.mntPayed = 0;
+      this.mntReqPayed = 0;
 
       this.GetSociete();
       this.VisiblePEC = true;
     }
   }
-
+  selctedPriceListConvention: any;
   GetDetailsConventionSelected() {
+
+    this.param_service.GetConventionByCode(this.selectedConvention).subscribe((date: any) => {
+      this.selctedPriceListConvention = date.codePriceList;
+      sessionStorage.setItem("ListCouvertureTemp", date.codeListCouverture);
+
+    }
+
+    );
+    this.GetAllMedecinContientConsultation();
 
   }
 
@@ -1130,9 +1272,10 @@ export class AdmissionComponent implements OnInit {
   //   });
   // }
 
-  dataConvention: any
+  dataConvention = new Array<any>();
   listConventionPushed: any;
   GetListConventionFromSociete(codeSociet: number) {
+    this.selectedConvention = "";
     this.param_service.GetConventionByCodeSociete(codeSociet).subscribe((data: any) => {
       this.dataConvention = data;
       this.listConventionPushed = [];
@@ -1172,10 +1315,10 @@ export class AdmissionComponent implements OnInit {
     this.selectedBanque = "";
     this.numPiece = "";
     this.selectedModeReglement = '';
-    this.MntCash = '';
-    this.MntPEC = '';
-    this.MntPayed = '';
-    this.MntReqPayed = '';
+    this.mntCash = '';
+    this.mntPEC = '';
+    this.mntPayed = '';
+    this.mntReqPayed = '';
     this.dateNaissanceAdm = "";
     this.dateNaissanceNew = "";
     this.dateNaissanceRecherche = "";
@@ -1374,7 +1517,16 @@ export class AdmissionComponent implements OnInit {
   GetCodePriceListCash() {
     this.param_service.GetParam("PriceListCash").subscribe((data: any) => {
       this.codePriceListCashFromData = data.valeur;
-    })
+    });
+    // this.GetParamCheckRegDef();
+  }
+
+  GetParamCheckRegDef() {
+       this.param_service.GetParam("RegDeferralChecked").subscribe((dataRegChecked: any) => {
+        sessionStorage.setItem("CheckRegDef", dataRegChecked.valeur);
+      })
+ 
+   
   }
 
   // GetCodeNatureAdmissionOPD() {
@@ -1426,102 +1578,114 @@ export class AdmissionComponent implements OnInit {
   // }
 
 
+  // sumMontantFromDetails(details: any[]): number {
+  
+  //   if (!details || !Array.isArray(details) || details.length === 0) {
+  //     return 0; //Handle empty or invalid data gracefully
+  //   }
+  //   return details.reduce(
+  //     (sum, detail) =>
+  //       sum + (detail.montant || 0), 0);
+  //   //Added nullish coalescing to avoid errors if montant is missing
+  // }
+
+
   sumMontantFromDetails(details: any[]): number {
     if (!details || !Array.isArray(details) || details.length === 0) {
-      return 0; //Handle empty or invalid data gracefully
+      return 0;
     }
-    return details.reduce(
-      (sum, detail) =>
-        sum + (detail.montant || 0), 0); //Added nullish coalescing to avoid errors if montant is missing
+    if (!this.selectedConvention && this.selectedValue == 2) {
+      return 0; //Condition met, return 0
+    } else {
+      return details.reduce((sum, detail) => sum + (detail.montant || 0), 0);
+    }
   }
-
 
   async GetAllMedecinContientConsultation() {
     try {
       const currentDate = new Date();
-      // const formattedDate = this.datePipe.transform(currentDate, 'dd-MM-yyyy');
-
-      const formattedDate = this.datePipe.transform(currentDate, "yyyy-MM-dd")
-      console.log(formattedDate);
+      const formattedDate = this.datePipe.transform(currentDate, "yyyy-MM-dd");
       const natureAdmOPD = sessionStorage.getItem("NatureAdmissionOPD");
       const codeNatAdmOPD = Number(natureAdmOPD);
-      const planningCabinets = await lastValueFrom(this.recept_service.GetPlanningCabinetByDateExiste(formattedDate, formattedDate));
+
+      // Fetch codeConvention and PriceListCash concurrently
+      const [planningCabinets, priceListCashResult] = await Promise.all([
+        this.recept_service.GetPlanningCabinetByDateExiste(formattedDate, formattedDate).toPromise(), // toPromise() for async/await
+        // this.param_service.GetParam("codeConvention").toPromise(), // Assuming you have a method to fetch codeConvention
+        
+        this.param_service.GetParam("PriceListCash").toPromise(),
+      ]);
+
+      this.codeConvention = this.selectedConvention; // Assign the results
+      const priceListCashValue = priceListCashResult.valeur; // Assuming the value is in 'valeur' property
 
       if (planningCabinets.length === 0) {
-        // console.log("No planning cabinets found for this date.");
         this.CtrlAlertify.PostionLabelNotification();
         this.CtrlAlertify.showNotificationِCustom("NoPlanningInThisDay");
-        this.ListMedecinTried = []; // Set to an empty array to indicate no data
-        return; // Exit the function early
+        this.ListMedecinTried = [];
+        return;
       }
 
-      const finalResult = await lastValueFrom(this.recept_service.GetPlanningCabinetByDateExiste(formattedDate, formattedDate)
-        .pipe(
-          mergeMap((prestationData: any[]) => {
+      const consultationData = await this.fetchConsultationData(planningCabinets, codeNatAdmOPD, priceListCashValue);
 
-            const requests = prestationData.map(medecin => {
-              return this.param_service.GetPrestationConsultationByCodeMedecinAndCodeNatureAdmission(medecin.codeMedecin, codeNatAdmOPD)
-                .pipe(
-                  map((datax: any) => ({
-                    medecin,
-                    codePrestation: datax.codePrestation
-
-                  }))
-
-                );
-
-            });
-
-
-            return forkJoin(requests);
-          }),
-          mergeMap((consultationData: { medecin: any; codePrestation: any; }[]) => {
-            const priceRequests = consultationData.map(({ medecin, codePrestation }) => {
-              if (this.codeConvention) {
-
-
-                return this.param_service.GetDetailsListCouverturePrestationByCodeListCouvertureAndCodePrestation(this.codeConvention, codePrestation)
-                  .pipe(
-                    map((dataDetailsCouverture: any) => ({
-                      ...medecin,
-                      montantConsultation: dataDetailsCouverture.montantPEC
-                    }))
-                  );
-              } else {
-                return this.param_service.GetParam("PriceListCash")
-                  .pipe(
-                    mergeMap((DataPlCash: any) => this.param_service.GetDetailsPriceListByCodePriceListAndCodePrestationAnd(DataPlCash.valeur, medecin.medecinDTO.prestationConsultationDTO.codePrestation, codeNatAdmOPD).pipe(
-                      catchError((error: HttpErrorResponse) => {
-                        console.error('Error :', error);
-                        return throwError(() => new Error('Failed to Get Prestation.'));
-
-
-                      })
-                    )),
-                    map((dataDetailsPL: any) => ({
-
-                      ...medecin,
-                      montantConsultation: this.sumMontantFromDetails(dataDetailsPL)
-
-                    }))
-                  );
-              }
-            });
-
-
-            return forkJoin(priceRequests);
-          })
-        ));
-
-      // console.log("finalResult  ", finalResult);
-      this.ListMedecinTried = finalResult;
-      //Handle empty array
+      this.ListMedecinTried = consultationData;
       if (this.ListMedecinTried.length === 0) {
         console.log("No médecins found with consultations");
       }
+
     } catch (error) {
       console.error("Error fetching médecin data:", error);
+      // Handle errors appropriately (e.g., display an error message to the user)
     }
+  }
+
+
+
+  //Helper Function to improve readability and maintainability.
+  async fetchConsultationData(planningCabinets: any[], codeNatAdmOPD: number, priceListCashValue: any) {
+    const requests = planningCabinets.map(medecin =>
+      this.param_service.GetPrestationConsultationByCodeMedecinAndCodeNatureAdmission(medecin.codeMedecin, codeNatAdmOPD)
+        .pipe(
+          map((datax: any) => ({ medecin, codePrestation: datax.codePrestation }))
+        )
+    );
+
+    const consultationData = await Promise.all(requests.map(obs => firstValueFrom(obs)));
+
+
+    const priceRequests = consultationData.map(({ medecin, codePrestation }) => {
+      if (this.codeConvention) {
+        sessionStorage.setItem("PriceListTempSelectedTemp", this.selctedPriceListConvention);
+        return this.param_service.GetDetailsPriceListByCodePriceListAndCodePrestationAnd(this.selctedPriceListConvention, codePrestation, codeNatAdmOPD)
+          .pipe(
+            map((dataDetailsCouverture: any) => ({
+              ...medecin,
+              // montantConsultation: dataDetailsCouverture.montantPEC
+              montantConsultation: this.sumMontantFromDetails(dataDetailsCouverture)
+            }))
+          );
+
+      } else {
+        sessionStorage.setItem("PriceListTempSelectedTemp", priceListCashValue);
+        return this.param_service.GetDetailsPriceListByCodePriceListAndCodePrestationAnd(priceListCashValue, medecin.medecinDTO.prestationConsultationDTO.codePrestation, codeNatAdmOPD)
+          .pipe(
+            catchError((error: HttpErrorResponse) => {
+              console.error('Error :', error);
+              return throwError(() => new Error('Failed to Get Prestation.'));
+            }),
+            map((dataDetailsPL: any) => (
+            
+              {
+              ...medecin,
+              montantConsultation: this.sumMontantFromDetails(dataDetailsPL)|| 0
+            }
+          
+          ))
+          );
+      }
+    });
+
+    return Promise.all(priceRequests.map(obs => firstValueFrom(obs)));
   }
 
 
@@ -1588,6 +1752,58 @@ export class AdmissionComponent implements OnInit {
   // selectedValueX: string = '';
   // showTable: boolean = false; 
   // selectedValueX: any = '';
+
+  password: any;
+  CloseModalPassWord() {
+    this.visbileModalPassword = false;
+  }
+
+  decryptedValue: string = '';
+  OpenmodalPassword(mode: string) {
+    this.visibleModal = false;
+    this.visDelete = false;
+    this.visibleModalPrint = false;
+    this.visibleModalAddPatient = false;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    if (mode === 'passwordModal') {
+
+
+
+
+      button.setAttribute('data-target', '#ModalPassword');
+      this.formHeader = this.i18nService.getString('Password');
+      this.visibleModalRecherPatient = false;
+      this.visibleModal = true;
+      this.visibleModalAddPatient = false;
+      this.visibleModalPrint = false;
+      this.visbileModalPassword = true;
+
+    }
+
+
+
+
+  }
+
+  getCodeSaisieAdmissionOPD() {
+    this.param_service.GetCompteur("CodeSaisieADMOPD").
+      subscribe((data: any) => {
+        this.codeSaisie = data.prefixe + data.suffixe;
+      })
+  }
+
+  DisabledReg(){
+    if(this.RegDeferral === true){
+      this.RegDef =true;
+    }else{
+      this.RegDef =false;
+      this.GetAllModeReglement();
+
+    }
+  }
 }
 
 

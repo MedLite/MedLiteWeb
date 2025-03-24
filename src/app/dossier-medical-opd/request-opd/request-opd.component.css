@@ -1,0 +1,34 @@
+:host ::ng-deep .FloatRight {
+    float: right !important;
+}
+
+.request-opd-content {
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    height: 100%;
+    width: 100%;
+}
+
+.place-1 {
+    position: relative;
+    height: 150px;
+}
+
+.place-2 {
+    position: relative;
+    height: 150px;
+}
+
+.row {
+    font-family: auto;
+}
+
+.content {
+    font-family: auto !important;
+}
+
+.PrintBtn {
+    color: darkcyan !important;
+    border: none;
+}

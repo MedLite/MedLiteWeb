@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { I18nService } from '../../Shared/i18n/i18n.service';
-import { UserService } from '../../Authenfication/_services/user.service';
+import { I18nService } from '../../Shared/i18n/i18n.service'; 
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { UserService } from '../../Authenfication/JWT/_services/user.service';
 
 interface LogoData {
   code: number;
@@ -21,26 +21,38 @@ export class SidebarComponent {
   logo: SafeResourceUrl | string | null = null; //Make sure it is initialized
 
   ngOnInit(): void {
-    this.GetLogo();
+   
+      this.GetLogo();
+    
+    
   }
 
  
   GetLogo() {
-    this.societe.GetLogoClinique().subscribe(
-      (data: any) => {
-        
-        if (typeof data.logo === 'string' && data.logo.trim() !== '') {
-          this.logo = this._sanitizer.bypassSecurityTrustResourceUrl(`data:image/jpg;base64,${data.logo}`);
+    if(sessionStorage.getItem("NomSociete") == undefined ||  sessionStorage.getItem("NomSociete") ==null){
+    
+      this.societe.GetLogoClinique().subscribe(
+        (data: any) => {
           
-        } else {
-          console.error("Invalid logo data received.");
-          this.logo = '/path/to/default/logo.png'; //Fallback to default
-        }
-
+          if (typeof data.logo === 'string' && data.logo.trim() !== '') {
+            sessionStorage.setItem("Logo",data.logo);
+            this.logo = this._sanitizer.bypassSecurityTrustResourceUrl(`data:image/jpg;base64,${data.logo}`);
+            sessionStorage.setItem("NomSociete",data.nomSociete);
       
-      }
-      
-    )
+  
+            
+          } else {
+            console.error("Invalid logo data received.");
+            this.logo = '/path/to/default/logo.png'; //Fallback to default
+          } 
+        } 
+      )
+    }
+    else{
+      this.logo = this._sanitizer.bypassSecurityTrustResourceUrl(`data:image/jpg;base64,${sessionStorage.getItem("Logo")}`);
+    
+    }
+    
 
 
 

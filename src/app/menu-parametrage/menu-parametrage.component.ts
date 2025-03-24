@@ -12,12 +12,10 @@ declare const $: any;
 })
 export class MenuParametrageComponent implements OnInit {
   showSubmenu: boolean = false;
-  constructor( public param_service: ParametargeService,public i18nService: I18nService) { }
+  constructor( public i18nService: I18nService) { }
   
   ngOnInit(): void {
-   this.GetCodeNatureAdmissionOPD(); 
-   this.GetCodeNatureAdmissionER(); 
-   this.GetCodeNatureAdmissionIP(); 
+  
   }
 
   IsOpened = false;
@@ -68,47 +66,6 @@ export class MenuParametrageComponent implements OnInit {
   onClosed6() { 
     this.IsOpened6 = false; 
   } 
-
-  codeNatureAdmissionOPD: any;
-  codeNatureAdmissionER: any;
-  GetCodeNatureAdmissionOPD() {
-    if(sessionStorage.getItem("NatureAdmissionOPD") != undefined ||  sessionStorage.getItem("NatureAdmissionOPD") != null ){
-
-    }else{
-      this.param_service.GetParam("CodeNatureAdmissionOPD").
-      subscribe((data: any) => { 
-        sessionStorage.setItem("NatureAdmissionOPD", data.valeur);
-      })
-    }
-   
-  }
-
-  GetCodeNatureAdmissionER() {
-    if(sessionStorage.getItem("NatureAdmissionER") != undefined ||  sessionStorage.getItem("NatureAdmissionER") != null ){
-
-    }else{
-      this.param_service.GetParam("CodeNatureAdmissionER").
-      subscribe((data: any) => { 
-        sessionStorage.setItem("NatureAdmissionER", data.valeur);
-
-      })
-    }
-   
-  }
-
-  GetCodeNatureAdmissionIP() {
-    if(sessionStorage.getItem("NatureAdmissionIP") != undefined ||  sessionStorage.getItem("NatureAdmissionIP") != null ){
-
-    }else{
-      this.param_service.GetParam("CodeNatureAdmissionIP").
-      subscribe((data: any) => { 
-        sessionStorage.setItem("NatureAdmissionIP", data.valeur);
-
-      })
-    }
-
-   
-  }
 
 
 }

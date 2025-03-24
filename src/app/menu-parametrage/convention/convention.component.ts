@@ -135,10 +135,10 @@ export class ConventionComponent implements OnInit {
     this.codeSaisie = '';
     this.selectedConvention = ''
     this.selectedSociete = '';
-    this.selectedCouverture='';
-    this.selectedpriceList='';
+    this.selectedCouverture=''; 
     this.dateDeb="";
     this.dateFin="";
+    this.selectedpriceList="";
     this.onRowUnselect(event);
 
   }

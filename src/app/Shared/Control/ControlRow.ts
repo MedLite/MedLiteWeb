@@ -40,6 +40,16 @@ export class ControlServiceAlertify {
     }
   }
 
+  PostionLabelNotificationDMI(){
+    const currentTime = Date.now();
+    if (currentTime - this.lastNotificationTime > 2000) { // Only notify every 2 seconds
+      this.lastNotificationTime = currentTime;
+      
+        alertifyjs.set('notifier', 'position', 'top-right');
+      
+    }
+  }
+
   showChoseAnyRowNotification() {
     const fieldRequiredMessage = this.i18nService.getString('SelctAnyRow');  // Default to English if not found
     alertifyjs.notify(

@@ -54,7 +54,7 @@ import { FooterComponent } from './Navigation/footer/footer.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AlertComponent } from './Authenfication/alert/alert.component';
@@ -91,7 +91,7 @@ import { CouvertureComponent } from './menu-parametrage/couverture/couverture.co
 import { PriceListComponent } from './menu-parametrage/price-list/price-list.component';
 import { CaisseReceptionComponent } from './menu-reception/caisse-reception/caisse-reception.component';
 
-import { authInterceptorProviders, AuthInterceptor } from './Authenfication/_helpers/auth.interceptor';
+// import { authInterceptorProviders, AuthInterceptor } from './Authenfication/_helpers/auth.interceptor';
 import { ModalContentComponent } from './Shared/modal-content/modal-content.component';
 import { SpecialiteCabinetComponent } from './menu-parametrage/specialite-cabinet/specialite-cabinet.component';
 import { SpecialiteMedecinComponent } from './menu-parametrage/specialite-medecin/specialite-medecin.component';
@@ -108,7 +108,13 @@ import { TreeTableModule } from 'primeng/treetable';
 import { ToastModule } from 'primeng/toast';
 import { RequestOPDComponent } from './dossier-medical-opd/request-opd/request-opd.component';
 import { CustomSelectComponent } from './Shared/TAB/custom-select.component';
-
+import { PrescriptionOPDComponent } from './dossier-medical-opd/prescription-opd/prescription-opd.component'; 
+import { SignatureMedecinComponent } from './menu-parametrage/signature-medecin/signature-medecin.component';
+import { BadgeModule } from 'primeng/badge';
+import { httpInterceptorProviders, HttpRequestInterceptor } from './Authenfication/JWT/_helpers/http.interceptor';
+import { AuthInterceptor, authInterceptorProviders } from './Authenfication/_helpers/auth.interceptor';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { DividerModule } from 'primeng/divider';
 const languages = [
   { lang: 'عربي', flag: 'assets/images/county/ar.png', file: arI18n, valeur: 'ar' },
   { lang: 'English', flag: 'assets/images/county/eng.png', file: enI18n, valeur: 'en' },
@@ -136,7 +142,7 @@ const languages = [
     FournisseurComponent, PrestationComponent,OperationComponent, TypeIntervenantComponent, 
     MedecinComponent, ResponsableRemiseComponent,ModeReglementComponent,FamilleFacturationComponent,
     BanqueComponent, FamilleOperationComponent,FamillePrestationComponent,SpecialiteCabinetComponent,SpecialiteMedecinComponent,
-    SousFamillePrestationComponent,TypeOperationComponent,BlocOperationComponent,
+    SousFamillePrestationComponent,TypeOperationComponent,BlocOperationComponent,SignatureMedecinComponent,
     ////////////// Menu REception
 
     AdmissionComponent,EditionAdmissionComponent, CabinetComponent, ClotureSessionComponent,
@@ -145,7 +151,7 @@ const languages = [
 
 
     /// DMI 
-    FeuilleSoinComponent,ListAdmissionOPDComponent,RequestOPDComponent,
+    FeuilleSoinComponent,ListAdmissionOPDComponent,RequestOPDComponent,PrescriptionOPDComponent,
 
     
   ],
@@ -157,7 +163,7 @@ const languages = [
     ReactiveFormsModule, BrowserAnimationsModule,ToastModule,
    
     AppRoutingModule, DropdownModule,
-    HttpClientModule, TreeTableModule,
+    HttpClientModule, TreeTableModule,ScrollPanelModule,  DividerModule,
   
     I18nModule.forRoot(languages), TagModule, RippleModule, RatingModule, InputTextareaModule,
     CommonModule, ContextMenuModule, ToolbarModule, ConfirmDialogModule,
@@ -167,10 +173,17 @@ const languages = [
     CalendarModule, CheckboxModule, TabViewModule,
 
   ],
+  // providers: [  provideHttpClient(withInterceptors([customInterceptor])),DatePipe, LoginComponent, LoadingComponent, HttpClient, MessageService,
+    
+  //   provideAnimationsAsync(),
+  // ],
+
   providers: [  authInterceptorProviders,DatePipe, LoginComponent, LoadingComponent, HttpClient, MessageService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true ,  },
     provideAnimationsAsync(),
   ],
+
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -205,7 +205,7 @@
                                 i18n:i18nService.currentLanguage}} : <i
                                     class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                             <div class="control-input flex-60">
-                                <input (keyup.enter)="dt2.filterGlobal($any($event.target).value, 'contains')" id="NomPatientFullAr" maxlength="10" name="NomPatientFullAr" [(ngModel)]="NomPatientFullArRecherche" type="text" class="onlyForCentral form-control-dev input-xs">
+                                <input (keyup.enter)="dt2.filterGlobal($any($event.target).value, 'contains')" id="NomPatientFullAr" maxlength="10" name="NomPatientFullAr" [(ngModel)]="NomPatientFullArRecherche" type="text" class=" form-control-dev input-xs">
 
                             </div>
                         </section>
@@ -264,7 +264,7 @@
                                 i18n:i18nService.currentLanguage}} 6 : <i
                                     class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                             <div class="control-input flex-60 ">
-                                <input id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class="onlyForCentral form-control-dev input-xs" required="true">
+                                <input id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class=" form-control-dev input-xs" required="true">
                             </div>
                         </section>
                         <section class="flex-row-start flex-2 ">
@@ -373,12 +373,19 @@
         <div class="flex-row-start flex-12">
             <fieldset class="flex-12">
                 <div class="flex-row-start flex-12">
-                    <section class="flex-row-start flex-12">
-                        <label class="control-label flex-2" style="max-width: 11%; ">رقم الدخول : <i
-                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                        <div class="control-input flex-5  " style="padding: 5px 0px 0px 0px  ; max-width: 20%;">
-                            <input disabled="" readonly style="max-width: 55%;" id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class="onlyForCentral form-control-dev input-xs" #codeInput required [(ngModel)]="codeSaisie">
+                    <section class="flex-row-start flex-8">
+                        <label class="control-label flex-2">رقم الدخول :  </label>
+                        <div class="control-input flex-5  " style=" max-width: 25%;">
+                            <input disabled="" readonly style="max-width: 55%;" id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class=" form-control-dev input-xs" #codeInput required [(ngModel)]="codeSaisie">
                         </div>
+
+
+                    </section>
+                    <section class="flex-row-start flex-4">
+                        <!-- <label class="control-label flex-2">رقم الدخول :  </label> -->
+                        <!-- <div class="control-input flex-5  " style=" max-width: 20%;"> -->
+                        <p-checkbox [binary]="true" name="RegDeferral" [(ngModel)]="RegDeferral" value="val3" [label]="LabelRegDefferral" (onChange)="DisabledReg()"></p-checkbox>
+                        <!-- </div> -->
 
 
                     </section>
@@ -386,28 +393,37 @@
                 <div class="flex-row-start flex-12">
                     <section class="block-row flex-5" style="border-radius: 6px; border: none;">
                         <fieldset class="flex-12">
-                            <label class="control-label flex-3">الرقم الطبي : <i
-                                    class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                            <div class="dop control-input flex-7 " style="max-width: 100px;" style="padding: 0px 63px 0px 0px; display: flex;">
-                                <input disabled readonly id="IDPatient" maxlength="20" name="IDPatient" type="text" class=" form-control-dev input-xs" #IDPatientInput required [(ngModel)]="IDPatient">
+                            <div style="display: flex;">
+                                <label class="control-label flex-4">الرقم الطبي :  </label>
+                                <div class="dop control-input flex-7 " style="max-width: 100px;" style=" display: flex;">
+                                    <input disabled readonly id="IDPatient" maxlength="20" name="IDPatient" type="text" class=" form-control-dev input-xs" #iDPatientInput required [(ngModel)]="IDPatient">
+                                </div>
+                            </div>
+
+                            <br>
+                            <div style="display: flex;">
+                                <label class="control-label flex-4"> {{'NomFullAr' | i18n:i18nService.currentLanguage}}
+                                    : </label>
+                                <div class="dop control-input flex-7 " style=" display: flex;">
+                                    <input disabled readonly id="NomPatientFullAr" maxlength="20" name="NomPatientFullAr" type="text" class=" form-control-dev input-xs" #nomArInput required [(ngModel)]="NomFullArAdm">
+                                </div>
+                            </div>
+
+                            <br>
+                            <div style="display: flex;">
+
+                                <label class="control-label flex-4">{{'NomFullLt' | i18n:i18nService.currentLanguage}}
+                                    : </label>
+                                <div class="dop control-input flex-7 " style=" display: flex;">
+                                    <input disabled readonly id="NomPatientFullLt" maxlength="20" name="NomPatientFullLt" type="text" class=" form-control-dev input-xs" #nomLtInput required [(ngModel)]="NomFullLtAdm">
+                                </div>
                             </div>
                             <br>
-                            <label class="control-label flex-3"> {{'NomFullAr' | i18n:i18nService.currentLanguage}} : <i
-                                    class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                            <div class="dop control-input flex-7 " style="padding: 0px 63px 0px 0px; display: flex;">
-                                <input disabled readonly id="NomPatientFullLt" maxlength="20" name="NomPatientFullAr" type="text" class=" form-control-dev input-xs" #nomArInput required [(ngModel)]="NomFullArAdm">
-                            </div>
-                            <br>
-                            <label class="control-label flex-3">{{'NomFullLt' | i18n:i18nService.currentLanguage}} :<i
-                                    class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                            <div class="dop control-input flex-7 " style="padding: 0px 63px 0px 0px; display: flex;">
-                                <input disabled readonly id="NomPatientFullLt" maxlength="20" name="NomPatientFullLt" type="text" class=" form-control-dev input-xs" #nomLtInput required [(ngModel)]="NomFullLtAdm">
-                            </div>
-                            <br>
-                            <label class="control-label flex-4">{{'NumTel' | i18n:i18nService.currentLanguage}} :<i
-                                    class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                            <div class="dop control-input flex-9 " style="padding: 0px 80px 0px 0px; display: flex;">
-                                <input disabled readonly style="max-width: 67%;" id="TelPatient" maxlength="12" name="TelPatient" type="text" class=" form-control-dev input-xs" #TelPatientInput required [(ngModel)]="TelPatientAdm">
+                            <div style="display: flex;">
+                                <label class="control-label flex-4">{{'NumTel' | i18n:i18nService.currentLanguage}} : </label>
+                                <div class="dop control-input flex-7 " style=" display: flex;">
+                                    <input disabled readonly id="TelPatient" maxlength="12" name="TelPatient" type="text" class=" form-control-dev input-xs" #TelPatientInput required [(ngModel)]="TelPatientAdm">
+                                </div>
                             </div>
                         </fieldset>
 
@@ -415,37 +431,40 @@
 
                         <fieldset class="flex-12">
                             <label class="control-label flex-4" style="padding-top: 3px;"> {{'SourceDeFinancement' |
-                                i18n:i18nService.currentLanguage}} :<i
-                                    class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                            <div class="radio-group" style="height: 30px;">
+                                i18n:i18nService.currentLanguage}} : </label>
+                            <div class="radio-group" style="height: 35px; justify-content: space-around;">
                                 <div class="radio-item">
-                                    <input type="radio" id="Cash" name="selectedValue" [value]=1 [(ngModel)]="selectedValue" (change)="GetIfNeedSocForAddAdmission()">
-                                    <label for="Cash" [class.bold-label]="selectedValue == 1">{{'Cash' |
+                                    <input type="radio" style="cursor: not-allowed;" readonly disabled="" id="Cash" name="selectedValue" [value]=1 [(ngModel)]="selectedValue">
+                                    <label for="Cash" style="cursor: not-allowed;" [class.bold-label]="selectedValue == 1">{{'Cash' |
                                         i18n:i18nService.currentLanguage}} </label>
                                 </div>
 
                                 <div class="radio-item">
-                                    <input type="radio" id="PEC" name="selectedValue" [value]=2 [(ngModel)]="selectedValue" (change)="GetIfNeedSocForAddAdmission()">
-                                    <label for="PEC" [class.bold-label]="selectedValue == 2">{{'PEC' |
+                                    <input type="radio" style="cursor: not-allowed;" readonly disabled="" id="PEC" name="selectedValue" [value]=2 [(ngModel)]="selectedValue">
+                                    <label for="PEC" style="cursor: not-allowed;" [class.bold-label]="selectedValue == 2">{{'PEC' |
                                         i18n:i18nService.currentLanguage}} </label>
+                                </div>
+                                <div>
+                                    <button class="btn-modif-PEC-Cash" (click)="OpenmodalPassword('passwordModal')">
+                                        <!-- Modifier -->
+                                        <i class="fa-solid fa-repeat"></i>
+                                    </button>
                                 </div>
                             </div>
 
 
                         </fieldset>
 
-                        <fieldset *ngIf="VisiblePEC" class="flex-12" style="display: flex;">
+                        <fieldset *ngIf="VisiblePEC" class="flex-12" style="display: flex;white-space: pre;">
                             <label class="control-label flex-2" style="max-width: 30%;">{{'Societe' |
-                                i18n:i18nService.currentLanguage}} : <i
-                                    class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                                i18n:i18nService.currentLanguage}} :  </label>
                             <div class="dop control-input " style="display: flex;">
                                 <p-dropdown name="Soceite" [filter]="true" appendTo="body" [options]="ListSocieteRslt" [(ngModel)]="selectedSociete" [style]="{'width':'150px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #Soceite="ngModel" (onChange)="GetListConventionFromSociete(this.selectedSociete)">
                                 </p-dropdown>
                             </div>
 
                             <label class="control-label flex-2" style="max-width: 30%;">{{'Convention' |
-                                i18n:i18nService.currentLanguage}} : <i
-                                    class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                                i18n:i18nService.currentLanguage}} : </label>
                             <div class="dop control-input " style="display: flex;">
                                 <p-dropdown name="Convention" [filter]="true" appendTo="body" [options]="ListConventionRslt" [(ngModel)]="selectedConvention" [style]="{'width':'150px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #Convention="ngModel"
                                     (onChange)="GetDetailsConventionSelected()">
@@ -460,8 +479,7 @@
                             <div class="flex-row-start flex-12">
 
                                 <label class="control-label flex-6"> {{'ListMedecin' |
-                                    i18n:i18nService.currentLanguage}} :<i
-                                        class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                                    i18n:i18nService.currentLanguage}} : </label>
                             </div>
                             <div class="flex-row-start flex-12" style="overflow-y: auto; height: 245px">
                                 <p-table [paginator]="true" [rows]="20" [rowsPerPageOptions]="[20, 40,80,100]" [showCurrentPageReport]="true" [first]="first" currentPageReportTemplate="{{'Page' | i18n:i18nService.currentLanguage}} {first} {{'To' | i18n:i18nService.currentLanguage}} {last} {{'of' | i18n:i18nService.currentLanguage}} {totalRecords} {{'entiers' | i18n:i18nService.currentLanguage}}"
@@ -516,78 +534,86 @@
                 <div class="flex-row-start flex-12">
 
                     <section class="block-row flex-3">
+                        <div style="display: flex;">
+                            <label class="control-label flex-2" style="max-width: 50%;"> {{'MntCash' |
+                                i18n:i18nService.currentLanguage}} : </label>
+                            <div class="control-label " style="display: flex; max-width: 50%;">
+                                <input readonly disabled id="mntCash" maxlength="10" name="mntCash" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="mntCash">
 
-                        <label class="control-label flex-2" style="max-width: 30%;"> {{'MntCash' |
-                            i18n:i18nService.currentLanguage}} : <i
-                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                        <div class="control-input " style="display: flex; max-width: 50%;">
-                            <input readonly disabled id="MntCash" maxlength="10" name="MntCash" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="MntCash">
+                            </div>
 
                         </div>
 
 
-
                         <br>
-                        <label class="control-label flex-2" style="max-width: 30%;">{{'MntPEC' |
-                            i18n:i18nService.currentLanguage}} :<i
-                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                        <div class="control-input " style=" display: flex; max-width: 50%;">
-                            <input readonly disabled id="MntPEC" maxlength="10" name="MntPEC" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="MntPEC">
+                        <div style="display: flex;">
+                            <label class="control-label flex-2" style="max-width: 50%;">{{'MntPEC' |
+                                i18n:i18nService.currentLanguage}} : </label>
+                            <div class="control-label " style=" display: flex; max-width: 50%;">
+                                <input readonly disabled id="mntPEC" maxlength="10" name="mntPEC" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="mntPEC">
 
+                            </div>
                         </div>
 
 
 
                     </section>
                     <section class="block-row flex-3">
-                        <label class="control-label flex-20" style="  max-width: 38%;">{{'MntRequiredToPayed' |
-                            i18n:i18nService.currentLanguage}} : <i
-                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                        <div class="control-input " style="display: flex; max-width: 50%;">
-                            <input readonly disabled id="MntReqPayed" style="font-weight: bold;color: red;" maxlength="10" name="MntReqPayed" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="MntReqPayed">
+                        <div style="display: flex;">
+                            <label class="control-label flex-20" style="  max-width: 58%;">{{'MntRequiredToPayed' |
+                                i18n:i18nService.currentLanguage}} : </label>
+                            <div class="control-label " style="display: flex; max-width: 50%;">
+                                <input readonly disabled id="mntReqPayed" style="font-weight: bold;color: red;" maxlength="10" name="mntReqPayed" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="mntReqPayed">
 
+                            </div>
                         </div>
-
 
                         <br>
-                        <label class="control-label flex-2" style="max-width: 30%;">{{'MntPayed' |
-                            i18n:i18nService.currentLanguage}}:<i
-                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                        <div class="control-input mntPayed " style="max-width: 55%; ; display: flex;">
-                            <input id="MntPayed" maxlength="10" name="MntPayed" type="number" min="0" class="form-control-dev input-xs" required [(ngModel)]="MntPayed">
+                        <div style="display: flex;">
+                            <label class="control-label flex-20" style="max-width:50%;">{{'MntPayed' |
+                                i18n:i18nService.currentLanguage}}: </label>
+                            <div class="control-label mntPayed " style="max-width: 55%;">
+                                <input id="mntPayed" [disabled]="RegDef" maxlength="10" name="mntPayed" type="number" min="0" class="form-control-dev input-xs" #mntPayedInput required [(ngModel)]="mntPayed">
+                            </div>
                         </div>
+
 
                     </section>
 
                     <section class="block-row flex-3">
 
-                        <label class="control-label flex-2" style="max-width: 30%;"> {{'ModeReglement' |
-                            i18n:i18nService.currentLanguage}} : <i
-                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                        <div class="dop control-input " style="display: flex;     justify-content: space-evenly;">
-                            <p-dropdown name="modeRegement" [filter]="true" appendTo="body" (onChange)="GetBanqueIfNeed()" [options]="listModeReglementRslt" [(ngModel)]="selectedModeReglement" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" #modeReglementInput
-                                required [lazy]="true">
-                            </p-dropdown>
+                        <div style="display: flex;">
+                            <label class="control-label flex-2" style="max-width: 50%;"> {{'ModeReglement' |
+                                i18n:i18nService.currentLanguage}} :  </label>
+                            <div class="dop control-input " style="display: flex;     justify-content: space-evenly;">
+                                <p-dropdown [disabled]="RegDef" name="modeRegement" [filter]="true" appendTo="body" (onChange)="GetBanqueIfNeed()" [options]="listModeReglementRslt" [(ngModel)]="selectedModeReglement" [style]="{'width':'145px'}" [autoDisplayFirst]="true" placeholder="&nbsp;"
+                                    #modeReglementInput required [lazy]="true">
+                                </p-dropdown>
+                            </div>
                         </div>
+
                         <br>
-                        <label class="control-label flex-2" style="max-width: 30%;">{{'Banque' |
-                            i18n:i18nService.currentLanguage}} :<i
-                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                        <div class="dop control-input " style=" display: flex; padding-right: 20px;    justify-content: space-evenly;">
-                            <p-dropdown [disabled]="DisBanque" [filter]="true" required name="banque" appendTo="body" class="dropdown" [options]="listBanqueRslt" [(ngModel)]="selectedBanque" [style]="{'width':'165px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [lazy]="true"
-                                #BanqueInput>
-                            </p-dropdown>
+
+                        <div style="display: flex;">
+                            <label class="control-label flex-2" style="max-width: 50%;">{{'Banque' |
+                                i18n:i18nService.currentLanguage}} : </label>
+                            <div class="dop control-input " style=" display: flex;   justify-content: space-evenly;">
+                                <p-dropdown [disabled]="RegDef" [disabled]="DisBanque" [filter]="true" required name="banque" appendTo="body" class="dropdown" [options]="listBanqueRslt" [(ngModel)]="selectedBanque" [style]="{'width':'145px'}" [autoDisplayFirst]="true" placeholder="&nbsp;"
+                                    [lazy]="true" #BanqueInput>
+                                </p-dropdown>
+                            </div>
                         </div>
+
+
 
 
 
                     </section>
                     <section class="block-row flex-3">
-                        <label class="control-label flex-2" style="max-width: 30%;">{{'NumPiece' |
-                            i18n:i18nService.currentLanguage}}:<i
-                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                        <div class="dop control-input " style="padding: 0px 25px 0px 0px ;max-width: 65%; ; display: flex;">
-                            <input [disabled]="DisBanque" #NumPieceInput id="numPiece" maxlength="10" name="numPiece" type="text" class="onlyForCentral form-control-dev input-xs" required [(ngModel)]="numPiece">
+                        <label class="control-label flex-45">{{'NumPiece' |
+                            i18n:i18nService.currentLanguage}}: </label>
+                        <div class="dop control-input " style="max-width: 65%; ; display: flex;">
+                            <input [disabled]="DisBanque" #NumPieceInput id="numPiece" maxlength="10" name="numPiece" type="text" class=" form-control-dev input-xs" required [(ngModel)]="numPiece">
                         </div>
                     </section>
                 </div>
@@ -784,4 +810,54 @@
 
     </div>
 
+</p-dialog>
+
+
+
+<p-dialog id="ModalPassword" header="Header" [scrollLeft]="true" [closeOnEscape]="true" [(visible)]="visbileModalPassword" data-backdrop="false" [modal]="true" styleClass="ModalPassword" [draggable]="false">
+
+
+    <ng-template pTemplate="header">
+        <h2 class="text-default headerForm"> {{formHeader}}</h2>
+
+    </ng-template>
+    <div class="modal-body">
+        <fieldset class="flex-12">
+            <div class="flex-row-start flex-6">
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-12">
+                        <label class="control-label flex-6">كلمة السر : </label>
+                        <!-- <i class="fa-lg fa-fw fa fa-times icon-required" style="bottom: 0px; top:10px"></i> -->
+                        <div class="dop control-input flex-10" style="display: flex;">
+                            <input type="password" id="myInput" #myInput maxlength="200" name="password" class=" form-control-dev input-xs" [(ngModel)]="password" [required]="true">
+                            <i #icons onclick="myFunction()" class="fa eyePassword" [ngClass]="{'fa-eye': myInput.type === 'password', 'fa-eye-slash': myInput.type !== 'password'}"></i>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+        </fieldset>
+
+
+
+
+    </div>
+
+    <ng-template pTemplate="footer">
+        <div class="FloatRight">
+
+        </div>
+        <div class="FloatLeft">
+            <button class="btn btn-default  cancel-add-ModalSmallXXL" :closable="true" data-dismiss="modal" (click)="CloseModalPassWord()"> <i class="fa-lg fa-fw fa fa-times  icon-fermer "></i>خروج
+            </button>
+            <button class="  btn btn-default save-add-ModalSmallXXL" (click)="GetIfNeedSocForAddAdmission()">
+                <i class="fa-lg fa-fw fa fa-check icon-save"></i>
+                حفظ
+            </button>
+        </div>
+
+
+    </ng-template>
+
+    <!-- </div> -->
 </p-dialog>

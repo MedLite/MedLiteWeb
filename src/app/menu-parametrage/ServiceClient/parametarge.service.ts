@@ -1,16 +1,36 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ParametargeService {
-
-  constructor(private http: HttpClient) { }
+  public $refreshToken = new Subject<boolean>;
+  public $refreshTokenReceived = new Subject<boolean>;
+  constructor(private http: HttpClient) {
+    this.$refreshToken.subscribe((res:any)=> {
+      this.getRefreshToken()
+    })
+   }
   
-
+  getRefreshToken()   {
+    debugger;
+    let loggedUserData : any;
+    const localData =   localStorage.getItem('auth-user');
+    if(localData != null) {
+      loggedUserData =  JSON.parse(localData);
+    }
+    const refreshToken = JSON.parse(sessionStorage.getItem("auth-user") ?? '{}')?.refreshToken;
+    const obj = { 
+      "refreshToken": refreshToken
+    };
+    this.http.post(`${environment.API_AUTH}refreshToken`, obj).subscribe((Res:any)=>{
+      localStorage.setItem('auth-user', JSON.stringify(Res.data));
+      this.$refreshTokenReceived.next(true);
+    })
+  }
 
   GetVueByCode(code:number): Observable<any> {
 
@@ -345,11 +365,19 @@ DeleteCaisse(code: any) {
 
     return this.http.get(`${environment.API_Parametrage}medecin/all` )
   }
+
+ 
+
   GetMedecinActif(): Observable<any> {
 
     return this.http.get(`${environment.API_Parametrage}medecin/findBy?actif=true` )
   }
+  
+  
+  GetMedecinHaveSignature(haveSignature : boolean): Observable<any> {
 
+    return this.http.get(`${environment.API_Parametrage}medecin/findByHaveSignature?haveSignature=`+haveSignature )
+  }
   GetMedecinActifAndHaveConsultationOpdAndER(opd : boolean , er:boolean): Observable<any> {
 
     return this.http.get(`${environment.API_Parametrage}medecin/have_consultation?autorisConsultation=true&actif=true&opd=`+opd+`&er=`+er  )
@@ -373,9 +401,32 @@ DeleteCaisse(code: any) {
     return this.http.put(`${environment.API_Parametrage}medecin/update`, body);
   }
 
+  
   DeleteMedecin(code: any) {
     return this.http.delete(`${environment.API_Parametrage}medecin/delete/`+code);
   }
+
+  
+  GetAllSignatureMedecin(): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}signature_medecin/all` )
+  }
+
+  
+  PostSignatureMedecin(body: any) {
+    return this.http.post(`${environment.API_Parametrage}signature_medecin`, body);
+  } 
+  UpdateSignatureMedecin(body: any) {
+    return this.http.put(`${environment.API_Parametrage}signature_medecin/update`, body);
+  }
+
+  DeleteSignatureMedecin(code: any) {
+    return this.http.delete(`${environment.API_Parametrage}signature_medecin/delete/`+code);
+  }
+
+
+
+
 
   GetPrestationConsultationByCodeMedecinAndCodeNatureAdmission(codeMedecin : any , codeNatureAdmission : number ){
     return this.http.get(`${environment.API_Parametrage}prestation_consultation/codeMedecin?codeMedecin=`+codeMedecin + `&codeNatureAdmission=`+codeNatureAdmission);
@@ -583,6 +634,18 @@ DeleteCaisse(code: any) {
   }
 
 
+  GetPrestationByCodeSousFamille(codeSousFamille : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}prestation/findBySousFamille?codeSousFamille=`+ codeSousFamille);
+  }
+
+  GetPrestationByCodeTypePrestation(codeTypePrestation : number): Observable<any> {
+
+    return this.http.get(`${environment.API_Parametrage}prestation/findByTypePrestation?codeTypePrestation=`+ codeTypePrestation);
+  }
+
+
+  
   GetPrestationByCodeIn(codes: number[]): Observable<any> {
 
     return this.http.get(`${environment.API_Parametrage}prestation/FindByCodeIn?code=`+ codes);
@@ -926,9 +989,9 @@ DeleteCaisse(code: any) {
     return this.http.get(`${environment.API_Parametrage}list_couverture/prestation?codeListCouverture=`+codeListCouverture);
   }
 
-  GetDetailsListCouverturePrestationByCodeListCouvertureAndCodePrestation(codeListCouverture:number,codePrestation:any): Observable<any> {
+  GetDetailsListCouverturePrestationByCodeListCouvertureAndCodePrestationAndCodeNatureAdmission(codeListCouverture:number,codePrestation:any,codeNatureAdmission:any): Observable<any> {
 
-    return this.http.get(`${environment.API_Parametrage}list_couverture/prestation?codeListCouverture=`+codeListCouverture +`&codePrestation=`+codePrestation);
+    return this.http.get(`${environment.API_Parametrage}list_couverture/prestation/findBy?codeListCouverture=`+codeListCouverture +`&codePrestation=`+codePrestation + `&codeNatureAdmission=`+codeNatureAdmission);
   }
   GetDetailsListCouvertureoperationByCodeListCouverture(codeListCouverture:number): Observable<any> {
 
