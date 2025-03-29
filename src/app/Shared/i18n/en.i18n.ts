@@ -120,7 +120,8 @@ const enI18n = {
   'TypeIntervenantDupliquer':'Duplicate medical intervenor',
   ' PriceNotEquals':'The total and the service price are different',
   'SousFamillePrestation':'Service Subcategory',
-     'Loading':'Loading'
+     'Loading':'Loading',
+     'DossierMedical':'Medical File',
 };
 
 export default enI18n;

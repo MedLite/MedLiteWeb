@@ -7,6 +7,7 @@ import { ReceptionService } from '../../menu-reception/ServiceClient/reception.s
 import { SessionStorageService } from '../service/SessionStorageService';
 import { DatePipe } from '@angular/common';
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
+import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
 
 interface Column {
   field: string;
@@ -24,26 +25,26 @@ export class ListAdmissionOPDComponent implements OnInit, AfterViewInit {
   constructor(private datePipe: DatePipe, private cdRef: ChangeDetectorRef,
     private sessionStorageService: SessionStorageService, private recept_service: ReceptionService,
     private router: Router, private messageService: MessageService,
-    private patientSelectionService: PatientSelectionService) { }
+    private patientSelectionService: PatientSelectionService , private ctrlAltertify : ControlServiceAlertify) { }
 
   files!: TreeNode[];
-  cols!: Column[]; 
+  cols!: Column[];
 
   AdmissionOPD!: any[];
-  colsParent: Column[] = [
-    { field: ' ', header: ' ' }, 
-    { field: 'codeSaisie', header: 'Code Saisie' },
-    { field: 'patientDTO.nomCompltLt', header: 'Patient Name' }, //Directly access nested field
-    { field: 'patientDTO.codeSaisie', header: 'Patient ID' },    //Directly access nested field
-    { field: 'dateCreate', header: 'Date Arrivée' },
-    { field: 'cabinetDTO.designationAr', header: 'Cabinet' },     //Directly access nested field
-    { field: 'medecinDTO.nomIntervLt', header: 'Medecin' },       //Directly access nested field
+  colsParent: any[] = [
+    { field: ' ', header: ' ' },
+    { field: 'codeSaisie', header: 'Code Saisie' , type:"text" },
+    { field: 'patientDTO.nomCompltLt', header: 'Patient Name', type:"text"  }, //Directly access nested field
+ 
+    { field: 'dateCreate' , header: 'Arrival Date' , type:"date"  },
+    { field: 'cabinetDTO.designationAr', header: 'Cabinet' , type:"text"  },     //Directly access nested field
+    { field: 'medecinDTO.nomIntervLt', header: 'Doctor' , type:"text"  },       //Directly access nested field
   ];
 
   colsChild: Column[] = [
     { field: 'codeSaisie', header: 'Code Saisie' },
-    { field: 'nomCompltLt', header: 'Nom Complet (Latin)' },
-    { field: 'nomCompltAr', header: 'Nom Complet (Arabic)' },
+    { field: 'nomCompltLt', header: 'Name Latin ' },
+    { field: 'nomCompltAr', header: 'Name  Arabic ' },
     { field: 'numTel', header: 'Phone Number' },
   ];
 
@@ -58,22 +59,17 @@ export class ListAdmissionOPDComponent implements OnInit, AfterViewInit {
     this.patientSelectionService.setSelectedPatientName('');
     this.patientSelectionService.setSelectedCodePatient('');
     sessionStorage.removeItem("codeAdmissionSelected");
-    // this.fetchData();
 
-
-    // this.cols = [
-    //   { field: 'codeSaisie', header: 'Code Saisie' },
-    //   { field: 'name', header: 'Name' },
-    //   { field: 'codeSaisiePatient', header: 'Patient ID' },
-    //   { field: 'dateCreate', header: 'Date Arrivée' },
-    //   { field: 'cabinet', header: 'Cabinet' },
-    //   { field: 'medecin', header: 'Medecin' },
-
-    // ]; 
-this.getAllAdmissionOPD();
+    this.getAllAdmissionOPD();
     this.cdRef.detectChanges();
   }
-
+  formatDate(dateString: string | Date): string {
+    const date = new Date(dateString); // Handle both string and Date objects
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
 
   ngAfterViewInit() {
     this.sessionStorageService.clearSessionStorageIfNecessary(); //Call the clearing function
@@ -148,27 +144,62 @@ this.getAllAdmissionOPD();
   // }
 
   // AdmissionOPD!: any[];
-  getAllAdmissionOPD (){
+  getAllAdmissionOPD() {
     let codeNatureAdmission = sessionStorage.getItem("NatureAdmissionOPD");
 
-    this.recept_service.GetAdmissionByCodeNatureAdmission(codeNatureAdmission).subscribe(  (data:any )=>{
-this.AdmissionOPD = data;
-    })
-  } 
+
+    const permissionDMI = JSON.parse(sessionStorage.getItem("auth-user") ?? '{}')?.permissionDMI?.toLowerCase();
+    const codeMedecin = JSON.parse(sessionStorage.getItem("auth-user") ?? '{}')?.codeMedecin;
+
+    if(permissionDMI !== 'doctor'){
+      this.recept_service.GetAdmissionByCodeNatureAdmission(codeNatureAdmission).subscribe((data: any) => {
+        this.AdmissionOPD = data;
+
+        // data.forEach((admission:any) => {
+        //   admission.dateCreate = this.formatDate(admission.dateCreate);
+        // });
+        
+        // this.AdmissionOPD = data;
+
+        
+      })
+    }else{
+
+      if(codeMedecin == null){
+        this.ctrlAltertify.PostionLabelNotificationDMI();
+        this.ctrlAltertify.showNotificationِCustom("VerifierParametrageMedecinAccess");
+
+      }else{
+        this.recept_service.GetAdmissionByCodeNatureAdmissionAndCodeMedecin(codeNatureAdmission,codeMedecin).subscribe((data: any) => {
+          this.AdmissionOPD = data;
+
+          // data.forEach((admission:any) => {
+          //   admission.dateCreate = this.formatDate(admission.dateCreate);
+          // });
+          
+          // this.AdmissionOPD = data;
+  
+        })
+      }
+    
+    }
+
+    
+  }
   expandAll() {
     this.expandedRows = this.AdmissionOPD.reduce((acc, p) => (acc[p.code] = true) && acc, {}
-   );
+    );
   }
 
   collapseAll() {
     this.expandedRows = {};
   }
-   onRowExpand(event: TableRowExpandEvent) {
-    this.messageService.add({ severity: 'info', summary: 'Product Expanded', detail: event.data.codeSaisie, life: 3000 });
+  onRowExpand(event: TableRowExpandEvent) {
+    this.messageService.add({ severity: 'success', summary: 'Admission Expanded', detail: event.data.codeSaisie, life: 3000 });
   }
 
   onRowCollapse(event: TableRowCollapseEvent) {
-    this.messageService.add({ severity: 'success', summary: 'Product Collapsed', detail: event.data.codeSaisie, life: 3000 });
+    this.messageService.add({ severity: 'info', summary: 'Admission Collapsed', detail: event.data.codeSaisie, life: 3000 });
   }
 
 }

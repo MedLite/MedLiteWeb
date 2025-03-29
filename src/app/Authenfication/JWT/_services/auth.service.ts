@@ -47,6 +47,13 @@ export class AuthService {
     return this.http.post(`${environment.API_ACCESS}`  + 'refreshtoken', { refreshToken ,userId}, httpOptions);
   }
 
+  GetImageProfil(){
+    
+    const username = JSON.parse(sessionStorage.getItem("auth-user") ?? '{}')?.userName?.toLowerCase();
+    return this.http.get(`${environment.API_AUTH}`  + 'accessUser/imageProfil?userName='+ username);
+
+  }
+
 
 
 }

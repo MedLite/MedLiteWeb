@@ -54,7 +54,7 @@ import { FooterComponent } from './Navigation/footer/footer.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AlertComponent } from './Authenfication/alert/alert.component';
@@ -110,11 +110,12 @@ import { RequestOPDComponent } from './dossier-medical-opd/request-opd/request-o
 import { CustomSelectComponent } from './Shared/TAB/custom-select.component';
 import { PrescriptionOPDComponent } from './dossier-medical-opd/prescription-opd/prescription-opd.component'; 
 import { SignatureMedecinComponent } from './menu-parametrage/signature-medecin/signature-medecin.component';
-import { BadgeModule } from 'primeng/badge';
-import { httpInterceptorProviders, HttpRequestInterceptor } from './Authenfication/JWT/_helpers/http.interceptor';
 import { AuthInterceptor, authInterceptorProviders } from './Authenfication/_helpers/auth.interceptor';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { DividerModule } from 'primeng/divider';
+import { MenubarModule } from 'primeng/menubar';
+import { CustomDateFormatPipe } from './Shared/CommunFunction/CustomDateFormatPipe';
+
 const languages = [
   { lang: 'عربي', flag: 'assets/images/county/ar.png', file: arI18n, valeur: 'ar' },
   { lang: 'English', flag: 'assets/images/county/eng.png', file: enI18n, valeur: 'en' },
@@ -135,7 +136,7 @@ const languages = [
     TopBarComponent, LoadingComponent, ToFixedRoundPipe, 
     FooterComponent, AlertComponent, LoginComponent,ModalContentComponent,
     ////// i18n //////////////// 
-    I18nPipe,
+    I18nPipe,  CustomDateFormatPipe,
     ///// Menu parametrage 
     NationaliterComponent, VilleComponent,CabinetComponent,SocieteComponent, 
     PriceListComponent,CouvertureComponent,ConventionComponent,CaisseComponent, 
@@ -170,7 +171,7 @@ const languages = [
      TableModule, InputTextModule, FileUploadModule,
      ButtonModule, InputNumberModule, NoopAnimationsModule,
     FormsModule, DialogModule, RadioButtonModule,
-    CalendarModule, CheckboxModule, TabViewModule,
+    CalendarModule, CheckboxModule, TabViewModule,MenubarModule
 
   ],
   // providers: [  provideHttpClient(withInterceptors([customInterceptor])),DatePipe, LoginComponent, LoadingComponent, HttpClient, MessageService,

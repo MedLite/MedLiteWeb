@@ -161,7 +161,16 @@ const arI18n = {
  "Error":"Error",
  "Signature":"الإمضاء",
  "SelectAnyMedecin":'الرجاء إختيار طبيب',
- 'YouDontHaveAccessToSendReq':'Request Only For Doctor '
+ 'YouDontHaveAccessToSendReq':'Request Only For Doctor ',
+ 'PleaseSelectAnyAdmission':'Please Select Any Admission',
+ 'VerifierParametrageMedecinAccess':'Check Settings Access Doctor',
+ 'SelctAnyRowDMI':'Select Any Row',
+ 'SuccessSavedDMI':'Success Saved',
+ 'DeletedOKDMI':'Deleted OK',
+ 'PleaseRemplireAnyHistory':'Write Any History',
+ 'PleaseRemplireAnyComplaint':'Write Any Complaint',
+ 'PleaseRemplireAnyDiagnosis':'Write Any Diagnosis',
+ 'PleaseRemplireAnyAllergy':'Write Any Allergy'
 };
 
 

@@ -108,6 +108,11 @@ constructor(private http: HttpClient) { }
     return this.http.get(`${environment.API_Reception}admission/findByCodeNatureAdmission?codeNatureAdmission=`+codeNatureAdmission )
   }
 
+  GetAdmissionByCodeNatureAdmissionAndCodeMedecin(codeNatureAdmission : any,codeMedecin : any): Observable<any> {
+
+    return this.http.get(`${environment.API_Reception}admission/findByCodeNatureAdmission?codeNatureAdmission=`+codeNatureAdmission `&codeMedecin=`+codeMedecin )
+  }
+
  
   PostAdmission(body: any) {
     return this.http.post(`${environment.API_Reception}admission`, body);

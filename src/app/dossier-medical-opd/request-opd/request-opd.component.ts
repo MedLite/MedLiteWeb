@@ -102,6 +102,9 @@ export class RequestOPDComponent implements OnInit {
     if (this.storedPatientData === undefined || this.storedPatientData === null) {
       this.NotSelectedPatient = true;
       this.SelectedPatient = false;
+      this.CtrlAlertify.PostionLabelNotificationDMI();
+      this.CtrlAlertify.showNotificationِCustom("PleaseSelectAnyAdmission");
+      this.router.navigate(['/dossier_medical_opd/list_admission_opd']); 
     } else {
 
       this.patientSelectionService.setSelectedCodeAdmission(this.storedPatientData.codeSaisie || 'CodeSaisieAdmissionError');
@@ -151,15 +154,36 @@ export class RequestOPDComponent implements OnInit {
     }
     else if (mode === 'Print') {
 
-      if (this.selectedReqLab === undefined) {
-        this.CtrlAlertify.PostionLabelNotification();
-        this.CtrlAlertify.showChoseAnyRowNotification();
+      if (this.selectedReqLab === undefined || this.selectedReqLab ===null) {
+        this.CtrlAlertify.PostionLabelNotificationDMI();
+        this.CtrlAlertify.showChoseAnyRowNotificationDMI();
       } else {
 
         button.setAttribute('data-target', '#ModalPrint');
-        this.formHeader = "طباعة"
+        this.formHeader = "Print Request Laboratory"
         this.visibleModalPrint = true;
         this.PrintReqLabo(this.selectedReqLab.code);
+      }
+
+
+
+    }else  if (mode === 'ReqRad') {
+      button.setAttribute('data-target', '#ModalReqLabo');
+  
+      this.VisibleAddReqRadio = true;
+      this.GetPrestationRadio();
+      this.GetColumnsTabReqRadio();
+    } else if (mode === 'PrintRadio') {
+
+      if (this.selectedReqRadio === undefined || this.selectedReqRadio ===null) {
+        this.CtrlAlertify.PostionLabelNotificationDMI();
+        this.CtrlAlertify.showChoseAnyRowNotificationDMI();
+      } else {
+
+        button.setAttribute('data-target', '#ModalPrint');
+        this.formHeader = "Print Request Radiology"
+        this.visibleModalPrint = true;
+        this.PrintReqLabo(this.selectedReqRadio.code);
       }
 
 
@@ -239,7 +263,15 @@ export class RequestOPDComponent implements OnInit {
 
   public PrintReqLabo(codeExamen: any): void {
 
-    console.log("selcted req lab ", this.selectedReqLab);
+    // console.log("selcted req lab ", this.selectedReqLab);
+    this.GetReqLabForPrint(codeExamen);
+
+
+  }
+
+  public PrintReqRadio(codeExamen: any): void {
+
+    // console.log("selcted req lab ", this.selectedReqLab);
     this.GetReqLabForPrint(codeExamen);
 
 
@@ -260,7 +292,7 @@ export class RequestOPDComponent implements OnInit {
           // this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Request successfully deleted.' });
 
           this.CtrlAlertify.PostionLabelNotificationDMI();
-          this.CtrlAlertify.ShowDeletedOK();
+          this.CtrlAlertify.ShowDeletedOKDMI();
           this.visDelete = false;
 
         },
@@ -297,7 +329,7 @@ export class RequestOPDComponent implements OnInit {
           // this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Request successfully deleted.' });
 
           this.CtrlAlertify.PostionLabelNotificationDMI();
-          this.CtrlAlertify.ShowDeletedOK();
+          this.CtrlAlertify.ShowDeletedOKDMI();
           this.visDelete = false;
 
         },
@@ -327,7 +359,7 @@ export class RequestOPDComponent implements OnInit {
 
     const natureAdmOPD = sessionStorage.getItem("NatureAdmissionOPD");
     const codeNatAdmOPD = Number(natureAdmOPD);
-    const codeMedecin = JSON.parse(sessionStorage.getItem("auth-user") ?? '{}')?.codeMedecin;
+    const permissionDMI = JSON.parse(sessionStorage.getItem("auth-user") ?? '{}')?.permissionDMI?.toLowerCase();
 
     const codeAdmission = JSON.parse(sessionStorage.getItem("codeAdmissionSelected") ?? '{}')?.code;
     const codePatient = JSON.parse(sessionStorage.getItem("codeAdmissionSelected") ?? '{}')?.codePatient;
@@ -347,13 +379,27 @@ export class RequestOPDComponent implements OnInit {
     });
 
 
+    this.SelectedPrestationRadio.forEach((item: any) => {
+      this.detailsPriceListsListDTOss.push({
+        code: null,
+        codeAdmission: codeAdmission,
+
+        codeNatureAdmission: codeNatAdmOPD || 2, //Default to 0 if missing
+        codePatient: codePatient,
+        codePrestation: item.code,
+        dateCreate: item.dateCreate || '', //Corrected Date and Default to empty string
+        userCreate: this.userCreate,
+      })
+    });
+
+
     var TypeExamenLabo = " ";
-
-    if (this.SelectedPrestationLabo != null || this.SelectedPrestationLabo != undefined) {
+console.log("this.SelectedPrestationLabo  " , this.SelectedPrestationLabo );
+console.log("this.SelectedPrestationRadio  " , this.SelectedPrestationRadio );
+    if (this.SelectedPrestationLabo.length !=0 ) {
       TypeExamenLabo = "L";
-    } else {
+    } else   {
       TypeExamenLabo = "R";
-
     }
 
     let body = {
@@ -366,7 +412,7 @@ export class RequestOPDComponent implements OnInit {
       detailsExamenDTOs: this.detailsPriceListsListDTOss,
       codeMedecinDemande: 1
     }
-    if (codeMedecin === null) {
+    if (!permissionDMI ||  (permissionDMI !== 'doctor'  &&permissionDMI !== 'administrator' ) ) {
       this.CtrlAlertify.PostionLabelNotificationDMI();
       this.CtrlAlertify.showNotificationِCustom("YouDontHaveAccessToSendReq");
     } else {
@@ -379,7 +425,7 @@ export class RequestOPDComponent implements OnInit {
       ).subscribe({
         next: () => {
           this.CtrlAlertify.PostionLabelNotificationDMI();
-          this.CtrlAlertify.ShowSavedOK();
+          this.CtrlAlertify.ShowSavedOKDMI();
           this.VisibleAddReqLabo = false;
           this.VisibleAddReqRadio = false;
           this.SelectedPrestationLabo = new Array<any>();
@@ -462,7 +508,7 @@ export class RequestOPDComponent implements OnInit {
       })
     ).subscribe({
       next: () => {
-        this.CtrlAlertify.PostionLabelNotification();
+        this.CtrlAlertify.PostionLabelNotificationDMI();
         this.CtrlAlertify.ShowSavedOK();
         this.VisibleAddReqLabo = false;
         this.SelectedPrestationLabo = new Array<any>();
@@ -582,10 +628,7 @@ export class RequestOPDComponent implements OnInit {
   }
 
   GetReqLabForPrint(codeExamen: number) {
-    // this.dmi_opd_service.GetExamenByCodeForEdition(codeExamen).subscribe((data: any) => {
-    //   this.dataRequestLabo = data
-    // })
-
+    
     this.visibleModalPrint = true;
 
     this.dmi_opd_service.GetExamenByCodeForEdition(codeExamen).subscribe((blob: Blob) => {
@@ -616,6 +659,8 @@ export class RequestOPDComponent implements OnInit {
 
   CloseModalPrint() {
     this.visibleModalPrint = false;
+    this.onRowUnselectFromTabReqLab(event);
+    this.onRowUnselectFromTabReqRadio(event);
     this.pdfData == null;
   }
 

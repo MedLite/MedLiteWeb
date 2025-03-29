@@ -24,14 +24,20 @@
             (onRowSelect)="nodeSelect($event)" (onRowUnselect)="nodeUnselect($event)">
             <ng-template pTemplate="caption">
                 <div class="flex flex-wrap justify-content-end gap-2">
-                    <p-button label="Expand All" icon="pi pi-plus" text (onClick)="expandAll()" />
-                    <p-button label="Collapse All" icon="pi pi-minus" text (onClick)="collapseAll()" />
+                    <!-- <p-button label="Expand All" icon="pi pi-plus" text (onClick)="expandAll()" />
+                    <p-button label="Collapse All" icon="pi pi-minus" text (onClick)="collapseAll()" /> -->
                 </div>
             </ng-template>
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns">
                         {{ col.header }}
+                    </th>
+                </tr>
+
+                <tr class="filter-row">
+                    <th *ngFor="let col of columns let i = index">
+                        <p-columnFilter *ngIf="i !== 0 " [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type={{col.type}} field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
                     </th>
                 </tr>
             </ng-template>
@@ -42,9 +48,9 @@
                     </td>
                     <td>{{ product.codeSaisie }}</td>
                     <td>{{ product.patientDTO.nomCompltLt}}</td>
-                    <td>{{ product.patientDTO.codeSaisie}}</td>
+                    <!-- <td>{{ product.patientDTO.codeSaisie}}</td> -->
                     <td>
-                        {{product.dateCreate | date : "dd/MM/yyyy hh:mm:ss"}}
+                        {{product.dateCreate | customDateFormat}}
                     </td>
                     <td>
                         {{product.cabinetDTO.designationAr}}

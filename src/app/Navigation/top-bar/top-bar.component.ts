@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { I18nService } from '../../Shared/i18n/i18n.service';
-import { DomSanitizer } from '@angular/platform-browser'; 
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'; 
 import { ActivatedRoute, Router } from '@angular/router';
 import { StorageService } from '../../Authenfication/JWT/_services/storage.service';
 import { AuthService } from '../../Authenfication/JWT/_services/auth.service';
@@ -11,7 +11,9 @@ import { AuthService } from '../../Authenfication/JWT/_services/auth.service';
   styleUrl: './top-bar.component.css', providers: [I18nService]
 })
 export class TopBarComponent implements OnInit  {
-  constructor(  private authServiceNew: AuthService, private storageService: StorageService, private route: ActivatedRoute,public i18nService: I18nService, private router: Router ,private sanitization: DomSanitizer) { }
+  constructor(  private authServiceNew: AuthService, private storageService: StorageService,
+     private route: ActivatedRoute,public i18nService: I18nService, private router: Router 
+     ,private sanitization: DomSanitizer) { }
 
 
   en:any = "EN";
@@ -20,19 +22,10 @@ export class TopBarComponent implements OnInit  {
   isLoggedIn = false;
   countries: any;
   selectedCountry: any;
+  ImageProfil: SafeResourceUrl | string | null = null; //Make sure it is initialized
+  
   ngOnInit() {
-    this.GetTokenFromStorage();
-    // this.countries = [
-    //   { name: 'Ar', code: 'LY', value: "ar" },
-    //   { name: 'Eng', code: 'US', value: "en" },
-    //   { name: 'Fr', code: 'FR', value: "fr" }
-
-    // ];
-    // this.selectedCountry = this.countries[0];
-    // if (this.tokenStorage.getToken()) {
-    //   this.isLoggedIn = true;
-    //   this.reloadCurrentRoute();
-    // }
+    this.GetTokenFromStorage(); 
   }
 
   reloadCurrentRoute() {
@@ -64,7 +57,7 @@ export class TopBarComponent implements OnInit  {
   }
 
   TokenOK:any ;
-
+  userName:any;
   GetTokenFromStorage(){
     let token = sessionStorage.getItem("auth-token");
     if(token==""){
@@ -72,6 +65,8 @@ export class TopBarComponent implements OnInit  {
       this.TokenOK = false; 
     }else{
       this.TokenOK = true; 
+      this.GetImageProfil();
+      this.userName = JSON.parse(sessionStorage.getItem("auth-user") ?? '{}')?.userName?.toLowerCase();
 
     }
   }
@@ -101,4 +96,37 @@ export class TopBarComponent implements OnInit  {
       window.location.reload();
     }, 10);
   }
+
+  GetImageProfil() {
+    if(sessionStorage.getItem("ImageProfil") == undefined ||  sessionStorage.getItem("ImageProfil") ==null){
+    
+      this.authServiceNew.GetImageProfil().subscribe(
+        (data: any) => {
+          
+          if (typeof data.imageProfil === 'string' && data.imageProfil.trim() !== '') {
+            sessionStorage.setItem("ImageProfil",data.imageProfil);
+            this.ImageProfil = this.sanitization.bypassSecurityTrustResourceUrl(`data:image/jpg;base64,${data.imageProfil}`);
+            // sessionStorage.setItem("NomSociete",data.nomSociete);
+      
+  
+            
+          } else {
+            console.error("Invalid ImageProfil data received.");
+            this.ImageProfil = '/path/to/default/logo.png'; //Fallback to default
+          } 
+        } 
+      )
+    }
+    else{
+      this.ImageProfil = this.sanitization.bypassSecurityTrustResourceUrl(`data:image/jpg;base64,${sessionStorage.getItem("ImageProfil")}`);
+    
+    }
+    
+
+
+
+ 
+  }
+
+
 }

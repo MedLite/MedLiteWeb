@@ -116,10 +116,12 @@ export class AppComponent implements OnInit {
       if (pageWrapper) {
         if (url.startsWith('/dossier_medical_opd') || url === '/login') {
           pageWrapper.style.marginRight = '0px';
+          pageWrapper.style.marginLeft = '0px';
           pageWrapper.style.marginTop = '0px';
           pageWrapper.style.marginBottom = '0px';
         } else {
           pageWrapper.style.marginRight = '';
+          pageWrapper.style.marginLeft = '';
           pageWrapper.style.marginTop = '';
           pageWrapper.style.marginBottom = '';
         }

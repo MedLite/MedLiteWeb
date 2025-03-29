@@ -26,6 +26,7 @@ const frI18n = {
   'Medecin': 'Médecins',
   'Banques': 'Banques',
   'Banque': 'Banque',
+  'DossierMedical':'Dossier Medical',
   'Admission': 'Admission d\'un patient',
   'Edition': 'Rapports',
   'Add': 'Ajouter',

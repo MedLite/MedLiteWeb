@@ -10,5 +10,6 @@ export const environment = {
     API_Caisse: "/caisse/",
     API_SOC: "/soc",
     API_EXMANE: "/examen/",
+    API_DMI: "/dmi/",
     idleTimeInMinutes: 4
 };

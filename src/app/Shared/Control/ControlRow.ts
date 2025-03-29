@@ -58,6 +58,13 @@ export class ControlServiceAlertify {
     );
   }
 
+  showChoseAnyRowNotificationDMI() {
+    const fieldRequiredMessage = this.i18nService.getString('SelctAnyRowDMI');  // Default to English if not found
+    alertifyjs.notify(
+      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
+      fieldRequiredMessage
+    );
+  }
   showChoseAnyPatientNotification() {
     const fieldRequiredMessage = this.i18nService.getString('SelectAnyPatient');  // Default to English if not found
     alertifyjs.notify(
@@ -68,6 +75,13 @@ export class ControlServiceAlertify {
 
   ShowSavedOK(){
     const fieldSavedMessage = this.i18nService.getString('SuccessSaved');  // Default to English if not found
+    alertifyjs.notify(
+      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/OkSaved.gif" alt="image" >` +
+      fieldSavedMessage
+    ); 
+  }
+  ShowSavedOKDMI(){
+    const fieldSavedMessage = this.i18nService.getString('SuccessSavedDMI');  // Default to English if not found
     alertifyjs.notify(
       `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/OkSaved.gif" alt="image" >` +
       fieldSavedMessage
@@ -89,12 +103,28 @@ export class ControlServiceAlertify {
       fieldUpdatedMessage
     ); 
   }
+  ShowDeletedOKDMI(){
+    const fieldUpdatedMessage = this.i18nService.getString('DeletedOKDMI');  
+    alertifyjs.notify(
+      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/OkSaved.gif" alt="image" >` +
+      fieldUpdatedMessage
+    ); 
+  }
 
   showItemUsed() {
     const fieldRequiredMessage = this.i18nService.getString('ItemUsed');  // Default to English if not found
     alertifyjs.notify(
       `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
       fieldRequiredMessage
+    );
+  }
+
+
+  ErrorFetchDataDMI(LabelMessage:string) {
+    // const fieldRequiredMessage = this.i18nService.getString(LabelMessage);  // Default to English if not found
+    alertifyjs.notify(
+      `<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/required.gif" alt="image" >` +
+      LabelMessage
     );
   }
 }

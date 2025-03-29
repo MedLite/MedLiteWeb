@@ -31,15 +31,36 @@
     margin-top: 20px;
 }
 
-:host ::ng-deep .ModalHistoryAllergy {
+:host ::ng-deep .ModalHistory {
     border-radius: 6px;
-    width: 1050px !important;
+    width: 545px !important;
+    font-family: auto;
+    margin-top: 20px;
+}
+
+:host ::ng-deep .ModalAllergy {
+    border-radius: 6px;
+    width: 545px !important;
+    font-family: auto;
+    margin-top: 20px;
+}
+
+:host ::ng-deep .ModalDiagnosis {
+    border-radius: 6px;
+    width: 545px !important;
     font-family: auto;
     margin-top: 20px;
 }
 
 :host ::ng-deep .p-panel .p-panel-content {
     border: none !important;
+}
+
+:host ::ng-deep .ModalHistoryPatient {
+    border-radius: 6px;
+    width: 1050px !important;
+    font-family: auto;
+    margin-top: 20px;
 }
 
 @media screen and (min-width: 768px) {

@@ -12,11 +12,10 @@
                         <span class="nav-text">Home</span>
                     </a>
                 </li>
-                <li class="nav-item" routerLinkActive="active" [routerLink]="['/dossier_medical_opd/list_admission_opd']">
+                <li class="nav-item " routerLinkActive="active" [routerLink]="['/dossier_medical_opd/list_admission_opd']">
                     <b></b>
                     <b></b>
                     <a>
-                        <!-- <i class="fa fa-user nav-icon"></i> -->
                         <i class="fa-solid fa-list nav-icon"></i>
                         <span class="nav-text">List Admission </span>
                     </a>
@@ -61,7 +60,9 @@
         </nav>
 
         <section class="content">
+
             <div class="flex-row-start flex-12 Entent-Admission">
+
                 <div class="flex-6">
                     <section class="block-row">
                         <a> Admission Code :  {{ (patientSelectionService.selectedAdmissionCode$ | async)?.toString() || '' }}</a>
@@ -80,10 +81,17 @@
                         <a> Other :  </a>
                     </section>
                 </div>
+                <div class="flex-2 flex-row-end flex-justify-end  " style="position:absolute;right: 40px;">
 
+                    <a href="javascript:;" onclick="toggleFullScreen()" style="font-size: 20px;">
+                        <i class='bx bx-fullscreen'></i>
+                    </a>
 
-
+                </div>
             </div>
+
+
+
 
             <div class="dossier-container">
                 <!-- Container for DossierMedicalOPDComponent's content -->
@@ -91,6 +99,9 @@
                     <router-outlet></router-outlet>
                 </div>
             </div>
+
+
+
         </section>
     </main>
 </body>

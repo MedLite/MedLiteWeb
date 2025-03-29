@@ -1,3 +1,15 @@
 a.dropdown-item.d-flex.align-items-center {
     justify-content: center;
 }
+
+.user-online:after {
+    content: "";
+    position: absolute;
+    bottom: 3px;
+    right: 17px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px #fff;
+    background: #16e15e;
+}

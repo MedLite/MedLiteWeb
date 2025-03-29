@@ -65,5 +65,86 @@ export class DmiOpdService {
     }
   
   
+
+    /// cheif complaint 
+
+
+    PostCheifComplaint(body: any) {
+      return this.http.post(`${environment.API_DMI}cheif_complaint`, body);
+    } 
   
+
+    GetCheifComplaintByCodeAdmission(codeAdmission : any) {
+      return this.http.get(`${environment.API_DMI}cheif_complaint/findByCodeAdmission?codeAdmission=`+codeAdmission);
+    } 
+    DeleteCheifComplaint (code: any) {
+      return this.http.delete(`${environment.API_DMI}cheif_complaint/delete/`+code);
+    }
+
+    DeleteCheifComplaintByCodeAdmission(codeAdmission: any) {
+      return this.http.delete(`${environment.API_DMI}cheif_complaint/deleteByCodeAdmission/`+codeAdmission);
+    }
+  
+  
+
+    
+    /// Allergy 
+
+
+    PostAllergy(body: any) {
+      return this.http.post(`${environment.API_DMI}allergy`, body);
+    } 
+  
+
+    GetAllergyByCodeAdmission(codeAdmission : any) {
+      return this.http.get(`${environment.API_DMI}allergy/findByCodeAdmission?codeAdmission=`+codeAdmission);
+    } 
+    DeleteAllergy (code: any) {
+      return this.http.delete(`${environment.API_DMI}allergy/delete/`+code);
+    }
+
+    DeleteAllergyByCodeAdmission(codeAdmission: any) {
+      return this.http.delete(`${environment.API_DMI}allergy/deleteByCodeAdmission/`+codeAdmission);
+    }
+
+
+      /// Diagnosis 
+
+
+      PostDiagnosis(body: any) {
+        return this.http.post(`${environment.API_DMI}diagnosis`, body);
+      } 
+    
+  
+      GetDiagnosisByCodeAdmission(codeAdmission : any) {
+        return this.http.get(`${environment.API_DMI}diagnosis/findByCodeAdmission?codeAdmission=`+codeAdmission);
+      } 
+      DeleteDiagnosis (code: any) {
+        return this.http.delete(`${environment.API_DMI}diagnosis/delete/`+code);
+      }
+  
+      DeleteDiagnosisByCodeAdmission(codeAdmission: any) {
+        return this.http.delete(`${environment.API_DMI}diagnosis/deleteByCodeAdmission/`+codeAdmission);
+      }
+
+
+      
+      /// History 
+
+
+      PostHistory(body: any) {
+        return this.http.post(`${environment.API_DMI}past_history`, body);
+      } 
+    
+  
+      GetHistoryByCodeAdmission(codeAdmission : any) {
+        return this.http.get(`${environment.API_DMI}past_history/findByCodeAdmission?codeAdmission=`+codeAdmission);
+      } 
+      DeleteHistory (code: any) {
+        return this.http.delete(`${environment.API_DMI}past_history/delete/`+code);
+      }
+  
+      DeleteHistoryByCodeAdmission(codeAdmission: any) {
+        return this.http.delete(`${environment.API_DMI}past_history/deleteByCodeAdmission/`+codeAdmission);
+      }
 }
