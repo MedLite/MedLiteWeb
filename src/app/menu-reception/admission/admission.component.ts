@@ -1,6 +1,6 @@
 import { Component, ChangeDetectorRef, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Table } from 'primeng/table';
+import { Table, TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 import { Router } from '@angular/router';
 import { LoadingComponent } from '../../Shared/loading/loading.component';
 import { I18nService } from '../../Shared/i18n/i18n.service';
@@ -18,7 +18,10 @@ import { throwError, firstValueFrom } from 'rxjs';
 import { catchError, map } from 'rxjs/operators'; //You still need map from rxjs/operators
 import { HttpErrorResponse } from '@angular/common/http';
 import { EncryptionService } from '../../Shared/EcrypteService/EncryptionService';
-
+interface Column {
+  field: string;
+  header: string;
+}
 interface YourDataType {
   // Define the structure of your data (matches the SQL table columns)
   id: number;
@@ -284,32 +287,6 @@ export class AdmissionComponent implements OnInit {
   }
 
 
-
-
-  // blockDataToEvent(e: any): DayPilot.EventData {
-  //   let date = new DayPilot.Date(e.date);
-  //   return {
-  //     id: e.id,
-  //     start: date.addHours(e.block),
-  //     end: date.addHours(e.block).addHours(e.duration),
-  //     text: e.text,
-  //     tags: e.tags
-  //   };
-  // }
-
-  // eventToBlockData(data: DayPilot.EventData): any {
-  //   let date = new DayPilot.Date(data.start).getDatePart();
-  //   return {
-  //     id: data.id,
-  //     text: data.text,
-  //     date: date,
-  //     block: new DayPilot.Date(data.start).getHours(),
-  //     duration: new DayPilot.Date(data.end).getHours() - new DayPilot.Date(data.start).getHours(),
-  //     tags: data.tags
-  //   };
-  // }
-
-
   onRowSelectFromTabsRecherchePatient(event: any) {
     // const SelectedPatients = event.data;
     // this.SelectedPatients = SelectedPatients;
@@ -462,8 +439,9 @@ export class AdmissionComponent implements OnInit {
     sessionStorage.removeItem("PriceListTempSelectedTemp");
     sessionStorage.removeItem("CodePatientTemp");
     this.GetParamCheckRegDef();
-    this.GetColumns();
+    // this.GetColumns();
     this.GetAllAdmission();
+    this.GetColumnsParent();
 
     this.listDeviseRslt = [
       { label: 'test', value: 'v1' },
@@ -518,15 +496,15 @@ export class AdmissionComponent implements OnInit {
   // }
 
 
-  GetColumns() {
-    this.cols = [
-      { field: 'TypeOP', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '5%', filter: "true" },
-      { field: 'SourceDepenese', header: this.i18nService.getString('Designation') || 'Designation', width: '5%', filter: "true" },
-      { field: 'codeEtatApprouver', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '5%', filter: "false" },
-      { field: 'dateCreate', header: this.i18nService.getString('LabelActif') || 'Actif', width: '5%', filter: "true" },
+  // GetColumns() {
+  //   this.cols = [
+  //     { field: 'TypeOP', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '5%', filter: "true" },
+  //     { field: 'SourceDepenese', header: this.i18nService.getString('Designation') || 'Designation', width: '5%', filter: "true" },
+  //     { field: 'codeEtatApprouver', header: this.i18nService.getString('DesignationSecondaire') || 'DesignationSecondaire', width: '5%', filter: "false" },
+  //     { field: 'dateCreate', header: this.i18nService.getString('LabelActif') || 'Actif', width: '5%', filter: "true" },
 
-    ];
-  }
+  //   ];
+  // }
   @Output() closed: EventEmitter<string> = new EventEmitter();
   closeThisComponent() {
     const parentUrl = this.router.url.split('/').slice(0, -1).join('/');
@@ -858,10 +836,10 @@ export class AdmissionComponent implements OnInit {
         this.RegDeferral = checkedRegDef;
         this.visibleModal = true;
         this.GetAllMedecinContientConsultation();
-        if(sessionStorage.getItem("CheckRegDef")=="false"){
+        if (sessionStorage.getItem("CheckRegDef") == "false") {
           this.GetAllModeReglement();
         }
-       
+
 
         this.code == undefined;
 
@@ -938,12 +916,13 @@ export class AdmissionComponent implements OnInit {
     const mntPayed = this.validationService.validateInputCommun(this.mntPayedInputElement, this.mntPayed);
     // const modReg = this.validationService.validateDropDownCommun(this.modeReglementInputElement, this.selectedModeReglement);
 
-    return codeSaisie && codePatient  && mntPayed;
+    return codeSaisie && codePatient && mntPayed;
   }
 
 
 
   detailsAdmission = new Array<any>();
+  admissionFacturation = new Array<any>();
   reglementPused = new Array<any>();
   AdmissionFacturationPush = new Array<any>();
   PostAdmission() {
@@ -967,6 +946,17 @@ export class AdmissionComponent implements OnInit {
         })
 
 
+
+        // this.admissionFacturation.push({
+        //   codePrestation: this.SelectedMedecinFromList.medecinDTO.prestationConsultationDTO.codePrestation,
+        //   montant: this.SelectedMedecinFromList.montantConsultation,
+        //   montantPatient: this.mntCash,
+        //   codeNatureAdmission: sessionStorage.getItem("NatureAdmissionOPD"),
+        //   codeEtatPaiement: 2,
+        //   codeEtatPatient:0
+        // })
+
+
         if (this.RegDeferral == false) {
           this.reglementPused.push({
             codePrestation: this.SelectedMedecinFromList.medecinDTO.prestationConsultationDTO.codePrestation,
@@ -986,12 +976,12 @@ export class AdmissionComponent implements OnInit {
         }
 
         this.AdmissionFacturationPush.push({
-          dateCreate: new Date().toISOString(), 
+          dateCreate: new Date().toISOString(),
           userCreate: this.userCreate,
           codeSociete: this.selectedSociete,
           codeConvention: this.selectedConvention,
           codeNatureAdmission: sessionStorage.getItem("NatureAdmissionOPD"),
-          codeEtatPatient:0
+          codeEtatPatient: 0
         })
         let bodyAdmission = {
           codeSaisie: this.codeSaisie,
@@ -1009,10 +999,10 @@ export class AdmissionComponent implements OnInit {
           userCreate: this.userCreate,
           detailsAdmissionDTOs: this.detailsAdmission,
           reglementDTOs: this.reglementPused,
-          regDeferral:this.RegDeferral,
-          admissionFacturationDTOs:this.AdmissionFacturationPush,
+          regDeferral: this.RegDeferral,
+          admissionFacturationDTOs: this.AdmissionFacturationPush,
         }
-        console.log("this.SelectedMedecinFromList"), this.SelectedMedecinFromList;
+        // console.log("this.SelectedMedecinFromList"), this.SelectedMedecinFromList;
 
 
         if (this.code != null) {
@@ -1051,7 +1041,7 @@ export class AdmissionComponent implements OnInit {
               this.reglementPused = new Array<any>();
               this.detailsAdmission = new Array<any>();
               this.AdmissionFacturationPush = new Array<any>();
-              
+
               return throwError(errorMessage);
 
             })
@@ -1207,8 +1197,8 @@ export class AdmissionComponent implements OnInit {
         this.VisiblePEC = false;
         this.SelectedMedecinFromList = '';
         this.selectedConvention = "";
-        this.selectedSociete = ""; 
-        this.GetAllMedecinContientConsultation(); 
+        this.selectedSociete = "";
+        this.GetAllMedecinContientConsultation();
       }
     }
 
@@ -1522,11 +1512,11 @@ export class AdmissionComponent implements OnInit {
   }
 
   GetParamCheckRegDef() {
-       this.param_service.GetParam("RegDeferralChecked").subscribe((dataRegChecked: any) => {
-        sessionStorage.setItem("CheckRegDef", dataRegChecked.valeur);
-      })
- 
-   
+    this.param_service.GetParam("RegDeferralChecked").subscribe((dataRegChecked: any) => {
+      sessionStorage.setItem("CheckRegDef", dataRegChecked.valeur);
+    })
+
+
   }
 
   // GetCodeNatureAdmissionOPD() {
@@ -1579,7 +1569,7 @@ export class AdmissionComponent implements OnInit {
 
 
   // sumMontantFromDetails(details: any[]): number {
-  
+
   //   if (!details || !Array.isArray(details) || details.length === 0) {
   //     return 0; //Handle empty or invalid data gracefully
   //   }
@@ -1612,7 +1602,7 @@ export class AdmissionComponent implements OnInit {
       const [planningCabinets, priceListCashResult] = await Promise.all([
         this.recept_service.GetPlanningCabinetByDateExiste(formattedDate, formattedDate).toPromise(), // toPromise() for async/await
         // this.param_service.GetParam("codeConvention").toPromise(), // Assuming you have a method to fetch codeConvention
-        
+
         this.param_service.GetParam("PriceListCash").toPromise(),
       ]);
 
@@ -1674,13 +1664,13 @@ export class AdmissionComponent implements OnInit {
               return throwError(() => new Error('Failed to Get Prestation.'));
             }),
             map((dataDetailsPL: any) => (
-            
+
               {
-              ...medecin,
-              montantConsultation: this.sumMontantFromDetails(dataDetailsPL)|| 0
-            }
-          
-          ))
+                ...medecin,
+                montantConsultation: this.sumMontantFromDetails(dataDetailsPL) || 0
+              }
+
+            ))
           );
       }
     });
@@ -1721,43 +1711,127 @@ export class AdmissionComponent implements OnInit {
   }
 
 
+  L: any = "L";
+  R: any = "R";
 
-  GetAllAdmission() {
-    this.loadingComponent.IsLoading = false;
-    this.IsLoading = false;
+  GetPicLaboPaid() {
+    return "url('assets/images/LaboPaid.png')";
+  }
+
+  GetPicLaboNotPaid() {
+    return "url('assets/images/LaboNotPaid.png')";
+  }
+  GetPicNotLaboExiste() {
+    return "url('assets/images/backWhite.jpg')";
+  }
+
+  getBackgroundImage(examens: any[]): string {
+    if (examens.length === 0) {
+      return '';
+    }
+
+    const hasLExamsPaid = examens.some(examen => examen.typeExamen === this.L && examen.codeEtatPaiement === 1); //Check for at least one paid.
+    const hasLExamsNotPaid = examens.some(examen => examen.typeExamen === this.L && examen.codeEtatPaiement === 2);
+
+    if (hasLExamsPaid && !hasLExamsNotPaid) { // If at least one is paid AND none are not paid
+      return this.GetPicLaboPaid();
+    } else if (hasLExamsNotPaid) { // If at least one is not paid (regardless of paid ones)
+      return this.GetPicLaboNotPaid();
+    } else {
+      return ''; // No 'L' exams at all.
+    }
   }
 
 
-  // showTableX = false;
-  // selectedValueX: string | undefined;
+  GetAllAdmission() {
 
-  // dataX = [
-  //   ['Value 1A', 'Value 2A', 'Value 3A'],
-  //   ['Value 1B', 'Value 2B', 'Value 3B'],
-  //   ['Value 1C', 'Value 2C', 'Value 3C'],
-  //   ['Value 1D', 'Value 2D', 'Value 3D'],
+    // let codeNatureAdmission = sessionStorage.getItem("NatureAdmissionOPD"); 
+    //   this.recept_service.GetAdmissionByCodeNatureAdmission(codeNatureAdmission).subscribe((data: any) => {
+
+
+    //   })
+
+    this.recept_service.GetAdmissionForOPD().subscribe((data: any) => {
+
+      this.dataAdmission = data;
+
+      this.loadingComponent.IsLoading = false;
+      this.IsLoading = false;
+    })
+
+  }
+
+  nodeSelect(event: any) {
+    sessionStorage.setItem("codeAdmissionSelectedOPD", JSON.stringify(event.data));
+
+  }
+
+  nodeUnselect(event: any) {
+    sessionStorage.removeItem("codeAdmissionSelectedOPD");
+  }
+
+  colsParent!: any[];
+  // colsParent: any[] = [
+  //   { field: ' ', header: ' ' },
+  //   { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie' , type:"text" },
+  //   { field: 'patientDTO.nomCompltLt', header: 'Patient Name', type:"text"  }, //Directly access nested field
+
+  //   { field: 'dateCreate' , header: 'Arrival Date' , type:"date"  },
+  //   { field: 'cabinetDTO.designationAr', header: 'Cabinet' , type:"text"  },     //Directly access nested field
+  //   { field: 'medecinDTO.nomIntervLt', header: 'Doctor' , type:"text"  },       //Directly access nested field
   // ];
 
-  // VisTable(){
-  //   this.showTableX = true;
-  // }
-  // selectRowX(value: string) {
-  //   this.selectedValueX = value;
-  //   this.showTableX = false; // Hide the table after selection
-  // }
+  GetColumnsParent() {
+    this.colsParent = [
+      { field: ' ', header: ' ' },
+      { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', width: '20%', filter: "true", type: "text" },
+      { field: 'patientDTO.nomCompltLt', header: this.i18nService.getString('NomLt') || 'NomLt', width: '20%', filter: "true", type: "text" },
+      { field: 'dateCreate', header: this.i18nService.getString('DateArriver') || 'DateArriver', width: '20%', filter: "false", type: "date" },
+      { field: 'cabinetDTO.designationAr', header: this.i18nService.getString('Cabinet') || 'Cabinet', width: '20%', filter: "false", type: "text" },
 
-  // onSelectedValueChangeX(){
-  //   this.showTableX = false; // Hide the table if select value changes manually.
-  // }
-  // selectedValueX: string = '';
-  // showTable: boolean = false; 
-  // selectedValueX: any = '';
+      { field: 'medecinDTO.nomIntervLt', header: this.i18nService.getString('NomMedecin') || 'NomMedecin', width: '20%', filter: "true", type: "text" },
+      { field: ' ', header: this.i18nService.getString('Prestation') || 'Prestation', },
+      { field: ' ', header: this.i18nService.getString('Laboratoire') || 'Laboratoire', },
+      { field: ' ', header: this.i18nService.getString('Radiologie') || 'Radiologie', },
 
+
+    ];
+  }
+
+
+
+  colsChild: Column[] = [
+    { field: 'codeSaisie', header: 'Code Saisie' },
+    { field: 'nomCompltLt', header: 'Name Latin ' },
+    { field: 'nomCompltAr', header: 'Name  Arabic ' },
+    { field: 'numTel', header: 'Phone Number' },
+  ];
   password: any;
   CloseModalPassWord() {
     this.visbileModalPassword = false;
   }
 
+  selectedNode!: any; //Make it any to accomodate various selected objects
+  onRowExpand(event: TableRowExpandEvent) {
+    // this.messageService.add({ severity: 'success', summary: 'Admission Expanded', detail: event.data.codeSaisie, life: 3000 });
+  }
+
+  expandedRows = {}; //Object to track expanded rows
+
+  expandAll() {
+    this.expandedRows = this.dataAdmission.reduce((acc, p) => (acc[p.code] = true) && acc, {}
+    );
+  }
+
+  collapseAll() {
+    this.expandedRows = {};
+  }
+
+
+
+  onRowCollapse(event: TableRowCollapseEvent) {
+    // this.messageService.add({ severity: 'info', summary: 'Admission Collapsed', detail: event.data.codeSaisie, life: 3000 });
+  }
   decryptedValue: string = '';
   OpenmodalPassword(mode: string) {
     this.visibleModal = false;
@@ -1795,11 +1869,11 @@ export class AdmissionComponent implements OnInit {
       })
   }
 
-  DisabledReg(){
-    if(this.RegDeferral === true){
-      this.RegDef =true;
-    }else{
-      this.RegDef =false;
+  DisabledReg() {
+    if (this.RegDeferral === true) {
+      this.RegDef = true;
+    } else {
+      this.RegDef = false;
       this.GetAllModeReglement();
 
     }

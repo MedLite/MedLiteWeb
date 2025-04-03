@@ -10,6 +10,7 @@ import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
 import { DmiOpdService } from '../service/ServiceClient/dmi-opd.service';
 import { catchError, of, map, Subscription } from 'rxjs';
 import { MenuItem } from 'primeng/api';
+import { ReceptionService } from '../../menu-reception/ServiceClient/reception.service';
 
 @Component({
   selector: 'app-feuille-soin',
@@ -31,11 +32,11 @@ export class FeuilleSoinComponent implements OnInit, OnDestroy {
   formGroupAddDignosis!: FormGroup;
   formGroupLoadDignosis!: FormGroup;
   loading = false;
-  constructor(private fb: FormBuilder, private dmi_opd_service: DmiOpdService,
+  constructor(private dmi_opd_service: DmiOpdService,
     private CtrlAlertify: ControlServiceAlertify, public i18nService: I18nService,
     private patientSelectionService: PatientSelectionService,
     private navigationService: NavigationService, private sessionStorageService: SessionStorageService,
-    private router: Router, private route: ActivatedRoute, private messageService: MessageService) { }
+    private router: Router, private messageService: MessageService, private receptServie: ReceptionService) { }
 
   navigateToAdmissionList() {
     this.navigationService.navigateToAdmissionList();
@@ -103,7 +104,7 @@ export class FeuilleSoinComponent implements OnInit, OnDestroy {
       this.GetHistoryAdmission();
       this.GetAllergyAdmission();
       this.GetDiagnosisAdmission();
-    this.GetMenuItem();
+      this.GetMenuItem();
 
     }
 
@@ -111,41 +112,41 @@ export class FeuilleSoinComponent implements OnInit, OnDestroy {
 
 
   }
-  
-  GetMenuItem(){
+
+  GetMenuItem() {
     this.items = [
       {
-          label: 'History Patient',
-          icon: 'fa-solid fa-clock-rotate-left',
-          command: () => { this.onOpenModal("HistoryPatient") } 
+        label: 'History Patient',
+        icon: 'fa-solid fa-clock-rotate-left',
+        command: () => { this.onOpenModal("HistoryPatient") }
       },
       {
-          label: 'Features',
-          icon: 'pi pi-star'
+        label: 'Features',
+        icon: 'pi pi-star'
       },
       {
-          label: 'Reports',
-          icon: 'fas fa-print',
-          items: [
-              {
-                  label: 'Patient File',
-                  icon: 'fa-brands fa-readme'
-              },
-              {
-                  label: 'Custom Patient File',
-                  icon: 'fa-brands fa-perbyte'
-              }
-               
-          ]
+        label: 'Reports',
+        icon: 'fas fa-print',
+        items: [
+          {
+            label: 'Patient File',
+            icon: 'fa-brands fa-readme'
+          },
+          {
+            label: 'Custom Patient File',
+            icon: 'fa-brands fa-perbyte'
+          }
+
+        ]
       },
       {
-          label: 'Discharge Authorization',
-          icon: 'fa-solid fa-person-circle-check'
+        label: 'Discharge Authorization',
+        icon: 'fa-solid fa-person-circle-check'
       }
-  ]
-}
- 
-  
+    ]
+  }
+
+
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
@@ -168,6 +169,8 @@ export class FeuilleSoinComponent implements OnInit, OnDestroy {
   visibleModalDeleteHistory = false;
 
   visibleModalHistoryPatient = false;
+  visibleModalDetailsAdmission = false;
+  
 
 
 
@@ -206,7 +209,7 @@ export class FeuilleSoinComponent implements OnInit, OnDestroy {
         this.visibleModalDeleteCheifComplaint = true;
       }
 
-    }else if (mode === 'DeleteHistory') {
+    } else if (mode === 'DeleteHistory') {
       if (this.dataHistoryAdmission == "") {
         this.CtrlAlertify.PostionLabelNotificationDMI();
         this.CtrlAlertify.ErrorFetchDataDMI("History Empty")
@@ -236,16 +239,19 @@ export class FeuilleSoinComponent implements OnInit, OnDestroy {
       }
 
     }
-    else if (mode === 'HistoryPatient') {
-      // if (this.dataDiagnosisAdmission == "") {
-        // this.CtrlAlertify.PostionLabelNotificationDMI();
-        // this.CtrlAlertify.ErrorFetchDataDMI("History Patient Empty")
-      // } else {
-        button.setAttribute('data-target', '#ModalHistoryPatient');
-        this.visibleModalHistoryPatient = true;
-        this.GetColumnsTabAdmissionByCodePatient();
-      // }
-
+    else if (mode === 'HistoryPatient') { 
+      button.setAttribute('data-target', '#ModalHistoryPatient');
+      this.visibleModalHistoryPatient = true;
+      this.GetColumnsTabAdmissionByCodePatient();
+      this.GetListAdmissionByCodePatient(); 
+    } else if (mode === 'DetailsAdmission') {  
+      if(this.SelectedAdmissionByCodePatient  == null  || this.SelectedAdmissionByCodePatient.length == 0    ){
+        this.CtrlAlertify.PostionLabelNotificationDMI();
+        this.CtrlAlertify.ErrorFetchDataDMI(" Select Any Row");
+      } else{
+        button.setAttribute('data-target', '#ModalDetailsAdmission');
+        this.visibleModalDetailsAdmission = true;
+      } 
     }
 
   }
@@ -335,7 +341,7 @@ export class FeuilleSoinComponent implements OnInit, OnDestroy {
   RemoveCheifComplaint() {
     const codeAdmission = JSON.parse(sessionStorage.getItem("codeAdmissionSelected") ?? '{}')?.code || '';
     this.dmi_opd_service.DeleteCheifComplaintByCodeAdmission(codeAdmission).subscribe(
-      (res: any) => {
+      () => {
         this.CtrlAlertify.PostionLabelNotificationDMI();
         this.CtrlAlertify.ShowDeletedOKDMI();
         // this.ngOnInit();
@@ -430,7 +436,7 @@ export class FeuilleSoinComponent implements OnInit, OnDestroy {
   RemoveAllergy() {
     const codeAdmission = JSON.parse(sessionStorage.getItem("codeAdmissionSelected") ?? '{}')?.code || '';
     this.dmi_opd_service.DeleteAllergyByCodeAdmission(codeAdmission).subscribe(
-      (res: any) => {
+      () => {
         this.CtrlAlertify.PostionLabelNotificationDMI();
         this.CtrlAlertify.ShowDeletedOKDMI();
         this.GetAllergyAdmission();
@@ -536,7 +542,7 @@ export class FeuilleSoinComponent implements OnInit, OnDestroy {
   RemoveDiagnosis() {
     const codeAdmission = JSON.parse(sessionStorage.getItem("codeAdmissionSelected") ?? '{}')?.code || '';
     this.dmi_opd_service.DeleteDiagnosisByCodeAdmission(codeAdmission).subscribe(
-      (res: any) => {
+      () => {
         this.CtrlAlertify.PostionLabelNotificationDMI();
         this.CtrlAlertify.ShowDeletedOKDMI();
         this.GetDiagnosisAdmission();
@@ -640,7 +646,7 @@ export class FeuilleSoinComponent implements OnInit, OnDestroy {
   RemoveHistory() {
     const codeAdmission = JSON.parse(sessionStorage.getItem("codeAdmissionSelected") ?? '{}')?.code || '';
     this.dmi_opd_service.DeleteHistoryByCodeAdmission(codeAdmission).subscribe(
-      (res: any) => {
+      () => {
         this.CtrlAlertify.PostionLabelNotificationDMI();
         this.CtrlAlertify.ShowDeletedOKDMI();
         this.GetHistoryAdmission();
@@ -656,11 +662,13 @@ export class FeuilleSoinComponent implements OnInit, OnDestroy {
   }
 
 
-
-  /// history PAtient 
-
-  CloseModalHistoryPatient(){
+ 
+  CloseModalHistoryPatient() {
     this.visibleModalHistoryPatient = false;
+  }
+
+  CloseModalDetailsAdmission() {
+    this.visibleModalDetailsAdmission = false;
   }
 
 
@@ -669,10 +677,9 @@ export class FeuilleSoinComponent implements OnInit, OnDestroy {
   SelectedAdmissionByCodePatient: any[] = [];
   colsTabAdmissionByCodePatient!: any[];
 
-  
+
   onRowSelectFromTabAdmissionByCodePatient(event: any) {
-    const selectedRow = event.data;
-   
+
 
 
 
@@ -680,22 +687,30 @@ export class FeuilleSoinComponent implements OnInit, OnDestroy {
 
 
 
-  onRowUnselectFromTabAdmissionByCodePatient(event: any) { 
+  onRowUnselectFromTabAdmissionByCodePatient(event : any) {
   }
 
-  
+
   GetColumnsTabAdmissionByCodePatient() {
-    this.colsTabAdmissionByCodePatient = [ 
-      { field: 'codeSaisie', header: 'Code ', width: '20%', filter: "true" , type:"text" },
-      { field: 'designationLt', header: 'Arrival Date', width: '20%', filter: "true" ,type:"date" },
-      { field: 'medecionDTO.nomIntervAr', header: 'Doctor', width: '20%', filter: "true",type:"text" },
-      { field: 'complaintDTO.cheifComplaint', header: 'Complaint', width: '30%', filter: "true",type:"text" },
-      { field: '', header: 'Details', width: '10%', filter: "true" , type:"text"},
+    this.colsTabAdmissionByCodePatient = [
+      { field: 'cabinetDTO.specialiteCabinetDTO.designationLt', header: 'Speciality Cabinet ', width: '20%', filter: "true", type: "text" },
+      { field: 'codeSaisie', header: 'Code ', width: '20%', filter: "true", type: "text" },
+      { field: 'designationLt', header: 'Arrival Date', width: '20%', filter: "true", type: "date" },
+      { field: 'medecionDTO.nomIntervAr', header: 'Doctor', width: '20%', filter: "true", type: "text" },
+      // { field: 'complaintDTO.cheifComplaint', header: 'Complaint', width: '30%', filter: "true", type: "text" },
+      { field: '', header: 'Details', width: '10%', filter: "true", type: "text" },
 
     ]
   }
 
 
 
+
+  GetListAdmissionByCodePatient() {
+    const codePatient = JSON.parse(sessionStorage.getItem("codeAdmissionSelected") ?? '{}')?.codePatient || '';
+    this.receptServie.GetAdmissionByCodePatient(codePatient).subscribe((data: any) => {
+      this.dataAdmissionByCodePatient = data;
+    })
+  }
 
 }

@@ -1,6 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MessageService, TreeNode, } from 'primeng/api';
-import { TreeTableNodeSelectEvent, TreeTableNodeUnSelectEvent } from 'primeng/treetable';
 import { PatientSelectionService } from '../service/patientSelected/patient-selected.service';
 import { Router } from '@angular/router';
 import { ReceptionService } from '../../menu-reception/ServiceClient/reception.service';

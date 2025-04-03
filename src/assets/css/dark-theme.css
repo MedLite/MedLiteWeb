@@ -58,7 +58,7 @@ html.dark-theme p {
 
 html.dark-theme .card {
     background-color: #121212 !important;
-    box-shadow: 0 0.1rem 0.7rem #707070 !important;
+    box-shadow: 0 0.1rem 0.7rem #282828 !important
 }
 
 html.dark-theme thead.p-datatable-thead {
@@ -77,7 +77,7 @@ html.dark-theme .p-datatable-thead th {
 }
 
 html.dark-theme .p-inputtext {
-    border: 1px solid #1f2021 !important;
+    /* border: 1px solid #1f2021 !important; */
     background: #1f2021 !important;
     color: #e7e7e7 !important;
 }
@@ -117,16 +117,32 @@ html.dark-theme .Bouton-rechercher {
 
 html.dark-theme .Bouton-add-new1 {
     border: 1px solid #4b4b4b !important;
+    background: #272727 !important;
+    color: white !important;
+}
+
+html.dark-theme .Bouton-add-new1 :hover {
+    color: rgb(156, 156, 156) !important;
 }
 
 html.dark-theme .Bouton-add-new2 {
     border: 1px solid #4b4b4b !important;
+    background: #272727 !important;
+    color: white !important;
+}
+
+html.dark-theme .Bouton-add-new2:hover {
+    color: rgb(156, 156, 156) !important;
 }
 
 html.dark-theme .p-dialog .p-dialog-heade {
     background: #1f2021 !important;
     border-bottom: 1px solid #3b3b3b !important;
     color: #ffffff !important;
+}
+
+html.dark-theme .p-tabmenu .p-tabmenu-nav .p-tabmenuitem:hover {
+    color: rgb(156, 156, 156) !important;
 }
 
 html.dark-theme .headerForm {
@@ -1162,8 +1178,8 @@ html.dark-theme header {
 }
 
 html.dark-theme .p-panel .p-panel-content {
-    background: #121212 !important;
-    border: 1px solid #424242 !important;
+    background: #1f2021 !important;
+    border: 1px solid #1f2021 !important;
 }
 
 html.dark-theme .p-panel .p-panel-header {
@@ -1275,7 +1291,7 @@ html.dark-theme .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
 }
 
 html.dark-theme .row {
-    background: #272727 !important;
+    background: #121212 !important;
 }
 
 html.dark-theme {
@@ -1327,6 +1343,7 @@ html.dark-theme .p-paginator {
 html.dark-theme .p-paginator .p-paginator-current {
     background: #121212;
     border: solid #121212 !important;
+    color: aliceblue;
 }
 
 html.dark-theme .p-paginator .p-paginator-pages .p-paginator-page {
@@ -1341,4 +1358,66 @@ html.dark-theme td input {
 html.dark-theme .Bouton_new3 {
     background: #121212;
     color: whitesmoke;
+}
+
+html.dark-theme .main-menu {
+    background: rgb(18 18 18) !important;
+}
+
+html.dark-theme .nav-item b:nth-child(1)::before {
+    background: rgb(18 18 18) !important;
+}
+
+html.dark-theme .nav-item b:nth-child(2)::before {
+    background: rgb(18 18 18) !important;
+}
+
+html.dark-theme .feuille-soin-content {
+    background: rgb(73 57 113) !important
+}
+
+html.dark-theme .p-menubar {
+    background: #121212 !important;
+}
+
+html.dark-theme .Entent-Admission {
+    background: #121212 !important;
+}
+
+html.dark-theme .p-menubar .p-menuitem-link .p-menuitem-text {
+    color: #fff;
+}
+
+html.dark-theme .p-menubar .p-menuitem-link .p-menuitem-icon {
+    color: #fff;
+}
+
+html.dark-theme .p-menubar .p-submenu-list {
+    background: #121212 !important;
+    border: 1px solid rgb(255 255 255 / 15%);
+}
+
+html.dark-theme .nav-item.active a {
+    background: rgb(73, 57, 113) !important;
+    color: #ffffff !important;
+}
+
+html.dark-theme .list-admission-opd-content {
+    background: rgb(73 57 113) !important
+}
+
+html.dark-theme .request-opd-content {
+    background: rgb(73 57 113) !important
+}
+
+html.dark-theme .nav-item b:nth-child(1) {
+    background: rgb(73, 57, 113) !important;
+}
+
+html.dark-theme .nav-item b:nth-child(2) {
+    background: rgb(73, 57, 113) !important;
+}
+
+html.dark-theme .content {
+    background: rgb(73, 57, 113) !important;
 }

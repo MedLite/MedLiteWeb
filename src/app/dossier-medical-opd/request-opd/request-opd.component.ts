@@ -687,7 +687,7 @@ console.log("this.SelectedPrestationRadio  " , this.SelectedPrestationRadio );
 
     if (this.selectedReqLab == undefined || this.selectedReqLab == null || this.selectedReqLab == "") {
       this.CtrlAlertify.PostionLabelNotificationDMI();
-      this.CtrlAlertify.showNotificationِCustom("SelctAnyRow")
+      this.CtrlAlertify.ErrorFetchDataDMI("Select Any Row")
       this.visDelete = false;
     } else {
       if (mode === 'ConfDelete') {

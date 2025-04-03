@@ -282,7 +282,7 @@ tr.mat-footer-row {
     display: flex;
     height: 55px;
     width: 130px;
-    padding: 3px 7px 0px 5px;
+    padding: 3px 3px 0px 5px;
     margin-bottom: 3px;
     border: 1px solid #adadad;
     align-items: center;
@@ -784,7 +784,7 @@ textarea {
     font-size: 15px;
     font-family: auto;
     border: 1px solid #d9d1d1;
-    border-radius: 6px;
+    border-radius: 3px;
 }
 
 
@@ -2856,4 +2856,13 @@ input[type="radio"]:disabled {
 
 .file-upload-button {
     border: 1px solid gray;
+}
+
+.p-button.p-button-item-eye {
+    color: #306898;
+    background: #ffffff;
+    border: 1px solid #ffffff;
+    position: relative;
+    text-align: center;
+    height: 25px;
 }

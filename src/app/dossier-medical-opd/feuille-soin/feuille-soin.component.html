@@ -626,7 +626,7 @@
         <div class="flex-row-start flex-12">
 
             <p-table [paginator]="true" [rows]="10" [rowsPerPageOptions]="[20, 40,80,100]" [showCurrentPageReport]="true" currentPageReportTemplate="{{'Page'  }} {first} {{'To'  }} {last} {{'of'  }} {totalRecords} {{'entiers'  }}" #dt1 [columns]="colsTabAdmissionByCodePatient"
-                [value]="dataAdmissionByCodePatient" rowGroupMode="rowspan" groupRowsBy="famillePrestationDTO.designationAr" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="multiple" [metaKeySelection]="false" [(selection)]="SelectedAdmissionByCodePatient"
+                [value]="dataAdmissionByCodePatient" rowGroupMode="rowspan" groupRowsBy="cabinetDTO.specialiteCabinetDTO.designationLt" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="SelectedAdmissionByCodePatient"
                 (onRowSelect)="onRowSelectFromTabAdmissionByCodePatient($event)" (onRowUnselect)="onRowUnselectFromTabAdmissionByCodePatient($event)" dataKey="code" [tableStyle]="{'min-width': '52rem', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
 
 
@@ -651,15 +651,17 @@
                         </th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-domaine let-rowgroup="rowgroup" let-rowspan="rowspan">
-                    <tr [pSelectableRowDblClick]="domaine">
+                <ng-template pTemplate="body" let-domaine let-rowgroup="rowgroup" let-rowspan="rowspan" let-ri="rowIndex" let-editing="editing">
+                    <tr [pSelectableRow]="domaine">
                         <td style="width: 20px;" *ngIf="rowgroup" [attr.rowspan]="rowspan">
-                            <span class="font-bold ml-2">{{domaine.famillePrestationDTO.designationAr}}</span>
+                            <span class="font-bold ml-2">{{domaine.cabinetDTO.specialiteCabinetDTO.designationLt}}</span>
                         </td>
-                        <td style="font-size: 15px !important;">{{domaine.codeSaisie | date : "dd/MM/yyyy" }}</td>
-                        <td style="font-size: 15px !important;">{{domaine.designationAr}}</td>
-                        <td style="font-size: 15px !important;">{{domaine.designationAr}}</td>
-                        <td style="font-size: 15px !important;">{{domaine.designationAr}}</td>
+                        <td style="font-size: 15px !important;">{{domaine.codeSaisie }}</td>
+                        <td style="font-size: 15px !important;">{{domaine.dateCreate | date : "dd/MM/yyyy" }}</td>
+                        <td style="font-size: 15px !important;">{{domaine.medecinDTO.nomIntervLt}}</td>
+                        <!-- <td style="font-size: 15px !important;">{{domaine.designationAr}}</td> -->
+                        <td> <button *ngIf="!editing" pButton type="button" pDeleteEditableRow icon="pi pi-eye" class="p-button-item-eye " data-original-title="DetailsAdmission" data-toggle="modal" data-target="#ModalDetailsAdmission" (click)="onOpenModal('DetailsAdmission') "></button>
+                        </td>
 
                     </tr>
                 </ng-template>
@@ -670,6 +672,42 @@
                 </ng-template>
 
             </p-table>
+        </div>
+
+    </div>
+</p-dialog>
+
+
+
+<!-- /////// DetailsAdmission  -->
+
+<!-- History Patient  -->
+
+
+<p-dialog class="modalDetailsAdmission" id="ModalDetailsAdmission" data-backdrop="false" header="Header" [(visible)]="visibleModalDetailsAdmission" styleClass="ModalDetailsAdmission" [modal]="true" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+        <!-- <h2 class="text-default headerForm"> History Patient </h2> -->
+
+        <div class=" FloatLeft " style="float: left !important; padding-left: 20px">
+            <h2 class="text-default headerForm "> Details Admission</h2>
+        </div>
+
+        <div class="FloatRight" style="float: right !important;">
+
+            <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="CloseModalDetailsAdmission()"> 
+                    <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i> 
+                 Close 
+                </button>
+
+
+
+        </div>
+    </ng-template>
+    <div class="modal-body">
+
+        <div class="flex-row-start flex-12">
+
+
         </div>
 
     </div>

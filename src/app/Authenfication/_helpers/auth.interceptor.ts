@@ -64,8 +64,8 @@ export class AuthInterceptor implements HttpInterceptor {
           this.handleBackendError400(response);
         } else if (response.status === 403) {
           this.handleBackendError403(response);
-        } else if (response.status === 0){
-            this.handleConnectionRefused();
+        } else if (response.status === 0) {
+          this.handleConnectionRefused();
         } else {
           this.handleGenericError(response);
         }
@@ -117,20 +117,28 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private handleBackendError500(error: HttpErrorResponse) {
-    const currentTime = Date.now();
-    if (currentTime - this.lastNotificationTime > 2000) {
-      this.lastNotificationTime = currentTime;
-      if (error.error.description === undefined) {
+
+    console.log("error  ", error)
+    if (error.error === null) {
+
+
+      const currentTime = Date.now();
+      if (currentTime - this.lastNotificationTime > 2000) {
+        this.lastNotificationTime = currentTime;
         alertifyjs.set('notifier', 'position', 'top-left');
         alertifyjs.notify(
           '<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/backend.gif" alt="image" >' +
-            ` Error Backend`
+          ` Error Backend`
         );
-      } else {
-        alertifyjs.set('notifier', 'position', 'top-left');
-        alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/error.gif" alt="image" >' + error.error.description);
       }
+
+
+
+    } else {
+      alertifyjs.set('notifier', 'position', 'top-left');
+      alertifyjs.notify('<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/error.gif" alt="image" >' + error.error.description);
     }
+
   }
 
   private handleBackendError403(error: HttpErrorResponse) {

@@ -103,10 +103,27 @@ constructor(private http: HttpClient) { }
 
     return this.http.get(`${environment.API_Reception}admission/`+code )
   }
+
+
   GetAdmissionByCodeNatureAdmission(codeNatureAdmission : any): Observable<any> {
 
     return this.http.get(`${environment.API_Reception}admission/findByCodeNatureAdmission?codeNatureAdmission=`+codeNatureAdmission )
   }
+
+  GetAdmissionForOPD(): Observable<any> {
+
+    return this.http.get(`${environment.API_Reception}admission/findForOPD` )
+  }
+
+
+  GetAdmissionByCodePatient(codePatient : any): Observable<any> {
+
+    return this.http.get(`${environment.API_Reception}admission/findByCodePatient?codePatient=`+codePatient )
+  }
+
+
+  
+
 
   GetAdmissionByCodeNatureAdmissionAndCodeMedecin(codeNatureAdmission : any,codeMedecin : any): Observable<any> {
 

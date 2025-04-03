@@ -1,1 +1,157 @@
-<p>caisse-reception works!</p>
+<body class="card" [ngClass]="{ 'disabled': IsLoading }">
+    <app-loading [IsLoading]="IsLoading">
+    </app-loading>
+    <header>
+
+        <label class="header_name">{{'CaisseReception' | i18n:i18nService.currentLanguage}} </label>
+        <button class="close-button btn btn-default" (click)="closeThisComponent()">X</button>
+    </header>
+    <aside>
+        <div class="Groupe-Bouton">
+            <div class="flex-row-around">
+                <button data-backdrop="false" type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="RecherPatient" data-toggle="modal" data-target="#ModalRercherPatient" (click)="OpenModal('RercherPatient')">
+                    <span class="label-btn">
+                        <i class="fa-solid fa-file-invoice-dollar iconADD2"></i>
+                    </span>
+                    <div class="bouton_style-2"> {{'Paie' | i18n:i18nService.currentLanguage}} </div>
+
+                </button>
+            </div>
+            <div class="flex-row-around">
+                <button type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="OpenModal('edit')">
+ 
+                
+                    <i class="fa-solid fa-list iconModif" style="margin: 0px;"></i>
+                    <div class="bouton_style-2">{{'ListReglement' | i18n:i18nService.currentLanguage}} </div>
+                </button>
+
+
+
+
+            </div>
+            <!-- <div class="flex-row-around">
+                <button   type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModalX('voir')">
+
+                    <i class='bx bx-show-alt iconModif'></i>
+                    <div class="bouton_style-2"> {{'Voir' | i18n:i18nService.currentLanguage}} </div>
+                </button>
+
+            </div>
+
+
+
+            <div class="flex-row-around">
+                <button *ngIf="VisBtnDelete" type="button" class="Bouton_new3 btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="onOpenModalX('voir')">
+                    <i class='bx bxs-trash IconDel'></i>
+                    <div class="bouton_style-2"> {{'Delete' | i18n:i18nService.currentLanguage}} </div>
+                </button>
+
+
+            </div> -->
+
+
+
+        </div>
+    </aside>
+    <section id="main-container">
+
+        <div class="material-table">
+            <div class="card">
+                <p-table [paginator]="true" [rows]="20" [rowsPerPageOptions]="[20, 40,80,100]" [showCurrentPageReport]="true" [first]="first" currentPageReportTemplate="{{'Page' | i18n:i18nService.currentLanguage}} {first} {{'To' | i18n:i18nService.currentLanguage}} {last} {{'of' | i18n:i18nService.currentLanguage}} {totalRecords} {{'entiers' | i18n:i18nService.currentLanguage}}"
+                    #dt1 [columns]="cols" [value]="dataAdmission" [globalFilterFields]="['designationAr', 'designationLt']" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedAdmission" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
+                    dataKey="code" [tableStyle]="{'min-width': '50rem', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
+
+                    <ng-template pTemplate="caption" class="col-md-12">
+
+                        <div>
+                            <div class="flex-row-start FloatRight">
+
+                                <label class="control-label-titer flex-6">{{'Designation' |
+                                    i18n:i18nService.currentLanguage}} :</label>
+                                <span class="p-input-icon-left ml-auto flex-6">
+                                    <input pInputText class="recherche-value" [(ngModel)]="searchTerm"
+                                        name="zone-recherche" type="text"
+                                        (keyup.enter)="dt1.filterGlobal($any($event.target).value, 'contains')"
+                                        placeholder=" . . ." />
+                                </span>
+                                <button type="button" class="Bouton-rechercher btn  btn-default " data-original-title="Add" (click)="dt1.filterGlobal($any($event.target).value, 'contains')">
+                                    <div class="bouton_style-2">{{'Search' | i18n:i18nService.currentLanguage}}</div>
+                                    <i class="fa-solid fa-magnifying-glass search-icon"
+                                        style="font-size: 18px ;padding-top:2px ;"></i>
+                                </button>
+                                <button type="button" class="Bouton-rechercher btn  btn-default " data-original-title="Add" (click)="clear(dt1)" (click)="GetAllAdmission()">
+                                    <div class="bouton_style-2">{{'Reinitialiser' | i18n:i18nService.currentLanguage}}
+                                    </div>
+                                    <i class="fa-solid fa-arrows-rotate search-icon"
+                                        style=" padding-top: 2px; font-size: 18px;"></i>
+                                </button>
+                            </div>
+
+
+
+
+
+                        </div>
+
+
+
+
+                    </ng-template>
+
+
+
+                    <ng-template pTemplate="colgroup" let-col>
+                        <colgroup>
+                            <col *ngFor="let col of col" [style.width]="col.width">
+                        </colgroup>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-col>
+                        <tr>
+                            <th *ngFor="let col of col ; let i = index" pResizableColumn>
+                                <span>
+                                    {{col.header}}
+                                </span>
+                            </th>
+                        </tr>
+                        <tr class="filter-row">
+                            <th *ngFor="let col of col let i = index">
+                                <p-columnFilter *ngIf="i !== 0  && i !== 5 && i !== 6&& i !== 7 " [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type={{col.type}} field={{col.field}} placeholder=" "
+                                    ariaLabel="Filter Country"></p-columnFilter>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-domaine>
+                        <tr [pSelectableRow]="domaine">
+                            <td style="font-size: 15px !important;">{{domaine.codeSaisie}}</td>
+                            <td style="font-size: 15px !important;">{{domaine.designationAr}}</td>
+                            <td style="font-size: 15px !important;">{{domaine.designationLt}}</td>
+                            <td style="font-size: 15px !important;">{{domaine.rib}}</td>
+                            <td style="font-size: 15px !important;">{{domaine.rib}}</td>
+                            <td style="font-size: 15px !important;">{{domaine.rib}}</td>
+                            <td style="font-size: 15px !important;">{{domaine.rib}}</td>
+                            <td style="font-size: 15px !important;">{{domaine.rib}}</td>
+
+
+
+
+
+
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="8">لا توجد بيانات</td>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+
+
+            </div>
+        </div>
+    </section>
+    <!-- <aside>aside</aside> -->
+    <!-- <footer>footer
+ 
+    </footer> -->
+</body>

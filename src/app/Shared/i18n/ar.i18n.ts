@@ -55,8 +55,11 @@ const arI18n = {
   'ClotureSession': 'إقفال الخزينة',
   'Excel': 'إكسل',
   'DateNaiss': 'تاريخ الميلاد',
+  'DateArriver': 'تاريخ الدخول',
+ 
   'NomFullAr': 'الأسم بالعربي',
   'NomFullLt': 'الأسم بالاتيني',
+  'NomLt': 'الأسم',
   'NumTel': 'رقم الهاتف',
   'Choisie': 'إختيار',
   'CodePatient': 'الرقم الطبي',
@@ -170,7 +173,13 @@ const arI18n = {
  'PleaseRemplireAnyHistory':'Write Any History',
  'PleaseRemplireAnyComplaint':'Write Any Complaint',
  'PleaseRemplireAnyDiagnosis':'Write Any Diagnosis',
- 'PleaseRemplireAnyAllergy':'Write Any Allergy'
+ 'PleaseRemplireAnyAllergy':'Write Any Allergy',
+ 'Paie':'سداد',
+ 'ListReglement':'ايصالات السداد',
+ 'Laboratoire':'تحاليل',
+ 'Radiologie':'أشعة',
+ 'Hospitaliser':'مقيم',
+ 'Leave':'مغادر',
 };
 
 

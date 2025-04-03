@@ -83,12 +83,14 @@ export class LoginComponent implements OnInit {
         this.roles = this.storageService.getUser().roles;
         // this.reloadPage();
         this.reloadCurrentRoute(); 
-      },
-      error: (err:any) => {
-        console.log("errrorrr messgae not read ", err)
-        this.errorMessage = err.error.message;
-        this.isLoginFailed = true;
       }
+      
+      // ,
+      // error: (err:any) => {
+      //   // console.log("errrorrr messgae not read ", err)
+      //   // this.errorMessage = err.error.message;
+      //   this.isLoginFailed = true;
+      // }
     });
   }
 

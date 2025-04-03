@@ -38,6 +38,13 @@
     margin-top: 20px;
 }
 
+:host ::ng-deep .ModalDetailsAdmission {
+    border-radius: 6px;
+    width: 545px !important;
+    font-family: auto;
+    margin-top: 20px;
+}
+
 :host ::ng-deep .ModalAllergy {
     border-radius: 6px;
     width: 545px !important;
@@ -58,7 +65,7 @@
 
 :host ::ng-deep .ModalHistoryPatient {
     border-radius: 6px;
-    width: 1050px !important;
+    width: 849px !important;
     font-family: auto;
     margin-top: 20px;
 }
@@ -223,4 +230,8 @@
     .md\:flex-column-reverse {
         flex-direction: column-reverse!important
     }
+}
+
+:host ::ng-deep html.dark-theme .p-inputtext {
+    border: 1px solid gray !important;
 }
