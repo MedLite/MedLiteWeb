@@ -114,8 +114,9 @@ import { AuthInterceptor, authInterceptorProviders } from './Authenfication/_hel
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { DividerModule } from 'primeng/divider';
 import { MenubarModule } from 'primeng/menubar';
-import { CustomDateFormatPipe } from './Shared/CommunFunction/CustomDateFormatPipe';
-
+import { CustomDateFormatPipe } from './Shared/CommunFunction/CustomDateFormatPipe'; 
+import { ReportViewerModule } from '../../projects/reportviewer/src/public-api';
+ 
 const languages = [
   { lang: 'عربي', flag: 'assets/images/county/ar.png', file: arI18n, valeur: 'ar' },
   { lang: 'English', flag: 'assets/images/county/eng.png', file: enI18n, valeur: 'en' },
@@ -156,7 +157,7 @@ const languages = [
 
     
   ],
-  imports: [
+  imports: [   
     BrowserModule, NgxEchartsModule.forRoot({
       echarts, // Provide the echarts object here
     }),
@@ -171,7 +172,7 @@ const languages = [
      TableModule, InputTextModule, FileUploadModule,
      ButtonModule, InputNumberModule, NoopAnimationsModule,
     FormsModule, DialogModule, RadioButtonModule,
-    CalendarModule, CheckboxModule, TabViewModule,MenubarModule
+    CalendarModule, CheckboxModule, TabViewModule,MenubarModule,ReportViewerModule
 
   ],
   // providers: [  provideHttpClient(withInterceptors([customInterceptor])),DatePipe, LoginComponent, LoadingComponent, HttpClient, MessageService,

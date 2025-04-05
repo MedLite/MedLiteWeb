@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { EventEmitter, Component, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { NavigationService } from '../service/NavigationService';
 import { PatientSelectionService } from '../service/patientSelected/patient-selected.service';
@@ -9,11 +9,11 @@ import { I18nService } from '../../Shared/i18n/i18n.service';
 import { ParametargeService } from '../../menu-parametrage/ServiceClient/parametarge.service';
 import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
 import { catchError, throwError } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
-
-import { ConfirmationService } from 'primeng/api';
-
-
+import { HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { ConfirmationService } from 'primeng/api'; 
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import * as PDFObject from 'pdfobject';
+ 
 
 export interface ExmaneDTO {
   // code: any;
@@ -37,7 +37,7 @@ export interface ExmaneDTO {
 
 }
 
-declare const PDFObject: any;
+// declare const PDFObject: any;
 @Component({
   selector: 'app-request-opd',
   templateUrl: './request-opd.component.html',
@@ -45,7 +45,7 @@ declare const PDFObject: any;
     , '.../../../src/assets/css/StyleApplication.css'],
   providers: [MessageService, ConfirmationService]
 })
-export class RequestOPDComponent implements OnInit {
+export class RequestOPDComponent implements OnInit   {
 
   NotSelectedPatient: boolean = false;
   SelectedPatient: boolean = false;
@@ -54,7 +54,7 @@ export class RequestOPDComponent implements OnInit {
   cols!: any[];
   colsRadio!: any[];
 
-  pdfData!: Blob;
+  // pdfData!: Blob;
   first = 0;
   Add!: string;
 
@@ -78,7 +78,11 @@ export class RequestOPDComponent implements OnInit {
 
   visDelete = false;
   formHeader = "";
-  constructor(private CtrlAlertify: ControlServiceAlertify, public param_service: ParametargeService, public i18nService: I18nService, private dmi_opd_service: DmiOpdService, private patientSelectionService: PatientSelectionService, private navigationService: NavigationService, private sessionStorageService: SessionStorageService, private router: Router, private messageService: MessageService) { }
+  constructor(private CtrlAlertify: ControlServiceAlertify, public param_service: ParametargeService,
+     public i18nService: I18nService, private dmi_opd_service: DmiOpdService, 
+     private patientSelectionService: PatientSelectionService, private navigationService: NavigationService,
+      private sessionStorageService: SessionStorageService, private router: Router, 
+      private messageService: MessageService , private sanitizer: DomSanitizer) { }
 
   navigateToAdmissionList() {
     this.navigationService.navigateToAdmissionList();
@@ -104,7 +108,7 @@ export class RequestOPDComponent implements OnInit {
       this.SelectedPatient = false;
       this.CtrlAlertify.PostionLabelNotificationDMI();
       this.CtrlAlertify.showNotificationِCustom("PleaseSelectAnyAdmission");
-      this.router.navigate(['/dossier_medical_opd/list_admission_opd']); 
+      this.router.navigate(['/dossier_medical_opd/list_admission_opd']);
     } else {
 
       this.patientSelectionService.setSelectedCodeAdmission(this.storedPatientData.codeSaisie || 'CodeSaisieAdmissionError');
@@ -136,6 +140,101 @@ export class RequestOPDComponent implements OnInit {
     })
   }
 
+  // reportServer: string = 'http://localhost:80/ReportServer';
+  // reportUrl: string = '/Pages/ReportViewer.aspx?%2fTest%2fnew';
+
+ 
+
+
+  showParameters: string = "false"; //true, false, collapsed
+  parameters: any = {
+    "codeAdmission": "5",
+    // "SampleBooleanParameter": false,
+    // "SampleDateTimeParameter": "2/9/2019",
+    // "SampleIntParameter": 12345,
+    // "SampleFloatParameter": "123.1234",
+    // "SampleMultipleStringParameter": ["Parameter1", "Parameter2"]
+  };
+  language: string = "en-us";
+  width: number = 200;
+  height: number = 200;
+  toolbar: string = "true";
+
+
+  reportServer: string = 'http://localhost:80/ReportServer';
+  reportPath: string = 'test/new';  
+
+
+  
+
+  PrintReportingold() {
+    
+   
+      this.dmi_opd_service.GetReports()
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          let errorMessage = '';
+          if (error.status === 401) { // Unauthorized (common for authentication issues)
+            errorMessage = 'Unauthorized access to the report.';
+          } else if (error.status === 500) { // Server error
+            errorMessage = 'Server error retrieving report. Please try again later.';
+          } else {
+            errorMessage = `Error retrieving report: ${error.message}`;
+          }
+          this.handleError2(errorMessage);
+          return throwError(() => new Error(errorMessage)); // Return an observable with the error
+       
+        })
+      ).subscribe({
+      next: (blob: Blob) => {
+        const reader = new FileReader();
+        reader.onload = (event: any) => {
+          this.pdfData = event.target.result;
+          if (this.pdfData) {
+            this.handleRenderPdf2(this.pdfData);
+          } else {
+            this.handleError2("Failed to load PDF data.");
+          }
+        };
+        reader.onerror = (error: any) => {
+          this.handleError2(`Failed to read PDF: ${error}`);
+        };
+        reader.readAsDataURL(blob); // Call readAsDataURL after setting the event handlers
+      },
+      error: (error: any) => {
+        this.handleError2(`Failed to fetch PDF: ${error.message}`);
+      }
+    });
+  }
+ 
+  
+  PrintReporting() {
+  //  this.buildAndOpenReportUrl();
+
+    this.visibleModalPrint = true; // Show the dialog AFTER setting report parameters
+  }
+  
+
+
+  handleRenderPdf2(data: any) {
+    if(data){
+      const pdfObject = PDFObject.embed(data, '#pdfContainer');
+      // pdfObject.on('complete', () => {
+      //     console.log('PDF rendered successfully');
+      // });
+      // pdfObject.on('error', (error:any) => {
+      //     this.handleError2(`PDF rendering error: ${error}`);
+      // });
+    }
+  }
+  
+  handleError2(message: string) {
+    // Display an error message to the user
+    console.error(message);
+    // Example using PrimeNG's message service:
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
+  }
+
   onOpenModal(mode: string) {
     this.Add = this.i18nService.getString('Add');
 
@@ -154,7 +253,7 @@ export class RequestOPDComponent implements OnInit {
     }
     else if (mode === 'Print') {
 
-      if (this.selectedReqLab === undefined || this.selectedReqLab ===null) {
+      if (this.selectedReqLab === undefined || this.selectedReqLab === null) {
         this.CtrlAlertify.PostionLabelNotificationDMI();
         this.CtrlAlertify.showChoseAnyRowNotificationDMI();
       } else {
@@ -163,19 +262,20 @@ export class RequestOPDComponent implements OnInit {
         this.formHeader = "Print Request Laboratory"
         this.visibleModalPrint = true;
         this.PrintReqLabo(this.selectedReqLab.code);
+      
       }
 
 
 
-    }else  if (mode === 'ReqRad') {
+    } else if (mode === 'ReqRad') {
       button.setAttribute('data-target', '#ModalReqLabo');
-  
+
       this.VisibleAddReqRadio = true;
       this.GetPrestationRadio();
       this.GetColumnsTabReqRadio();
     } else if (mode === 'PrintRadio') {
 
-      if (this.selectedReqRadio === undefined || this.selectedReqRadio ===null) {
+      if (this.selectedReqRadio === undefined || this.selectedReqRadio === null) {
         this.CtrlAlertify.PostionLabelNotificationDMI();
         this.CtrlAlertify.showChoseAnyRowNotificationDMI();
       } else {
@@ -353,8 +453,8 @@ export class RequestOPDComponent implements OnInit {
   }
 
 
-  detailsPriceListsListDTOss: any = [];
-
+  detailsExamenDTOss: any = [];
+  detailsAdmission = new Array<any>();
   PostExamenLabo() {
 
     const natureAdmOPD = sessionStorage.getItem("NatureAdmissionOPD");
@@ -366,7 +466,7 @@ export class RequestOPDComponent implements OnInit {
 
 
     this.SelectedPrestationLabo.forEach((item: any) => {
-      this.detailsPriceListsListDTOss.push({
+      this.detailsExamenDTOss.push({
         code: null,
         codeAdmission: codeAdmission,
 
@@ -376,11 +476,17 @@ export class RequestOPDComponent implements OnInit {
         dateCreate: item.dateCreate || '', //Corrected Date and Default to empty string
         userCreate: this.userCreate,
       })
+
+      this.detailsAdmission.push({
+        codePrestation: item.code, 
+        etatPaiement: false
+      })
+
     });
 
 
     this.SelectedPrestationRadio.forEach((item: any) => {
-      this.detailsPriceListsListDTOss.push({
+      this.detailsExamenDTOss.push({
         code: null,
         codeAdmission: codeAdmission,
 
@@ -394,11 +500,11 @@ export class RequestOPDComponent implements OnInit {
 
 
     var TypeExamenLabo = " ";
-console.log("this.SelectedPrestationLabo  " , this.SelectedPrestationLabo );
-console.log("this.SelectedPrestationRadio  " , this.SelectedPrestationRadio );
-    if (this.SelectedPrestationLabo.length !=0 ) {
+    console.log("this.SelectedPrestationLabo  ", this.SelectedPrestationLabo);
+    console.log("this.SelectedPrestationRadio  ", this.SelectedPrestationRadio);
+    if (this.SelectedPrestationLabo.length != 0) {
       TypeExamenLabo = "L";
-    } else   {
+    } else {
       TypeExamenLabo = "R";
     }
 
@@ -409,17 +515,18 @@ console.log("this.SelectedPrestationRadio  " , this.SelectedPrestationRadio );
       codeEtatPaiement: 2,
       dateCreate: new Date().toISOString(),
       typeExamen: TypeExamenLabo,
-      detailsExamenDTOs: this.detailsPriceListsListDTOss,
-      codeMedecinDemande: 1
+      detailsExamenDTOs: this.detailsExamenDTOss,
+      codeMedecinDemande: 1,
+      detailsAdmissionDTOs: this.detailsAdmission,
     }
-    if (!permissionDMI ||  (permissionDMI !== 'doctor'  &&permissionDMI !== 'administrator' ) ) {
+    if (!permissionDMI || (permissionDMI !== 'doctor' && permissionDMI !== 'administrator')) {
       this.CtrlAlertify.PostionLabelNotificationDMI();
       this.CtrlAlertify.showNotificationِCustom("YouDontHaveAccessToSendReq");
     } else {
       this.dmi_opd_service.PostExamen(body).pipe(
         catchError((error: HttpErrorResponse) => {
           console.error('Error saving Exmane:', error);
-          this.detailsPriceListsListDTOss = new Array<any>();
+          this.detailsExamenDTOss = new Array<any>();
           return throwError(() => new Error('Failed to save Exmane.'));
         })
       ).subscribe({
@@ -527,12 +634,14 @@ console.log("this.SelectedPrestationRadio  " , this.SelectedPrestationRadio );
 
   clearFormLabo() {
     this.VisibleAddReqLabo = false;
+    this.SelectedPrestationLabo = [];
 
   }
 
   clearFormRadio() {
     this.VisibleAddReqRadio = false;
 
+    this.SelectedPrestationRadio =[];
   }
 
 
@@ -626,32 +735,55 @@ console.log("this.SelectedPrestationRadio  " , this.SelectedPrestationRadio );
       this.dataRequestLabo = data
     })
   }
-
+  pdfData: any;
+  pdfContainer: any;
   GetReqLabForPrint(codeExamen: number) {
-    
+
+
+
     this.visibleModalPrint = true;
 
-    this.dmi_opd_service.GetExamenByCodeForEdition(codeExamen).subscribe((blob: Blob) => {
-
-      const reader = new FileReader();
-      const binaryString = reader.readAsDataURL(blob);
-      reader.onload = (event: any) => {
-        this.pdfData = event.target.result;
-        // this.l = false;
-        if (this.pdfData) {
-          this.handleRenderPdf(this.pdfData);
-        }
-      };
-
-      reader.onerror = (event: any) => {
-        console.log("File could not be read: " + event.target.error.code);
-
-      };
-    });
-
-
-
+    // this.reportService.getReport(codeExamen).subscribe({
+    //   next: (buffer: ArrayBuffer) => {
+    //     this.displayPdf(buffer);
+    //   },
+    //   error: (error:any) => {
+    //     console.error('Error fetching report:', error);
+    //   }
+    // });
   }
+
+  // displayPdf(buffer: ArrayBuffer) {
+  //   const loadingTask = pdfjsLib.getDocument(new Uint8Array(buffer));
+  
+  //   loadingTask.promise.then((pdf) => {
+  //     pdf.getPage(1).then((page) => {
+  //       const viewport = page.getViewport({ scale: 1.5 });
+  //       const canvas = document.createElement('canvas');
+  //       // *** Crucial Change: Ensure canvasContext is NOT null ***
+  //       const ctx = canvas.getContext('2d')!; // The '!' asserts that ctx will not be null
+  //       // If there's a possibility of getContext failing, add an error check here
+  //       if (!ctx) {
+  //         console.error("Failed to get 2d rendering context from canvas.");
+  //         return; // or throw an error, handle appropriately
+  //       }
+  
+  
+  //       canvas.height = viewport.height;
+  //       canvas.width = viewport.width;
+  //       const renderContext = {
+  //         canvasContext: ctx, // ctx is now guaranteed to be CanvasRenderingContext2D
+  //         viewport: viewport,
+  //       };
+  
+  //       page.render(renderContext).promise.then(() => {
+  //         this.pdfContainer.appendChild(canvas);
+  //       });
+  //     });
+  //   }).catch((reason) => {
+  //     console.error('Error loading PDF:', reason); //Catch any errors in loading the PDF
+  //   });
+  // }
   handleRenderPdf(data: any) {
     const pdfObject = PDFObject.embed(data, '#pdfContainer');
   }

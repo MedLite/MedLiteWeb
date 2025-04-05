@@ -54,6 +54,13 @@
         "logLevel": "debug",
         "changeOrigin": true,
         "timeout": 360000
+    },
+    "/reports": {
+        "target": "http://localhost:80/ReportServer",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "timeout": 360000
     }
 
 }

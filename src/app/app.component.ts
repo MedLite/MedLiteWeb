@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.GetTokenFromStorage();
     this.setDirection();
-    this.initialIdleSettings();
+    // this.initialIdleSettings();
 
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {

@@ -1721,15 +1721,12 @@ export class AdmissionComponent implements OnInit {
   GetPicLaboNotPaid() {
     return "url('assets/images/LaboNotPaid.png')";
   }
-  GetPicNotLaboExiste() {
-    return "url('assets/images/backWhite.jpg')";
-  }
+  
 
-  getBackgroundImage(examens: any[]): string {
+  getBackgroundImageLabo(examens: any[]): string {
     if (examens.length === 0) {
       return '';
-    }
-
+    } 
     const hasLExamsPaid = examens.some(examen => examen.typeExamen === this.L && examen.codeEtatPaiement === 1); //Check for at least one paid.
     const hasLExamsNotPaid = examens.some(examen => examen.typeExamen === this.L && examen.codeEtatPaiement === 2);
 
@@ -1742,6 +1739,62 @@ export class AdmissionComponent implements OnInit {
     }
   }
 
+
+
+  
+  GetPicRadioPaid() {
+    return "url('assets/images/RadioPaid.png')";
+  }
+
+  GetPicRadioNotPaid() {
+    return "url('assets/images/x-ray.png')";
+  }
+  
+
+  getBackgroundImageRadio(examens: any[]): string {
+    if (examens.length === 0) {
+      return '';
+    } 
+    const hasLExamsPaid = examens.some(examen => examen.typeExamen === this.R && examen.codeEtatPaiement === 1); //Check for at least one paid.
+    const hasLExamsNotPaid = examens.some(examen => examen.typeExamen === this.R && examen.codeEtatPaiement === 2);
+
+    if (hasLExamsPaid && !hasLExamsNotPaid) { // If at least one is paid AND none are not paid
+      return this.GetPicRadioPaid();
+    } else if (hasLExamsNotPaid) { // If at least one is not paid (regardless of paid ones)
+      return this.GetPicRadioNotPaid();
+    } else {
+      return ''; // No 'L' exams at all.
+    }
+  }
+
+
+
+
+  
+  GetPicPrestationPaid() {
+    return "url('assets/images/RadioPaidx.png')";
+  }
+
+  GetPicPrestationNotPaid() {
+    return "url('assets/images/RadioNotPaidx.png')";
+  }
+  
+
+  getBackgroundImagePrestation(examens: any[]): string {
+    if (examens.length === 0) {
+      return '';
+    } 
+    const hasLExamsPaid = examens.some(examen => examen.typeExamen === 'X' && examen.codeEtatPaiement === 1); //Check for at least one paid.
+    const hasLExamsNotPaid = examens.some(examen => examen.typeExamen === 'X' && examen.codeEtatPaiement === 2);
+
+    if (hasLExamsPaid && !hasLExamsNotPaid) { // If at least one is paid AND none are not paid
+      return this.GetPicRadioPaid();
+    } else if (hasLExamsNotPaid) { // If at least one is not paid (regardless of paid ones)
+      return this.GetPicRadioNotPaid();
+    } else {
+      return ''; // No 'L' exams at all.
+    }
+  }
 
   GetAllAdmission() {
 

@@ -60,7 +60,9 @@
                                         <td style="font-size: 15px !important;     white-space: pre;">{{ transformExamNames(domaine) }}</td>
                                         <td style="font-size: 15px !important;">{{domaine.dateCreate | date : "dd/MM/yyyy"}}</td>
                                         <td style="font-size: 15px !important;">{{domaine.userCreate}}</td>
-                                        <td> <button *ngIf="!editing" pButton type="button" pDeleteEditableRow icon="pi pi-print" class="PrintBtn" (click)="onOpenModal('Print') "></button>
+                                        <!-- <td> <button *ngIf="!editing" pButton type="button" pDeleteEditableRow icon="pi pi-print" class="PrintBtn" (click)="onOpenModal('Print') "></button> -->
+                                        <td> <button *ngIf="!editing" pButton type="button" pDeleteEditableRow icon="pi pi-print" class="PrintBtn" (click)="PrintReporting()"></button>
+                                            <!-- (click)="onOpenModal('Print') " -->
                                         </td>
                                         <td> <button *ngIf="!editing" pButton type="button" pDeleteEditableRow icon="pi pi-trash" class="p-button-item " data-original-title="Delete" data-toggle="modal" data-target="#ModalDelete" (click)="OpenModalConfimation('ConfDelete') "></button>
                                         </td>
@@ -426,7 +428,15 @@
 
     </ng-template>
     <div class="modal-body">
-        <div id="pdfContainer"></div>
+        <!-- <div id="pdfContainer"></div> -->
+
+
+        <!-- <iframe [src]="source" scrolling="no"></iframe> -->
+
+        <ssrs-reportviewer [reportserver]="reportServer" [reporturl]="reportPath" [showparameters]="showParameters" [parameters]="parameters" [language]="language" [width]="width" [height]="height" [toolbar]="toolbar"></ssrs-reportviewer>
+
+
+
     </div>
 
 </p-dialog>

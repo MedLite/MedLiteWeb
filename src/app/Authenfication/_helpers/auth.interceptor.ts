@@ -5,7 +5,7 @@ import { HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http'
 import * as alertifyjs from 'alertifyjs'
 import { TokenStorageService } from '../_services/token-storage.service';
 import { Observable, Subject, Subscription, catchError, map, throwError } from 'rxjs';
-
+import { CookieService } from 'ngx-cookie-service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +17,8 @@ const TOKEN_HEADER_KEY = 'Authorization';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private modalService: ModalService, private token: TokenStorageService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private modalService: ModalService, private token: TokenStorageService,
+     private router: Router, private route: ActivatedRoute,private cookieService: CookieService) { }
   langSession: any;
   private requests: HttpRequest<any>[] = [];
   tokens: any;
@@ -32,17 +33,32 @@ export class AuthInterceptor implements HttpInterceptor {
     this.langSession = sessionStorage.getItem("lang");
     const tk = JSON.parse(sessionStorage.getItem("auth-user") ?? '{}')?.token;
 
+
+    req = req.clone({ headers: req.headers.delete("cookie" ) });
     if (this.tokens != null) {
       const currentUrl = window.location.pathname;
       if (currentUrl != '/login') {
         req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + tk) });
-      }
+      } 
+      // this.cookieService.delete('displayedContent');
+      //    // ReportServer Authentication (improve security!)
+      //    if (req.url == '/reports') {
+        
+      //     req = req.clone({ headers: req.headers.set('Cookie', 'ai_user=z6wB/etohOO0gSCql2aa2D|2025-04-04T23:26:04.039Z; ai_session=pBIqheev47KcODYtn6VnVC|1743824460704|1743824460704') });
+      //   }
+  
       req = req.clone({ headers: req.headers.set("Accept-Language", this.langSession) });
-      req = req.clone({ headers: req.headers.set('cache-control', 'no-cache') });
+     
+       req = req.clone({ headers: req.headers.set('cache-control', 'no-cache') });
       req = req.clone({ headers: req.headers.set('Access-Control-Allow-Origin', '*') });
       req = req.clone({ headers: req.headers.set("Access-Control-Allow-Methods", "POST, GET, PUT") });
       req = req.clone({ headers: req.headers.set("Access-Control-Allow-Headers", "Content-Type") });
+  
+      req = req.clone({ headers: req.headers.set("Accept", "application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7") });
+      
     }
+
+   
 
     return next.handle(req).pipe(
       map((event: any) => {
@@ -125,7 +141,7 @@ export class AuthInterceptor implements HttpInterceptor {
       const currentTime = Date.now();
       if (currentTime - this.lastNotificationTime > 2000) {
         this.lastNotificationTime = currentTime;
-        alertifyjs.set('notifier', 'position', 'top-left');
+        alertifyjs.set('notifier', 'position', 'top-right');
         alertifyjs.notify(
           '<img  style="width: 30px; height: 30px; margin: 0px 0px 0px 15px" src="/assets/images/images/backend.gif" alt="image" >' +
           ` Error Backend`

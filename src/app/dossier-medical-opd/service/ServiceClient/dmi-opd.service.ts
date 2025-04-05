@@ -147,4 +147,12 @@ export class DmiOpdService {
       DeleteHistoryByCodeAdmission(codeAdmission: any) {
         return this.http.delete(`${environment.API_DMI}past_history/deleteByCodeAdmission/`+codeAdmission);
       }
+
+
+      //// Reports 
+
+      GetReports() { 
+        return this.http.get(`${environment.API_REPORTS}/Pages/ReportViewer.aspx?%2fTest%2fnew&codeAdmission=5` , { responseType: "blob"  
+         });
+      } 
 }
